@@ -2,26 +2,27 @@ import fly from '../request';
 let querystring = require("querystring");
 let deviceId = new Date().getTime();
 
-// 全部订单
-export const findAllOrders = params => {
+// 获取菜单
+export const getNavigations = params => {
   return fly.request({
-    url: `/trade/ActOrd/findAllOrders`,
+    url: "/store/navigation/getPlatformNavigations",
     method: "post",
-    body: params,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
+    body: params
   });
 };
 
-// 订单详情
-export const orderDetail = params => {
+
+// 获取菜单
+export const searchItem = params => {
   return fly.request({
-    url: `/trade/ActOrd/findAllOrders`,
+    url: "/product/plp/searchItem",
     method: "post",
-    body: params,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
+    body: params
   });
 };

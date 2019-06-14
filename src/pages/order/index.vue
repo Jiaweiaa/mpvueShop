@@ -76,6 +76,10 @@
     login,
     getStorageOpenid
   } from "../../utils";
+  
+  import {
+    orderDetail
+  } from '../../api/myOrder/index'
   export default {
     onLoad: function(options) {
       

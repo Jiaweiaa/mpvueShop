@@ -1,15 +1,19 @@
 <template>
   <div class="search">
-    <div class="head">
+    <div class="head" style="position: fixed; top: 0;">
       <div>
         <img src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/search2-2fb94833aa.png" alt="">
         <input type="text" confirm-type="search" focus="true" v-model="words" @focus="inputFocus" @input="tipsearch" @confirm="searchWords" placeholder="商品搜索">
         <!-- <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword.keyword}}" /> -->
         <img @click="clearInput" class="del" src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/clearIpt-f71b83e3c2.png" alt="">
       </div>
-      <div @click="cancel">取消</div>
+      <div @click="cancel" style="margin-left: 8px;">取消</div>
     </div>
-    <div class="searchtips" v-if="words">
+	  
+	  <!--
+	    搜索结果关键词
+	  -->
+    <div class="searchtips" v-if="words && listData <= 0">
       <div @click="searchWords" v-if="tipsData.length!=0" :data-value="item.name" v-for="(item,index) in tipsData" :key="index">
         {{ item.name }}
       </div>
@@ -17,41 +21,65 @@
         数据库暂无此类商品...
       </div>
     </div>
-    <div class="history" v-if="historyData.length!=0">
-      <div class="t">
-        <div>历史记录</div>
-        <div @click="clearHistory">
-
-        </div>
-      </div>
-      <div class="cont">
-        <div @click="searchWords" :data-value="item.keyword" v-for="(item,index) in historyData" :key="index">
-          {{item.keyword}}
-        </div>
-      </div>
-    </div>
-    <div class="history hotsearch">
-      <div class="t">
-        <div>热门搜索</div>
-      </div>
-      <div class="cont">
-        <div @click="searchWords" v-for="(item,index) in hotData" :data-value="item.keyword" :class="{active:0==index}" :key="index">
-          {{item.keyword}}
-        </div>
-      </div>
-    </div>
+	  
+	  <!--
+	    缓存搜索记录
+	    推送什么的
+	  -->
+		<div v-if="listData <= 0 ">
+			<div class="history" v-if="historyData.length!=0">
+			<div class="t">
+			<div>历史记录</div>
+			<div @click="clearHistory">
+			
+			</div>
+			</div>
+			<div class="cont">
+			<div @click="searchWords" :data-value="item.keyword" v-for="(item,index) in historyData" :key="index">
+			 {{item.keyword}}
+			</div>
+			</div>
+			</div>
+			<div class="history hotsearch">
+			   <div class="t">
+				   <div>热门搜索</div>
+			   </div>
+			   <div class="cont">
+				   <div @click="searchWords" v-for="(item,index) in hotData" :data-value="item.keyword" :class="{active:0==index}" :key="index">
+					   {{item.keyword}}
+				   </div>
+			   </div>
+			 </div>
+		</div>
+	  
     <!--商品列表  -->
     <div v-if="listData.length!=0" class="goodsList">
-      <div class="sortnav">
+      <div class="sortnav" style="position: fixed; top: 45.5px;">
         <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">综合</div>
-        <div @click="changeTab(1)" class="price" :class="[1==nowIndex ?'active':'', order =='desc'? 'desc':'asc']">价格</div>
-        <div @click="changeTab(2)" :class="[2==nowIndex ?'active':'']">分类</div>
+        <div @click="changeTab(1)" class="price" :class="[1==nowIndex ?'active':'', order =='SALE_PRICE-DESC'? 'desc':'asc']">价格</div>
+        <div @click="changeTab(2)" class="price" :class="[2==nowIndex ?'active':'', order =='SALES-DESC'? 'desc':'asc']">销量</div>
+        <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">分类</div>
       </div>
-      <div class="sortlist">
+      <div class="sortlist" style="margin-top: 90px;">
         <div @click="goodsDetail(item.id)" v-for="(item, index) in listData" :key="index" :class="[(listData.length)%2==0?'active':'none']" class="item">
-          <img :src="item.list_pic_url" alt="">
-          <p class="name">{{item.name}}</p>
-          <p class="price">￥{{item.retail_price}}</p>
+          <img :src="'http://qn.gaoshanmall.cn/' + item.img" alt="">
+          <p class="name">{{item.title}} - {{item.subtitle}}</p>
+          <p class="price">￥{{item.salePrice}}</p>
+        </div>
+        <div @click="goodsDetail(item.id)" v-for="(item, index) in listData" :key="index" :class="[(listData.length)%2==0?'active':'none']" class="item">
+          <img :src="'http://qn.gaoshanmall.cn/' + item.img" alt="">
+          <p class="name">{{item.title}} - {{item.subtitle}}</p>
+          <p class="price">￥{{item.salePrice}}</p>
+        </div>
+        <div @click="goodsDetail(item.id)" v-for="(item, index) in listData" :key="index" :class="[(listData.length)%2==0?'active':'none']" class="item">
+          <img :src="'http://qn.gaoshanmall.cn/' + item.img" alt="">
+          <p class="name">{{item.title}} - {{item.subtitle}}</p>
+          <p class="price">￥{{item.salePrice}}</p>
+        </div>
+        <div @click="goodsDetail(item.id)" v-for="(item, index) in listData" :key="index" :class="[(listData.length)%2==0?'active':'none']" class="item">
+          <img :src="'http://qn.gaoshanmall.cn/' + item.img" alt="">
+          <p class="name">{{item.title}} - {{item.subtitle}}</p>
+          <p class="price">￥{{item.salePrice}}</p>
         </div>
       </div>
     </div>
@@ -63,11 +91,16 @@ import {
   post,
   get
 } from "../../utils";
+import { searchItem } from '../../api/category/index';
+
 export default {
   created() { },
   mounted() {
     this.openid = wx.getStorageSync("openid") || "";
     this.getHotData();
+  },
+  onReachBottom() {
+    console.log(1)
   },
   data() {
     return {
@@ -108,19 +141,25 @@ export default {
     },
     async getlistData() {
       //获取商品列表
-      const data = await get("/search/helperaction", {
-        keyword: this.words,
-        order: this.order
+      const res = await searchItem({
+        k: this.words,
+        s: this.order
       });
-      this.listData = data.keywords;
+     
+      this.listData = res.data.result.itemDocs;
+      this.listData.map(v => {
+        v.img = JSON.parse(v.image)[0].images[0]
+      })
       this.tipsData = [];
     },
     changeTab(index) {
       this.nowIndex = index;
       if (index == 1) {
-        this.order = this.order == "asc" ? "desc" : "asc";
-      } else {
-        this.order = "";
+        this.order = this.order == "SALE_PRICE-ASC" ? "SALE_PRICE-DESC" : "SALE_PRICE-ASC";
+      } else if (index == 2) {
+        this.order = this.order == "SALES-ASC" ? "SALES-DESC" : "SALES-ASC";
+      } else{
+        this.order = "LIST_TIME-DESC";
       }
       this.getlistData();
     },
@@ -134,13 +173,12 @@ export default {
       }
     },
     async searchWords(e) {
-      var vaule = e.currentTarget.dataset.value;
-      this.words = vaule || this.words;
+      var value = e.currentTarget.dataset.value;
+      this.words = value || this.words;
       const data = await post("/search/addhistoryaction", {
         openId: this.openid,
-        keyword: vaule || this.words
+        keyword: value || this.words
       });
-      console.log(data);
       //获取历史数据
       this.getHotData();
       //获取商品列表
