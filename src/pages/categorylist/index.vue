@@ -31,7 +31,13 @@
         <p class="name">{{item.title}} - {{item.subtitle}}</p>
         <p class="price">￥{{item.salePrice}}</p>
       </div>
+	    <div class="title">
+		    <span>—</span>
+		    <span>我也是有底线的</span>
+		    <span>—</span>
+	    </div>
     </div>
+	  
     <div v-else class="none">
       数据库暂无数据...
     </div>
@@ -40,13 +46,64 @@
 
 <script>
   import { searchItem } from '../../api/category/index'
-export default {
+	export default {
   onShow() {
     //获取页面传的参数
     if(this.$root.$mp) {
       this.categoryId = this.$root.$mp.query.id;
     }
     this.getAllData();
+  },
+  // 上啦加载
+  async onReachBottom() {
+    if(this.loading) return;
+    wx.showLoading({
+      title: '加载中',
+    })
+    this.loading = true;
+    if(this.goodsList.length >= this.allCount) {
+      this.loading = false;
+      wx.hideLoading()
+    }else {
+      this.pageNum++;
+      const res = await searchItem({
+        navid: this.categoryId,
+        p: this.pageNum,
+        s: this.order
+      });
+      if (res.data.code == 200) {
+        this.loading = false;
+        this.goodsList = this.goodsList.concat(res.data.result.itemDocs);
+        this.allCount = res.data.result.totalElements;
+        this.goodsList.map(v => {
+          v.img = JSON.parse(v.image)[0].images[0]
+        })
+      } else {
+        this.loading = false
+      }
+      wx.hideLoading()
+
+    }
+  },
+
+  // 下啦刷新
+  async onPullDownRefresh() {
+    this.pageNum = 1;
+    const res = await searchItem({
+      navid: this.categoryId,
+      p: this.pageNum,
+      s: this.order
+    });
+    if (res.data.code == 200) {
+      this.goodsList = res.data.result.itemDocs;
+      this.allCount = res.data.result.totalElements;
+      this.goodsList.map(v => {
+        v.img = JSON.parse(v.image)[0].images[0]
+      })
+      this.tipsData = [];
+    }
+    wx.stopPullDownRefresh() //停止下拉刷新
+
   },
   data() {
     return {
@@ -56,7 +113,11 @@ export default {
       navData: [],
       currentNav: {},
       order: '',
-      scrollLeft: 0
+      scrollLeft: 0,
+
+      pageNum: 1,
+      loading: false,
+      allCount: ''
     };
   },
   components: {},
@@ -67,12 +128,14 @@ export default {
     
     async getAllData() {
       const res = await searchItem({
-        navid: 72,
+        navid: this.categoryId,
+	      p: this.pageNum,
         s: this.order
       });
       this.navData = res.data.result;
       this.currentNav = {};
       this.goodsList = this.navData.itemDocs;
+      this.allCount = res.data.result.totalElements;
       this.goodsList.map(v => {
         v.img = JSON.parse(v.image)[0].images[0]
       })
@@ -84,6 +147,7 @@ export default {
     },
     changeTab(index) {
       this.nowIndex = index;
+      this.pageNum =1;
       if (index == 1) {
         this.order = this.order == "SALE_PRICE-ASC" ? "SALE_PRICE-DESC" : "SALE_PRICE-ASC";
       } else if (index == 2) {
@@ -100,6 +164,22 @@ export default {
 </script>
 <style lang='scss'>
 @import "./style";
+.title {
+	text-align: center;
+	padding: 20rpx 0;
+	width: 100%;
+	
+	span:nth-child(2) {
+		font-size: 24rpx;
+		color: #333;
+		padding: 0 10rpx;
+	}
+	
+	span:nth-child(2n + 1) {
+		color: #999;
+	}
+}
+
 .sortnav {
   display: flex;
   width: 100%;
