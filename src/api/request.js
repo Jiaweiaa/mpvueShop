@@ -1,9 +1,15 @@
 let Fly=require("flyio/dist/npm/wx");
 let fly=new Fly;
-fly.config.baseURL="http://192.168.0.16:8003";
-
+fly.config.baseURL="http://47.104.173.227:8003";
+// fly.config.withCredentials = true //允许携带cookie
 fly.interceptors.request.use((config) => {
-
+  console.log(config);
+  if(wx.getStorageSync("g_i")!=""){
+    config.headers={
+      'cookie':wx.getStorageSync("g_i")//读取cookie
+    }
+    // console.log(wx.getStorageSync("g_i"));
+  }
   if(config.method  === 'GET'){
     let openId = wx.getStorageSync('openId');
     config.headers['openId'] = openId;

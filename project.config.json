@@ -12,7 +12,7 @@
 	"miniprogramRoot": "dist/",
 	"qcloudRoot": "server/",
 	"compileType": "miniprogram",
-	"appid": "wx110b4803c90ffa75",
+	"appid": "wxb84d78e02ac233ce",
 	"projectname": "mpvue-shop-ceshibanben",
 	"libVersion": "2.0.4",
 	"simulatorType": "wechat",

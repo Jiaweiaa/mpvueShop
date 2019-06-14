@@ -68,6 +68,8 @@
 </template>
 
 <script>
+  import { ShopCartOrderconfirm, detailOrderconfirm } from "../../api/shoppingcart";
+  import { getMemAddressList } from "../../api/address";
   import {
     get,
     post,
@@ -75,6 +77,26 @@
     getStorageOpenid
   } from "../../utils";
   export default {
+    onLoad: function(options) {
+      
+      //将字符串转换成数组或者对象
+      // console.log(params);
+      if(options.from == "shoppingcart"){
+        let params = JSON.parse(options.params);
+        ShopCartOrderconfirm(params).then((res) => {
+          console.log(res);
+        }).catch((err) => {
+          
+        });
+      }else if(options.from == "goodsDetail"){
+        let params = JSON.parse(options.params);
+        detailOrderconfirm(params).then((res) => {
+          console.log(res);
+        }).catch((err) => {
+          
+        });
+      }
+    },
     onShow() {
       if (wx.getStorageSync("addressId")) {
         this.addressId = wx.getStorageSync("addressId");

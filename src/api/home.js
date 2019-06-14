@@ -1,10 +1,10 @@
-import fly from '@/utils/request';
+import fly from './request';
 let querystring = require("querystring");
 
 // 获取菜单
-export const goodsDetail = params => {
+export const getGoodsDetail = params => {
   let data = querystring.encode(params);
-  return fly.post(fly.baseURL +"/product/pdp/detail",
+  return fly.post("/product/pdp/detail",
     data, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"

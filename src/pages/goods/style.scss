@@ -290,14 +290,7 @@
   }
 
   .attr-pop {
-    position: fixed;
-    width: 100%;
-    height: 800px;
-    bottom: -800rpx;
-    transition: all 400ms ease;
-    box-sizing: border-box;
-    padding: 30rpx;
-    background: #fff;
+    
 
     .top {
       display: flex;
@@ -306,9 +299,9 @@
 
       .close {
         position: absolute;
-        right: 0;
-        top: 0px;
-        font-size: 30rpx;
+        right: 10px;
+        top: 10px;
+        font-size: 40rpx;
         color: #999;
       }
 
