@@ -207,7 +207,6 @@ export default {
     
     
     async getAddressList() {
-<<<<<<< HEAD
       getMemAddressList().then(res => {
           if (res.data.code == 200) {
             this.showFlag = false;
@@ -230,14 +229,6 @@ export default {
       //   data.data[i].textStyle1 = "";
       // }
       // this.listData = data.data;
-=======
-      const res = await getMemAddressList();
-      for (var i = 0; i < res.data.result.length; i++) {
-        res.data.result[i].textStyle = "";
-        res.data.result[i].textStyle1 = "";
-      }
-      this.listData = res.data.result;
->>>>>>> 1b54d1cf967b348495a24228462431a03218d652
       console.log(this.listData);
     },
     wxaddress(index) {
