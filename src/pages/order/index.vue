@@ -71,6 +71,7 @@ export default {
     // console.log(params);
     if (options.from == "shoppingcart") {
       let params = JSON.parse(options.params);
+      this.orderLines = JSON.parse(options.params);
       ShopCartOrderconfirm(params)
         .then(res => {
           console.log(res);
@@ -78,6 +79,7 @@ export default {
         .catch(err => {});
     } else if (options.from == "goodsDetail") {
       let params = JSON.parse(options.params);
+       this.orderLines = JSON.parse(options.params);
       detailOrderconfirm(params)
         .then(res => {
           console.log(res);
@@ -113,7 +115,8 @@ export default {
       originPayAmount: "", //应付金额
       currentPayAmount: "", //实付金额
       currentShippingFee: "", //运费
-      address: {}
+      address: {},
+      orderLines:null
     };
   },
   components: {},
@@ -147,16 +150,21 @@ export default {
         deliveryType: "",
         expectDeliveryDate: "",
         expectDeliveryTime: "",
-        memberId: "",
+        memberId: "1136203741534760962",
         orderLines: [],
         paymentType: 4,
         shppingAddressId: "", //地址
         type: 1
       };
-      params.orderLines.push(this.$route.query.params);
+      // console.log(this.orderLines,222);
+      params.orderLines.push(this.orderLines);
       params.shppingAddressId = this.address.id;
       createOrder(params)
-        .then(res => {})
+        .then(res => {
+          wx.showToast({
+            title:'下单成功,订单为待支付状态'
+          })
+        })
         .catch(err => {});
     },
     toAddressList() {

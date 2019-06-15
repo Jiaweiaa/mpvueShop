@@ -65,6 +65,11 @@
             url: "/pages/address/main"
           },
           {
+            title: "我是图长",
+            icon: "icon-dizhiguanli",
+            url: "/pages/team/main"
+          },
+          {
             title: "成为团长",
             icon: "icon-lianxikefu",
             url: "/pages/beTeam/main"

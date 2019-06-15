@@ -182,7 +182,18 @@ import {
   orderconfirm
 } from "../../api/shoppingcart";
 export default {
-  onShow() {},
+  onLoad() {
+    //判断是否登录获取用户信息
+    if (login()) {
+      this.userInfo = login();
+    }
+
+    this.id = this.$root.$mp.query.id;
+
+    this.openId = getStorageOpenid();
+    this.getCartGoodsNum();
+    this.goodsDetail();
+  },
   data() {
     return {
       allnumber: 0,//购物车商品数量
@@ -278,19 +289,6 @@ export default {
       goodsList: []
     };
   },
-  onLoad() {},
-  mounted() {
-    //判断是否登录获取用户信息
-    if (login()) {
-      this.userInfo = login();
-    }
-
-    this.id = this.$root.$mp.query.id;
-
-    this.openId = getStorageOpenid();
-    this.getCartGoodsNum();
-    this.goodsDetail();
-  },
   //商品转发
   onShareAppMessage() {
     return {
@@ -323,7 +321,7 @@ export default {
          }else{
            this.goodsNum++;
          }
-       } 
+       }
     },
     //减商品
     minusGoodsNum(goods) {
@@ -380,7 +378,7 @@ export default {
                 duration: 1500
               });
             }
-          } 
+          }
         }
       }else if(this.flag == "addCart"){
         console.log(this.selectSkuData);
@@ -412,7 +410,7 @@ export default {
                 duration: 1500
               });
             }
-                } 
+                }
         }
       }
     },
@@ -433,7 +431,7 @@ export default {
     },
     async goodsDetail() {
       getGoodsDetail({
-        itemId: "388"
+        itemId:  this.id
       })
         .then(res => {
           
