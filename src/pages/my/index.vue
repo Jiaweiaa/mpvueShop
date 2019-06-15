@@ -65,19 +65,14 @@
             url: "/pages/address/main"
           },
           {
-            title: "联系客服",
+            title: "成为团长",
             icon: "icon-lianxikefu",
-            url: ""
+            url: "/pages/beTeam/main"
           },
           {
-            title: "帮助中心",
+            title: "成为供应商",
             icon: "icon-bangzhuzhongxin",
-            url: ""
-          },
-          {
-            title: "意见反馈",
-            icon: "icon-yijianfankui",
-            url: "/pages/feedback/main"
+            url: "/pages/beGive/main"
           }
         ]
       };

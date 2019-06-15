@@ -7,16 +7,16 @@
         <div class="list" @touchstart="startMove" :data-index="index" @touchmove="deleteGoods" @touchend="endMove" v-for="(item, index) in listData" :key="index">
           <div class="addresslist" :style="item.textStyle">
             <div>
-              <span>{{item.name}}</span>
-              <div v-if="item.is_default" class="moren">
+              <span>{{item.firstName}}</span>
+              <div v-if="item.defalutFlag" class="moren">
                 默认
               </div>
             </div>
             <div class="info">
               <p>{{item.mobile}}</p>
-              <p>{{item.address+item.address_detail}}</p>
+              <p>{{item.province + item.city + item.district + item.address}}</p>
             </div>
-            <div @click="toDetail(item.id)"></div>
+            <div @click="toDetail(item)"></div>
 
           </div>
           <div @click="delAddress(item.id)" class="delete" :style="item.textStyle1">
@@ -35,7 +35,7 @@
 
     <div class="bottom">
       <div @click="wxaddress(1)">+新建地址</div>
-      <div @click="wxaddress">一键导入微信地址</div>
+      <!--<div @click="wxaddress">一键导入微信地址</div>-->
     </div>
   </div>
 </template>
@@ -94,7 +94,7 @@ export default {
         content: "是否要删除该收货地址",
         success: function(res) {
           if (res.confirm) {
-            const data = get("/address/deleteAction", {
+            deleteMemAddress({
               id: id
             }).then(() => {
               _this.getAddressList();
@@ -198,12 +198,16 @@ export default {
       // }
       // this.tranX = X;
     },
-    toDetail(id) {
+    toDetail(row) {
+      wx.setStorageSync('address', row)
       wx.navigateTo({
-        url: "/pages/addaddress/main?id=" + id
+        url: "/pages/addaddress/main?edit=true"
       });
     },
+    
+    
     async getAddressList() {
+<<<<<<< HEAD
       getMemAddressList().then(res => {
           if (res.data.code == 200) {
             this.showFlag = false;
@@ -226,6 +230,14 @@ export default {
       //   data.data[i].textStyle1 = "";
       // }
       // this.listData = data.data;
+=======
+      const res = await getMemAddressList();
+      for (var i = 0; i < res.data.result.length; i++) {
+        res.data.result[i].textStyle = "";
+        res.data.result[i].textStyle1 = "";
+      }
+      this.listData = res.data.result;
+>>>>>>> 1b54d1cf967b348495a24228462431a03218d652
       console.log(this.listData);
     },
     wxaddress(index) {

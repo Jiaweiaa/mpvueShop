@@ -5,8 +5,9 @@ const app = new Vue(App)
 app.$mount()
 export default {
   config: {
-    "backgroundTextStyle":"dark",
-    "backgroundColor": "#fff",
-    enablePullDownRefresh: true
+    navigationBarTitleText: 'heyushuo',
+    "usingComponents": {
+      'van-toast': '/static/vant/toast/index'
+    }
   }
 }

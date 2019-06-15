@@ -51,3 +51,42 @@ export const setDefaultAddress = params => {
     },
   });
 };
+
+
+// 列表
+export const getMemAddressList = params => {
+  return fly.request({
+    url: `/basic/memAddress/getMemAddressList`,
+    method: "post",
+    body: params,
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+};
+
+// 删除地址
+export const deleteMemAddress = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `/basic/memAddress/deleteMemAddress`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};
+
+// 设置默认地址
+export const setDefaultAddress = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `/basic/memAddress/setDefaultAddress`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};

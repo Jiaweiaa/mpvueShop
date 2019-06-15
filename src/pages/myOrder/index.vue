@@ -116,14 +116,14 @@
                 }else if(order.financialStatus==1 && order.paymentType!=1 && order.logisticsStatus==1) {
                   order.typeData = {
                     title: "待支付",
-                    canBtn: false,
+                    canBtn: true,
                     giveBtn: true,
-                    seeBtn: true
+                    seeBtn: false
                   }
                 }else if(order.financialStatus!=1 && order.logisticsStatus==1 || order.logisticsStatus==3 || order.logisticsStatus==4 || order.logisticsStatus==5) {
                   order.typeData = {
                     title: "等待商家发货",
-                    canBtn: false,
+                    canBtn: true,
                     giveBtn: false,
                     seeBtn: true
                   }

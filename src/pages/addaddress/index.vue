@@ -28,7 +28,7 @@
           <checkbox class="box" value="true" :checked="checked" color="#B4282D" />设置为默认地址
         </label>
       </checkbox-group>
-      <div @click="wxaddress">一键导入微信></div>
+      <!--<div @click="wxaddress">一键导入微信></div>-->
     </div>
     <div @click="saveAddress" class="bottom">
       保存
@@ -42,20 +42,24 @@ import {
   post,
   getStorageOpenid
 } from "../../utils";
+
+import {
+  insertOrEditMemAddress
+} from '../../api/address/index'
 export default {
   created() { },
   mounted() {
+    // 一键导入功能
     this.openId = getStorageOpenid();
     if (this.$root.$mp.query.res) {
       this.res = JSON.parse(decodeURIComponent(this.$root.$mp.query.res));
-      console.log(this.res);
       this.userName = this.res.userName;
       this.telNumber = this.res.telNumber;
       this.address = `${this.res.provinceName} ${this.res.cityName} ${this.res.countyName}`;
       this.detailadress = this.res.detailInfo;
     }
-    if (this.$root.$mp.query.id) {
-      this.id = this.$root.$mp.query.id;
+    
+    if (this.$root.$mp.query.edit) {
       this.getDetail();
     }
   },
@@ -63,34 +67,34 @@ export default {
     return {
       region: [],
       customItem: "全部",
-      id: "",
+      edit: "",
       openId: "",
       res: {},
       userName: "",
       telNumber: "",
-      address: "",
+      address: [],
       detailadress: "",
-      checked: false
+      checked: false,
+      areaList: []
     };
   },
   methods: {
     bindRegionChange(e) {
       var value = e.mp.detail.value;
+      this.areaList = value;
       this.address = value[0] + " " + value[1] + " " + value[2];
     },
     async getDetail() {
-      const data = await get("/address/detailAction", {
-        id: this.id
-      });
-      var detail = data.data;
-      this.userName = detail.name;
-      this.telNumber = detail.mobile;
-      this.address = detail.address;
-      this.detailadress = detail.address_detail;
-      this.checked = detail.is_default == 1 ? true : false;
+      let data = wx.getStorageSync('address');
+      this.id = data.id;
+      this.userName = data.firstName;
+      this.telNumber = data.mobile;
+      this.address = data.province + " " + data.district + " " + data.city;
+      this.detailadress = data.address;
+      this.checked = data.defalutFlag;
     },
     checkboxChange(e) {
-      this.checked = e.mp.detail.value[0];
+     this.checked = !this.checked;
     },
     async saveAddress() {
       var _this = this;
@@ -103,16 +107,20 @@ export default {
       //   openId: _this.openId,
       //   addressId: _this.id
       // };
-      const data = await post("/address/saveAction", {
-        userName: _this.userName,
-        telNumber: _this.telNumber,
-        address: _this.address,
-        detailadress: _this.detailadress,
-        checked: _this.checked,
-        openId: _this.openId,
-        addressId: _this.id
+      const res = await insertOrEditMemAddress({
+        firstName: _this.userName,
+        mobile: _this.telNumber,
+        defalutFlag: _this.checked,
+        address: _this.detailadress,
+        province: _this.areaList[0],
+        city: _this.areaList[1],
+        district: _this.areaList[2],
+  
+        id: _this.id,
+        openId: _this.openId
       });
-      if (data.data) {
+     
+      if (res.data.code == 200) {
         wx.showToast({
           title: "添加成功", //提示的内容,
           icon: "success", //图标,
