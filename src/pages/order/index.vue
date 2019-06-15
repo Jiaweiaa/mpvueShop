@@ -58,7 +58,6 @@
 </template>
 
 <script>
-<<<<<<< HEAD
 import {
   ShopCartOrderconfirm,
   detailOrderconfirm
@@ -73,28 +72,6 @@ export default {
       let params = JSON.parse(options.params);
       ShopCartOrderconfirm(params)
         .then(res => {
-=======
-  import { ShopCartOrderconfirm, detailOrderconfirm } from "../../api/shoppingcart";
-  import { getMemAddressList } from "../../api/address";
-  import {
-    get,
-    post,
-    login,
-    getStorageOpenid
-  } from "../../utils";
-  
-  import {
-    orderDetail
-  } from '../../api/myOrder/index'
-  export default {
-    onLoad: function(options) {
-      
-      //将字符串转换成数组或者对象
-      // console.log(params);
-      if(options.from == "shoppingcart"){
-        let params = JSON.parse(options.params);
-        ShopCartOrderconfirm(params).then((res) => {
->>>>>>> 1b54d1cf967b348495a24228462431a03218d652
           console.log(res);
         })
         .catch(err => {});
