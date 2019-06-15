@@ -4,10 +4,11 @@ let deviceId = new Date().getTime();
 
 // 全部订单
 export const findAllOrders = params => {
+  let data = querystring.encode(params);
   return fly.request({
     url: `/trade/ActOrd/findAllOrders`,
     method: "post",
-    body: params,
+    body: data,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
@@ -16,12 +17,27 @@ export const findAllOrders = params => {
 
 // 订单详情
 export const orderDetail = params => {
+  let data = querystring.encode(params);
   return fly.request({
     url: `/trade/ActOrd/findAllOrders`,
     method: "post",
-    body: params,
+    body: data,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
   });
 };
+
+// 全部订单
+export const findAllCapOrders = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `/trade/ActOrd/findAllCapOrders`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};
+
