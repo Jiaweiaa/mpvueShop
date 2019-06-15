@@ -10,7 +10,7 @@ export const insertOrEditMemAddress = params => {
     headers: {
       "Content-Type": "application/json"
     },
-    data: params
+    body: params
   });
 };
 // 添加购物车
@@ -32,7 +32,7 @@ export const shoppingcartCount = params => {
     headers: {
       "Content-Type": "application/json"
     },
-    data: params
+    body: params
   });
 };
 //更新购物车
@@ -43,7 +43,7 @@ export const updateShoppingcart = params => {
     headers: {
       "Content-Type": "application/json"
     },
-    data: params
+    body: params
   });
 };
 //删除购物车
@@ -66,7 +66,7 @@ export const checkShoppingcart = params => {
     headers: {
       "Content-Type": "application/json"
     },
-    data: params
+    body: params
   });
 };
 
@@ -79,7 +79,7 @@ export const availableCoupon = params => {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
-    data: data
+    body: data
   });
 };
 //领取优惠券
@@ -91,7 +91,7 @@ export const getcoupon = params => {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
-    data: data
+    body: data
   });
 };
 //购物车跳转下单页面
@@ -102,7 +102,7 @@ export const ShopCartOrderconfirm = params => {
     headers: {
       "Content-Type": "application/json"
     },
-    data: params
+    body: params
   });
 };
 //商品详情跳转下单页面
@@ -113,6 +113,6 @@ export const detailOrderconfirm = params => {
     headers: {
       "Content-Type": "application/json"
     },
-    data: params
+    body: params
   });
 };

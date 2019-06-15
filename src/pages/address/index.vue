@@ -42,6 +42,7 @@
 
 <script>
 import { get, getStorageOpenid } from "../../utils";
+import { getMemAddressList, setDefaultAddress } from '../../api/address';
 export default {
   onShow() {
     this.openId = getStorageOpenid();
@@ -58,7 +59,7 @@ export default {
       nowIndex: 0,
       userInfo: {},
       imgUrl: "",
-      listData: [],
+      listData: [],  //地址列表
       tranX: 0,
       tranX1: 0,
       startX: "",
@@ -203,15 +204,28 @@ export default {
       });
     },
     async getAddressList() {
-      var _this = this;
-      const data = await get("/address/getListAction", {
-        openId: _this.openId
-      });
-      for (var i = 0; i < data.data.length; i++) {
-        data.data[i].textStyle = "";
-        data.data[i].textStyle1 = "";
-      }
-      this.listData = data.data;
+      getMemAddressList().then(res => {
+          if (res.data.code == 200) {
+            this.showFlag = false;
+            this.listData = res.data.result;
+            for (let i = 0; i < this.list.length; i++) {
+              this.listData[i].name = this.list[i].firstName;
+              this.listData[i].tel = this.list[i].mobile;
+              if(this.listData[i].defalutFlag == true) {
+                this.chosenAddressId = this.listData[i].id;
+              }
+            }
+          }
+        })
+      // var _this = this;
+      // const data = await get("/address/getListAction", {
+      //   openId: _this.openId
+      // });
+      // for (var i = 0; i < data.data.length; i++) {
+      //   data.data[i].textStyle = "";
+      //   data.data[i].textStyle1 = "";
+      // }
+      // this.listData = data.data;
       console.log(this.listData);
     },
     wxaddress(index) {

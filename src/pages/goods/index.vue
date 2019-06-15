@@ -136,7 +136,8 @@
           </div>
         </div>
       </div>
-      <van-stepper
+      <p>请选择商品数量</p>
+      <van-stepper style="width:100px;margin:0 auto;"
         @plus="plusGoodsNum()"
         @minus="minusGoodsNum()"
         async-change
@@ -784,5 +785,9 @@ export default {
 #goodsinfo .tabContent .active {
   background: red;
   color: white;
+}
+.goods .van-stepper{
+  width: 200px!important;
+  margin: 30px!important;
 }
 </style>
