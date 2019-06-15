@@ -64,6 +64,7 @@ import {
 } from "../../api/shoppingcart";
 import { getMemAddressList } from "../../api/address";
 import { get, post, login, getStorageOpenid } from "../../utils";
+import { createOrder } from "../../api/order";
 export default {
   onLoad: function(options) {
     //将字符串转换成数组或者对象
@@ -139,13 +140,24 @@ export default {
       });
     },
     pay() {
-      wx.showToast({
-        title: "支付功能暂未开发", //提示的内容,
-        icon: "none", //图标,
-        duration: 1500, //延迟时间,
-        mask: false, //显示透明蒙层，防止触摸穿透,
-        success: res => {}
-      });
+      let params = {
+        codPaymentType: "",
+        deliveryDescription: "",
+        deliveryTimebar: "",
+        deliveryType: "",
+        expectDeliveryDate: "",
+        expectDeliveryTime: "",
+        memberId: "",
+        orderLines: [],
+        paymentType: 4,
+        shppingAddressId: "", //地址
+        type: 1
+      };
+      params.orderLines.push(this.$route.query.params);
+      params.shppingAddressId = this.address.id;
+      createOrder(params)
+        .then(res => {})
+        .catch(err => {});
     },
     toAddressList() {
       wx.navigateTo({
