@@ -65,7 +65,7 @@
             url: "/pages/address/main"
           },
           {
-            title: "我是图长",
+            title: "我是团长",
             icon: "icon-dizhiguanli",
             url: "/pages/team/main"
           },
