@@ -64,12 +64,14 @@ import {
 } from "../../api/shoppingcart";
 import { getMemAddressList } from "../../api/address";
 import { get, post, login, getStorageOpenid } from "../../utils";
+import { createOrder } from "../../api/order";
 export default {
   onLoad: function(options) {
     //将字符串转换成数组或者对象
     // console.log(params);
     if (options.from == "shoppingcart") {
       let params = JSON.parse(options.params);
+      this.orderLines = JSON.parse(options.params);
       ShopCartOrderconfirm(params)
         .then(res => {
           console.log(res);
@@ -77,6 +79,7 @@ export default {
         .catch(err => {});
     } else if (options.from == "goodsDetail") {
       let params = JSON.parse(options.params);
+       this.orderLines = JSON.parse(options.params);
       detailOrderconfirm(params)
         .then(res => {
           console.log(res);
@@ -112,7 +115,8 @@ export default {
       originPayAmount: "", //应付金额
       currentPayAmount: "", //实付金额
       currentShippingFee: "", //运费
-      address: {}
+      address: {},
+      orderLines:null
     };
   },
   components: {},
@@ -139,13 +143,29 @@ export default {
       });
     },
     pay() {
-      wx.showToast({
-        title: "支付功能暂未开发", //提示的内容,
-        icon: "none", //图标,
-        duration: 1500, //延迟时间,
-        mask: false, //显示透明蒙层，防止触摸穿透,
-        success: res => {}
-      });
+      let params = {
+        codPaymentType: "",
+        deliveryDescription: "",
+        deliveryTimebar: "",
+        deliveryType: "",
+        expectDeliveryDate: "",
+        expectDeliveryTime: "",
+        memberId: "1136203741534760962",
+        orderLines: [],
+        paymentType: 4,
+        shppingAddressId: "", //地址
+        type: 1
+      };
+      // console.log(this.orderLines,222);
+      params.orderLines.push(this.orderLines);
+      params.shppingAddressId = this.address.id;
+      createOrder(params)
+        .then(res => {
+          wx.showToast({
+            title:'下单成功,订单为待支付状态'
+          })
+        })
+        .catch(err => {});
     },
     toAddressList() {
       wx.navigateTo({

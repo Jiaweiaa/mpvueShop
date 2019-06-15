@@ -7,14 +7,14 @@
         <div class="list" v-for="(item, index) in listData" :key="index">
           <div class="addresslist" :style="item.textStyle">
             <div>
-              <span>{{item.name}}</span>
-              <div v-if="item.is_default" class="moren">
+              <span>{{item.firstName}}</span>
+              <div v-if="item.defalutFlag" class="moren">
                 默认
               </div>
             </div>
             <div @click="selAddress(item.id)" class="info">
               <p>{{item.mobile}}</p>
-              <p>{{item.address+item.address_detail}}</p>
+              <p>{{item.dizhi}}</p>
             </div>
             <div @click="toDetail(item.id)"></div>
 
@@ -37,6 +37,8 @@
 
 <script>
 import { get, getStorageOpenid } from "../../utils";
+import { getMemAddressList, setDefaultAddress } from '../../api/address';
+
 export default {
   onShow() {
     this.openId = getStorageOpenid();
@@ -65,16 +67,26 @@ export default {
       });
     },
     async getAddressList() {
-      var _this = this;
-      const data = await get("/address/getListAction", {
-        openId: _this.openId
-      });
-      for (var i = 0; i < data.data.length; i++) {
-        data.data[i].textStyle = "";
-        data.data[i].textStyle1 = "";
-      }
-      this.listData = data.data;
-      console.log(this.listData);
+     getMemAddressList().then(res => {
+          if (res.data.code == 200) {
+            this.showFlag = false;
+            this.listData = res.data.result;
+            this.listData.map((v) => {
+              this.$set(
+                v,
+                "dizhi",
+                v.province +v.city +v.town +v.address  
+              );
+            })
+            for (let i = 0; i < this.list.length; i++) {
+              this.listData[i].name = this.list[i].firstName;
+              this.listData[i].tel = this.list[i].mobile;
+              if(this.listData[i].defalutFlag == true) {
+                this.chosenAddressId = this.listData[i].id;
+              }
+            }
+          }
+        })
     },
     wxaddress(index) {
       if (index == 1) {
