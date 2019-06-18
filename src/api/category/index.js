@@ -1,4 +1,4 @@
-import fly from '../request';
+import fly from "../request";
 let querystring = require("querystring");
 let deviceId = new Date().getTime();
 
@@ -14,15 +14,15 @@ export const getNavigations = params => {
   });
 };
 
-
 // 获取菜单
 export const searchItem = params => {
+  let data = querystring.encode(params);
   return fly.request({
     url: "/product/plp/searchItem",
     method: "post",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
-    body: params
+    body: data
   });
 };

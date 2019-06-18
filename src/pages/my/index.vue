@@ -3,7 +3,7 @@
     <div class="myinfo">
       <img @click="toLogin" :src="avator" alt="">
       <div @click="toLogin">
-        <p>{{userInfo.nickName}}</p>
+        <p>董昊澎</p>
         <p v-if="userInfo.nickname">点击登录</p>
         <p v-else>微信用户</p>
       </div>

@@ -5,53 +5,84 @@
       <div>48小时快速退款</div>
       <div>满88元免邮费</div>
     </div>
-    <div class="cartlist">
-      <!--  -->
-      <div
-        class="item"
-        @touchstart="startMove"
-        @touchmove="deleteGoods"
-        @touchend="endMove"
-        :data-index="index"
-        v-for="(item,index) in listData"
-        :key="index"
-      >
-        <div class="con" :style="item.textStyle">
-          <div class="left">
+    <div class="cartlist" v-if="shopList.length>0">
+      <!-- 分店铺形式的购物车列表 -->
+      <div class="store-list" v-for="(group,index) in shopList" :key="index">
+        <!-- 店铺名称 -->
+        <van-cell>
+          <div class="store-name" style="display:flex;">
             <div
               class="icon"
-              @click="changeColor(index,item.id)"
-              :class="[ Listids[index] ? 'active' : '',{active:allcheck}]"
+              @click="storeChange(group)"
+              :class="[ group.storeAllCheck==true ? 'active' : '',{active:allCheck}]"
             ></div>
-            <div class="img">
-              <img :src="'http://qn.gaoshanmall.cn/'+item.imageUrl" alt>
-            </div>
-            <div class="info">
-              <p>{{item.itemTitle}}</p>
-              <p>￥{{item.salePrice}}</p>
-            </div>
+            <van-icon name="shop-o"/>
+            <span>{{group.storeInfoVo.name}}</span>
           </div>
-          <div class="right">
-            <div class="num">x{{item.quantity}}</div>
-          </div>
-        </div>
-
-        <div @click="delGoods(item.skuId,index)" class="delete" :style="item.textStyle1">
-          <div>删除</div>
+        </van-cell>
+        <!-- 购物车中所选的该店铺商品 -->
+        <div v-for="(item,key) in group.shoppingCartLineDtos" :key="key">
+          <van-swipe-cell :right-width="65">
+            <van-cell-group>
+              <van-cell>
+                <div style="display:flex;">
+                  <div style="margin:auto 0;">
+                    <div
+                      class="icon"
+                      @click="itemChange(item,group)"
+                      :class="[ item.checked==true ? 'active' : '',{active:allCheck}]"
+                    ></div>
+                  </div>
+                  <van-card
+                    style="width: 100%;"
+                    :num="item.quantity"
+                    :price="item.salePrice"
+                    desc="描述信息"
+                    :title="item.itemTitle"
+                    :thumb="'http://qn.gaoshanmall.cn/'+item.imageUrl"
+                  >
+                    <div slot="footer">
+                      <!-- <div>￥  {{item.salePrice}}</div> -->
+                      <van-stepper
+                        v-model="item.quantity"
+                        @plus="plusGoodsNum(item)"
+                        @minus="minusGoodsNum(item)"
+                        async-change
+                        integer
+                        :min="1"
+                        :step="1"
+                      />
+                    </div>
+                  </van-card>
+                </div>
+              </van-cell>
+            </van-cell-group>
+            <div slot="right" class="deleteBtn">
+              <div @click="deleteGoods(item)">
+                <span style="color:#fff;">删除</span>
+              </div>
+            </div>
+          </van-swipe-cell>
         </div>
       </div>
     </div>
-    <div v-if="false" class="nogoods">
+    <div v-else class="nogoods" @click="toIndex()">
       <img
         src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png"
         alt
       >
+      <p style="text-align:center;">购物车中空空如也,快去点击我购物吧!</p>
     </div>
+
     <div class="fixed">
-      <div @click="allCheck" :class="{active:allcheck}" class="left">全选({{isCheckedNumber}})</div>
+      <div style="margin-left:15px;">
+        <div class="icon" @click="allCheckChange()" :class="allCheck==true ? 'active' : ''"></div>
+      </div>
+
+      <div>全选</div>
       <div class="right">
-        <div>￥{{allPrise}}</div>
-        <div @click="orderDown">下单</div>
+        <div style="min-width:170px;">￥{{totalPrice}}</div>
+        <div @click="goAccount">下单</div>
       </div>
     </div>
   </div>
@@ -79,8 +110,11 @@ export default {
   data() {
     return {
       openId: "",
-      allcheck: false,
-      listData: [],
+      allCheck: false,
+      storeId: "", //店铺ID
+      listData: [], //
+      shopList: [], //购物车列表 分店铺
+      select: [], //已选中的商品集合
       Listids: [],
       userInfo: {},
       tranX: 0,
@@ -97,153 +131,101 @@ export default {
   },
   components: {},
   methods: {
-    initTextStyle() {
-      //滑动之前先初始化数据
-      for (var i = 0; i < this.listData.length; i++) {
-        this.listData[i].textStyle = "";
-        this.listData[i].textStyle1 = "";
-      }
+    //跳转到商城首页
+    toIndex(){
+      wx.switchTab({
+          url: '/pages/index/main'
+        })
     },
-    startMove(e) {
-      this.initTextStyle();
-      this.startX = e.touches[0].pageX;
-      this.startY = e.touches[0].pageY;
-    },
-    deleteGoods(e) {
-      //滑动之前先初始化样式数据
-      this.initTextStyle();
-      var index = e.currentTarget.dataset.index;
-      console.log(index);
-      if (this.X <= -100) {
-        this.flag = true;
-      }
-      if (!this.flag) {
-        this.moveX = e.touches[0].pageX;
-        this.moveY = e.touches[0].pageY;
-        this.X = this.moveX - this.startX;
-        this.Y = this.moveX - this.startY;
-        this.listData[index].textStyle = `transform:translateX(${
-          this.tranX
-        }rpx);`;
-        if (this.X >= 100) {
-          this.X = 0;
-        }
-        this.tranX = this.X;
-        if (this.X <= -100) {
-          this.X = -100;
-        }
-        this.tranX1 = this.X;
-        this.listData[index].textStyle1 = `transform:translateX(${
-          this.tranX1
-        }rpx);`;
-      } else {
-        this.moveX = e.touches[0].pageX;
-        this.moveY = e.touches[0].pageY;
-        this.X = this.moveX - this.startX;
-        this.Y = this.moveX - this.startY;
-
-        this.tranX = this.X - 100;
-        this.listData[index].textStyle = `transform:translateX(${
-          this.tranX
-        }rpx);`;
-        // transform:'translateX(' + tranX + 'rpx)'
-        console.log("heyushuo");
-
-        console.log(this.listData[index].textStyle);
-
-        if (this.X + -100 > -100) {
-          this.flag = false;
-        }
-        this.tranX1 = -100;
-        this.listData[index].textStyle1 = `transform:translateX(-100rpx);`;
-        console.log(this.listData[index].textStyle1);
-        // this.listData = this.listData;
-      }
-      // if (Math.abs(this.X) > Math.abs(this.Y) && this.X > 20) {
-      //   this.scrollflag = false;
-      // } else if (Math.abs(this.X) > Math.abs(this.Y) && this.X < 20) {
-      //   console.log("right 2 left");
-      // }
-    },
-    endMove(e) {
-      var index = e.currentTarget.dataset.index;
-      if (this.X > -50) {
-        this.tranX1 = 0;
-        this.tranX = 0;
-        this.listData[index].textStyle = `transform:translateX(${
-          this.tranX
-        }rpx);`;
-        this.listData[index].textStyle1 = `transform:translateX(${
-          this.tranX1
-        }rpx);`;
-      } else if (this.X <= -50) {
-        this.tranX1 = -100;
-        this.tranX = -100;
-        this.listData[index].textStyle = `transform:translateX(${
-          this.tranX
-        }rpx);`;
-        this.listData[index].textStyle1 = `transform:translateX(${
-          this.tranX1
-        }rpx);`;
-      }
-    },
-    //下单
-    async orderDown() {
-      if (this.Listids.length == 0) {
-        wx.showToast({
-          title: "请选择商品",
-          icon: "none",
-          duration: 1500
+    // 加商品
+    plusGoodsNum(goods) {
+      console.log(goods);
+      goods.quantity++;
+      updateShoppingcart(goods)
+        .then(res => {
+          console.log(res);
+          if (res.data.code != "200") {
+            // this.$toast(res.data.message);
+            goods.quantity -= 1;
+          }
+        })
+        .catch(error => {
+          this.$toast("抛出异常");
         });
-        return false;
-      }
-      // 去掉数组中空的false的
-      var newgoodsid = [];
-      for (let i = 0; i < this.Listids.length; i++) {
-        const element = this.Listids[i];
-        if (element) {
-          newgoodsid.push(element);
+    },
+    //减商品
+    minusGoodsNum(goods) {
+      goods.quantity--;
+      updateShoppingcart(goods)
+        .then(res => {
+          if (res.data.code != "200") {
+            // this.$toast(res.data.message);
+          }
+        })
+        .catch(error => {
+          this.$toast("抛出异常");
+        });
+    },
+    // 删除商品
+    deletes() {
+      let id = [];
+      this.shopList.forEach(item => {
+        if (item.check) {
+          id.push(item.cid);
+          this.$dialog
+            .confirm({
+              title: "提示",
+              message: `确认删除商品吗?`
+            })
+            .then(() => {
+              this.deleteShop(id);
+            });
         }
-      }
-      // console.log(newgoodsid);
-      // var goodsId = newgoodsid.join(",");
-      // const data = await post("/order/submitAction", {
-      //   goodsId: goodsId,
-      //   openId: this.openId,
-      //   allPrise: this.allPrise
-      // });
-      if (newgoodsid.length > 0) {
-        let model = JSON.stringify(newgoodsid);
+      });
+    },
+    // 提交订单
+    goAccount() {
+      let shoppingCartIds = [];
+      // console.log(this.shopList);
+      this.shopList.map(v => {
+        v.shoppingCartLineDtos.map(vv => {
+          if (vv.checked == true) {
+            shoppingCartIds.push(vv.id);
+          }
+        });
+      });
+      if (shoppingCartIds.length > 0) {
+        let params = {
+          shoppingCartIds: shoppingCartIds
+        };
+        let model = JSON.stringify(params);
         wx.navigateTo({
-          url: "/pages/order/main?from=shoppingcart&params=" + model
+          url: "/pages/order/main?from=goodsDetail&params=" + model
         });
+      } else {
+        console.log("请选择商品");
       }
     },
-    //删除购物车商品
-    async delGoods(skuId, index) {
-      console.log(skuId);
-      var _this = this;
+    //删除购物车
+    deleteGoods(sku) {
       wx.showModal({
         title: "",
-        content: "是否要删除该商品",
-        success: function(res) {
+        content: "是否从购物车中删除该商品",
+        success: (res)=> {
           if (res.confirm) {
             let params = {
-              skuId: skuId
+              skuId: sku.skuId
             };
             delShoppingcart(params)
               .then(res => {
-                
-                  wx.showToast(  {title:res.data.result});
-                  // console.log('aaaa');
-                  _this.getListData();
-                
+                if (res.data.code == "200") {
+                  this.getListData();
+                }
               })
               .catch(err => {});
           } else if (res.cancel) {
             console.log("用户点击取消");
-            //滑动之前先初始化样式数据
-            _this.initTextStyle();
+
           }
         }
       });
@@ -252,74 +234,125 @@ export default {
     async getListData() {
       insertOrEditMemAddress()
         .then(res => {
-          console.log(res);
-          if(res.data.code == '200'){
-            this.listData =
-            res.data.result.shoppingCartDto.storeShoppingCartLineDtos[0].shoppingCartLineDtos;
-          }else if(res.data.code == '500'){
+          if (res.data.code == "200") {
+            this.shopList =
+              res.data.result.shoppingCartDto.storeShoppingCartLineDtos;
+            //将每个店铺的商品添加一个未选中状态的变量
+            this.shopList.map(v => {
+              this.$set(v, "storeAllCheck", false);
+              v.shoppingCartLineDtos.map(vv => {
+                this.$set(vv, "checked", false);
+              });
+            });
+          } else if (res.data.code == "500") {
             this.listData = [];
           }
-          
-      
         })
         .catch(err => {
           console.log(err);
         });
       this.listData = data.data;
     },
-    allCheck() {
-      //先清空
-      this.Listids = [];
-      if (this.allcheck) {
-        this.allcheck = false;
-      } else {
-        console.log("选择全部");
-
-        this.allcheck = true;
-        //循环遍历所有的商品id
-        for (let i = 0; i < this.listData.length; i++) {
-          const element = this.listData[i];
-          this.Listids.push(element.id);
+    //单选
+    itemChange(item, group) {
+      this.select = [];
+      let shopListLength = null;
+      item.checked = !item.checked;
+      this.shopList.map(v => {
+        shopListLength += v.shoppingCartLineDtos.length;
+        v.shoppingCartLineDtos.map(vv => {
+          if (vv.checked == true) {
+            this.select.push(vv);
+          }
+        });
+      });
+      //如果该店铺里的所有商品都为选中状态 则该商店全选
+      let flag = true;
+      let filterArr = group.shoppingCartLineDtos;
+      filterArr.map(v => {
+        if (v.checked == false) {
+          flag = false;
         }
-      }
+      });
+
+      flag == true
+        ? (group.storeAllCheck = true)
+        : (group.storeAllCheck = false);
+
+      let allCheckFlag = true;
+      this.shopList.map((v) => {
+        if(v.storeAllCheck==false){
+          allCheckFlag = false;
+        }
+      })
+      allCheckFlag==true?this.allCheck=true:this.allCheck=false;
     },
-    change(e) {},
-    changeColor(index, id) {
-      if (this.Listids[index]) {
-        this.$set(this.Listids, index, false);
+    //店铺全选
+    storeChange(group) {
+      group.storeAllCheck = !group.storeAllCheck;
+      if (group.storeAllCheck == true) {
+        group.shoppingCartLineDtos.map(v => {
+          v.checked = true;
+        });
       } else {
-        this.$set(this.Listids, index, id);
+        group.shoppingCartLineDtos.map(v => {
+          v.checked = false;
+        });
       }
+      let flag = true;
+      this.shopList.map(v => {
+        if (v.storeAllCheck == false) {
+          flag = false;
+        }
+      });
+      // flag == true ? (this.allChek = true) : (this.allCheck = false);
+    },
+    //所有全选
+    allCheckChange() {
+      // console.log(this.allcheck);
+      this.allCheck = !this.allCheck;
+      this.shopList.map(v => {
+        v.storeAllCheck = this.allCheck;
+        v.shoppingCartLineDtos.map(vv => {
+          // console.log(vv);
+          vv.checked = this.allCheck;
+        });
+      });
     }
   },
   computed: {
-    isCheckedNumber() {
-      let number = 0;
-      for (let i = 0; i < this.Listids.length; i++) {
-        if (this.Listids[i]) {
-          number++;
-        }
+    totalPrice() {
+      let tatol = 0;
+      if (this.shopList) {
+        this.shopList.map(v => {
+          v.shoppingCartLineDtos.map(vv => {
+            if (vv.checked) {
+              tatol += vv.quantity * vv.salePrice;
+            }
+          });
+        });
+
+        return tatol;
       }
-      if (number == this.listData.length && number != 0) {
-        this.allcheck = true;
-      } else {
-        this.allcheck = false;
-      }
-      return number;
-    },
-    allPrise() {
-      var Prise = 0;
-      for (let i = 0; i < this.Listids.length; i++) {
-        if (this.Listids[i]) {
-          Prise =
-            Prise + this.listData[i].salePrice * this.listData[i].quantity;
-        }
-      }
-      return Prise;
+
+      return 0;
     }
   }
 };
 </script>
 <style lang='scss' scoped>
 @import "./style";
+.deleteBtn {
+  color: #fff !important;
+  font-size: 15px;
+  width: 65px;
+  height: 100%;
+  line-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  line-height: 44px;
+  background-color: #f44;
+}
 </style>

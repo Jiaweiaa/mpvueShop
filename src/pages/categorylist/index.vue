@@ -39,7 +39,7 @@
     </div>
 	  
     <div v-else class="none">
-      数据库暂无数据...
+      暂无数据
     </div>
   </div>
 </template>
@@ -48,6 +48,7 @@
   import { searchItem } from '../../api/category/index'
 	export default {
   onShow() {
+   
     //获取页面传的参数
     if(this.$root.$mp) {
       this.categoryId = this.$root.$mp.query.id;

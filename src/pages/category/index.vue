@@ -15,7 +15,7 @@
       </scroll-view>
       <scroll-view class="right" scroll-y="true">
         <div class="banner">
-          <img :src="detailData.url ? 'http://qn.gaoshanmall.cn/' +detailData.url: '/static/images/asd.png'" alt="">
+          <img src="https://dwz.cn/dXi47P4L" alt="">
         </div>
         <div class="bottom">
           <div v-for="(item,index) in detailData.nodes" :key="index" style="width: 100%;">
@@ -25,7 +25,7 @@
               <span>—</span>
             </div>
             <div @click="categoryList(childItem.id)" v-for="(childItem, childIndex) in item.nodes"  :key="childIndex" class="item" style="float: left;">
-              <img style="width: 25px; height: 25px; margin-bottom: 5px;" :src="childItem.url ? 'http://qn.gaoshanmall.cn/' + childItem.url: '/static/images/close.png'" alt="">
+              <img style="width: 25px; height: 25px; margin-bottom: 5px;" :src="childItem.icon ? 'http://qn.gaoshanmall.cn/' + childItem.icon: '/static/images/close.png'" alt="">
               {{childItem.name}}
             </div>
           </div>

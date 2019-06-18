@@ -1,4 +1,15 @@
 .cart {
+  .icon {
+    height: 45rpx;
+    width: 55rpx;
+    background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/checkbox-0e09baa37e.png) no-repeat center center;
+    background-size: 34rpx 34rpx;
+    margin: 0 20rpx;
+  }
+  .icon.active {
+    background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/checkbox-checked-822e54472a.png) no-repeat center center;
+    background-size: 34rpx 34rpx;
+  }
   overflow-x: hidden;
   .top {
     display: flex;
@@ -92,7 +103,7 @@
     width: 100%;
     background: #fff;
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
     align-items: center;
     .left {
       display: flex;
@@ -102,11 +113,7 @@
       background-position: 20rpx;
       padding-left: 70rpx;
     }
-    .active {
-      background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/checkbox-checked-822e54472a.png) no-repeat;
-      background-size: 34rpx 34rpx;
-      background-position: 20rpx;
-    }
+   
     .right {
       display: flex;
       div:nth-child(1) {

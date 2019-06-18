@@ -10,7 +10,7 @@
       >
         <block v-for="(item, index) in gallery " :key="index">
           <swiper-item class="swiper-item">
-            <image :src="'http://qn.gaoshanmall.cn/'+item.picUrl" class="slide-image"></image>
+            <img :src="'http://qn.gaoshanmall.cn/'+item.picUrl" class="slide-image">
           </swiper-item>
         </block>
       </swiper>
@@ -85,25 +85,20 @@
           <p>￥{{subitem.retail_price}}</p>
         </div>
       </div>
-    </div> -->
+    </div>-->
 
     <!-- sku -->
     <van-popup class="attr-pop" position="bottom" :show="showpop" @close="showType">
       <div class="top">
         <div class="left">
-          <img
-            v-if="gallery.length>0"
-            :src="'http://qn.gaoshanmall.cn/'+gallery[0].picUrl"
-          >
+          <img v-if="gallery.length>0" :src="'http://qn.gaoshanmall.cn/'+gallery[0].picUrl">
         </div>
         <div class="right">
           <div>
             <p>价格￥{{nowPrice}}</p>
           </div>
         </div>
-        <div @click="showType" class="close">
-          X
-        </div>
+        <div @click="showType" class="close">X</div>
       </div>
       <!-- <div style="display:block;min-width:50px;min-height:50px;">
         <div style="float:left;">
@@ -117,7 +112,7 @@
           <h3>{{goodsInfo.title}}</h3>
           <span>{{nowPrice}}</span>
         </div>
-      </div> -->
+      </div>-->
       <div id="goodsinfo">
         <div v-for="(item,index) in keys" :key="index">
           <div class="tabContent">
@@ -136,15 +131,20 @@
           </div>
         </div>
       </div>
-      <p>请选择商品数量</p>
-      <van-stepper style="width:100px;margin:0 auto;"
-        @plus="plusGoodsNum()"
-        @minus="minusGoodsNum()"
-        async-change
-        :step="1"
-        :min="1"
-        :value="goodsNum"
-      />
+      <!-- <p>请选择商品数量</p> -->
+      <div style="display:flex;justify-content: space-between;align-items:center;">
+        <p style="margin-left:30px;font-size:16px;">我要买:</p>
+        <van-stepper
+          style="margin-right:30px;"
+          @plus="plusGoodsNum()"
+          @minus="minusGoodsNum()"
+          async-change
+          :step="1"
+          :min="1"
+          :value="goodsNum"
+        />
+      </div>
+      <div v-if="selectSkuData!=null" style="margin-left:30px;color:#ccc;font-size:14px;">商品剩余数量:{{selectSkuData.quantity}}</div>
       <div class="handle">
         <van-button type="danger" size="large" @click="submit()">确定</van-button>
       </div>
@@ -196,7 +196,7 @@ export default {
   },
   data() {
     return {
-      allnumber: 0,//购物车商品数量
+      allnumber: 0, //购物车商品数量
       openId: "",
       collectFlag: false,
       number: 0,
@@ -213,7 +213,7 @@ export default {
       goodsId: "",
       allPrise: "",
       quantList: null, //sku数据
-      flag:"",
+      flag: "",
       selectSkuData: null, //已选中的sku对象
       goodsNum: 1,
       keys: [
@@ -313,15 +313,14 @@ export default {
     },
     // 加商品
     plusGoodsNum() {
-      
-       if(this.selectSkuData!=null){
+      if (this.selectSkuData != null) {
         //  console.log(this.selectSkuData);
-         if(this.goodsNum>this.selectSkuData.quantity){
-           this.goodsNum--;
-         }else{
-           this.goodsNum++;
-         }
-       }
+        if (this.goodsNum > this.selectSkuData.quantity) {
+          this.goodsNum--;
+        } else {
+          this.goodsNum++;
+        }
+      }
     },
     //减商品
     minusGoodsNum(goods) {
@@ -343,19 +342,17 @@ export default {
     //打开SKU
     async openSku(data) {
       this.selectSkuData = null;
-      if(data){
-         this.flag = data;
+      if (data) {
+        this.flag = data;
       }
       this.showpop = true;
-      
     },
     //提交
-    submit(){
-      if(this.flag == "buyNow"){
-      
+    submit() {
+      if (this.flag == "buyNow") {
         if (toLogin()) {
           if (this.showpop) {
-            if(this.selectSkuData!=null){
+            if (this.selectSkuData != null) {
               let params = {
                 bundleGroup: "",
                 bundleId: "",
@@ -365,13 +362,13 @@ export default {
                 quantity: this.goodsNum,
                 skuId: this.selectSkuData.id,
                 skuIdInfo: this.selectSkuData.id,
-                storeId: this.selectSkuData.storeId,
-              }
+                storeId: this.selectSkuData.storeId
+              };
               let model = JSON.stringify(params);
               wx.navigateTo({
                 url: "/pages/order/main?from=goodsDetail&params=" + model
               });
-            }else{
+            } else {
               wx.showToast({
                 title: "请选择商品规格",
                 icon: "none",
@@ -380,37 +377,36 @@ export default {
             }
           }
         }
-      }else if(this.flag == "addCart"){
+      } else if (this.flag == "addCart") {
         console.log(this.selectSkuData);
-        
-          if (toLogin()) {
-            if (this.showpop) {
-              if(this.selectSkuData!=null){
-                let params = {
-                  skuIdArray:[],
-                  skuQtyArray:[]
-                }
-                params.skuIdArray.push(this.selectSkuData.id);
-                params.skuQtyArray.push(this.goodsNum);
-                // console.log(params);
-                addShoppingcart(params)
-                  .then(res => {
-                    
-                    wx.showToast(  {title:res.data.message});
-                    this.showpop = false;
-                    this.getCartGoodsNum();
-                  })
-                  .catch(err => {
-                    this.showpop = false;
-                  });
-                  }else{
+
+        if (toLogin()) {
+          if (this.showpop) {
+            if (this.selectSkuData != null) {
+              let params = {
+                skuIdArray: [],
+                skuQtyArray: []
+              };
+              params.skuIdArray.push(this.selectSkuData.id);
+              params.skuQtyArray.push(this.goodsNum);
+              // console.log(params);
+              addShoppingcart(params)
+                .then(res => {
+                  wx.showToast({ title: res.data.message });
+                  this.showpop = false;
+                  this.getCartGoodsNum();
+                })
+                .catch(err => {
+                  this.showpop = false;
+                });
+            } else {
               wx.showToast({
                 title: "请选择商品规格",
                 icon: "none",
                 duration: 1500
               });
             }
-                }
+          }
         }
       }
     },
@@ -431,12 +427,11 @@ export default {
     },
     async goodsDetail() {
       getGoodsDetail({
-        itemId:  this.id
+        itemId: this.id
       })
         .then(res => {
-          
           const data = res.data.result;
-          this.goods_desc = data.item.itemChannel.description;//详情描述富文本
+          this.goods_desc = data.item.itemChannel.description; //详情描述富文本
           this.goodsList = data.item.pdpPropertiesCommands;
           this.quantityData = JSON.parse(data.skuJson); //SKU信息
           this.quantList = JSON.parse(res.data.result.skuJson);
@@ -485,8 +480,6 @@ export default {
         .catch(err => {
           console.log(err);
         });
-
-     
     },
     showType() {
       this.showpop = !this.showpop;
@@ -784,8 +777,8 @@ export default {
   background: red;
   color: white;
 }
-.goods .van-stepper{
-  width: 200px!important;
-  margin: 30px!important;
+.goods .van-stepper {
+  width: 200px !important;
+  margin: 30px !important;
 }
 </style>

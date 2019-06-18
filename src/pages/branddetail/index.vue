@@ -17,7 +17,7 @@
             </div>
         </div>
         <div v-else class="none">
-            数据库暂无数据...
+            暂无数据...
         </div>
     </div>
 </template>
@@ -26,7 +26,7 @@
 import { get } from "../../utils";
 export default {
   created() {},
-  mounted() {
+  onShow() {
     this.id = this.$root.$mp.query.id;
     this.getDetail();
   },

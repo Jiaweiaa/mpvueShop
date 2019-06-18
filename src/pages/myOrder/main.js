@@ -12,7 +12,8 @@ export default {
       "van-tabs": '/static/vant/tabs/index',
       "van-card": '/static/vant/card/index',
       "van-button": '/static/vant/button/index',
-      "van-loading": "/static/vant/loading/index"
+      "van-loading": "/static/vant/loading/index",
+      "van-dialog": "/static/vant/dialog/index"
     }
   }
 }

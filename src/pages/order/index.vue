@@ -67,19 +67,28 @@ import { get, post, login, getStorageOpenid } from "../../utils";
 import { createOrder } from "../../api/order";
 export default {
   onLoad: function(options) {
+    this.from = options.from;
+
     //将字符串转换成数组或者对象
     // console.log(params);
     if (options.from == "shoppingcart") {
       let params = JSON.parse(options.params);
-      this.orderLines = JSON.parse(options.params);
+      this.storeId = params.storeId;
       ShopCartOrderconfirm(params)
         .then(res => {
-          console.log(res);
+          this.orderLines =
+            res.data.result.storeShoppingCartLineDtos[0].shoppingCartLineDtos;
+          this.listData =
+            res.data.result.storeShoppingCartLineDtos[0].shoppingCartLineDtos;
+          this.currentPayAmount = res.data.result.currentPayAmount;
+          this.originPayAmount = res.data.result.originPayAmount;
+          this.currentShippingFee = res.data.result.currentShippingFee;
         })
         .catch(err => {});
     } else if (options.from == "goodsDetail") {
       let params = JSON.parse(options.params);
-       this.orderLines = JSON.parse(options.params);
+      this.orderLines = [];
+      this.orderLines.push(JSON.parse(options.params));
       detailOrderconfirm(params)
         .then(res => {
           console.log(res);
@@ -116,7 +125,9 @@ export default {
       currentPayAmount: "", //实付金额
       currentShippingFee: "", //运费
       address: {},
-      orderLines:null
+      orderLines: null,
+      from:"",//从哪个入口进入的下单页面
+      storeId:"",//店铺ID 从购物车进入此页面时需要用到
     };
   },
   components: {},
@@ -143,7 +154,8 @@ export default {
       });
     },
     pay() {
-      let params = {
+      if(this.from!=""){
+        let params = {
         codPaymentType: "",
         deliveryDescription: "",
         deliveryTimebar: "",
@@ -154,18 +166,40 @@ export default {
         orderLines: [],
         paymentType: 4,
         shppingAddressId: "", //地址
-        type: 1
+        type: 1,   //type为1是从商品详情页面进入  2是购物车中进入
+        shoppingCartIds:[]
       };
+      if (this.orderLines != null) {
+        this.orderLines.map(v => {
+          params.orderLines.push(v);
+          params.shoppingCartIds.push(v.id);
+        });
+      }
+      params.orderLines.map((v) => {
+        this.$set(v,"buyType","N");
+      })
+      params.shoppingCartIds = params.shoppingCartIds.toString();
+      params.shppingAddressId = params.shppingAddressId.toString();
+      params.storeId = this.storeId;
+      if(this.from == "shoppingcart"){
+        params.type = 2; 
+        params.buyType = "N";
+        
+      }
       // console.log(this.orderLines,222);
-      params.orderLines.push(this.orderLines);
+      
+
+      // params.orderLines.push(this.orderLines);
       params.shppingAddressId = this.address.id;
       createOrder(params)
         .then(res => {
           wx.showToast({
-            title:'下单成功,订单为待支付状态'
-          })
+            title: "下单成功,订单为待支付状态"
+          });
         })
         .catch(err => {});
+      }
+      
     },
     toAddressList() {
       wx.navigateTo({
