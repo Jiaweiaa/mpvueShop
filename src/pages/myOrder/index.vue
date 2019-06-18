@@ -330,6 +330,7 @@ export default {
     },
 
     getOrderList() {
+      this.list = null;
       wx.showLoading();
       let params = {
         pageNum: this.pageNum,
