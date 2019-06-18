@@ -1,6 +1,6 @@
 let Fly=require("flyio/dist/npm/wx");
 let fly=new Fly;
-fly.config.baseURL=" http://192.168.0.10:8003";
+fly.config.baseURL=" http://192.168.3.29:8003";
 // http://47.104.173.227:8003
 //
 // fly.config.withCredentials = true //允许携带cookie
@@ -19,7 +19,7 @@ fly.interceptors.request.use((config) => {
   if(config.method  === 'POST'){
     let openId = wx.getStorageSync('openId');
     config.headers['openId'] = openId;
-    config.headers.Authorization = "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxMzA4MjIyNzY1NyIsInNjb3BlIjpbIioiXSwibG9naW5OYW1lIjoiMTMwODIyMjc2NTciLCJleHAiOjE1NjE3MTMzMTcsImp0aSI6Ijc2ODhkYjExLTg5NzItNGJiMi1hNTdmLTNmYmQ5ZGU5ZDZhYSIsImNsaWVudF9pZCI6ImNsb3VkbWFsbC1jbGllbnQtYmFzaWMtYXV0aCIsInRpbWVzdGFtcCI6MTU2MDg0OTMxNzcwOH0.ZL9BDknFAONCEWWMoAhJaRA6s03Iap2E4TnNqZsH4lk";
+    config.headers.Authorization = "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxODYyMTUzMzMzMiIsInNjb3BlIjpbIioiXSwibG9naW5OYW1lIjoiMTg2MjE1MzMzMzIiLCJleHAiOjE1NjE3MjQzNDUsImF1dGhvcml0aWVzIjpbIi9tb2RpZnlVc2VyU3RhdHVzQnlJZCIsIi9lZGl0Um9sZSIsIi9zYXZlUm9sZSIsIi9nZXRBY3Rpb25UcmVlQnlSb2xlSWQiLCIvc2F2ZU1lbnUiLCIvZ2V0QWN0aW9uVW5kZXJNZW51IiwiL3VzZXJCaW5kUm9sZSIsIi9nZXRNZW51VHJlZUJ5Um9sZUlkIiwiL2RlbGV0ZU1lbnVCeUlkIiwiL2VkaXRNZW51IiwiL2RlbGV0ZVVzZXJCeUlkIiwiL3VwZGF0ZVVzZXIiLCIvZGVsZXRlUm9sZUJ5SWQiLCIvc2F2ZU9yVXBkYXRlVXNlciJdLCJqdGkiOiJmYjdlNDdkMy1mNzUxLTQxYjUtYmE1My1lMGY5MjJiNTdjYTgiLCJjbGllbnRfaWQiOiJjbG91ZG1hbGwtY2xpZW50LWJhc2ljLWF1dGgiLCJ0aW1lc3RhbXAiOjE1NjA4NjAzNDUwMDV9.EYPd6N0qbGitKHXdJiskFkqr8UAX-RJHshO7wtY2vJ8"
   }
 
   return config;

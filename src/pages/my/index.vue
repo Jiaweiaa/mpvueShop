@@ -8,10 +8,16 @@
         <p v-else>微信用户</p>
       </div>
     </div>
-    <div >
-      <van-cell-group>
-        <van-cell @click="goTo(item.url)" v-for="(item, index) in listData" :key="index" :title="item.title" is-link />
-      </van-cell-group>
+    <div class="myMenu boxMenu">
+      <div class="title">
+	      <div class="navTitle">我的订单</div>
+	      <div class="navBody" @click="goTo('/pages/myOrder/main')">查看全部订单></div>
+      </div>
+	    <div class="content">
+		    <div>
+			   
+		    </div>
+	    </div>
     </div>
   </div>
 </template>
@@ -35,6 +41,29 @@
     mounted() {},
     data() {
       return {
+	      orderMenu: [
+		      {
+            title: "待支付",
+            icon: "icon-unie64a",
+            url: "/pages/myOrder/main"
+		      },
+          {
+            title: "待收货",
+            icon: "icon-unie64a",
+            url: "/pages/myOrder/main"
+          },
+          {
+            title: "待发货",
+            icon: "icon-unie64a",
+            url: "/pages/myOrder/main"
+          },
+          {
+            title: "已完成",
+            icon: "icon-unie64a",
+            url: "/pages/myOrder/main"
+          },
+	      ],
+        
         avator: "http://yanxuan.nosdn.127.net/8945ae63d940cc42406c3f67019c5cb6.png",
         allcheck: false,
         Listids: [],
@@ -103,7 +132,43 @@
   };
 
 </script>
+<style>
+	page {
+		background: #eee;
+	}
+</style>
 <style lang='scss' scoped>
   @import "./style";
-
+	.myMenu {
+		position: absolute;
+		left: 2.5%;
+		top: 150px;
+	}
+	.boxMenu {
+		width: 95%;
+		background: #fff;
+		height: 100px;
+		border-radius: 5px;
+		.title {
+			height: 30px;
+			width: 95%;
+			margin: 0 auto;
+			border-bottom: 1px solid #ccc;
+			line-height: 30px;
+			.navTitle {
+				float: left;
+				width: 40%;
+				font-weight: bold;
+				padding-left: 10px;
+			}
+			.navBody {
+				width: calc(60% - 20px);
+				text-align: right;
+				float: left;
+				padding-right: 10px;
+				color: #999;
+				font-size: 20rpx;
+			}
+		}
+	}
 </style>
