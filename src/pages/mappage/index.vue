@@ -19,7 +19,7 @@
         <image
           style="width: 100px; height: 100px;"
           mode="scaleToFill"
-          :src="nowData.user? nowData.user.avatar : ''"></image>
+          :src="nowData.user.avatar? nowData.user.avatar : 'https://bpic.588ku.com/element_pic/19/04/16/4ee64442adb1c6e51b0e020e8c32b198.jpg!/fw/253/quality/90/unsharp/true/compress/true'"></image>
       </view>
       <view class="address">{{nowData.address}}</view>
       <view class="name">团长:{{nowData.name}}</view>
@@ -31,7 +31,7 @@
         <image
           class="img"
           mode="scaleToFill"
-          :src="value.user? value.user.avatar : ''"></image>
+          :src="value.user? value.user.avatar : 'https://bpic.588ku.com/element_pic/19/04/16/4ee64442adb1c6e51b0e020e8c32b198.jpg!/fw/253/quality/90/unsharp/true/compress/true'"></image>
         <view class="community">{{value.community}}</view>
         <view class="address">{{value.address}}</view>
         <view class="name">团长:{{value.name}}</view>
@@ -228,7 +228,6 @@
       width: 100px;
       height: 100px;
       border-radius: 50%;
-      background: red;
       position: absolute;
       right: 10px;
       top: 50px;
@@ -256,7 +255,6 @@
       .img {
         width: 60px;
         height: 60px;
-        background: red;
         border-radius: 50%;
         float: left;
         margin-top: 10px;

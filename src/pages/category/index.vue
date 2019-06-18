@@ -24,8 +24,8 @@
               <span>{{item.name}}分类</span>
               <span>—</span>
             </div>
-            <div @click="categoryList(childItem.id)" v-for="(childItem, childIndex) in item.nodes"  :key="childIndex" class="item" style="float: left;">
-              <img style="width: 25px; height: 25px; margin-bottom: 5px;" :src="childItem.icon ? 'http://qn.gaoshanmall.cn/' + childItem.icon: '/static/images/close.png'" alt="">
+            <div @click="categoryList(childItem.id, childItem.name)" v-for="(childItem, childIndex) in item.nodes"  :key="childIndex" class="item" style="float: left;">
+              <img style="width: 35px; height: 30px; margin-bottom: 5px;" :src="childItem.icon ? 'http://qn.gaoshanmall.cn/' + childItem.icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1560861771007&di=3d96c78920a6e873229c09bba2d637d3&imgtype=jpg&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170428%2F74b6a76d39694e03beba6089c9f262de_th.png'" alt="">
               {{childItem.name}}
             </div>
           </div>
@@ -71,9 +71,9 @@ export default {
       // const data = await get("/category/indexaction");
       // this.listData = data.categoryList;
     },
-    categoryList(id) {
+    categoryList(id, name) {
       wx.navigateTo({
-        url: "../categorylist/main?id=" + id
+        url: "../categorylist/main?id=" + id + "&name=" + name
       });
     }
   },

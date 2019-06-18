@@ -22,8 +22,8 @@
       <!--</div>-->
     </div>
     <div class="info">
-      <p>{{currentNav.name}}</p>
-      <p>{{currentNav.front_desc}}</p>
+      <p>{{name}}</p>
+      <p>性价比服务超高.</p>
     </div>
     <div class="list" v-if="goodsList.length!=0">
       <div @click="goodsDetail(item.id)" class="item" v-for="(item, index) in goodsList" :key="index">
@@ -52,6 +52,7 @@
     //获取页面传的参数
     if(this.$root.$mp) {
       this.categoryId = this.$root.$mp.query.id;
+      this.name = this.$root.$mp.query.name;
     }
     this.getAllData();
   },
@@ -118,7 +119,9 @@
 
       pageNum: 1,
       loading: false,
-      allCount: ''
+      allCount: '',
+
+      name: ''
     };
   },
   components: {},
