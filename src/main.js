@@ -37,7 +37,7 @@ export default {
       "pages/address/main",
       "pages/myOrder/main",
       "pages/team/main",
-      "^pages/index/main",
+      "pages/index/main",
       "pages/search/main",
       "pages/my/main",
       "pages/login/main",
@@ -52,7 +52,8 @@ export default {
       "pages/brandlist/main",
       "pages/newgoods/main",
       "pages/practice/main",
-      "pages/topicdetail/main"
+      "pages/topicdetail/main",
+      "^pages/coupon/main"
     ],
     "window": {
       "backgroundTextStyle": "light",
