@@ -47,7 +47,7 @@
           {
             title: "优惠券",
             icon: "icon-youhuiquan",
-            url: ""
+            url: "/pages/coupon/main"
           },
           {
             title: "我的足迹",

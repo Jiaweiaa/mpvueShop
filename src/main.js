@@ -53,7 +53,8 @@ export default {
       "pages/brandlist/main",
       "pages/newgoods/main",
       "pages/practice/main",
-      "pages/topicdetail/main"
+      "pages/topicdetail/main",
+      "^pages/coupon/main"
     ],
     "window": {
       "backgroundTextStyle": "light",
