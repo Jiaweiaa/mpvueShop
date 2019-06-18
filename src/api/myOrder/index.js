@@ -41,3 +41,15 @@ export const findAllCapOrders = params => {
   });
 };
 
+// 核销
+export const writeOff = params => {
+  return fly.request({
+    url: `/trade/ActOrd/writeOff`,
+    method: "post",
+    body: params,
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+};
+

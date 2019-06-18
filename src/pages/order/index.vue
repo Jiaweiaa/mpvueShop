@@ -74,6 +74,7 @@ export default {
     if (options.from == "shoppingcart") {
       let params = JSON.parse(options.params);
       this.storeId = params.storeId;
+      wx.showLoading();
       ShopCartOrderconfirm(params)
         .then(res => {
           this.orderLines =
@@ -83,12 +84,16 @@ export default {
           this.currentPayAmount = res.data.result.currentPayAmount;
           this.originPayAmount = res.data.result.originPayAmount;
           this.currentShippingFee = res.data.result.currentShippingFee;
+          wx.hideLoading();
         })
-        .catch(err => {});
+        .catch(err => {
+          wx.hideLoading();
+        });
     } else if (options.from == "goodsDetail") {
       let params = JSON.parse(options.params);
       this.orderLines = [];
       this.orderLines.push(JSON.parse(options.params));
+      wx.showLoading();
       detailOrderconfirm(params)
         .then(res => {
           console.log(res);
@@ -99,11 +104,15 @@ export default {
             this.currentPayAmount = res.data.result.currentPayAmount;
             this.originPayAmount = res.data.result.originPayAmount;
             this.currentShippingFee = res.data.result.currentShippingFee;
+            
           } else if (res.data.code == "500") {
             this.listData = [];
           }
+          wx.hideLoading();
         })
-        .catch(err => {});
+        .catch(err => {
+          wx.hideLoading();
+        });
     }
     this.getAddressList();
   },

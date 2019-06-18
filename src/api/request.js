@@ -19,7 +19,7 @@ fly.interceptors.request.use((config) => {
   if(config.method  === 'POST'){
     let openId = wx.getStorageSync('openId');
     config.headers['openId'] = openId;
-    config.headers.Authorization = "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxMzA4MjIyNzY1NyIsInNjb3BlIjpbIioiXSwibG9naW5OYW1lIjoiMTMwODIyMjc2NTciLCJleHAiOjE1NjE2Mjk3OTAsImp0aSI6Ijk5ZDYxN2Y5LTdkZTMtNGQ0YS1iYThmLTIzODZmYzEwNTFmZSIsImNsaWVudF9pZCI6ImNsb3VkbWFsbC1jbGllbnQtYmFzaWMtYXV0aCIsInRpbWVzdGFtcCI6MTU2MDc2NTc5MDUxNX0.ZV5htnkH_Uvol5Tvjro_bZKW4flffVfQv5mYGLmOXCY";
+    config.headers.Authorization = "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxMzA4MjIyNzY1NyIsInNjb3BlIjpbIioiXSwibG9naW5OYW1lIjoiMTMwODIyMjc2NTciLCJleHAiOjE1NjE3MTMzMTcsImp0aSI6Ijc2ODhkYjExLTg5NzItNGJiMi1hNTdmLTNmYmQ5ZGU5ZDZhYSIsImNsaWVudF9pZCI6ImNsb3VkbWFsbC1jbGllbnQtYmFzaWMtYXV0aCIsInRpbWVzdGFtcCI6MTU2MDg0OTMxNzcwOH0.ZL9BDknFAONCEWWMoAhJaRA6s03Iap2E4TnNqZsH4lk";
   }
 
   return config;

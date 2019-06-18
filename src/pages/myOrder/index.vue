@@ -9,7 +9,12 @@
       >
         <view class="section">
           <scroll-view scroll-y class="scrollView" @scrolltolower="lower">
-            <div v-for="(value,index) in list" :key="index" @click="detailOrder(value)">
+            <div
+              v-for="(value,index) in list"
+              v-show="list.length>0"
+              :key="index"
+              @click="detailOrder(value)"
+            >
               <div class="top border-bottom" style="overflow: hidden;">
                 <div
                   style="height: 30px; line-height: 30px; font-size: 13px; width: 80%; float: left; margin-left: 10px; margin-top: 10px;"
@@ -29,7 +34,7 @@
                   tag="标签"
                   :price="val.salePrice"
                   :title="val.itemName"
-                  :thumb="'http://img.gaoshanmall.com/static/resource/'+val.itemImg"
+                  :thumb="'http://qn.gaoshanmall.cn/'+val.itemImg"
                 >
                   <view slot="footer">
                     <van-button
@@ -63,9 +68,22 @@
                 </van-card>
               </div>
             </div>
+            <div
+              v-show="list!=null&&list.length==0"
+              class="nogoods"
+              @click="toIndex()"
+              style="text-align:center;margin-top:200rpx;"
+            >
+              <img
+                src="http://qn.gaoshanmall.cn/cloudmall/file/651363872141260800.png"
+                alt
+                width="172rpx;height:180rpx;"
+              >
+              <p style="text-align:center;">点击我去购物吧!</p>
+            </div>
             <div style="width: 100%; text-align: center;margin-top: 5px;">
-              <div v-if="list.length >= allCount" style="font-size: 13px;">全部加载完成!</div>
-              <van-loading v-else size="20px" type="spinner" color="#fff"/>
+              <div v-if="allCount!=''&&list.length >= allCount" style="font-size: 13px;">全部加载完成!</div>
+              <van-loading v-else-if="allCount!=''" size="20px" type="spinner" color="#fff"/>
             </div>
           </scroll-view>
         </view>
@@ -80,15 +98,13 @@ import { orderDetail, confirmReceive, cancleOrder } from "../../api/order";
 
 export default {
   onShow() {
-    
     this.getOrderList();
-
   },
   data() {
     return {
       currentActive: 0,
       pageNum: 1,
-      list: [],
+      list: null,
       allCount: "",
       loading: false,
 
@@ -100,13 +116,19 @@ export default {
     console.log(e, "到顶");
   },
   methods: {
+    //跳转到商城首页
+    toIndex() {
+      wx.switchTab({
+        url: "/pages/index/main"
+      });
+    },
     //取消订单
     cancelOrder(val) {
       // console.log(val);
       wx.showModal({
         title: "提示",
         content: "确认取消这笔订单吗?",
-        success:(res)=> {
+        success: res => {
           if (res.confirm) {
             cancleOrder({ orderCode: val.code })
               .then(res => {
@@ -127,7 +149,7 @@ export default {
       wx.showModal({
         title: "提示",
         content: "确认收到货物了吗?",
-        success:(res)=> {
+        success: res => {
           if (res.confirm) {
             confirmReceive({ orderCode: val.code })
               .then(res => {
@@ -170,10 +192,10 @@ export default {
                   title: "商家已发货",
                   canBtn: false, //取消订单
                   giveBtn: false, //立即支付
-                  seeBtn: true,  //查看物流
-                  afrimBtn: true  //确认收货
+                  seeBtn: true, //查看物流
+                  afrimBtn: true //确认收货
                 });
-                
+
                 // order.typeData = {
                 //   title: "商家已发货",
                 //   canBtn: false,
@@ -308,158 +330,166 @@ export default {
     },
 
     getOrderList() {
-      
+      wx.showLoading();
       let params = {
         pageNum: this.pageNum,
         pageSize: 5,
         orderType: Number(this.currentActive) + 1
       };
-      
-      // 1是立即支付  2是取消订单 3查看详情 4查看物流
-      findAllOrders(params).then(res => {
-        
-        if (wx.getStorageSync("g_i") == "") {
-          
-          let sourceCookie = res.headers["set-cookie"][0];
-          let index = sourceCookie.indexOf(";");
-          let myCookie = sourceCookie.substring(0, index);
-          // console.log(myCookie);
-          wx.setStorageSync("g_i", myCookie);
-        }
-        this.list = res.data.result.orders.records;
-      
 
-        this.list.map(order => {
-          // console.log(111);
-          // giveBtn是支付   canBtn是取消订单  seeBtn是查看物流 afrimBtn是确认收货
-          if (order.logisticsStatus == 6) {
-            this.$set(order, "typeData", {
-              title: "商家已发货",
-              canBtn: false,
-              giveBtn: false,
-              seeBtn: true,
-              afrimBtn: true
-            });
-            // order.typeData = {
-            //   title: "商家已发货",
-            //   canBtn: false,
-            //   giveBtn: false,
-            //   seeBtn: true
-            // };
-          } else if (order.logisticsStatus == 15) {
-            this.$set(order, "typeData", {
-              title: "交易成功",
-              canBtn: false,
-              giveBtn: false,
-              seeBtn: false,
-              afrimBtn: false
-            });
-            // order.typeData = {
-            //   title: "交易成功",
-            //   canBtn: false,
-            //   giveBtn: false,
-            //   seeBtn: false
-            // };
-          } else if (order.logisticsStatus == 9 && order.financialStatus == 3) {
-            this.$set(order, "typeData", {
-              title: "待退款",
-              canBtn: false,
-              giveBtn: false,
-              seeBtn: false,
-              afrimBtn: true
-            });
-            // order.typeData = {
-            //   title: "待退款",
-            //   canBtn: false,
-            //   giveBtn: false,
-            //   seeBtn: false
-            // };
-          } else if (order.logisticsStatus == 9 && order.financialStatus == 1) {
-            this.$set(order, "typeData", {
-              title: "交易取消",
-              canBtn: false,
-              giveBtn: false,
-              seeBtn: false,
-              afrimBtn: false
-            });
-            // order.typeData = {
-            //   title: "交易取消",
-            //   canBtn: false,
-            //   giveBtn: false,
-            //   seeBtn: false
-            // };
-          } else if (order.logisticsStatus == 11) {
-            this.$set(order, "typeData", {
-              title: "退款成功",
-              canBtn: false,
-              giveBtn: false,
-              seeBtn: false,
-              afrimBtn: false
-            });
-            // order.typeData = {
-            //   title: "退款成功",
-            //   canBtn: false,
-            //   giveBtn: false,
-            //   seeBtn: false
-            // };
-          } else if (
-            order.financialStatus == 1 &&
-            order.paymentType != 1 &&
-            order.logisticsStatus == 1
-          ) {
-            this.$set(order, "typeData", {
-              title: "待支付",
-              canBtn: true,
-              giveBtn: true,
-              seeBtn: false,
-              afrimBtn: false
-            });
-            // order.typeData = {
-            //   title: "待支付",
-            //   canBtn: true,
-            //   giveBtn: true,
-            //   seeBtn: false
-            // };
-          } else if (
-            (order.financialStatus != 1 && order.logisticsStatus == 1) ||
-            order.logisticsStatus == 3 ||
-            order.logisticsStatus == 4 ||
-            order.logisticsStatus == 5
-          ) {
-            this.$set(order, "typeData", {
-              title: "等待商家发货",
-              canBtn: true,
-              giveBtn: false,
-              seeBtn: false,
-              afrimBtn: false
-            });
-            // order.typeData = {
-            //   title: "等待商家发货",
-            //   canBtn: true,
-            //   giveBtn: false,
-            //   seeBtn: false
-            // };
-          } else if (
-            order.logisticsStatus == 10 &&
-            order.financialStatus == 1
-          ) {
-            this.$set(order, "typeData", {
-              title: "自动取消",
-              canBtn: false,
-              giveBtn: false,
-              seeBtn: true,
-              afrimBtn: false
-            });
-            // order.typeData = {
-            //   title: "自动取消",
-            //   canBtn: false,
-            //   giveBtn: false,
-            //   seeBtn: false
-            // };
+      // 1是立即支付  2是取消订单 3查看详情 4查看物流
+      findAllOrders(params)
+        .then(res => {
+          if (wx.getStorageSync("g_i") == "") {
+            let sourceCookie = res.headers["set-cookie"][0];
+            let index = sourceCookie.indexOf(";");
+            let myCookie = sourceCookie.substring(0, index);
+            // console.log(myCookie);
+            wx.setStorageSync("g_i", myCookie);
           }
+          this.list = res.data.result.orders.records;
+
+          this.list.map(order => {
+            // console.log(111);
+            // giveBtn是支付   canBtn是取消订单  seeBtn是查看物流 afrimBtn是确认收货
+            if (order.logisticsStatus == 6) {
+              this.$set(order, "typeData", {
+                title: "商家已发货",
+                canBtn: false,
+                giveBtn: false,
+                seeBtn: true,
+                afrimBtn: true
+              });
+              // order.typeData = {
+              //   title: "商家已发货",
+              //   canBtn: false,
+              //   giveBtn: false,
+              //   seeBtn: true
+              // };
+            } else if (order.logisticsStatus == 15) {
+              this.$set(order, "typeData", {
+                title: "交易成功",
+                canBtn: false,
+                giveBtn: false,
+                seeBtn: false,
+                afrimBtn: false
+              });
+              // order.typeData = {
+              //   title: "交易成功",
+              //   canBtn: false,
+              //   giveBtn: false,
+              //   seeBtn: false
+              // };
+            } else if (
+              order.logisticsStatus == 9 &&
+              order.financialStatus == 3
+            ) {
+              this.$set(order, "typeData", {
+                title: "待退款",
+                canBtn: false,
+                giveBtn: false,
+                seeBtn: false,
+                afrimBtn: true
+              });
+              // order.typeData = {
+              //   title: "待退款",
+              //   canBtn: false,
+              //   giveBtn: false,
+              //   seeBtn: false
+              // };
+            } else if (
+              order.logisticsStatus == 9 &&
+              order.financialStatus == 1
+            ) {
+              this.$set(order, "typeData", {
+                title: "交易取消",
+                canBtn: false,
+                giveBtn: false,
+                seeBtn: false,
+                afrimBtn: false
+              });
+              // order.typeData = {
+              //   title: "交易取消",
+              //   canBtn: false,
+              //   giveBtn: false,
+              //   seeBtn: false
+              // };
+            } else if (order.logisticsStatus == 11) {
+              this.$set(order, "typeData", {
+                title: "退款成功",
+                canBtn: false,
+                giveBtn: false,
+                seeBtn: false,
+                afrimBtn: false
+              });
+              // order.typeData = {
+              //   title: "退款成功",
+              //   canBtn: false,
+              //   giveBtn: false,
+              //   seeBtn: false
+              // };
+            } else if (
+              order.financialStatus == 1 &&
+              order.paymentType != 1 &&
+              order.logisticsStatus == 1
+            ) {
+              this.$set(order, "typeData", {
+                title: "待支付",
+                canBtn: true,
+                giveBtn: true,
+                seeBtn: false,
+                afrimBtn: false
+              });
+              // order.typeData = {
+              //   title: "待支付",
+              //   canBtn: true,
+              //   giveBtn: true,
+              //   seeBtn: false
+              // };
+            } else if (
+              (order.financialStatus != 1 && order.logisticsStatus == 1) ||
+              order.logisticsStatus == 3 ||
+              order.logisticsStatus == 4 ||
+              order.logisticsStatus == 5
+            ) {
+              this.$set(order, "typeData", {
+                title: "等待商家发货",
+                canBtn: true,
+                giveBtn: false,
+                seeBtn: false,
+                afrimBtn: false
+              });
+              // order.typeData = {
+              //   title: "等待商家发货",
+              //   canBtn: true,
+              //   giveBtn: false,
+              //   seeBtn: false
+              // };
+            } else if (
+              order.logisticsStatus == 10 &&
+              order.financialStatus == 1
+            ) {
+              this.$set(order, "typeData", {
+                title: "自动取消",
+                canBtn: false,
+                giveBtn: false,
+                seeBtn: true,
+                afrimBtn: false
+              });
+              // order.typeData = {
+              //   title: "自动取消",
+              //   canBtn: false,
+              //   giveBtn: false,
+              //   seeBtn: false
+              // };
+            }
+          });
+          this.allCount = res.data.result.orders.total;
+          wx.hideLoading();
+        })
+        .catch(err => {
+          wx.hideLoading();
         });
-        this.allCount = res.data.result.orders.total;
-      });
     },
 
     detailOrder(val) {

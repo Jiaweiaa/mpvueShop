@@ -144,7 +144,7 @@
           :value="goodsNum"
         />
       </div>
-      <div v-if="selectSkuData!=null" style="margin-left:30px;color:#ccc;font-size:14px;">商品剩余数量:{{selectSkuData.quantity}}</div>
+      <!-- <div v-if="selectSkuData!=null" style="margin-left:30px;color:#ccc;font-size:14px;">商品剩余数量:{{selectSkuData.quantity}}</div> -->
       <div class="handle">
         <van-button type="danger" size="large" @click="submit()">确定</van-button>
       </div>

@@ -2,20 +2,8 @@
   <div class="search">
     <div class="head">
       <div>
-        <img
-          src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/search2-2fb94833aa.png"
-          alt
-        >
-        <input
-          type="text"
-          confirm-type="search"
-          focus="true"
-          v-model="words"
-          @focus="inputFocus"
-          @input="tipsearch"
-          @confirm="searchWords"
-          placeholder="商品搜索"
-        >
+        <img src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/search2-2fb94833aa.png" alt="">
+        <input type="text" confirm-type="search" focus="true" v-model="words" @click="inputFocus" @input="tipsearch" @confirm="searchWords" placeholder="商品搜索">
         <!-- <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword.keyword}}" /> -->
         <img
           @click="clearInput"
@@ -29,16 +17,14 @@
 
     <!--
 	    搜索结果关键词
-    -->
-    <div class="searchtips" v-if="words && listData <= 0">
-        <div
-          @click="searchWords"
-          v-if="tipsData.length!=0"
-          :data-value="item.name"
-          v-for="(item,index) in tipsData"
-          :key="index"
-        >{{ item.name }}</div>
-        <div v-if="tipsData.length==0" class="nogoods">暂无此类商品...</div>
+	  -->
+    <div class="searchtips" v-if="words && listData.length == 0">
+      <div @click="searchWords" v-if="tipsData.length!=0" :data-value="item.name" v-for="(item,index) in tipsData" :key="index">
+        {{ item.name }}
+      </div>
+      <div v-if="tipsData.length==0" class="nogoods">
+        暂无此类商品...
+      </div>
     </div>
 
     <!--
@@ -119,45 +105,44 @@ import { post, get } from "../../utils";
 import { searchItem } from "../../api/category/index";
 
 export default {
-  created() {},
-  onShow() {
-    this.openid = wx.getStorageSync("openid") || "";
-    this.getHotData();
-    this.getlistData();
-  },
-  // 上啦加载
-  async onReachBottom() {
-    if (this.loading) return;
-    wx.showLoading({
-      title: "加载中"
-    });
-    this.loading = true;
-    if (this.listData.length >= this.allCount) {
-      this.loading = false;
-      wx.hideLoading();
-    } else {
-      this.pageNum++;
-      const res = await searchItem({
-        k: this.words,
-        s: this.order,
-        p: this.pageNum
-      });
-      if (res.data.code == 200) {
-        this.loading = false;
-        this.listData = this.listData.concat(res.data.result.itemDocs);
-        this.listData.map(v => {
-          v.img = JSON.parse(v.image)[0].images[0];
-        });
-        this.allCount = res.data.result.totalElements;
-      } else {
-        this.loading = false;
-      }
-      wx.hideLoading();
-    }
-  },
-
-  // 下啦刷新
-  async onPullDownRefresh() {
+	onShow() {
+	  this.openid = wx.getStorageSync("openid") || "";
+	  this.getHotData();
+	},
+	// 上啦加载
+	async onReachBottom() {
+	  if(this.loading) return;
+	  wx.showLoading({
+	    title: '加载中',
+	  })
+	  this.loading = true;
+	  if(this.listData.length >= this.allCount) {
+	    this.loading = false;
+	    wx.hideLoading()
+	  }else {
+	    this.pageNum++;
+	    const res = await searchItem({
+	      k: this.words,
+	      s: this.order,
+	      p: this.pageNum
+	    });
+	    if (res.data.code == 200) {
+	      this.loading = false;
+	      this.listData = this.listData.concat(res.data.result.itemDocs);
+	      this.listData.map(v => {
+	        v.img = JSON.parse(v.image)[0].images[0]
+	      })
+	      this.allCount = res.data.result.totalElements;
+	    } else {
+	      this.loading = false
+	    }
+	    wx.hideLoading()
+	    
+	  }
+	},
+	
+	// 下啦刷新
+	async onPullDownRefresh() {
     this.pageNum = 1;
     const res = await searchItem({
       k: this.words,
@@ -247,7 +232,6 @@ export default {
       const data = await post("/search/clearhistoryAction", {
         openId: this.openid
       });
-      console.log(data);
       if (data) {
         this.historyData = [];
       }
@@ -280,8 +264,7 @@ export default {
         url: "/pages/topicdetail/main?id=" + id
       });
     }
-  },
-  computed: {}
+  }
 };
 </script>
 <style lang='scss' scoped>

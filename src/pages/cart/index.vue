@@ -66,7 +66,7 @@
         </div>
       </div>
     </div>
-    <div v-else class="nogoods" @click="toIndex()">
+    <div v-if="cartShow" class="nogoods" @click="toIndex()">
       <img
         src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png"
         alt
@@ -105,6 +105,7 @@ export default {
   onShow() {
     this.openId = getStorageOpenid();
     this.getListData();
+    this.cartShow = false;
   },
   created() {},
   data() {
@@ -113,7 +114,8 @@ export default {
       allCheck: false,
       storeId: "", //店铺ID
       listData: [], //
-      shopList: [], //购物车列表 分店铺
+      shopList: null, //购物车列表 分店铺
+      cartShow:false,//购物车为空模块是否显示
       select: [], //已选中的商品集合
       Listids: [],
       userInfo: {},
@@ -200,7 +202,7 @@ export default {
         };
         let model = JSON.stringify(params);
         wx.navigateTo({
-          url: "/pages/order/main?from=goodsDetail&params=" + model
+          url: "/pages/order/main?from=shoppingcart&params=" + model
         });
       } else {
         console.log("请选择商品");
@@ -232,6 +234,7 @@ export default {
     },
     //获取购物车数据
     async getListData() {
+      wx.showLoading();
       insertOrEditMemAddress()
         .then(res => {
           if (res.data.code == "200") {
@@ -245,11 +248,14 @@ export default {
               });
             });
           } else if (res.data.code == "500") {
-            this.listData = [];
+            this.shopList = [];
+            this.cartShow = true;
           }
+           wx.hideLoading();
         })
         .catch(err => {
-          console.log(err);
+          wx.hideLoading();
+          this.cartShow = true;
         });
       this.listData = data.data;
     },
@@ -279,13 +285,15 @@ export default {
         ? (group.storeAllCheck = true)
         : (group.storeAllCheck = false);
 
-      let allCheckFlag = true;
-      this.shopList.map((v) => {
-        if(v.storeAllCheck==false){
-          allCheckFlag = false;
-        }
-      })
-      allCheckFlag==true?this.allCheck=true:this.allCheck=false;
+      // let allCheckFlag = true; 
+      //http://qn.gaoshanmall.cn/cloudmall/file/651363872141260800.png?imageMogr2/thumbnail/180x180
+      // this.shopList.map((v) => {
+      //   if(v.storeAllCheck==false){
+      //     allCheckFlag = false;
+      //    console.log('1111dsadsa');
+      //   }
+      // })
+      // allCheckFlag==true?this.allCheck=true:this.allCheck=false;
     },
     //店铺全选
     storeChange(group) {
