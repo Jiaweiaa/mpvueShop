@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import { get } from "../../utils";
 import { getNavigations } from '../../api/category/index'
 
 export default {

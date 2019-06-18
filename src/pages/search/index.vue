@@ -3,7 +3,7 @@
     <div class="head">
       <div>
         <img src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/search2-2fb94833aa.png" alt="">
-        <input type="text" confirm-type="search" focus="true" v-model="words" @focus="inputFocus" @input="tipsearch" @confirm="searchWords" placeholder="商品搜索">
+        <input type="text" confirm-type="search" focus="true" v-model="words" @click="inputFocus" @input="tipsearch" @confirm="searchWords" placeholder="商品搜索">
         <!-- <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword.keyword}}" /> -->
         <img @click="clearInput" class="del" src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/clearIpt-f71b83e3c2.png" alt="">
       </div>
@@ -13,12 +13,12 @@
 	  <!--
 	    搜索结果关键词
 	  -->
-    <div class="searchtips" v-if="words && listData <= 0">
+    <div class="searchtips" v-if="words && listData.length == 0">
       <div @click="searchWords" v-if="tipsData.length!=0" :data-value="item.name" v-for="(item,index) in tipsData" :key="index">
         {{ item.name }}
       </div>
       <div v-if="tipsData.length==0" class="nogoods">
-        数据库暂无此类商品...
+        暂无此类商品...
       </div>
     </div>
 	  
@@ -84,8 +84,7 @@ import {
 import { searchItem } from '../../api/category/index';
 
 export default {
-	created() { },
-	mounted() {
+	onShow() {
 	  this.openid = wx.getStorageSync("openid") || "";
 	  this.getHotData();
 	},
@@ -212,7 +211,6 @@ export default {
       const data = await post("/search/clearhistoryAction", {
         openId: this.openid
       });
-      console.log(data);
       if (data) {
         this.historyData = [];
       }
@@ -245,8 +243,7 @@ export default {
         url: "/pages/topicdetail/main?id=" + id
       });
     }
-  },
-  computed: {}
+  }
 };
 
 </script>
