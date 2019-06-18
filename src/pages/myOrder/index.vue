@@ -11,7 +11,7 @@
           <scroll-view scroll-y class="scrollView" @scrolltolower="lower">
             <div
               v-for="(value,index) in list"
-              v-show="list.length>0"
+              v-show="list!=null&&list.length>0"
               :key="index"
               @click="detailOrder(value)"
             >
@@ -82,7 +82,7 @@
               <p style="text-align:center;">点击我去购物吧!</p>
             </div>
             <div style="width: 100%; text-align: center;margin-top: 5px;">
-              <div v-if="allCount!=''&&list.length >= allCount" style="font-size: 13px;">全部加载完成!</div>
+              <div v-if="allCount!=''&&list!=null&&list.length >= allCount" style="font-size: 13px;">全部加载完成!</div>
               <van-loading v-else-if="allCount!=''" size="20px" type="spinner" color="#fff"/>
             </div>
           </scroll-view>
@@ -330,13 +330,13 @@ export default {
     },
 
     getOrderList() {
-      this.list = null;
       wx.showLoading();
       let params = {
         pageNum: this.pageNum,
         pageSize: 5,
         orderType: Number(this.currentActive) + 1
       };
+      this.list = null;
 
       // 1是立即支付  2是取消订单 3查看详情 4查看物流
       findAllOrders(params)

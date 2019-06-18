@@ -5,7 +5,7 @@
       <div>48小时快速退款</div>
       <div>满88元免邮费</div>
     </div>
-    <div class="cartlist" v-if="shopList.length>0">
+    <div class="cartlist" v-if="shopList!=null&&shopList.length>0">
       <!-- 分店铺形式的购物车列表 -->
       <div class="store-list" v-for="(group,index) in shopList" :key="index">
         <!-- 店铺名称 -->
@@ -285,15 +285,13 @@ export default {
         ? (group.storeAllCheck = true)
         : (group.storeAllCheck = false);
 
-      // let allCheckFlag = true; 
-      //http://qn.gaoshanmall.cn/cloudmall/file/651363872141260800.png?imageMogr2/thumbnail/180x180
-      // this.shopList.map((v) => {
-      //   if(v.storeAllCheck==false){
-      //     allCheckFlag = false;
-      //    console.log('1111dsadsa');
-      //   }
-      // })
-      // allCheckFlag==true?this.allCheck=true:this.allCheck=false;
+      let allCheckFlag = true; 
+      this.shopList.map((v) => {
+        if(v.storeAllCheck==false){
+          allCheckFlag = false;
+        }
+      })
+      allCheckFlag==true?(this.allCheck=true):(this.allCheck=false);
     },
     //店铺全选
     storeChange(group) {
@@ -313,6 +311,13 @@ export default {
           flag = false;
         }
       });
+      let allCheckFlag = true; 
+      this.shopList.map((v) => {
+        if(v.storeAllCheck==false){
+          allCheckFlag = false;
+        }
+      })
+      allCheckFlag==true?(this.allCheck=true):(this.allCheck=false);
       // flag == true ? (this.allChek = true) : (this.allCheck = false);
     },
     //所有全选
