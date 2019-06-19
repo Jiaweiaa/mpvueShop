@@ -14,11 +14,36 @@
 	      <div class="navBody" @click="goTo('/pages/myOrder/main')">查看全部订单></div>
       </div>
 	    <div class="content">
-		    <div>
-			   
+		    <div class="childContent"  @click="goTo(item.url)" :key="index" v-for="(item, index) in orderMenu">
+			    <van-icon size="30px" :name="item.icon" />
+			    <div class="childText">{{item.title}}</div>
 		    </div>
 	    </div>
     </div>
+	
+	  <div class="mySecond boxMenu">
+		  <div class="title">
+			  <div class="navTitle">我的服务</div>
+		  </div>
+		  <div class="content">
+			  <div class="childContent" @click="goTo(item.url)"  :key="index" v-for="(item, index) in myService">
+				  <van-icon size="30px" :name="item.icon" />
+				  <div class="childText">{{item.title}}</div>
+			  </div>
+		  </div>
+	  </div>
+	
+	  <div class="myThree boxMenu">
+		  <div class="title">
+			  <div class="navTitle">更多服务</div>
+		  </div>
+		  <div class="content">
+			  <div class="childContent" @click="goTo(item.url)" :key="index" v-for="(item, index) in moreService">
+				  <van-icon size="30px" :name="item.icon" />
+				  <div class="childText">{{item.title}}</div>
+			  </div>
+		  </div>
+	  </div>
   </div>
 </template>
 
@@ -33,7 +58,6 @@
       // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
       if (login()) {
         this.userInfo = login();
-        console.log(this.userInfo);
         this.avator = this.userInfo.avatarUrl;
       }
     },
@@ -44,76 +68,59 @@
 	      orderMenu: [
 		      {
             title: "待支付",
-            icon: "icon-unie64a",
-            url: "/pages/myOrder/main"
+            icon: "pending-payment",
+            url: "/pages/myOrder/main?id=1"
 		      },
           {
             title: "待收货",
-            icon: "icon-unie64a",
-            url: "/pages/myOrder/main"
+            icon: "tosend",
+            url: "/pages/myOrder/main?id=2"
           },
           {
             title: "待发货",
-            icon: "icon-unie64a",
-            url: "/pages/myOrder/main"
+            icon: "paid",
+            url: "/pages/myOrder/main?id=3"
           },
           {
             title: "已完成",
-            icon: "icon-unie64a",
-            url: "/pages/myOrder/main"
+            icon: "cash-on-deliver",
+            url: "/pages/myOrder/main?id=4"
           },
 	      ],
+        myService: [{
+          title: "优惠券",
+          icon: "balance-pay",
+          url: "/pages/coupon/main"
+        },{
+          title: "地址管理",
+          icon: "home-o",
+          url: "/pages/address/main"
+        }],
+        moreService: [{
+          title: "团长招募",
+          icon: "manager-o",
+          url: "/pages/beTeam/main"
+        },{
+          title: "我是团长",
+          icon: "manager-o",
+          url: "/pages/team/main"
+        },{
+          title: "供应商招募",
+          icon: "user-o",
+          url: "/pages/beGive/main"
+        }],
         
         avator: "http://yanxuan.nosdn.127.net/8945ae63d940cc42406c3f67019c5cb6.png",
         allcheck: false,
         Listids: [],
-        userInfo: {},
-        listData: [{
-          title: "我的订单",
-          icon: "icon-unie64a",
-          url: "/pages/myOrder/main"
-        },
-          {
-            title: "优惠券",
-            icon: "icon-youhuiquan",
-            url: "/pages/coupon/main"
-          },
-          {
-            title: "我的足迹",
-            icon: "icon-zuji",
-            url: ""
-          },
-          {
-            title: "我的收藏",
-            icon: "icon-shoucang",
-            url: "/pages/collectlist/main"
-          },
-          {
-            title: "地址管理",
-            icon: "icon-dizhiguanli",
-            url: "/pages/address/main"
-          },
-          {
-            title: "我是团长",
-            icon: "icon-dizhiguanli",
-            url: "/pages/team/main"
-          },
-          {
-            title: "成为团长",
-            icon: "icon-lianxikefu",
-            url: "/pages/beTeam/main"
-          },
-          {
-            title: "成为供应商",
-            icon: "icon-bangzhuzhongxin",
-            url: "/pages/beGive/main"
-          }
-        ]
+        userInfo: {}
+       
       };
     },
     components: {},
     methods: {
       goTo(url) {
+        console.log(url)
         if (toLogin()) {
           wx.navigateTo({
             url: url
@@ -144,8 +151,20 @@
 		left: 2.5%;
 		top: 150px;
 	}
-	.boxMenu {
+  .mySecond {
+	  position: absolute;
+	  top: 275px;
+	  left: 2.5%;
+  }
+
+  .myThree {
+	  position: absolute;
+	  top: 400px;
+	  left: 2.5%;
+  }
+  .boxMenu {
 		width: 95%;
+		overflow: hidden;
 		background: #fff;
 		height: 100px;
 		border-radius: 5px;
@@ -168,6 +187,20 @@
 				padding-right: 10px;
 				color: #999;
 				font-size: 20rpx;
+			}
+		}
+		.content {
+			overflow: hidden;
+			height: 70px;
+			.childContent {
+				height: 100%;
+				padding: 10px;
+				float: left;
+				width: calc(25% - 20px);
+				text-align: center;
+				.childText {
+					font-size: 24rpx;
+				}
 			}
 		}
 	}

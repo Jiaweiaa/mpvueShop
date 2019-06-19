@@ -50,7 +50,7 @@
 			</checkbox-group>
 		</van-tabs>
 		
-		<van-button style="position: fixed; right: 30px; bottom: 30px;" plain hairline @click="toggleClick" type="primary">一键核销</van-button>
+		<van-button v-if="getActive == 2" style="position: fixed; right: 30px; bottom: 30px;" plain hairline @click="toggleClick" type="primary">一键核销</van-button>
 	</div>
 </template>
 
@@ -249,6 +249,7 @@ export default {
     },
 	  
     onSelectChange(val) {
+      console.log( val.mp.detail.value)
       this.resultCheck = val.mp.detail.value;
     },
 

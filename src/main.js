@@ -48,7 +48,6 @@ export default {
       "pages/categorylist/main",
       "pages/topic/main",
       "pages/goods/main",
-      "pages/logs/main",
       "pages/branddetail/main",
       "pages/brandlist/main",
       "pages/newgoods/main",
