@@ -23,7 +23,7 @@
     </div>
     <div class="info">
       <p>{{name}}</p>
-      <p>性价比服务超高.</p>
+      <p>性价比超高.</p>
     </div>
     <div class="list" v-if="goodsList.length!=0">
       <div @click="goodsDetail(item.id)" class="item" v-for="(item, index) in goodsList" :key="index">
@@ -37,16 +37,53 @@
 		    <span>—</span>
 	    </div>
     </div>
-	  
     <div v-else class="none">
       暂无数据
     </div>
+	  
+	  <!-- 商品分类 -->
+	  <van-popup
+		  :show="popupShow"
+		  position="right"
+		  class="filterlayer"
+		  @close="onClose"
+		  :duration="600">
+		  <div class="filterInner" style="overflow-y: scroll;height: 100vh; width: 85vw; ">
+			  <div class="item">
+				  <div class="itemTitle">
+					  <div>价格区间</div>
+				  </div>
+				  <div>
+					  <input placeholder="最低价" placeholder-class="center"/> <div style="float: left; height: 30px; width: 10%; text-align: center; line-height: 30px;">-</div> <input placeholder-class="center" placeholder="最高价  " />
+				  </div>
+			  </div>
+			  <div class="item" v-for="(group, grouPindex) in filterList" :key="grouPindex">
+				  <div class="itemTitle" @click="showTabber(grouPindex)">
+					  <div style="width: 40%; float: left;">{{group.label}}</div>
+					  <van-icon style="float: right;margin-right: 10px;" :name="group.isShowAll ? 'arrow-up' : 'arrow-down'" />
+				  </div>
+				  <van-transition style="overflow: hidden;" :show="group.isShowAll" custom-class="block" name="slide-down">
+					  <div class="content">
+						  <div class="childItem" @click="isClickChild(group, item)" :class="{'active': item.isChecked == true}" v-for="(item, childItem) in group.facetFilterUnitList" :key="childItem">
+							  {{item.label}}
+						  </div>
+					  </div>
+				  </van-transition>
+				 
+			  </div>
+			  <div class="footer">
+				  <van-button size="small" style="text-align: center;width: 47%; float: left; margin-left: 1%; margin-right: 2%" round type="danger">重置</van-button>
+				  <van-button size="small" style="text-align: center;width: 47%; float: left; margin-left: 2%;" round type="primary">搜索</van-button>
+			  </div>
+		  </div>
+	  </van-popup>
+	 
   </div>
 </template>
 
 <script>
   import { searchItem } from '../../api/category/index'
-	export default {
+  export default {
   onShow() {
    
     //获取页面传的参数
@@ -109,6 +146,7 @@
   },
   data() {
     return {
+      filterList: [],
       categoryId: "",
       nowIndex: 0,
       goodsList: [],
@@ -121,15 +159,27 @@
       loading: false,
       allCount: '',
 
-      name: ''
+      name: '',
+
+      popupShow: false
     };
   },
   components: {},
   methods: {
+    // 展开收藏
+    showTabber(index) {
+      let newFilter = this.filterList;
+      newFilter[index].isShowAll = !newFilter[index].isShowAll;
+      this.filterList = [];
+      this.filterList = newFilter;
+    },
+    
+    // 去搜索页
     tosearch() {
       wx.navigateTo({ url: "/pages/search/main" });
     },
     
+	  // 获取数据
     async getAllData() {
       const res = await searchItem({
         navid: this.categoryId,
@@ -143,12 +193,23 @@
       this.goodsList.map(v => {
         v.img = JSON.parse(v.image)[0].images[0]
       })
+      this.filterList = this.navData.facetFilter.facetFilterLineList;
+      this.filterList.map((v, index) => {
+        v.isShowAll = true;
+        if(index > 2) {
+          v.isShowAll = false;
+        }
+      })
     },
+	  
+	  // 商品详情
     goodsDetail(id) {
       wx.navigateTo({
         url: "/pages/goods/main?id=" + id
       });
     },
+	  
+	  // 类型切换
     changeTab(index) {
       this.nowIndex = index;
       this.pageNum =1;
@@ -156,100 +217,161 @@
         this.order = this.order == "SALE_PRICE-ASC" ? "SALE_PRICE-DESC" : "SALE_PRICE-ASC";
       } else if (index == 2) {
         this.order = this.order == "SALES-ASC" ? "SALES-DESC" : "SALES-ASC";
-      } else{
+      } else if(index == 0){
         this.order = "LIST_TIME-DESC";
+      }else {
+        this.popupShow = true;
       }
       this.getAllData();
     },
-  },
-  computed: {}
+	  
+	  // 关闭弹层
+    onClose() {
+      this.popupShow = false;
+    },
+    
+    // 筛选项之间用a 筛选项和筛选项值用e链接 筛选项值之间用o
+    // 1e44o45a2
+    // 例如：单选两个 condition: 1e3a2e3 ； 单选多选各一个 condition: 1e3 a 2e3o5
+    isClickChild(group, item) {
+    }
+  }
 };
 
 </script>
 <style lang='scss'>
 @import "./style";
-.title {
-	text-align: center;
-	padding: 20rpx 0;
-	width: 100%;
-	
-	span:nth-child(2) {
-		font-size: 24rpx;
-		color: #333;
-		padding: 0 10rpx;
+	.title {
+		text-align: center;
+		padding: 20rpx 0;
+		width: 100%;
+		
+		span:nth-child(2) {
+			font-size: 24rpx;
+			color: #333;
+			padding: 0 10rpx;
+		}
+		
+		span:nth-child(2n + 1) {
+			color: #999;
+		}
 	}
-	
-	span:nth-child(2n + 1) {
-		color: #999;
+	.sortnav {
+	  display: flex;
+	  width: 100%;
+	  height: 78rpx;
+	  line-height: 78rpx;
+	  background: #fff;
+	  border-bottom: 1rpx solid #d9d9d9;
+	  div {
+	    width: 250rpx;
+	    height: 100%;
+	    text-align: center;
+	  }
+	  .active {
+	    color: #b4282d;
+	  }
+	  .price {
+	    background: url(//yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/no-3127092a69.png) 165rpx center no-repeat;
+	    background-size: 15rpx 21rpx;
+	  }
+	  .active.desc {
+	    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/down-95e035f3e5.png) 165rpx center no-repeat;
+	    background-size: 15rpx 21rpx;
+	  }
+	  .active.asc {
+	    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/up-636b92c0a5.png) 165rpx center no-repeat;
+	    background-size: 15rpx 21rpx;
+	  }
 	}
-}
+	.sortlist {
+	  display: flex;
+	  justify-content: space-between;
+	  flex-wrap: wrap;
+	  .item {
+	    box-sizing: border-box;
+	    width: 50%;
+	    text-align: center;
+	    background: #fff;
+	    padding: 15rpx 0;
+	    border-bottom: 1rpx solid #d9d9d9;
+	    border-right: 1rpx solid #d9d9d9;
+	    img {
+	      display: block;
+	      width: 302rpx;
+	      height: 302rpx;
+	      margin: 0 auto;
+	    }
+	    .name {
+	      margin: 15rpx 0 22rpx 0;
+	      text-align: center;
+	      padding: 0 20rpx;
+	      font-size: 24rpx;
+	    }
+	    .price {
+	      text-align: center;
+	      font-size: 30rpx;
+	      color: #b4282d;
+	    }
+	  }
+	  .item.active:nth-last-child(1) {
+	    border-bottom: none;
+	  }
+	  .item.active:nth-last-child(2) {
+	    border-bottom: none;
+	  }
+	  .item.none:last-child {
+	    border-bottom: none;
+	  }
+	}
+	.filterlayer {
+		width: 85vw;
+		height: 100%;
+		background-color: #f7f7f7;
+		.item {
+			overflow: hidden;
+			padding: 10px;
+			.content{
+				padding: 10px;
+				.childItem {
+					width: 30%;
+					height: 25px;
+					line-height: 25px;
+					text-align: center;
+					border: 1px solid #ccc;
+					background: #eee;
+					font-size: 12px;
+					border-radius: 15px;
+					float: left;
+					margin-right: 10px;
+					margin-bottom: 10px;
+				}
+				.childItem:nth-child(3n) {
+					margin-right: 0;
+				}
+			}
+			.itemTitle {
+				line-height: 30px;
+				height: 30px;
+				padding-left: 10px;
+				overflow: hidden;
+			}
+			input {
+				float: left;
+				background: #e3e3e3;
+				width: 45%;
+				height: 30px;
+				line-height: 30px;
+				border-radius: 20px;
+			}
+			.center {
+				text-align: center;
+			}
+			.footer {
+				overflow: hidden;
+				margin-bottom: 20px;
+			}
+		}
+	}
 
-.sortnav {
-  display: flex;
-  width: 100%;
-  height: 78rpx;
-  line-height: 78rpx;
-  background: #fff;
-  border-bottom: 1rpx solid #d9d9d9;
-  div {
-    width: 250rpx;
-    height: 100%;
-    text-align: center;
-  }
-  .active {
-    color: #b4282d;
-  }
-  .price {
-    background: url(//yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/no-3127092a69.png) 165rpx center no-repeat;
-    background-size: 15rpx 21rpx;
-  }
-  .active.desc {
-    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/down-95e035f3e5.png) 165rpx center no-repeat;
-    background-size: 15rpx 21rpx;
-  }
-  .active.asc {
-    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/up-636b92c0a5.png) 165rpx center no-repeat;
-    background-size: 15rpx 21rpx;
-  }
-}
-.sortlist {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  .item {
-    box-sizing: border-box;
-    width: 50%;
-    text-align: center;
-    background: #fff;
-    padding: 15rpx 0;
-    border-bottom: 1rpx solid #d9d9d9;
-    border-right: 1rpx solid #d9d9d9;
-    img {
-      display: block;
-      width: 302rpx;
-      height: 302rpx;
-      margin: 0 auto;
-    }
-    .name {
-      margin: 15rpx 0 22rpx 0;
-      text-align: center;
-      padding: 0 20rpx;
-      font-size: 24rpx;
-    }
-    .price {
-      text-align: center;
-      font-size: 30rpx;
-      color: #b4282d;
-    }
-  }
-  .item.active:nth-last-child(1) {
-    border-bottom: none;
-  }
-  .item.active:nth-last-child(2) {
-    border-bottom: none;
-  }
-  .item.none:last-child {
-    border-bottom: none;
-  }
-}
 </style>
