@@ -97,6 +97,68 @@
         </div>
       </div>
     </div>
+     <!-- 商品分类 -->
+    <van-popup
+      :show="popupShow"
+      position="right"
+      class="filterlayer"
+      @close="onClose"
+      :duration="600"
+    >
+      <div class="filterInner" style="overflow-y: scroll;height: 100vh; width: 85vw; ">
+        <div class="item">
+          <div class="itemTitle">
+            <div>价格区间</div>
+          </div>
+          <div>
+            <input placeholder="最低价" placeholder-class="center">
+            <div
+              style="float: left; height: 30px; width: 10%; text-align: center; line-height: 30px;"
+            >-</div>
+            <input placeholder-class="center" placeholder="最高价  ">
+          </div>
+        </div>
+        <div class="item" v-for="(group, grouPindex) in filterList" :key="grouPindex">
+          <div class="itemTitle" @click="showTabber(grouPindex)">
+            <div style="width: 40%; float: left;">{{group.label}}</div>
+            <van-icon
+              style="float: right;margin-right: 10px;"
+              :name="group.isShowAll ? 'arrow-up' : 'arrow-down'"
+            />
+          </div>
+          <van-transition
+            style="overflow: hidden;"
+            :show="group.isShowAll"
+            custom-class="block"
+            name="slide-down"
+          >
+            <div class="content">
+              <div
+                class="childItem active"
+                @click="isClickChild(item, group)"
+                :class="{'active': item.isChecked == true}"
+                v-for="(item, childItem) in group.facetFilterUnitList"
+                :key="childItem"
+              >{{item.label}}</div>
+            </div>
+          </van-transition>
+        </div>
+        <div class="footer">
+          <van-button
+            size="small"
+            style="text-align: center;width: 47%; float: left; margin-left: 1%; margin-right: 2%"
+            round
+            type="danger"
+          >重置</van-button>
+          <van-button
+            size="small"
+            style="text-align: center;width: 47%; float: left; margin-left: 2%;"
+            round
+            type="primary"
+          >搜索</van-button>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -174,7 +236,8 @@ export default {
 
       pageNum: 1,
       loading: false,
-      allCount: ""
+      allCount: "",
+      popupShow: false
     };
   },
   components: {},
@@ -215,6 +278,7 @@ export default {
       });
       this.tipsData = [];
     },
+    // 类型切换
     changeTab(index) {
       this.nowIndex = index;
       this.pageNum = 1;
@@ -223,8 +287,10 @@ export default {
           this.order == "SALE_PRICE-ASC" ? "SALE_PRICE-DESC" : "SALE_PRICE-ASC";
       } else if (index == 2) {
         this.order = this.order == "SALES-ASC" ? "SALES-DESC" : "SALES-ASC";
-      } else {
+      } else if (index == 0) {
         this.order = "LIST_TIME-DESC";
+      } else {
+        this.popupShow = true;
       }
       this.getlistData();
     },

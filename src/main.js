@@ -45,7 +45,7 @@ export default {
       "pages/category/main",
       "pages/beTeam/main",
       "pages/beGive/main",
-      "^pages/categorylist/main",
+      "pages/categorylist/main",
       "pages/topic/main",
       "pages/goods/main",
       "pages/branddetail/main",

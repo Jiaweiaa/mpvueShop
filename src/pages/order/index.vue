@@ -224,22 +224,32 @@ export default {
         createOrder(params)
           .then(res => {
             let params = {};
-            params.scmCode = res.data.result.scmCode;
+            params.orderCode = res.data.result.scmCode;
             params.paymentType = 4;
             params.orderTab = orderTab;
             params.deviceType = 2;
             toPay(params)
               .then(res => {
-
-                wx.login({
-                  success:(res)=> {
-                    if (res.code) {
-                       console.log(res.code);
-                    } else {
-                      console.log("登录失败！" + res.errMsg);
+                let params = {
+                  subOrdinate: res.data.result.subOrdinate,
+                  deviceType: 2
+                };
+                let url = `/trade${res.data.result.redirectUrl}`;
+                let querystring = require("querystring");
+                const wxPay = params => {
+                  let data = querystring.encode(params);
+                  return fly.request({
+                    url: url,
+                    method: "post",
+                    body: data,
+                    headers: {
+                      "Content-Type": "application/x-www-form-urlencoded"
                     }
-                  }
-                });
+                  });
+                };
+                wxPay(params)
+                  .then(res => {})
+                  .catch(err => {});
               })
               .catch(err => {});
           })
