@@ -91,7 +91,7 @@
               <div
                 class="childItem active"
                 @click="isClickChild(item, group)"
-                :class="{'active': item.isChecked == true}"
+                :class="{'activeSearch': item.isChecked == true}"
                 v-for="(item, childItem) in group.facetFilterUnitList"
                 :key="childItem"
               >{{item.label}}</div>
@@ -362,6 +362,10 @@ export default {
     color: #999;
   }
 }
+.activeSearch {
+	background: #b4282d !important;
+	color: #fff!important;
+}
 .sortnav {
   display: flex;
   width: 100%;
@@ -464,6 +468,8 @@ export default {
       height: 30px;
       padding-left: 10px;
       overflow: hidden;
+	    z-index: 999;
+	    background: #fff;
     }
     input {
       float: left;
