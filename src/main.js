@@ -38,7 +38,7 @@ export default {
       "pages/myOrder/main",
       "pages/orderDetail/main",
       "pages/team/main",
-      "^pages/index/main",
+      "pages/index/main",
       "pages/search/main",
       "pages/my/main",
       "pages/login/main",
@@ -53,7 +53,7 @@ export default {
       "pages/newgoods/main",
       "pages/practice/main",
       "pages/topicdetail/main",
-      "pages/coupon/main",
+      "^pages/coupon/main",
       "pages/orderDetail/main"
     ],
     "window": {
