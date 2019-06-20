@@ -5,7 +5,6 @@ fly.config.baseURL=" http://192.168.0.10:8003";
 //
 // fly.config.withCredentials = true //允许携带cookie
 fly.interceptors.request.use((config) => {
-  console.log(config);
   if(wx.getStorageSync("g_i")!=""){
     config.headers={
       'cookie':wx.getStorageSync("g_i")//读取cookie

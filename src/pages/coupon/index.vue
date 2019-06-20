@@ -2,7 +2,8 @@
   <div class="index">
 	  <van-tabs @change="changeTab">
 		  <van-tab title="未使用" name="couponsUnUsed">
-			  <div class="quan clear" v-for="(item, index) in couponList" :key="index">
+			  <noDataView v-show="(couponList.length <=0  && onLoadLoading == false)"></noDataView>
+			  <div class="quan clear" v-show="couponList.length > 0" v-for="(item, index) in couponList" :key="index">
 				  <div class="quanLeft">
 					  <p class="money">{{item.name}}</p>
 					  <p class="conts">无满额限制,立减折扣</p>
@@ -22,26 +23,29 @@
 
 <script>
   import { getMemberCoupon } from "../../api/coupon/index"
+  import noDataView  from '../../components/noDataView/index'
 
 
   export default {
     onShow() {
       this.getList();
     },
-   
+    components: {
+      noDataView
+    },
     data() {
       return {
         listData: '',
-	      couponList: []
+	      couponList: [],
+        onLoadLoading: false
       };
     },
-    components: {},
     methods: {
       getList() {
+        this.onLoadLoading = false;
         getMemberCoupon().then(res => {
           this.list = res.data.result;
-          this.couponList = this.list['couponsUnUsed'];
-          console.log(this.couponList)
+          this.onLoadLoading = true;
         })
       },
       changeTab(val) {

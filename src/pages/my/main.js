@@ -5,10 +5,11 @@ const app = new Vue(App)
 app.$mount()
 export default {
   config: {
-    navigationBarTitleText: 'heyushuo',
+    navigationBarTitleText: '我的',
     "usingComponents": {
       'van-cell': '/static/vant/cell/index',
-      'van-cell-group': '/static/vant/cell-group/index'
+      'van-cell-group': '/static/vant/cell-group/index',
+      'van-icon': '/static/vant/icon/index'
     }
   }
 }

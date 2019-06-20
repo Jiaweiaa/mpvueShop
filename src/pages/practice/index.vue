@@ -4,7 +4,7 @@
     <div class="userinfo" @click="bindViewTap">
       <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
       <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
+        <view >{{userInfo.nickName}}</view>
       </div>
     </div>
 
@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import card from "@/components/card";
 export default {
   created() {
     // this.onShareAppMessage()
@@ -68,7 +67,6 @@ export default {
   },
 
   components: {
-    card
   },
 
   methods: {
