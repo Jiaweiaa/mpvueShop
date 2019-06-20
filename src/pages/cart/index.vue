@@ -317,7 +317,7 @@ export default {
           allCheckFlag = false;
         }
       })
-      allCheckFlag==true?(this.allCheck=true):(this.allCheck=false);
+      allCheckFlag==true?(this.allCheck=true):(this.allCheck=false); 
       // flag == true ? (this.allChek = true) : (this.allCheck = false);
     },
     //所有全选

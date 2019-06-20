@@ -36,7 +36,11 @@
                   :title="val.itemName"
                   :thumb="'http://qn.gaoshanmall.cn/'+val.itemImg"
                 >
-                  <view slot="footer">
+                  
+                </van-card>
+                
+              </div>
+              <view style="display:flex;justify-content:flex-end;">
                     <van-button
                       @click.stop="cancelOrder(value)"
                       type="danger"
@@ -65,8 +69,6 @@
                       v-if="value.typeData.giveBtn"
                     >立即支付</van-button>
                   </view>
-                </van-card>
-              </div>
             </div>
             <div
               v-show="list!=null&&list.length==0"
@@ -524,6 +526,6 @@ export default {
   background: #fafafa;
 }
 .childBtn {
-  margin-left: 8px;
+  margin:0 8px;
 }
 </style>

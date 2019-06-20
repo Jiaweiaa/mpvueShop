@@ -29,7 +29,7 @@ export default {
     "pages": [
       "pages/feedback/main",
       "pages/order/main",
-      "pages/cart/main",
+      "^pages/cart/main",
       "pages/mappage/main",
       "pages/collectlist/main",
       "pages/addressSelect/main",
@@ -40,7 +40,7 @@ export default {
       "pages/team/main",
       "pages/index/main",
       "pages/search/main",
-      "^pages/my/main",
+      "pages/my/main",
       "pages/login/main",
       "pages/category/main",
       "pages/beTeam/main",

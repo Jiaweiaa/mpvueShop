@@ -51,3 +51,15 @@ export const cancleOrder = params => {
     },
   });
 };
+// 支付
+export const toPay = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `trade/payment/toPay`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};
