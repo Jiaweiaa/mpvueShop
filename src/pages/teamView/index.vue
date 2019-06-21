@@ -9,7 +9,7 @@
 		    <p>未到账佣金</p>
 		    <p>{{teamData.undrawnCommission}}</p>
 	    </div>
-	    <van-button style="position: absolute; right: 20px; bottom: 50px;" size="small" custom-class="btnClass" round plain type="default">查看详情</van-button>
+	    <van-button style="position: absolute; right: 20px; bottom: 50px;" @click="goToDetail" size="small" custom-class="btnClass" round plain type="default">查看详情</van-button>
     </div>
 	  <div class="myMenu boxMenu">
 		  <div class="left">
@@ -101,6 +101,14 @@
           url: url
         });
       },
+	    
+	    // 详情
+      goToDetail() {
+        wx.navigateTo({
+          url: '/pages/lookDetail/main'
+        })
+      },
+	    
       async getTeamData() {
         let data = await myDetile();
         this.teamData = data.data.result;

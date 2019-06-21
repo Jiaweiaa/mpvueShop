@@ -4,12 +4,12 @@
 			<image
 				class="avatar"
 				mode="scaleToFill"
-				src="http://m.360buyimg.com/pop/jfs/t25639/76/221614415/35426/e4e1d66a/5b6974a6N56a3b40d.jpg">
+				:src="teamData.avatar ? teamData.avatar : 'http://m.360buyimg.com/pop/jfs/t25639/76/221614415/35426/e4e1d66a/5b6974a6N56a3b40d.jpg'">
 			</image>
 			<div class="title">{{teamData.name}}<van-tag style="margin-left: 5px;" color="#fff" mark plain>{{teamData.city}}</van-tag></div>
 			<div class="myAddress">我的社区: {{teamData.community}}</div>
 			<div class="money">总佣金:<span style="color: red; margin-left: 10px; font-size: 16px">{{teamData.commission}}</span></div>
-			<div class="rank">第<span style="padding: 0 5px; display:inline-block; font-size: 28px">22</span>名</div>
+			<div class="rank">第<span style="padding: 0 5px; display:inline-block; font-size: 28px">{{reakingNum	}}</span>名</div>
 		</div>
 		<div class="list">
 			<div class="child" v-for="(item, index) in reakingList" :key="index">
@@ -17,7 +17,7 @@
 				<image
 					class="avatar"
 					mode="scaleToFill"
-					src="http://m.360buyimg.com/pop/jfs/t25639/76/221614415/35426/e4e1d66a/5b6974a6N56a3b40d.jpg">
+					:src="item.avatar ? item.avatar : 'http://m.360buyimg.com/pop/jfs/t25639/76/221614415/35426/e4e1d66a/5b6974a6N56a3b40d.jpg'">
 				</image>
 				<div class="title">{{item.name}}<van-tag style="margin-left: 5px;" color="#ab2b2b" mark plain>{{item.city}}</van-tag></div>
 				<div class="myAddress">社区: {{item.community}}</div>
@@ -61,8 +61,8 @@
         });
         if (res.data.code == 200) {
           this.loading = false;
-          this.reakingList = this.reakingList.concat(res.data.result.records);
-          this.allCount = res.data.result.total;
+          this.reakingList = this.reakingList.concat(res.data.result.captainDtos.records);
+          this.allCount = res.data.result.captainDtos.total;
         } else {
           this.loading = false;
         }
@@ -82,7 +82,8 @@
 	      reakingList: [],
         loading: '',
         pageNum: 1,
-        allCount: 0
+        allCount: 0,
+	      reakingNum: ''
       };
     },
     components: {},
@@ -94,8 +95,9 @@
         let myData = await myDetile();
         this.teamData = myData.data.result;
         let captData = await getCaptainPageByCommission();
-        this.reakingList = captData.data.result.records;
-        this.allCount = captData.data.result.total;
+        this.reakingList = captData.data.result.captainDtos.records;
+        this.allCount = captData.data.result.captainDtos.total;
+        this.reakingNum = captData.data.result.rownum;
         wx.hideLoading();
       },
     },

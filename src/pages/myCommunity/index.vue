@@ -32,13 +32,18 @@
 					style="position: absolute; top: 85%;left: 1.5%; width: 100%;"
 					custom-class="btnClass">确认更新</van-button>
 		</div>
+		
+		<van-notify id="van-notify" />
 	</div>
 </template>
 
 <script>
   import {
-    myDetile
+    myDetile,
+    udpateCaptain
   } from "../../api/myTeam/index";
+  import Notify from '../../../static/vant/notify/notify';
+  
   export default {
     onShow() {
       this.getTeamData();
@@ -48,10 +53,7 @@
         teamData: {
           mobile: '',
           deliveryAddress: ''
-        },
-	      mobile: '',
-	      address: ''
-
+        }
       };
     },
     components: {},
@@ -73,7 +75,27 @@
         this.teamData.deliveryAddress = '';
       },
       submitData() {
-        console.log(this.teamData)
+        if(this.teamData.mobile && this.teamData.deliveryAddress) {
+          let params = {
+            captainId: this.teamData.id,
+            mobile: this.teamData.mobile,
+            deliveryAddress: this.teamData.deliveryAddress
+          }
+          udpateCaptain(params).then(res => {
+            wx.showToast({
+              title: '修改成功',
+              icon: 'success',
+              duration: 600
+            })
+	          setTimeout(() => {
+              wx.navigateTo({
+                url: "/pages/teamView/main"
+              });
+            },600)
+          })
+        }else {
+          Notify('请填写完整');
+        }
       },
 	    
     },

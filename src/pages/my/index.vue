@@ -120,7 +120,6 @@
     components: {},
     methods: {
       goTo(url) {
-        console.log(url)
         if (toLogin()) {
           wx.navigateTo({
             url: url

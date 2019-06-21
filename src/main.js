@@ -38,26 +38,27 @@ export default {
       "pages/myOrder/main",
       "pages/orderDetail/main",
       "pages/team/main",
-      "pages/index/main",
-      "pages/teamView/main",
+      "^pages/index/main",
+      "pages/teamView/main",  //团长 我的主页
       "pages/search/main",
-      "pages/my/main",
+      "pages/my/main",            // 我的
       "pages/login/main",
       "pages/category/main",
-      "pages/beTeam/main",
-      "pages/beGive/main",
+      "pages/beTeam/main",       // 成为团长
+      "pages/beGive/main",       // 成为供应商
       "pages/categorylist/main",
       "pages/topic/main",
       "pages/goods/main",
       "pages/branddetail/main",
-      "pages/brandlist/main",
-      "pages/newgoods/main",
-      "pages/practice/main",
-      "pages/topicdetail/main",
-      "pages/coupon/main",
-      "pages/myCommunity/main",
-      "^pages/teamReaking/main",
-      "pages/orderDetail/main"
+      "pages/brandlist/main",    // 商品详情
+      "pages/newgoods/main",     // 原来带的商品分类
+      "pages/practice/main",     // 转发？ 没用到
+      "pages/topicdetail/main",  // 分类专题详情
+      "pages/coupon/main",       // 优惠券
+      "pages/myCommunity/main",  // 团长 我的社区
+      "pages/teamReaking/main",  // 团长我的 团长排行
+      "pages/orderDetail/main",  // 订单详情
+      "pages/lookDetail/main"    // 团长我的 查看详情
     ],
     "window": {
       "backgroundTextStyle": "light",

@@ -39,3 +39,29 @@ export const getCaptainPageByCommission = params => {
     },
   });
 };
+
+// 编辑 团长信息
+export const udpateCaptain = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `/shop/froCaptain/udpateCaptain`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};
+
+// 佣金记录列表
+export const getCommissonRecordPage = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `/shop/froCaptain/getCommissonRecordPage`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};
