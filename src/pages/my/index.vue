@@ -103,7 +103,7 @@
         },{
           title: "我是团长",
           icon: "manager-o",
-          url: "/pages/team/main"
+          url: "/pages/teamView/main"
         },{
           title: "供应商招募",
           icon: "user-o",

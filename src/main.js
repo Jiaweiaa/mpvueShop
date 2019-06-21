@@ -38,7 +38,8 @@ export default {
       "pages/myOrder/main",
       "pages/orderDetail/main",
       "pages/team/main",
-      "^pages/index/main",
+      "pages/index/main",
+      "pages/teamView/main",
       "pages/search/main",
       "pages/my/main",
       "pages/login/main",
@@ -54,6 +55,8 @@ export default {
       "pages/practice/main",
       "pages/topicdetail/main",
       "pages/coupon/main",
+      "pages/myCommunity/main",
+      "^pages/teamReaking/main",
       "pages/orderDetail/main"
     ],
     "window": {
