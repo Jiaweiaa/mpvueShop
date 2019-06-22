@@ -26,7 +26,7 @@
 								<div class="order-ok" style="width: calc(20% - 10px); float: right; margin-top: 10px; font-size: 15px;">{{value.typeData.title}}</div>
 							</div>
 							<div class="timer bottom border-top" style="height: 30px; line-height: 30px; font-size: 13px; margin-left: 10px; margin-bottom: 10px;">创建时间: {{value.createTime}}</div>
-							<div 	v-for="(val,childIndex) in value.orderLines" :key="childIndex" >
+							<div v-for="(val,childIndex) in value.orderLines" :key="childIndex" >
 								<van-card
 										:num="val.quantity"
 										:price="val.salePrice"

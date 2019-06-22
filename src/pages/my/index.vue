@@ -121,21 +121,38 @@ export default {
         {
           title: "我是团长",
           icon: "manager-o",
-          url: "/pages/team/main"
-        },
-        {
+          url: "/pages/teamView/main"
+        },{
           title: "供应商招募",
           icon: "user-o",
           url: "/pages/beGive/main"
+        }],
+        
+        avator: "http://yanxuan.nosdn.127.net/8945ae63d940cc42406c3f67019c5cb6.png",
+        allcheck: false,
+        Listids: [],
+        userInfo: {}
+       
+      };
+    },
+    components: {},
+    methods: {
+      goTo(url) {
+        if (toLogin()) {
+          wx.navigateTo({
+            url: url
+          });
         }
-      ],
+      },
+      toLogin() {
+        if (!this.userInfo.avatarUrl) {
+          wx.navigateTo({
+            url: "/pages/login/main"
+          });
+        }
+      }
 
-      avator:
-        "http://yanxuan.nosdn.127.net/8945ae63d940cc42406c3f67019c5cb6.png",
-      allcheck: false,
-      Listids: [],
-      userInfo: {}
-    };
+  
   },
   components: {},
   methods: {
