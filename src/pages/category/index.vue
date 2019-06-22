@@ -14,8 +14,8 @@
         </div>
       </scroll-view>
       <scroll-view class="right" scroll-y="true">
-        <div class="banner">
-          <img src="https://dwz.cn/dXi47P4L" alt="">
+        <div class="banner" v-if="detailData.icon!=''">
+          <img :src="'http://qn.gaoshanmall.cn/'+detailData.icon" alt="">
         </div>
         <div class="bottom">
           <div v-for="(item,index) in detailData.nodes" :key="index" style="width: 100%;">
@@ -37,10 +37,11 @@
 
 <script>
 import { getNavigations } from '../../api/category/index'
-
+import { shoppingcartCount } from "../../api/shoppingcart";
 export default {
   created() {},
   onShow() {
+    this.getCartGoodsNum();
     this.nowIndex = 0;
     //获取列表数据
     this.getListData();
@@ -57,6 +58,22 @@ export default {
   },
   components: {},
   methods: {
+    //获取购物车中的商品数量
+    getCartGoodsNum() {
+      shoppingcartCount()
+        .then(res => {
+          if (res.data.code == "200") {
+            wx.showTabBarRedDot({
+              index: 3
+            });
+            wx.setTabBarBadge({
+              index: 3,
+              text: res.data.result.toString()
+            });
+          }
+        })
+        .catch(err => {});
+    },
     tosearch() {
       wx.navigateTo({ url: "/pages/search/main" });
     },

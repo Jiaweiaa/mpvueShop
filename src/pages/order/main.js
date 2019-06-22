@@ -17,7 +17,8 @@ export default {
       'van-swipe-cell': '/static/vant/swipe-cell/index',
       'van-cell': '/static/vant/cell/index',
       'van-card': '/static/vant/card/index',
-      'van-checkbox': '/static/vant/checkbox/index'
+      'van-checkbox': '/static/vant/checkbox/index',
+      "van-toast": "/static/vant/toast/index"
     }
   }
 }

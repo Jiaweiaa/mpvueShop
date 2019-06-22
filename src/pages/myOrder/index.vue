@@ -245,7 +245,7 @@ export default {
             ) {
               this.$set(order, "typeData", {
                 title: "等待商家发货",
-                canBtn: true,
+                canBtn: false,
                 giveBtn: false,
                 seeBtn: false,
                 afrimBtn: false

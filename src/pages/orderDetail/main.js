@@ -12,7 +12,8 @@ export default {
         "van-card": '/static/vant/card/index',
         "van-button": '/static/vant/button/index',
         "van-dialog": "/static/vant/dialog/index",
-        "van-cell": "/static/vant/cell/index"
+        "van-cell": "/static/vant/cell/index",
+        "van-panel": "/static/vant/panel/index"
         }
     }
   }

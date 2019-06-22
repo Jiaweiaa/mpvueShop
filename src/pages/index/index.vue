@@ -133,11 +133,14 @@
 
 <script>
 import amapFile from "../../utils/amap-wx";
+import { littleAppLogin } from "../../api/login";
 import { get } from "../../utils";
 import { mapState, mapMutations } from "vuex";
-
+import { shoppingcartCount } from "../../api/shoppingcart";
 export default {
-  onShow() {},
+  onShow() {
+    this.getCartGoodsNum();
+  },
   computed: {
     ...mapState(["cityName"])
   },
@@ -145,7 +148,14 @@ export default {
     wx.login({
       success: res => {
         if (res.code) {
-          console.log(res.code);
+          let params = {
+            code: res.code
+          };
+          littleAppLogin(params)
+            .then(res => {
+              console.log(res);
+            })
+            .catch(err => {});
         } else {
           console.log("登录失败！" + res.errMsg);
         }
@@ -167,6 +177,22 @@ export default {
   },
   components: {},
   methods: {
+    //获取购物车中的商品数量
+    getCartGoodsNum() {
+      shoppingcartCount()
+        .then(res => {
+          if (res.data.code == "200") {
+            wx.showTabBarRedDot({
+              index: 3
+            });
+            wx.setTabBarBadge({
+              index: 3,
+              text: res.data.result.toString()
+            });
+          }
+        })
+        .catch(err => {});
+    },
     ...mapMutations(["update"]),
     toMappage() {
       var _this = this;

@@ -1,79 +1,44 @@
 <template>
-  <div class="cart" v-if="detailData!=null">
-    <div class="orderType">
-      <p style="width: 36%;  margin-left: 4%; font-size: 18px; color: #FFA730;">
-        <van-icon name="clock-o"/>
-        <span>{{detailData ? detailData.displayOrderStatusTips : ''}}</span>
-      </p>
-      <p
-        style="width: 56%; margin-right: 4%; text-align: right;"
-      >截止时间:{{detailData? detailData.orderVo.willCancelTime : ''}}</p>
-    </div>
-    <div style="height:15px;"></div>
-    <van-cell-group>
-      <van-cell center :border="false">
-        <!-- <template> -->
-        <div>{{detailData.orderVo.shippingAddress.firstName}} {{detailData.orderVo.shippingAddress.mobile}}</div>
-        <div>{{detailData.orderVo.shippingAddress ? detailData.orderVo.shippingAddress.province +' '+detailData.orderVo.shippingAddress.city + ' ' + detailData.orderVo.shippingAddress.district + ' ' + detailData.orderVo.shippingAddress.address: ''}}</div>
-        <!-- </template> -->
-      </van-cell>
-    </van-cell-group>
-    <div style="height:15px;"></div>
-    <div>
-      <van-card
-        v-for="(item, index) in detailData.orderVo.orderLines"
-        :key="index"
-        :num="item.quantity"
-        :price="item.discountPrice"
-        :desc="item.propertiesValue"
-        :title="item.itemName"
-        :thumb="'http://img.gaoshanmall.com/static/resource/'+item.itemImg"
-        :origin-price="item.salePrice"
-      ></van-card>
-    </div>
-    <div style="height:15px;"></div>
-    <van-cell-group>
-      <van-cell title="订单编号" :value="detailData.orderVo.code"/>
-      <van-cell title="下单时间" :value="detailData.orderVo.createTime"/>
-      <van-cell title="订单状态" :value="goodsType"/>
-      <van-cell
-        v-if="detailData.orderVo.paymentInfos.length>0"
-        title="支付方式"
-        :value="detailData.orderVo.paymentInfos[0].paymentType"
-      />
-      <van-cell
-        v-if="detailData.orderVo.paymentInfos.length>0"
-        title="支付时间"
-        :value="detailData.orderVo.paymentInfos[0].createTime"
-      />
-      <van-cell title="配送方式" value="暂无"/>
-      <van-cell title="发票类型" value="暂无"/>
-    </van-cell-group>
-    <div style="height:15px;"></div>
-    <van-cell-group class="total">
-      <van-cell title="商品总额" :value="detailData.orderVo.totalSalesPrice"/>
-      <van-cell title="运费" :value="detailData.orderVo.actualFreight"/>
-      <van-cell title="实付金额" :value="detailData.orderVo.totalActure" style="font-weight: 700;"/>
-    </van-cell-group>
-    <div class="footer">
-      <div class="munu">
-        
-        <van-button size="small" v-if="detailData.typeData.btnShow[0]">提醒商家发货</van-button>
-        <van-button size="small" @click="sureGet" v-if="detailData.typeData.btnShow[1]">确认收货</van-button>
-        <van-button
-          size="small"
-          type="danger"
-          @click="cancelOrder"
-          v-if="detailData.typeData.btnShow[3]"
-        >取消订单</van-button>
-        <van-button
-          size="small"
-          type="danger"
-          v-if="detailData.typeData.btnShow[2]"
-        >支付</van-button>
-        
+  <div>
+    <!-- 第一个板块 -->
+    <van-panel title="提货信息" >
+      <div class="item">
+        <div class="left">
+          提货时间
+        </div>
+        <div class="right">
+          预计2019-6-25(周二)可提货
+        </div>
       </div>
-    </div>
+      <div class="item">
+        <div class="left">
+          团长信息
+        </div>
+        <div class="right">
+          宋雪 13082227657
+        </div>
+      </div>
+      <div class="item">
+        <div class="left">
+          提货地点
+        </div>
+        <div class="right">
+          兴隆大厦醒了大厦对对对王
+        </div>
+      </div>
+    </van-panel>
+    <!-- 第二个板块 -->
+    <van-panel title="商品信息" >
+      <div class="item">
+        <div class="left">
+          提货时间
+        </div>
+        <div class="right">
+          预计2019-6-25(周二)可提货
+        </div>
+      </div>
+      
+    </van-panel>
   </div>
 </template>
 
@@ -223,8 +188,5 @@ export default {
 };
 </script>
 <style>
-    .munu{
-        display: flex;
-        justify-content: space-around;
-    }
+    
 </style>

@@ -61,7 +61,7 @@
       :duration="600"
     >
       <div class="filterInner" style="overflow-y: scroll;height: 100vh; width: 85vw; ">
-        <div class="item">
+        <!-- <div class="item">
           <div class="itemTitle">
             <div>价格区间</div>
           </div>
@@ -72,8 +72,8 @@
             >-</div>
             <input placeholder-class="center" placeholder="最高价  ">
           </div>
-        </div>
-        <div class="item" v-for="(group, grouPindex) in filterList" :key="grouPindex">
+        </div> -->
+        <div class="item" v-show="filterList.length>0" v-for="(group, grouPindex) in filterList" :key="grouPindex">
           <div class="itemTitle" @click="showTabber(grouPindex)">
             <div style="width: 40%; float: left;">{{group.label}}</div>
             <van-icon
@@ -104,13 +104,15 @@
             style="text-align: center;width: 47%; float: left; margin-left: 1%; margin-right: 2%"
             round
             type="danger"
+            @click="resetFq()"
           >重置</van-button>
           <van-button
             size="small"
             style="text-align: center;width: 47%; float: left; margin-left: 2%;"
             round
             type="primary"
-          >搜索</van-button>
+            @click="popupShow=false"
+          >确认</van-button>
         </div>
       </div>
     </van-popup>
@@ -267,7 +269,12 @@ export default {
     onClose() {
       this.popupShow = false;
     },
-
+    //重置筛选项
+    resetFq() {
+      this.aeo = "";
+      this.popupShow = false;
+      this.getAllData();
+    },
     // 筛选项之间用a 筛选项和筛选项值用e链接 筛选项值之间用o
     // 1e44o45a2
     // 例如：单选两个 condition: 1e3a2e3 ； 单选多选各一个 condition: 1e3 a 2e3o5
@@ -363,8 +370,8 @@ export default {
   }
 }
 .activeSearch {
-	background: #b4282d !important;
-	color: #fff!important;
+  background: #b4282d !important;
+  color: #fff !important;
 }
 .sortnav {
   display: flex;
@@ -468,8 +475,8 @@ export default {
       height: 30px;
       padding-left: 10px;
       overflow: hidden;
-	    z-index: 999;
-	    background: #fff;
+      z-index: 999;
+      background: #fff;
     }
     input {
       float: left;

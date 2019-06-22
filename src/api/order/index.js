@@ -63,3 +63,15 @@ export const toPay = params => {
     },
   });
 };
+//下单后根据code查询订单ID
+export const afterOrderDetail = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `trade/ActOrd/afterOrderDetail`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};

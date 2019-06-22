@@ -71,7 +71,7 @@
         src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png"
         alt
       >
-      <p style="text-align:center;">购物车中空空如也,快去点击我购物吧!</p>
+      <p style="text-align:center;">购物车中空空如也,快点击我去购物吧!</p>
     </div>
 
     <div class="fixed">
@@ -103,6 +103,9 @@ import {
 } from "../../api/shoppingcart";
 export default {
   onShow() {
+    wx.removeTabBarBadge({
+      index: 3
+    });
     this.openId = getStorageOpenid();
     this.getListData();
     this.cartShow = false;
@@ -115,29 +118,19 @@ export default {
       storeId: "", //店铺ID
       listData: [], //
       shopList: null, //购物车列表 分店铺
-      cartShow:false,//购物车为空模块是否显示
+      cartShow: false, //购物车为空模块是否显示
       select: [], //已选中的商品集合
       Listids: [],
-      userInfo: {},
-      tranX: 0,
-      tranX1: 0,
-      startX: "",
-      startY: "",
-      moveX: "",
-      moveY: "",
-      moveEndX: "",
-      moveEndY: "",
-      X: 0,
-      Y: ""
+      userInfo: {}
     };
   },
   components: {},
   methods: {
     //跳转到商城首页
-    toIndex(){
+    toIndex() {
       wx.switchTab({
-          url: '/pages/index/main'
-        })
+        url: "/pages/index/main"
+      });
     },
     // 加商品
     plusGoodsNum(goods) {
@@ -201,8 +194,11 @@ export default {
           shoppingCartIds: shoppingCartIds
         };
         let model = JSON.stringify(params);
+        wx.setStorageSync("orderParams", model);
+        wx.setStorageSync("orderFrom", "shoppingcart");
+
         wx.navigateTo({
-          url: "/pages/order/main?from=shoppingcart&params=" + model
+          url: "/pages/order/main"
         });
       } else {
         console.log("请选择商品");
@@ -213,7 +209,7 @@ export default {
       wx.showModal({
         title: "",
         content: "是否从购物车中删除该商品",
-        success: (res)=> {
+        success: res => {
           if (res.confirm) {
             let params = {
               skuId: sku.skuId
@@ -227,7 +223,6 @@ export default {
               .catch(err => {});
           } else if (res.cancel) {
             console.log("用户点击取消");
-
           }
         }
       });
@@ -251,7 +246,7 @@ export default {
             this.shopList = [];
             this.cartShow = true;
           }
-           wx.hideLoading();
+          wx.hideLoading();
         })
         .catch(err => {
           wx.hideLoading();
@@ -285,13 +280,13 @@ export default {
         ? (group.storeAllCheck = true)
         : (group.storeAllCheck = false);
 
-      let allCheckFlag = true; 
-      this.shopList.map((v) => {
-        if(v.storeAllCheck==false){
+      let allCheckFlag = true;
+      this.shopList.map(v => {
+        if (v.storeAllCheck == false) {
           allCheckFlag = false;
         }
-      })
-      allCheckFlag==true?(this.allCheck=true):(this.allCheck=false);
+      });
+      allCheckFlag == true ? (this.allCheck = true) : (this.allCheck = false);
     },
     //店铺全选
     storeChange(group) {
@@ -311,13 +306,13 @@ export default {
           flag = false;
         }
       });
-      let allCheckFlag = true; 
-      this.shopList.map((v) => {
-        if(v.storeAllCheck==false){
+      let allCheckFlag = true;
+      this.shopList.map(v => {
+        if (v.storeAllCheck == false) {
           allCheckFlag = false;
         }
-      })
-      allCheckFlag==true?(this.allCheck=true):(this.allCheck=false); 
+      });
+      allCheckFlag == true ? (this.allCheck = true) : (this.allCheck = false);
       // flag == true ? (this.allChek = true) : (this.allCheck = false);
     },
     //所有全选

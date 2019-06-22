@@ -30,7 +30,6 @@
 
     <div class="bottom">
       <div @click="wxaddress(1)">+新建地址</div>
-      <div @click="wxaddress">一键导入微信地址</div>
     </div>
   </div>
 </template>

@@ -365,8 +365,10 @@ export default {
                 storeId: this.selectSkuData.storeId
               };
               let model = JSON.stringify(params);
+              wx.setStorageSync("orderParams", model);
+              wx.setStorageSync("orderFrom", 'goodsDetail');
               wx.navigateTo({
-                url: "/pages/order/main?from=goodsDetail&params=" + model
+                url: "/pages/order/main"
               });
             } else {
               wx.showToast({
