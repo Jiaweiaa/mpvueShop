@@ -1,11 +1,18 @@
 <template>
   <div class="my">
     <div class="myinfo">
-      <img @click="toLogin" :src="avator" alt>
-      <div @click="toLogin">
-        <p>董昊澎</p>
-        <p v-if="userInfo.nickname">点击登录</p>
-        <p v-else>微信用户</p>
+      <div style="width: 130rpx;height: 130rpx;border-radius: 50%;overflow: hidden;">
+        <open-data style="width:130rpx;height:130rpx;border-raduis:50%;" type="userAvatarUrl"></open-data>
+      </div>
+      <div>
+        <div v-if="userInfo.nickname">
+          <p>{{userInfo.nickname}}</p>
+          <p style="color:#fff;">
+            <open-data type="userProvince" lang="zh_CN"></open-data>省
+            <open-data type="userCity" lang="zh_CN"></open-data>市
+          </p>
+        </div>
+        <p v-else @click="toLogin">点击登录</p>
       </div>
     </div>
     <div class="myMenu boxMenu">
@@ -20,7 +27,7 @@
           :key="index"
           v-for="(item, index) in orderMenu"
         >
-          <van-icon size="30px" :name="item.icon"/>
+          <van-icon size="30px" :info="item.total" :name="item.icon"/>
           <div class="childText">{{item.title}}</div>
         </div>
       </div>
@@ -65,6 +72,7 @@
 <script>
 import { get, toLogin, login } from "../../utils";
 import { shoppingcartCount } from "../../api/shoppingcart";
+import { findOrderNum } from "../../api/myOrder";
 export default {
   onShow() {
     this.getCartGoodsNum();
@@ -72,6 +80,16 @@ export default {
     if (login()) {
       this.userInfo = login();
       this.avator = this.userInfo.avatarUrl;
+      findOrderNum().then((res) => {
+        // console.log(res,222)
+        let result = res.data.result;
+        this.$set(this.orderMenu[0],"total",result.waitPayCount);
+        this.$set(this.orderMenu[1],"total",result.waitReciveCount);
+        this.$set(this.orderMenu[2],"total",result.waitSendCount);
+        this.$set(this.orderMenu[3],"total",result.waitBackCount);
+      }).catch((err) => {
+        
+      });
     }
   },
   created() {},
@@ -122,37 +140,37 @@ export default {
           title: "我是团长",
           icon: "manager-o",
           url: "/pages/teamView/main"
-        },{
+        },
+        {
           title: "供应商招募",
           icon: "user-o",
           url: "/pages/beGive/main"
-        }],
-        
-        avator: "http://yanxuan.nosdn.127.net/8945ae63d940cc42406c3f67019c5cb6.png",
-        allcheck: false,
-        Listids: [],
-        userInfo: {}
-       
-      };
-    },
-    components: {},
-    methods: {
-      goTo(url) {
-        if (toLogin()) {
-          wx.navigateTo({
-            url: url
-          });
         }
-      },
-      toLogin() {
-        if (!this.userInfo.avatarUrl) {
-          wx.navigateTo({
-            url: "/pages/login/main"
-          });
-        }
-      }
+      ],
 
-  
+      avator:
+        "http://yanxuan.nosdn.127.net/8945ae63d940cc42406c3f67019c5cb6.png",
+      allcheck: false,
+      Listids: [],
+      userInfo: {}
+    };
+  },
+  components: {},
+  methods: {
+    goTo(url) {
+      if (toLogin()) {
+        wx.navigateTo({
+          url: url
+        });
+      }
+    },
+    toLogin() {
+      if (!this.userInfo.avatarUrl) {
+        wx.navigateTo({
+          url: "/pages/login/main"
+        });
+      }
+    }
   },
   components: {},
   methods: {

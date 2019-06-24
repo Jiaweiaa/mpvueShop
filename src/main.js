@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App'
+import 'weapp-cookie' //解决小程序不能自动保存服务端的cookie问题
 
 //全局处理重复页面跳转详情初始化,和详情跳详情返回的bug
 import MyPlugin from './minxins'

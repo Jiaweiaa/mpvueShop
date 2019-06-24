@@ -114,10 +114,10 @@
     <!-- 商品分类 -->
     <van-popup
       @click-overlay="aaa()"
-      :show="popupShow"
+      :show="searchPopupShow"
       position="right"
       class="filterlayer"
-      @close="onClose"
+      @close="searchPopupClose"
       :duration="600"
     >
       <div class="filterInner" style="overflow-y: scroll;height: 100vh; width: 85vw; ">
@@ -261,13 +261,14 @@ export default {
       pageNum: 1,
       loading: false,
       allCount: "",
-      popupShow: false
+      searchPopupShow: false
     };
   },
   components: {},
   methods: {
-    aaa(){
-      console.log(321);
+    //关闭筛选遮罩层
+    searchPopupClose(){
+      this.searchPopupShow = false;
     },
     //重置筛选项
     resetFq() {
@@ -406,7 +407,7 @@ export default {
       } else if (index == 0) {
         this.order = "LIST_TIME-DESC";
       } else {
-        this.popupShow = true;
+        this.searchPopupShow = true;
       }
       this.getlistData();
       console.log(this.filterList);

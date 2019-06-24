@@ -109,6 +109,7 @@ export default {
     this.openId = getStorageOpenid();
     this.getListData();
     this.cartShow = false;
+    this.allCheck = false;
   },
   created() {},
   data() {

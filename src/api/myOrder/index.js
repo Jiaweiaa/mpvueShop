@@ -53,4 +53,15 @@ export const writeOff = params => {
   });
 };
 
+//获取各种订单数量
+export const findOrderNum = params => {
+  return fly.request({
+    url: `/trade/ActOrd/findOrderNum`,
+    method: "post",
+    body: params,
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+};
 
