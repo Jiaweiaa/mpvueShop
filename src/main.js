@@ -59,7 +59,10 @@ export default {
       "pages/myCommunity/main",  // 团长 我的社区
       "pages/teamReaking/main",  // 团长我的 团长排行
       "pages/orderDetail/main",  // 订单详情
-      "pages/lookDetail/main"    // 团长我的 查看详情
+      "pages/lookDetail/main",   // 团长我的 查看详情
+      "pages/withdraw/main",     //  提现
+      "pages/integral/main",     // 积分管理
+      "pages/integralList/main"  // 积分明细列表
     ],
     "window": {
       "backgroundTextStyle": "light",

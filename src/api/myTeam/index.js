@@ -65,3 +65,16 @@ export const getCommissonRecordPage = params => {
     },
   });
 };
+
+// 提现
+export const toWithdrawal = params => {
+  return fly.request({
+    url: `/shop/withdraw/toWithdrawal`,
+    method: "post",
+    body: params,
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+};
+

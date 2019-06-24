@@ -128,7 +128,13 @@ export default {
           title: "地址管理",
           icon: "home-o",
           url: "/pages/address/main"
-        }
+        },
+        {
+          title: "积分管理",
+          icon: "after-sale",
+          url: "/pages/integral/main"
+        },
+	      
       ],
       moreService: [
         {

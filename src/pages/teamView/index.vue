@@ -97,9 +97,15 @@
     },
     methods: {
       goTo(url) {
-        wx.navigateTo({
-          url: url
-        });
+        if(url == '/pages/my/main') {
+          wx.switchTab({
+	          url: url
+          })
+        }else {
+          wx.navigateTo({
+            url: url
+          });
+        }
       },
 	    
 	    // 详情

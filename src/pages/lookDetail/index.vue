@@ -9,7 +9,7 @@
 		    <p>未到账佣金</p>
 		    <p>{{teamData.undrawnCommission}}元</p>
 	    </div>
-	    <van-button style="position: absolute; right: 20px; bottom: 50px;" size="small" custom-class="btnClass" round plain type="default">申请提现</van-button>
+	    <van-button style="position: absolute; right: 20px; bottom: 50px;" size="small" @click="getWithdraw" custom-class="btnClass" round plain type="default">申请提现</van-button>
     </div>
 	  <div class="boxMenu">
 		  <van-tabs color="#ab2b2b" @change="tabChange">
@@ -21,7 +21,7 @@
 					  <div>
 						  <div class="item" v-for="(item, index) in listData" :key="index">
 							  <div class="box">
-								  <div class="title">到账佣金</div>
+								  <div class="title">{{item.commissionType == 3 ? '提现佣金' : '到账佣金'}}</div>
 								  <div class="money">{{item.commission}}</div>
 								  <div class="date">{{item.createTime}}</div>
 							  </div>
@@ -36,7 +36,7 @@
 					  </div>
 				  </div>
 			  </van-tab>
-			  <van-tab title="提现记录">
+			  <van-tab title="未到账佣金">
 				  <div class="noData" v-if="listData <= 0">
 					  没有数据啦～
 				  </div>
@@ -44,7 +44,7 @@
 					  <div>
 						  <div class="item" v-for="(item, index) in listData" :key="index">
 							  <div class="box">
-								  <div class="title">到账佣金</div>
+								  <div class="title">未到账佣金</div>
 								  <div class="money">{{item.commission}}</div>
 								  <div class="date">{{item.createTime}}</div>
 							  </div>
@@ -118,6 +118,12 @@
       wx.stopPullDownRefresh(); //停止下拉刷新
     },
     methods: {
+      // 去提现
+      getWithdraw() {
+        wx.navigateTo({
+          url: "/pages/withdraw/main"
+        });
+      },
       // 获取数据
       async getData() {
         wx.showLoading({
