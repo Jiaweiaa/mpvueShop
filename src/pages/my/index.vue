@@ -163,23 +163,6 @@ export default {
   },
   components: {},
   methods: {
-    goTo(url) {
-      if (toLogin()) {
-        wx.navigateTo({
-          url: url
-        });
-      }
-    },
-    toLogin() {
-      if (!this.userInfo.avatarUrl) {
-        wx.navigateTo({
-          url: "/pages/login/main"
-        });
-      }
-    }
-  },
-  components: {},
-  methods: {
     //获取购物车中的商品数量
     getCartGoodsNum() {
       shoppingcartCount()

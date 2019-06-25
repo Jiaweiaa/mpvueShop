@@ -1,13 +1,13 @@
 let Fly = require("flyio/dist/npm/wx");
 let fly = new Fly();
 // fly.config.baseURL = " http://47.104.173.227:8003";
-fly.config.baseURL = " http://192.168.0.10:8003";
-// fly.config.baseURL = " http://192.168.3.29:8003";
+fly.config.baseURL = " http://192.168.43.102:8003";
+// fly.config.baseURL = " http://192.168.1.174:8003";
 // http://47.104.173.227:8003
 //http://192.168.0.10:8003
 // fly.config.withCredentials = true //允许携带cookie
 fly.interceptors.request.use(
-  config => { 
+  config => {
     if (wx.getStorageSync("token") != "") {
       let token = wx.getStorageSync("token");
       config.headers.Authorization = "Bearer " + token;
@@ -29,7 +29,23 @@ fly.interceptors.request.use(
 );
 fly.interceptors.response.use(
   response => {
-    // console.log(response);
+    console.log(response.data, 999);
+    //登录状态已失效
+    if (response.data == "") {
+      wx.showModal({
+        title: "提示",
+        content: "登录状态已失效是否重新登录",
+        success:(res)=> {
+          if (res.confirm) {
+            wx.navigateTo({
+              url: "/pages/login/main"
+            });
+          } else if (res.cancel) {
+            console.log("用户点击取消");
+          }
+        }
+      });
+    }
     //只将请求结果的data字段返回
     return response;
   },
@@ -41,10 +57,10 @@ fly.interceptors.response.use(
     //   wx.navigateTo({
     //     url: "/pages/login/main"
     //   });
-    // } 
-     wx.navigateTo({
-        url: "/pages/login/main"
-      });
+    // }
+    //  wx.navigateTo({
+    //     url: "/pages/login/main"
+    //   });
     //发生网络错误后会走到这里
     //return Promise.resolve("ssss")
   }

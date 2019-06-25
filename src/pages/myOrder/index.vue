@@ -385,12 +385,7 @@ export default {
       // 1是立即支付  2是取消订单 3查看详情 4查看物流
       findAllOrders(params)
         .then(res => {
-          if (wx.getStorageSync("g_i") == "") {
-            let sourceCookie = res.headers["set-cookie"][0];
-            let index = sourceCookie.indexOf(";");
-            let myCookie = sourceCookie.substring(0, index);
-            wx.setStorageSync("g_i", myCookie);
-          }
+          
           this.list = res.data.result.orders.records;
 
           this.list.map(order => {

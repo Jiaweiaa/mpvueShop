@@ -82,11 +82,9 @@ import fly from "../../api/request";
 let querystring = require("querystring");
 let deviceId = new Date().getTime();
 export default {
+
   onShow() {
     this.getDefaultAddress();
-    // this.address = wx.getStorageSync("address");
-  },
-  mounted() {
     if (wx.getStorageSync("orderFrom") && wx.getStorageSync("orderParams")) {
       this.from = wx.getStorageSync("orderFrom");
       this.params = JSON.parse(wx.getStorageSync("orderParams"));
@@ -224,9 +222,9 @@ export default {
           params.type = 2;
           params.buyType = "N";
         }
-        // console.log(this.orderLines,222);
+    
         let orderTab = params.type;
-        // params.orderLines.push(this.orderLines);
+
 
         //创建订单方法 成功则调用    captainID
         //如果存在收货地址 则可以下单 否则让用户选择收货地址

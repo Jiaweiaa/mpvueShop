@@ -63,25 +63,28 @@
 
       p {
         display: block;
-        text-align: center;
+        // text-align: center;
       }
-
       p:nth-child(1) {
-        font-size: 41rpx;
-        padding: 20rpx;
+        margin-top: 10rpx;
+        font-size: 42rpx;
+        color: #b4282d;
+        padding: 5rpx 20rpx;
+        padding-top: 15rpx;
       }
-
       p:nth-child(2) {
-        margin-bottom: 25rpx;
-        font-size: 24rpx;
-        color: #999;
+        font-size: 36rpx;
+        padding: 5rpx 20rpx;
       }
 
       p:nth-child(3) {
-        margin-top: 10rpx;
-        font-size: 35rpx;
-        color: #b4282d;
+        margin-bottom: 25rpx;
+        font-size: 24rpx;
+        color: #999;
+        padding: 5rpx 20rpx;
       }
+
+      
 
       .brand {
         margin-top: 25rpx;

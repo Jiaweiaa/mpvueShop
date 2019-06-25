@@ -23,9 +23,10 @@
     </div>
     <div class="goods-info">
       <div class="c">
+        <p>￥{{goodsInfo.salePrice}}</p>
         <p>{{goodsInfo.title}}</p>
         <p>{{goodsInfo.sketch}}</p>
-        <p>￥{{goodsInfo.salePrice}}</p>
+        
         <!--<div v-if="brand.name" class="brand">-->
         <!--<p>{{brand.name}}</p>-->
         <!--</div>-->
@@ -95,7 +96,8 @@
         </div>
         <div class="right">
           <div>
-            <p>价格￥{{nowPrice}}</p>
+            <p>￥{{nowPrice}}</p>
+            <p v-if="selectSkuData!=null">库存:{{selectSkuData.quantity}}</p>
           </div>
         </div>
         <div @click="showType" class="close">X</div>
@@ -182,8 +184,9 @@ import {
   orderconfirm
 } from "../../api/shoppingcart";
 export default {
-  onLoad() {
+  onShow() {
     //判断是否登录获取用户信息
+    
     if (login()) {
       this.userInfo = login();
     }
@@ -193,6 +196,10 @@ export default {
     this.openId = getStorageOpenid();
     this.getCartGoodsNum();
     this.goodsDetail();
+  },
+  onHide(){
+    console.log("页面被隐藏");
+    // this.showpop = false;
   },
   data() {
     return {
@@ -380,7 +387,7 @@ export default {
           }
         }
       } else if (this.flag == "addCart") {
-        console.log(this.selectSkuData);
+        console.log(this.selectSkuData,1111);
 
         if (toLogin()) {
           if (this.showpop) {
@@ -432,6 +439,7 @@ export default {
         itemId: this.id
       })
         .then(res => {
+          this.keys = [];
           const data = res.data.result;
           this.goods_desc = data.item.itemChannel.description; //详情描述富文本
           this.goodsList = data.item.pdpPropertiesCommands;
@@ -476,7 +484,7 @@ export default {
               };
             }
           });
-          console.log(this.data);
+          console.log(this.data,5656);
           this.queryDGoodsById();
         })
         .catch(err => {
@@ -739,7 +747,7 @@ export default {
         if (v.properties == haveChangedId) {
           //  console.log(v, 1)
           this.selectSkuData = v;
-          console.log(this.selectSkuData);
+          console.log(this.selectSkuData,333);
         }
       });
     }

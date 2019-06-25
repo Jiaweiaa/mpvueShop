@@ -145,22 +145,22 @@ export default {
     ...mapState(["cityName"])
   },
   mounted() {
-    wx.login({
-      success: res => {
-        if (res.code) {
-          let params = {
-            code: res.code
-          };
-          littleAppLogin(params)
-            .then(res => {
-              console.log(res);
-            })
-            .catch(err => {});
-        } else {
-          console.log("登录失败！" + res.errMsg);
-        }
-      }
-    });
+    // wx.login({
+    //   success: res => {
+    //     if (res.code) {
+    //       let params = {
+    //         code: res.code
+    //       };
+    //       littleAppLogin(params)
+    //         .then(res => {
+    //           console.log(res);
+    //         })
+    //         .catch(err => {});
+    //     } else {
+    //       console.log("登录失败！" + res.errMsg);
+    //     }
+    //   }
+    // });
     this.getCityName();
     this.getData();
   },
