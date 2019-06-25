@@ -6,9 +6,10 @@
 				mode="scaleToFill"
 				:src="teamData.avatar ? teamData.avatar : 'http://m.360buyimg.com/pop/jfs/t25639/76/221614415/35426/e4e1d66a/5b6974a6N56a3b40d.jpg'">
 			</image>
+			<open-data :type="teamData.avatar" ></open-data>
 			<div class="title">{{teamData.name}}<van-tag style="margin-left: 5px;" color="#fff" mark plain>{{teamData.city}}</van-tag></div>
 			<div class="myAddress">我的社区: {{teamData.community}}</div>
-			<div class="money">总佣金:<span style="color: red; margin-left: 10px; font-size: 16px">{{teamData.commission}}</span></div>
+			<div class="money">总佣金:<span style="color: red; margin-left: 10px; font-size: 16px">¥&nbsp;{{teamData.commission}}</span></div>
 			<div class="rank">第<span style="padding: 0 5px; display:inline-block; font-size: 28px">{{reakingNum	}}</span>名</div>
 		</div>
 		<div class="list">
@@ -21,7 +22,7 @@
 				</image>
 				<div class="title">{{item.name}}<van-tag style="margin-left: 5px;" color="#ab2b2b" mark plain>{{item.city}}</van-tag></div>
 				<div class="myAddress">社区: {{item.community}}</div>
-				<div class="money">{{item.commission}}</div>
+				<div class="money">¥&nbsp;{{item.commission}}</div>
 				<div class="all">总佣金</div>
 			</div>
 			<div style="width: 100%; text-align: center;margin-top: 5px;">
@@ -94,6 +95,7 @@
         });
         let myData = await myDetile();
         this.teamData = myData.data.result;
+        this.teamData.avatar ='http:' + this.teamData.avatar;
         let captData = await getCaptainPageByCommission();
         this.reakingList = captData.data.result.captainDtos.records;
         this.allCount = captData.data.result.captainDtos.total;

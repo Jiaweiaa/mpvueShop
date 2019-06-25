@@ -8,7 +8,7 @@
     </div>
     <div class="item">
       <picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem">
-        <input type="text" placeholder="身份、城市、区县" v-model="address">
+        <input type="text" readonly placeholder="身份、城市、区县" v-model="address">
       </picker>
     </div>
     <!-- <view class="section">
@@ -33,6 +33,8 @@
     <div @click="saveAddress" class="bottom">
       保存
     </div>
+	
+	  <van-notify id="van-notify" />
   </div>
 </template>
 
@@ -42,7 +44,7 @@ import {
   post,
   getStorageOpenid
 } from "../../utils";
-
+import Notify from '../../../static/vant/notify/notify';
 import {
   insertOrEditMemAddress
 } from '../../api/address/index'
@@ -66,7 +68,7 @@ export default {
   data() {
     return {
       region: [],
-      customItem: "全部",
+      customItem: "",
       edit: "",
       openId: "",
       res: {},
@@ -90,49 +92,50 @@ export default {
       this.userName = data.firstName;
       this.telNumber = data.mobile;
       this.address = data.province + " " + data.district + " " + data.city;
+      this.areaList.push(data.province);
+      this.areaList.push(data.district);
+      this.areaList.push(data.city);
       this.detailadress = data.address;
       this.checked = data.defalutFlag;
+      t
     },
     checkboxChange(e) {
      this.checked = !this.checked;
     },
     async saveAddress() {
       var _this = this;
-      // var obj = {
-      //   userName: _this.userName,
-      //   telNumber: _this.telNumber,
-      //   address: _this.address,
-      //   detailadress: _this.detailadress,
-      //   checked: _this.checked,
-      //   openId: _this.openId,
-      //   addressId: _this.id
-      // };
-      const res = await insertOrEditMemAddress({
-        firstName: _this.userName,
-        mobile: _this.telNumber,
-        defalutFlag: _this.checked,
-        address: _this.detailadress,
-        province: _this.areaList[0],
-        city: _this.areaList[1],
-        district: _this.areaList[2],
-  
-        id: _this.id,
-        openId: _this.openId
-      });
-     
-      if (res.data.code == 200) {
-        wx.showToast({
-          title: "添加成功", //提示的内容,
-          icon: "success", //图标,
-          duration: 2000, //延迟时间,
-          mask: true, //显示透明蒙层，防止触摸穿透,
-          success: res => {
-            wx.navigateBack({
-              delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-            });
-          }
+      
+      if(this.userName && this.telNumber && this.areaList.length > 0 && this.detailadress ) {
+        const res = await insertOrEditMemAddress({
+          firstName: _this.userName,
+          mobile: _this.telNumber,
+          defalutFlag: _this.checked,
+          address: _this.detailadress,
+          province: _this.areaList[0],
+          city: _this.areaList[1],
+          district: _this.areaList[2],
+          id: _this.id,
+          openId: _this.openId
         });
+
+        if (res.data.code == 200) {
+          wx.showToast({
+            title: "添加成功", //提示的内容,
+            icon: "success", //图标,
+            duration: 2000, //延迟时间,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+            success: res => {
+              wx.navigateBack({
+                delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+              });
+            }
+          });
+        }
+      }else {
+        Notify('请填写完整');
       }
+	     
+    
     },
     wxaddress() {
       var _this = this;

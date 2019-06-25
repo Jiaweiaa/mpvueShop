@@ -1,7 +1,7 @@
 <template>
   <div class="index">
 	  
-	  <van-tabs @change="changeTab" v-if="onLoadLoading">
+	  <van-tabs @change="changeTab" >
 		  <van-tab title="未使用">
 			  <noDataView v-if="(couponList.length <=0  && onLoadLoading == false)"></noDataView>
 			  <div class="quan clear" v-if="couponList.length > 0" v-for="(item, index) in couponList" :key="index">
@@ -74,11 +74,11 @@
         wx.showLoading({
 	        title: '数据加载中'
         });
-        this.onLoadLoading = false;
+        this.onLoadLoading = true;
         getMemberCoupon().then(res => {
           this.list = res.data.result;
           this.couponList = this.list.couponsUnUsed;
-          this.onLoadLoading = true;
+          this.onLoadLoading = false
           wx.hideLoading();
         })
       },

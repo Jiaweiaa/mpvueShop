@@ -39,13 +39,13 @@ export default {
       "pages/myOrder/main",
       "pages/orderDetail/main",
       "pages/team/main",     // 团长订单
-      "pages/index/main",
+      "^pages/index/main",
       "pages/teamView/main",  //团长 我的主页
       "pages/search/main",
       "pages/my/main",            // 我的
       "pages/login/main",
       "pages/refund/main",
-      "^pages/refundOrder/main",
+      "pages/refundOrder/main",
       "pages/category/main",
       "pages/beTeam/main",       // 成为团长
       "pages/beGive/main",       // 成为供应商

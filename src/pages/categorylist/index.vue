@@ -219,6 +219,9 @@ export default {
 
     // 获取数据
     async getAllData() {
+      wx.showLoading({
+        title: "加载中"
+      });
       const res = await searchItem({
         navid: this.categoryId,
         p: this.pageNum,
@@ -229,6 +232,7 @@ export default {
       this.currentNav = {};
       this.goodsList = this.navData.itemDocs;
       this.allCount = res.data.result.totalElements;
+      wx.hideLoading();
       this.goodsList.map(v => {
         v.img = JSON.parse(v.image)[0].images[0];
       });
@@ -239,6 +243,7 @@ export default {
           v.isShowAll = false;
         }
       });
+    
     },
 
     // 商品详情

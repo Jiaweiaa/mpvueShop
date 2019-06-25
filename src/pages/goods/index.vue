@@ -97,7 +97,7 @@
         <div class="right">
           <div>
             <p>￥{{nowPrice}}</p>
-            <p v-if="selectSkuData!=null">库存:{{selectSkuData.quantity}}</p>
+            <p>库存:{{quantity}}</p>
           </div>
         </div>
         <div @click="showType" class="close">X</div>
@@ -223,6 +223,7 @@ export default {
       flag: "",
       selectSkuData: null, //已选中的sku对象
       goodsNum: 1,
+      quantity: '-',
       keys: [
         // {
         //   name: "颜色",
@@ -747,7 +748,7 @@ export default {
         if (v.properties == haveChangedId) {
           //  console.log(v, 1)
           this.selectSkuData = v;
-          console.log(this.selectSkuData,333);
+          this.quantity = this.selectSkuData.quantity;
         }
       });
     }
