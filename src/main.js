@@ -38,11 +38,11 @@ export default {
       "pages/address/main",
       "pages/myOrder/main",
       "pages/orderDetail/main",
-      "pages/team/main",
-      "^pages/index/main",
+      "pages/team/main",     // 团长订单
+      "pages/index/main",
       "pages/teamView/main",  //团长 我的主页
       "pages/search/main",
-      "pages/my/main",            // 我的
+      "^pages/my/main",            // 我的
       "pages/login/main",
       "pages/category/main",
       "pages/beTeam/main",       // 成为团长
@@ -62,7 +62,8 @@ export default {
       "pages/lookDetail/main",   // 团长我的 查看详情
       "pages/withdraw/main",     //  提现
       "pages/integral/main",     // 积分管理
-      "pages/integralList/main"  // 积分明细列表
+      "pages/integralList/main",  // 积分明细列表
+      "pages/giver/main"
     ],
     "window": {
       "backgroundTextStyle": "light",

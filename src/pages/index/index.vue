@@ -134,7 +134,6 @@
 <script>
 import amapFile from "../../utils/amap-wx";
 import { littleAppLogin } from "../../api/login";
-import { get } from "../../utils";
 import { mapState, mapMutations } from "vuex";
 import { shoppingcartCount } from "../../api/shoppingcart";
 export default {

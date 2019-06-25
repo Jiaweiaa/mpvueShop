@@ -3,7 +3,8 @@ function formatNumber(n) {
   return str[1] ? str : `0${str}`
 }
 
-export function formatTime(date) {
+export function formatTime(getDate) {
+  const date = new Date(getDate)
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
@@ -12,10 +13,14 @@ export function formatTime(date) {
   const minute = date.getMinutes()
   const second = date.getSeconds()
 
-  const t1 = [year, month, day].map(formatNumber).join('/')
+  const t1 = [year, month, day].map(formatNumber).join('-')
   const t2 = [hour, minute, second].map(formatNumber).join(':')
 
-  return `${t1} ${t2}`
+  const arr = {
+    year: t1,
+    hours: t2
+  };
+  return arr
 }
 
 
@@ -66,7 +71,7 @@ export function post(url, data) {
 
 
 export function toLogin() {
-  const userInfo = wx.getStorageSync('userInfo');
+  const userInfo = wx.getStorageSync("token");
   if (!userInfo) {
     wx.navigateTo({
       url: "/pages/login/main"
@@ -94,9 +99,6 @@ export function getStorageOpenid() {
     return ''
   }
 }
-
-
-
 
 export function getOpenid() {
   // wx.login({

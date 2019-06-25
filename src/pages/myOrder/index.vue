@@ -102,7 +102,7 @@
 
 <script>
 import { findAllOrders } from "../../api/myOrder";
-import { orderDetail, confirmReceive, cancleOrder } from "../../api/order";
+import {  confirmReceive, cancleOrder } from "../../api/order";
 import noDataView from "../../components/noDataView/index";
 
 export default {

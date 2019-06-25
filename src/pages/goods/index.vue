@@ -169,7 +169,7 @@
 </template>
 
 <script>
-import { get, post, toLogin, login, getStorageOpenid } from "../../utils";
+import { toLogin, login, getStorageOpenid } from "../../utils";
 import { getGoodsDetail } from "../../api/home";
 import wxParse from "mpvue-wxparse";
 import {
