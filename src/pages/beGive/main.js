@@ -5,9 +5,10 @@ const app = new Vue(App)
 app.$mount()
 export default {
   config: {
-    navigationBarTitleText: 'heyushuo',
+    navigationBarTitleText: '成为供应商',
     "usingComponents": {
-      'van-toast': '/static/vant/toast/index'
+      'van-toast': '/static/vant/toast/index',
+      "van-button": "/static/vant/button/index"
     }
   }
 }

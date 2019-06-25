@@ -29,9 +29,8 @@
 			</label>
 			<input type="text" v-model="teamForm.address" placeholder="请输入详细地址">
 		</div>
-		<div @click="submitMes" class="bottom">
-			提交申请
-		</div>
+	
+		<van-button custom-class="btnStyle" class="btnView" :loading="btnLoading" loading-text="提交中..."  @click="submitMes" type="primary">提交申请</van-button>
 	</div>
 </template>
 
@@ -61,7 +60,8 @@
           address: '',
           name: '',
           mobile: ''
-        }
+        },
+        btnLoading: false
       };
     },
     components: {},
@@ -70,13 +70,12 @@
       async submitMes() {
         for(let i in this.teamForm) {
           if(this.teamForm[i] == '') {
-            wx.showToast({
-              title: '请填写表单' //提示的内容,
-            });
+            Toast('请填写表单');
             return ;
           }
         }
-        
+        if(this.btnLoading) return;
+        this.btnLoading = true;
         const res = await addSupplier(this.teamForm)
         if(res.data.code == 200) {
           wx.showToast({
@@ -101,6 +100,7 @@
             title: res.message //提示的内容,
           });
         }
+        this.btnLoading = false;
       },
     },
     computed: {}
@@ -110,11 +110,24 @@
 
 <style lang='scss' scoped>
 	@import "./style";
-
 </style>
-<style>
-	.beTeam .van-toast {
-		color: #fff !important;
+<style lang="scss">
+	.van-toast {
+		view, text {
+			color: #fff;
+		}
 	}
-
+	.btnStyle {
+		width: 90%;
+		margin: 70px 0 0 5%;
+	}
+	.btnView {
+		.van-button {
+			background: #ab2b2b!important;
+			border: 1px solid #ab2b2b!important;
+			view, text {
+				color: #fff;
+			}
+		}
+	}
 </style>

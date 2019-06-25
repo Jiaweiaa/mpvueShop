@@ -12,7 +12,7 @@
             <open-data type="userCity" lang="zh_CN"></open-data>市
           </p>
         </div>
-        <p v-else @click="toLogin">点击登录</p>
+        <p v-else @click="goToLogin">点击登录</p>
       </div>
     </div>
     <div class="myMenu boxMenu">
@@ -27,7 +27,7 @@
           :key="index"
           v-for="(item, index) in orderMenu"
         >
-          <van-icon size="30px" :info="item.total" :name="item.icon"/>
+          <van-icon size="30px" :info="item.total == 0 ? '': item.total" :name="item.icon"/>
           <div class="childText">{{item.title}}</div>
         </div>
       </div>
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { get, toLogin, login } from "../../utils";
+import { toLogin, login } from "../../utils";
 import { shoppingcartCount } from "../../api/shoppingcart";
 import { findOrderNum } from "../../api/myOrder";
 export default {
@@ -81,19 +81,15 @@ export default {
       this.userInfo = login();
       this.avator = this.userInfo.avatarUrl;
       findOrderNum().then((res) => {
-        // console.log(res,222)
         let result = res.data.result;
         this.$set(this.orderMenu[0],"total",result.waitPayCount);
         this.$set(this.orderMenu[1],"total",result.waitReciveCount);
         this.$set(this.orderMenu[2],"total",result.waitSendCount);
         this.$set(this.orderMenu[3],"total",result.waitBackCount);
       }).catch((err) => {
-        
       });
     }
   },
-  created() {},
-  mounted() {},
   data() {
     return {
       orderMenu: [
@@ -151,6 +147,11 @@ export default {
           title: "供应商招募",
           icon: "user-o",
           url: "/pages/beGive/main"
+        },
+        {
+          title: "我是供应商",
+          icon: "friends-o",
+          url: "/pages/giver/main"
         }
       ],
 
@@ -161,7 +162,6 @@ export default {
       userInfo: {}
     };
   },
-  components: {},
   methods: {
     //获取购物车中的商品数量
     getCartGoodsNum() {
@@ -180,14 +180,13 @@ export default {
         .catch(err => {});
     },
     goTo(url) {
-      console.log(url);
       if (toLogin()) {
         wx.navigateTo({
           url: url
         });
       }
     },
-    toLogin() {
+    goToLogin() {
       if (!this.userInfo.avatarUrl) {
         wx.navigateTo({
           url: "/pages/login/main"
