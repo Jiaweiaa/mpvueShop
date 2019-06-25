@@ -138,8 +138,14 @@
     </div>
     <!-- 操作区 -->
     <div class="fixed">
-      <button class="plain" @click="orderShow=true">取消订单</button>
-      <button class="danger" @click="pay()">立即支付</button>
+      <button
+        class="plain"
+        @click="orderShow=true"
+        v-show="detailData.typeData.type.indexOf(4) !== -1"
+      >取消订单</button>
+      <button class="danger" @click="pay()" v-show="detailData.typeData.type.indexOf(1) !== -1">提醒商家发货</button>
+      <button class="danger" @click="pay()" v-show="detailData.typeData.type.indexOf(2) !== -1">确认收货</button>
+      <button class="danger" @click="pay()" v-show="detailData.typeData.type.indexOf(3) !== -1">立即支付</button>
     </div>
     <!-- 弹出层 -->
     <van-popup :show="orderShow" id="orderPop" position="bottom" @close="resonClose">
@@ -380,9 +386,8 @@ export default {
           this.detailData.orderVo.orderLines.map(goods => {
             goods.propertiesValue = goods.propertiesValue.toArr();
           });
-          console.log(this.detailData);
+          console.log(this.detailData,656);
           // 1. 催货 2. 确认收获  3. 支付 4.取消订单
-          this.showFlag = false;
           if (this.detailData.orderVo.logisticsStatus == 6) {
             this.$set(this.detailData, "typeData", {
               title: "商家已发货",
@@ -451,6 +456,7 @@ export default {
               btnShow: [false, false, false, false]
             });
           }
+         
         }
       })
       .catch(err => {});
@@ -586,7 +592,7 @@ export default {
     cancelOrder() {
       wx.showLoading();
       cancleOrder({
-        orderCode: this.detailData.orderVo.scmCode,
+        orderCode: this.detailData.orderVo.code,
         reason: this.reason
       })
         .then(res => {
