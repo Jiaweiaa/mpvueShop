@@ -3,14 +3,14 @@ let querystring = require("querystring");
 let deviceId = new Date().getTime();
 
 // 购物车列表
-export const insertOrEditMemAddress = params => {
+export const shoppingCartList = params => {
   return fly.request({
     url: "/trade/shoppingcart/shoppingCartList",
     method: "post",
     headers: {
       "Content-Type": "application/json"
     },
-    body: params
+   
   });
 };
 // 添加购物车

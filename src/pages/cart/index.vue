@@ -91,7 +91,7 @@
 <script>
 import { get, post, login, getStorageOpenid } from "../../utils";
 import {
-  insertOrEditMemAddress,
+  shoppingCartList,
   addShoppingcart,
   shoppingcartCount,
   delShoppingcart,
@@ -231,7 +231,7 @@ export default {
     //获取购物车数据
     async getListData() {
       wx.showLoading();
-      insertOrEditMemAddress()
+      shoppingCartList()
         .then(res => {
           if (res.data.code == "200") {
             this.shopList =
