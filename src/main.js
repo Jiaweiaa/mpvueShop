@@ -39,7 +39,7 @@ export default {
       "pages/myOrder/main",
       "pages/orderDetail/main",
       "pages/team/main",     // 团长订单
-      "pages/index/main",
+      "^pages/index/main",
       "pages/teamView/main",  //团长 我的主页
       "pages/search/main",
       "pages/my/main",            // 我的

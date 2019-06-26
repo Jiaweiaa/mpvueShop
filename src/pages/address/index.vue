@@ -42,10 +42,10 @@
 
 <script>
 import { get, getStorageOpenid } from "../../utils";
-import { getMemAddressList, setDefaultAddress } from '../../api/address';
+import { getMemAddressList, setDefaultAddress, deleteMemAddress } from '../../api/address';
 export default {
   onShow() {
-    this.openId = getStorageOpenid();
+    // this.openId = getStorageOpenid();
     this.getAddressList();
   },
   created() {},
@@ -55,11 +55,13 @@ export default {
   },
   data() {
     return {
+      chosenAddressId: '',
       scrollflag: true,
       nowIndex: 0,
       userInfo: {},
       imgUrl: "",
       listData: [],  //地址列表
+      list: [],
       tranX: 0,
       tranX1: 0,
       startX: "",
@@ -111,7 +113,6 @@ export default {
       //滑动之前先初始化样式数据
       this.initTextStyle();
       var index = e.currentTarget.dataset.index;
-      console.log(this.X);
       if (this.X <= -100) {
         this.flag = true;
       }
@@ -139,16 +140,12 @@ export default {
         this.tranX = this.X - 100;
         this.listData[index].textStyle = `transform:translateX(${this.tranX}rpx);`;
         // transform:'translateX(' + tranX + 'rpx)'
-        console.log("heyushuo");
-
-        console.log(this.listData[index].textStyle);
 
         if (this.X + -100 > -100) {
           this.flag = false;
         }
         this.tranX1 = -100;
         this.listData[index].textStyle1 = `transform:translateX(-100rpx);`;
-        console.log(this.listData[index].textStyle1);
         // this.listData = this.listData;
       }
 
@@ -208,28 +205,18 @@ export default {
     
     async getAddressList() {
       getMemAddressList().then(res => {
-          if (res.data.code == 200) {
-            this.showFlag = false;
-            this.listData = res.data.result;
-            for (let i = 0; i < this.list.length; i++) {
-              this.listData[i].name = this.list[i].firstName;
-              this.listData[i].tel = this.list[i].mobile;
-              if(this.listData[i].defalutFlag == true) {
-                this.chosenAddressId = this.listData[i].id;
-              }
+        if (res.data.code == 200) {
+          this.listData = res.data.result;
+          for (let i = 0; i < this.listData.length; i++) {
+            this.list[i] = {};
+            this.listData[i].name = this.list[i].firstName;
+            this.listData[i].tel = this.list[i].mobile;
+            if(this.listData[i].defalutFlag == true) {
+              this.chosenAddressId = this.listData[i].id;
             }
           }
-        })
-      // var _this = this;
-      // const data = await get("/address/getListAction", {
-      //   openId: _this.openId
-      // });
-      // for (var i = 0; i < data.data.length; i++) {
-      //   data.data[i].textStyle = "";
-      //   data.data[i].textStyle1 = "";
-      // }
-      // this.listData = data.data;
-      console.log(this.listData);
+        }
+      })
     },
     wxaddress(index) {
       if (index == 1) {

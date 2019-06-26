@@ -3,11 +3,11 @@
     <div class="myinfo">
 	    <div class="myMoney">
 		   <p>我的佣金</p>
-		   <p>{{teamData.commission}}</p>
+		   <p>¥&nbsp;{{teamData.commission}}</p>
 	     </div>
 	    <div class="noMoney">
 		    <p>未到账佣金</p>
-		    <p>{{teamData.undrawnCommission}}</p>
+		    <p>¥&nbsp;{{teamData.undrawnCommission}}</p>
 	    </div>
 	    <van-button style="position: absolute; right: 20px; bottom: 50px;" @click="goToDetail" size="small" custom-class="btnClass" round plain type="default">查看详情</van-button>
     </div>

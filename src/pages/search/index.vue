@@ -372,6 +372,9 @@ export default {
       this.tipsearch();
     },
     async getlistData() {
+      wx.showLoading({
+        title: "加载中"
+      });
       //获取商品列表
       const res = await searchItem({
         k: this.words,
@@ -381,12 +384,12 @@ export default {
       });
       this.navData = res.data.result;
       this.listData = res.data.result.itemDocs;
+      wx.hideLoading();
       this.allCount = res.data.result.totalElements;
       this.listData.map(v => {
         v.img = JSON.parse(v.image)[0].images[0];
       });
       this.filterList = this.navData.facetFilter.facetFilterLineList;
-      console.log(this.filterList, 999);
       this.filterList.map((v, index) => {
         v.isShowAll = true;
         if (index > 2) {
