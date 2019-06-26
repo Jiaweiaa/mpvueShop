@@ -1,11 +1,54 @@
 <template>
   <div class="page" v-if="detailData!=null">
-    <div class="bg">
+    <!--付款之后或COD  发货之前 取消订单 -->
+    <div class="bg" v-if="detailData.newestRefund!=null&&detailData.orderVo.type=='3'">
       <h3>
         <van-icon custom-class="colorW" name="underway"/>
-        {{detailData.displayOrderStatusTips}}
+        <span>取消订单：正在处理申请</span>
       </h3>
-      <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3>
+      <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
+    </div>
+    <!-- 退货 -->
+    <div
+      class="bg"
+      v-if="detailData.newestRefund!=null&&detailData.newestRefund.type == '1' &&  detailData.newestRefund.status !='2' && detailData.newestRefund.status !='4' && detailData.newestRefund.status !='9' && detailData.newestRefund.status !='10'"
+    >
+      <h3>
+        <van-icon custom-class="colorW" name="underway"/>退货状态：
+        <span>{{detailData.displayRefundTips }}</span>
+      </h3>
+      <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
+    </div>
+    <div
+      class="bg"
+      v-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type == '1' &&  detailData.refundProcessing.status !='2' && detailData.refundProcessing.status !='4' && detailData.refundProcessing.status !='9' && detailData.refundProcessing.status !='10'"
+    >
+      <h3>
+        <van-icon custom-class="colorW" name="underway"/>退货状态：
+        <span>{{detailData.displayRefundTips }}</span>
+      </h3>
+      <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
+    </div>
+    <!-- 换货  -->
+    <div
+      class="bg"
+      v-if="detailData.newestRefund!=null&&detailData.newestRefund.type == '2' &&  detailData.newestRefund.status !='2' && detailData.newestRefund.status !='4' && detailData.newestRefund.status !='9' && detailData.newestRefund.status !='10'"
+    >
+      <h3>
+        <van-icon custom-class="colorW" name="underway"/>换货状态：
+        <span>{{detailData.displayRefundTips }}</span>
+      </h3>
+      <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
+    </div>
+    <div
+      class="bg"
+      v-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type == '2' &&  detailData.refundProcessing.status !='2' && detailData.refundProcessing.status !='4' && detailData.refundProcessing.status !='9' && detailData.refundProcessing.status !='10'"
+    >
+      <h3>
+        <van-icon custom-class="colorW" name="underway"/>换货状态：
+        <span>{{detailData.displayRefundTips }}</span>
+      </h3>
+      <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
     <!-- 第一个板块 -->
     <div class="info">
@@ -88,6 +131,19 @@
               </div>
               <div class="goods-num">
                 <span>数量:{{goods.quantity}}</span>
+                <button
+                  @click="applyRefund(goods)"
+                  class="refundBtn"
+                  v-if="detailData.orderVo.logisticsStatus=='6'&&detailData.orderVo.financialStatus=='3'&&goods.reType==null&&goods.reStatus==null"
+                >退货</button>
+                <button
+                  class="refundBtn"
+                  v-if="detailData.orderVo.logisticsStatus=='6'&&detailData.orderVo.financialStatus=='3'&&goods.reType=='1'&&goods.reStatus!='8'"
+                >退货中</button>
+                <button
+                  class="refundBtn"
+                  v-if="detailData.orderVo.logisticsStatus=='6'&&detailData.orderVo.financialStatus=='3'&&goods.reType=='1'&&goods.reStatus=='8'"
+                >已退货</button>
               </div>
             </div>
           </div>
@@ -138,14 +194,10 @@
     </div>
     <!-- 操作区 -->
     <div class="fixed">
-      <button
-        class="plain"
-        @click="orderShow=true"
-        v-show="detailData.typeData.type.indexOf(4) !== -1"
-      >取消订单</button>
-      <button class="danger" @click="pay()" v-show="detailData.typeData.type.indexOf(1) !== -1">提醒商家发货</button>
-      <button class="danger" @click="pay()" v-show="detailData.typeData.type.indexOf(2) !== -1">确认收货</button>
-      <button class="danger" @click="pay()" v-show="detailData.typeData.type.indexOf(3) !== -1">立即支付</button>
+      <button class="plain" @click="orderShow=true" v-if="detailData.typeData.btnShow[3]">取消订单</button>
+      <button class="danger" @click="pay()" v-show="detailData.typeData.btnShow[0]">提醒商家发货</button>
+      <button class="danger" @click="pay()" v-show="detailData.typeData.btnShow[1]">确认收货</button>
+      <button class="danger" @click="pay()" v-show="detailData.typeData.btnShow[2]">立即支付</button>
     </div>
     <!-- 弹出层 -->
     <van-popup :show="orderShow" id="orderPop" position="bottom" @close="resonClose">
@@ -169,6 +221,14 @@
   </div>
 </template>
 <style lang='scss'>
+.refundBtn {
+  width: 120rpx;
+  height: 48rpx;
+  border: 1rpx solid rgba(153, 153, 153, 1);
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  line-height: 48rpx;
+}
 #orderPop {
   .van-radio {
     justify-content: flex-end !important;
@@ -383,10 +443,16 @@ export default {
       .then(res => {
         if (res.data.code == 200) {
           this.detailData = res.data.result;
-          this.detailData.orderVo.orderLines.map(goods => {
-            goods.propertiesValue = goods.propertiesValue.toArr();
-          });
-          console.log(this.detailData,656);
+          // this.detailData.title = this.detailData.displayOrderStatusTips;
+          this.$set(
+            this.detailData,
+            "title",
+            this.detailData.displayOrderStatusTips
+          );
+          // this.detailData.orderVo.orderLines.map(goods => {
+          //   goods.propertiesValue = goods.propertiesValue.toArr();
+          // });
+
           // 1. 催货 2. 确认收获  3. 支付 4.取消订单
           if (this.detailData.orderVo.logisticsStatus == 6) {
             this.$set(this.detailData, "typeData", {
@@ -456,7 +522,7 @@ export default {
               btnShow: [false, false, false, false]
             });
           }
-         
+          // console.log(this.detailData.eventList.includes('orderPayEvent'),656);
         }
       })
       .catch(err => {});
@@ -474,6 +540,15 @@ export default {
   },
   components: {},
   methods: {
+    //申请退货
+    applyRefund(goods) {
+      console.log(goods);
+      wx.setStorageSync("refundGoods", goods);
+      wx.setStorageSync("orderInfo", this.detailData.orderVo);
+      wx.navigateTo({
+        url: "/pages/refund/main"
+      });
+    },
     //取消订单遮罩层关闭
     resonClose() {
       this.orderShow = false;
