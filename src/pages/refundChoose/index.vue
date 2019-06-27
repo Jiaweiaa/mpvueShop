@@ -1,60 +1,40 @@
 <template>
-  <div class="page">
-    <!-- 第二个板块 -->
-    <div class="info">
-      <div class="header">
-        <p>退货商品</p>
-        <p>
-          <button class="addBtn">添加/编辑</button>
-        </p>
-      </div>
-      <div class="body">
-        <div class="borderT"></div>
-        <div class="store-info">
-          <div class="goods">
-            <div class="goods-item">
-              <div class="img-box">
-                <img :src="'http://qn.gaoshanmall.cn/'" alt>
-              </div>
-              <div class="goods-info">
-                <h3 class="van-ellipsis" style="font-size:26rpx;">商品名称啊啊</h3>
-                <p>
-                  <span style="font-size:21rpx;">商品属性</span>
-                </p>
-                <p>
-                  <span style="font-size:23rpx;">￥111</span>
-                  <span style="text-decoration:line-through;color:#999;font-size:22rpx;">￥111</span>
-                </p>
-              </div>
-              <div class="goods-num">
-                <span>数量:222</span>
-              </div>
+  <div class="cart">
+    <!-- 购物车中所选的该店铺商品 -->
+    <div>
+      <van-cell-group>
+        <van-cell>
+          <div style="display:flex;">
+            <div style="margin:auto 0;">
+              <div class="icon" ></div>
             </div>
+            <van-card
+              style="width: 100%;"
+              num="999"
+              price="999"
+              desc="描述信息"
+              title="我是个商品"
+              thumb="'http://qn.gaoshanmall.cn/"
+            >
+              <div slot="footer">
+                <!-- <div>￥  {{item.salePrice}}</div> -->
+                <van-stepper integer :min="1" :step="1"/>
+              </div>
+            </van-card>
           </div>
+        </van-cell>
+      </van-cell-group>
+      <div class="fixed">
+        <div style="margin-left:15px;">
+          <div class="icon"></div>
+        </div>
+
+        <div>全选</div>
+        <div class="right">
+          <div style="min-width:170px;"></div>
+          <div>确定</div>
         </div>
       </div>
-    </div>
-    <div class="refund-cell">
-      <div class="title">退货原因</div>
-      <div class="item">
-        <p>请选择退货原因</p>
-      </div>
-    </div>
-    <div class="refund-cell">
-      <div class="title">订单退款</div>
-      <div class="item">
-        <p>退款金额:￥456.00</p>
-        <p>
-          退款说明:
-          <input type="text" placeholder="选填">
-        </p>
-      </div>
-    </div>
-    <div class="hint">
-      <p>温馨提示:</p>
-      <p>• 商品寄回地址将在审核通过后以短信形式告知，或在退换货订单详情中查询。</p>
-      <p>• 提交退货订单后，售后专员可能与您电话沟通，请保持手机畅通</p>
-      <p>• 退货处理成功后退款金额将原路返回到您的付款账户中</p>
     </div>
   </div>
 </template>
@@ -506,3 +486,6 @@
 // };
 </script>
 
+<style lang='scss' scoped>
+@import "./style";
+</style>

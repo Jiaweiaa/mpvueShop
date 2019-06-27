@@ -82,7 +82,6 @@ import fly from "../../api/request";
 let querystring = require("querystring");
 let deviceId = new Date().getTime();
 export default {
-
   onShow() {
     this.getDefaultAddress();
     if (wx.getStorageSync("orderFrom") && wx.getStorageSync("orderParams")) {
@@ -222,9 +221,8 @@ export default {
           params.type = 2;
           params.buyType = "N";
         }
-    
-        let orderTab = params.type;
 
+        let orderTab = params.type;
 
         //创建订单方法 成功则调用    captainID
         //如果存在收货地址 则可以下单 否则让用户选择收货地址
@@ -255,7 +253,6 @@ export default {
                 toPay(params)
                   .then(res => {
                     wx.hideLoading();
-
                     //如果调用toPay方法成功 则拉起微信登录方法获取code传给后台并调用
                     if (res.data.code == "200") {
                       let params = {
@@ -326,6 +323,9 @@ export default {
                               })
                               .catch(err => {
                                 wx.hideLoading();
+                                wx.redirectTo({
+                                  url: "/pages/myOrder/main"
+                                });
                               });
                           } else {
                             console.log("登录失败！" + res.errMsg);
@@ -339,6 +339,9 @@ export default {
                   })
                   .catch(err => {
                     wx.hideLoading();
+                    wx.redirectTo({
+                      url: "/pages/myOrder/main"
+                    });
                   });
               }
             })
