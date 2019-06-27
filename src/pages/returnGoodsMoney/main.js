@@ -5,7 +5,7 @@ const app = new Vue(App);
 app.$mount();
 export default {
   config: {
-    navigationBarTitleText: "订单详情",
+    navigationBarTitleText: "退款详情",
     usingComponents: {
       "van-tab": "/static/vant/tab/index",
       "van-tabs": "/static/vant/tabs/index",
@@ -18,7 +18,8 @@ export default {
       "van-radio": "/static/vant/radio/index",
       "van-radio-group": "/static/vant/radio-group/index",
       "van-popup": "/static/vant/popup/index",
-      "van-panel": "/static/vant/panel/index"
+      "van-panel": "/static/vant/panel/index",
+      "van-steps": "/static/vant/steps/index"
     }
   }
 };

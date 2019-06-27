@@ -28,6 +28,7 @@ export default {
       }
     },
     "pages": [
+      "pages/index/main",
       "pages/feedback/main",
       "pages/order/main",
       "^pages/cart/main",
@@ -39,14 +40,14 @@ export default {
       "pages/myOrder/main",
       "pages/orderDetail/main",
       "pages/team/main",     // 团长订单
-      "pages/index/main",
+      "pages/returnGoods/main",
+      "pages/returnGoodsMoney/main",
       "pages/teamView/main",  //团长 我的主页
       "pages/search/main",
-      "pages/my/main",            // 我的
+      "^pages/my/main",            // 我的
       "pages/login/main",
       "pages/refund/main",
       "pages/refundOrder/main",
-      "pages/refundChoose/main",
       "pages/category/main",
       "pages/beTeam/main",       // 成为团长
       "pages/beGive/main",       // 成为供应商
@@ -113,7 +114,7 @@ export default {
     },
     "permission": {
       "scope.userLocation": {
-        "desc": "你的位置信息将用于小程序学习使用"
+        "desc": "你的位置信息将用于给您提供服务"
       }
     }
   }

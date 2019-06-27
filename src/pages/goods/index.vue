@@ -186,7 +186,6 @@ import {
 export default {
   onShow() {
     //判断是否登录获取用户信息
-    
     if (login()) {
       this.userInfo = login();
     }
@@ -196,13 +195,14 @@ export default {
     this.openId = getStorageOpenid();
     this.getCartGoodsNum();
     this.goodsDetail();
-  },
-  onHide(){
-    console.log("页面被隐藏");
-    // this.showpop = false;
+		if(wx.getStorageSync('userInfo')) {
+      this.level = wx.getStorageSync('userInfo').level;
+		}
   },
   data() {
     return {
+      level: 1,
+      
       allnumber: 0, //购物车商品数量
       openId: "",
       collectFlag: false,
@@ -299,11 +299,31 @@ export default {
   },
   //商品转发
   onShareAppMessage() {
+    let that =this;
     return {
-      // title: this.info.name,
-      path: "/pages/goods/main?id=" + this.info.id,
-      imageUrl: this.gallery[0].img_url //拿第一张商品的图片
-    };
+      title: '商品转发', // 转发后 所显示的title
+      path: '/pages/group/index', // 相对的路径
+      success: (res)=>{    // 成功后要做的事情
+        console.log(res.shareTickets[0])
+        // console.log
+
+        wx.getShareInfo({
+          shareTicket: res.shareTickets[0],
+          success: (res)=> {
+            that.setData({
+              isShow:true
+            })
+            console.log(that.setData.isShow)
+          },
+          fail: function (res) { console.log(res) },
+          complete: function (res) { console.log(res) }
+        })
+      },
+      fail: function (res) {
+        // 分享失败
+        console.log(res)
+      }
+    }
   },
   components: {
     wxParse
@@ -388,8 +408,6 @@ export default {
           }
         }
       } else if (this.flag == "addCart") {
-        console.log(this.selectSkuData,1111);
-
         if (toLogin()) {
           if (this.showpop) {
             if (this.selectSkuData != null) {
@@ -478,6 +496,7 @@ export default {
             array.map(vv => {
               str += vv + ";";
             });
+            console.log(v);
             if (v.quantity > 0) {
               this.data[str.substring(0, str.length - 1)] = {
                 price: v.salePrice,

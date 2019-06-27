@@ -35,7 +35,7 @@
 							>
 								<view slot="footer">
 									<van-button plain round @click.stop="detailOrder(value)" class="childBtn" size="small" v-if="value.typeData.seeBtn">查看订单</van-button>
-									<van-button plain round @click.stop="payBtn(value)" type="primary" class="childBtn" size="small" v-if="value.typeData.giveBtn">核销</van-button>
+									<van-button plain round @click.stop="payBtn(value)" type="primary" class="childBtn" size="small" v-if="getActive == 2">核销</van-button>
 								</view>
 							</van-card>
 						</div>
@@ -101,7 +101,7 @@
                 order.typeData = {
                   title: "交易成功",
                   canBtn: false,
-                  giveBtn: true,
+                  giveBtn: false,
                   seeBtn: true
                 }
               }else if(order.logisticsStatus==9 && order.financialStatus==3) {
@@ -167,10 +167,10 @@
 	      pageNum: 1,
 	      list: [],
 	      searchVal: '',
-		    getActive: '',
+		    getActive: '3',
 	      allCount: '',
 	      loading: false,
-	      tabs:['全部','待发货','待核销', "已核销"],
+	      tabs:['待发货','待核销', "已核销"],
 	      resultCheck: [],
 	      onLoadLoading: false,
 	    };
@@ -298,15 +298,13 @@
 	    },
 		  // tab数据改变
 	    onChange(val) {
-		    if(val.target.index == 1) {
+		    if(val.target.index == 0) {
 	        this.getActive = 3;
-	      } else if(val.target.index == 2) {
+	      } else if(val.target.index == 1) {
 	        this.getActive = 2;
-	      }else  if(val.target.index == 3) {
+	      }else  if(val.target.index == 2) {
 	        this.getActive = 4;
-	      }else {
-	        this.getActive = 0;
-		    }
+	      }
 	      this.currentActive = val.target.index;
 	      this.pageNum = 1;
 	      this.list = [];

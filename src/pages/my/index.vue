@@ -59,6 +59,7 @@
           class="childContent"
           @click="goTo(item.url)"
           :key="index"
+          v-show="item.isShow"
           v-for="(item, index) in moreService"
         >
           <van-icon size="30px" :name="item.icon"/>
@@ -89,6 +90,27 @@ export default {
       }).catch((err) => {
       });
     }
+	  if(wx.getStorageSync("isCap")) {
+      if(wx.getStorageSync("isCap") == false) {
+        this.moreService[0].isShow = true;
+        this.moreService[1].isShow = false;
+      }else {
+        this.moreService[0].isShow = false;
+        this.moreService[1].isShow = true;
+      }
+      if(wx.getStorageSync("isSup") == false) {
+        this.moreService[2].isShow = true;
+        this.moreService[3].isShow = false;
+      }else {
+        this.moreService[2].isShow = false;
+        this.moreService[3].isShow = true;
+      }
+	  }else {
+      this.moreService[0].isShow = true;
+      this.moreService[1].isShow = false;
+      this.moreService[2].isShow = true;
+      this.moreService[3].isShow = false;
+	  }
   },
   data() {
     return {
@@ -136,22 +158,26 @@ export default {
         {
           title: "团长招募",
           icon: "manager-o",
-          url: "/pages/beTeam/main"
+          url: "/pages/beTeam/main",
+	        isShow: ''
         },
         {
           title: "我是团长",
           icon: "manager-o",
-          url: "/pages/teamView/main"
+          url: "/pages/teamView/main",
+          isShow: ''
         },
         {
           title: "供应商招募",
           icon: "user-o",
-          url: "/pages/beGive/main"
+          url: "/pages/beGive/main",
+          isShow: ''
         },
         {
           title: "我是供应商",
           icon: "friends-o",
-          url: "/pages/giver/main"
+          url: "/pages/giver/main",
+          isShow: ''
         }
       ],
 

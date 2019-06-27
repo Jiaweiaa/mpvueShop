@@ -1,7 +1,7 @@
 let Fly = require("flyio/dist/npm/wx");
 let fly = new Fly();
 // fly.config.baseURL = " http://47.104.173.227:8003";
-fly.config.baseURL = " http://192.168.0.10:8003";
+fly.config.baseURL = " http://192.168.0.16:8003";
 // fly.config.baseURL = " http://192.168.1.174:8003";
 // http://47.104.173.227:8003
 //http://192.168.0.10:8003
@@ -29,7 +29,6 @@ fly.interceptors.request.use(
 );
 fly.interceptors.response.use(
   response => {
-    console.log(response.data, 999);
     //登录状态已失效
     if (response.data == "") {
       wx.showModal({

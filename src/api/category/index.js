@@ -15,7 +15,7 @@ export const getNavigations = params => {
   });
 };
 
-// 获取菜单
+// 搜索商品
 export const searchItem = params => {
   let data = querystring.encode(params);
   return fly.request({
@@ -27,3 +27,17 @@ export const searchItem = params => {
     body: data
   });
 };
+
+// 热门搜索
+export const getKeyword = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: "/product/mallIndex/getKeyword",
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: data
+  });
+};
+

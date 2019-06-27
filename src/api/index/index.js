@@ -14,3 +14,17 @@ export const getDistance = params => {
   });
 };
 
+
+
+
+// 获取首页数据
+export const getIndexItem = params => {
+  return fly.request({
+    url: `/product/mallIndex/getIndexItem`,
+    method: "post",
+    body: params,
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+};

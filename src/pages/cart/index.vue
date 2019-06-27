@@ -21,7 +21,7 @@
           </div>
         </van-cell>
         <!-- 购物车中所选的该店铺商品 -->
-        <div v-for="(item,key) in group.shoppingCartLineDtos" :key="key">
+        <div class="cartView" v-for="(item,key) in group.shoppingCartLineDtos" :key="key">
           <van-swipe-cell :right-width="65">
             <van-cell-group>
               <van-cell>
@@ -34,7 +34,8 @@
                     ></div>
                   </div>
                   <van-card
-                    style="width: 100%;"
+	                  custom-class="cardStyle"
+	                  style="width: 100%;"
                     :num="item.quantity"
                     :price="item.salePrice"
                     desc="描述信息"
@@ -79,7 +80,7 @@
         <div class="icon" @click="allCheckChange()" :class="allCheck==true ? 'active' : ''"></div>
       </div>
 
-      <div>全选</div>
+      <div class="checkAll">全选</div>
       <div class="right">
         <div style="min-width:170px;">￥{{totalPrice}}</div>
         <div @click="goAccount">下单</div>
@@ -350,18 +351,29 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-@import "./style";
-.deleteBtn {
-  color: #fff !important;
-  font-size: 15px;
-  width: 65px;
-  height: 100%;
-  line-height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  line-height: 44px;
-  background-color: #f44;
-}
+	@import "./style";
+	.deleteBtn {
+	  color: #fff !important;
+	  font-size: 15px;
+	  width: 65px;
+	  height: 100%;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  text-align: center;
+	  line-height: 44px;
+	  background-color: #f44;
+	}
+	.cartView {
+		.cardStyle {
+			background: #fff;
+		}
+	}
+</style>
+<style lang="scss">
+	.van-card__bottom {
+		position: absolute;
+		left: -5px;
+		bottom: -25px;
+	}
 </style>
