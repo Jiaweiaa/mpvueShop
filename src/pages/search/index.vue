@@ -186,7 +186,7 @@
 
 <script>
 import { post, get } from "../../utils";
-import { searchItem } from "../../api/category/index";
+import { searchItem, getKeyword } from "../../api/category/index";
 
 export default {
   onShow() {
@@ -234,6 +234,7 @@ export default {
     });
     if (res.data.code == 200) {
       this.listData = res.data.result.itemDocs;
+      this.tipsData = this.listData;
       this.allCount = res.data.result.totalElements;
       this.listData.map(v => {
         v.img = JSON.parse(v.image)[0].images[0];
@@ -264,7 +265,6 @@ export default {
       searchPopupShow: false
     };
   },
-  components: {},
   methods: {
     //关闭筛选遮罩层
     searchPopupClose(){
@@ -384,18 +384,23 @@ export default {
       });
       this.navData = res.data.result;
       this.listData = res.data.result.itemDocs;
-      wx.hideLoading();
       this.allCount = res.data.result.totalElements;
-      this.listData.map(v => {
-        v.img = JSON.parse(v.image)[0].images[0];
-      });
+     
+      if(this.listData.length > 0) {
+        this.listData.map(v => {
+          v.img = JSON.parse(v.image)[0].images[0];
+        });
+      }
       this.filterList = this.navData.facetFilter.facetFilterLineList;
-      this.filterList.map((v, index) => {
-        v.isShowAll = true;
-        if (index > 2) {
-          v.isShowAll = false;
-        }
-      });
+      if(this.filterList.length > 0) {
+        this.filterList.map((v, index) => {
+          v.isShowAll = true;
+          if (index > 2) {
+            v.isShowAll = false;
+          }
+        });
+      }
+      wx.hideLoading();
       this.tipsData = [];
     },
     // 类型切换
@@ -413,7 +418,6 @@ export default {
         this.searchPopupShow = true;
       }
       this.getlistData();
-      console.log(this.filterList);
     },
     async clearHistory() {
       const data = await post("/search/clearhistoryAction", {
@@ -430,15 +434,18 @@ export default {
         openId: this.openid,
         keyword: value || this.words
       });
-      //获取历史数据
+      //获取人们数据
       this.getHotData();
       //获取商品列表
       this.getlistData();
     },
-    async getHotData(first) {
-      const data = await get("/search/indexaction?openId=" + this.openid);
-      this.hotData = data.hotKeywordList;
-      this.historyData = data.historyData;
+    async getHotData() {
+      const data = await getKeyword();
+      this.hotData = data.data.result;
+      console.log(this.hotData);
+
+
+      this.historyData = [];
     },
     async tipsearch(e) {
       const data = await get("/search/helperaction", {

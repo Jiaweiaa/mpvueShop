@@ -102,9 +102,13 @@
     line-height: 100rpx;
     width: 100%;
     background: #fff;
+    z-index: 999;
     display: flex;
     // justify-content: space-between;
     align-items: center;
+    .checkAll {
+      width: 35px;
+    }
     .left {
       display: flex;
       align-items: center;
@@ -113,8 +117,9 @@
       background-position: 20rpx;
       padding-left: 70rpx;
     }
-   
+
     .right {
+      overflow: hidden;
       display: flex;
       div:nth-child(1) {
         color: #b4282d;
