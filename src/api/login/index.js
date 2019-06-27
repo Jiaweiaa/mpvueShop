@@ -26,4 +26,17 @@ export const littleAppRegister = params => {
     body: params
   });
 };
+//解密手机号
+export const getPhoneNumber = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: "basic/auth/wechat/getPhoneNumber",
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: data
+  });
+};
+
 

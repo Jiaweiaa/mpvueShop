@@ -91,7 +91,7 @@ export default {
     if (wx.getStorageSync("userInfo")) {
       this.userInfo = Object.assign({}, wx.getStorageSync("userInfo"));
     }
-    wx.getStorage({
+    wx.getStorageSync({
       key: "data",
       success: res => {
         this.captainId = res.data.id;

@@ -3,8 +3,8 @@
     <!-- 第二个板块 -->
     <div class="info">
       <div class="header">
-        <p>订单编号:321321321321231</p>
-        <p>2019-06-25 21:00</p>
+        <p> <span>订单编号:</span> <span>{{orderInfo.orderVo.code}}</span> </p>
+        <p> <span>{{orderInfo.orderVo.createTime}}</span> </p>
       </div>
       <div class="body">
         <div class="borderT"></div>
@@ -15,17 +15,17 @@
                 <img :src="'http://qn.gaoshanmall.cn/'+goods.itemImg" alt>
               </div>
               <div class="goods-info">
-                <h3 class="van-ellipsis" style="font-size:26rpx;">商品名称啊啊</h3>
+                <h3 class="van-ellipsis" style="font-size:26rpx;">{{goods.itemName}}</h3>
                 <p>
-                  <span style="font-size:21rpx;">商品属性</span>
+                  <span style="font-size:21rpx;">{{goods.propertiesValue}}</span>
                 </p>
                 <p>
-                  <span style="font-size:23rpx;">￥111</span>
-                  <span style="text-decoration:line-through;color:#999;font-size:22rpx;">￥111</span>
+                  <span style="font-size:23rpx;">￥{{goods.listPrice}}</span>
+                  <span style="text-decoration:line-through;color:#999;font-size:22rpx;">￥{{goods.salePrice}}</span>
                 </p>
               </div>
               <div class="goods-num">
-                <span>数量:222</span>
+                <span>数量:{{goods.quantity}}</span>
               </div>
             </div>
           </div>
@@ -39,7 +39,7 @@
          <p>2019-06-25 19:66</p>
       </div>-->
       <div class="func-group">
-        <div class="func-item">
+        <div class="func-item" @click="toRefundOrder">
           <div class="icon">
             <van-icon name="cash-back-record"/>
           </div>
@@ -84,7 +84,7 @@
     width: 94%;
     padding-top: 1rpx;
     margin: 0 3%;
-    
+
     .func-item {
       display: flex;
       align-items: center;
@@ -253,28 +253,35 @@
 }
 </style>
 <script>
-
 import { createOrder, toPay, afterOrderDetail } from "../../api/order";
 import Toast from "../../../static/vant/toast/toast";
 
 export default {
-  onLoad: function(options) {
-   
-  },
+  onLoad: function(options) {},
   onShow() {
     this.goodsList = [];
-    this.goodsList.push(wx.getStorageSync('refundGoods'));
+    this.orderInfo = Object.assign({}, wx.getStorageSync("orderInfo"));
+    this.goods = Object.assign({}, wx.getStorageSync("refundGoods"));
+    console.log(this.goods,'000');
   },
   created() {},
   data() {
     return {
-      goodsList:[],//被点击的商品信息
-      orderInfo:{}
+      goods: {}, //被点击的商品信息
+      orderInfo: {}
     };
   },
   components: {},
   methods: {
-   
+    //去退款提交页
+    toRefundOrder(){
+      let refundGoodsList = [];
+      refundGoodsList.push(this.goods);
+      wx.setStorageSync("refundGoodsList", refundGoodsList);
+      wx.navigateTo({
+        url: "/pages/refundOrder/main"
+      });
+    }
   },
   computed: {}
 };

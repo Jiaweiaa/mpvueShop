@@ -194,10 +194,13 @@
     </div>
     <!-- 操作区 -->
     <div class="fixed">
-      <button class="plain" @click="orderShow=true" v-if="detailData.typeData.btnShow[3]">取消订单</button>
-      <button class="danger" @click="pay()" v-show="detailData.typeData.btnShow[0]">提醒商家发货</button>
-      <button class="danger" @click="pay()" v-show="detailData.typeData.btnShow[1]">确认收货</button>
-      <button class="danger" @click="pay()" v-show="detailData.typeData.btnShow[2]">立即支付</button>
+      <button class="plain" @click="orderShow=true" v-if="orderCancelBtn">取消订单</button>
+      <button class="danger" @click="pay()" v-if="confrimReciveBtn">确认收货</button>
+      <button class="danger" @click="pay()" v-if="orderPayBtn">立即支付</button>
+      <button class="danger" @click="pay()" v-if="orderDeleteBtn">删除订单</button>
+      <button class="danger" @click="pay()" v-if="applayOrderCancelBtn">申请取消订单</button>
+      <button class="danger" @click="pay()" v-if="applayAfterBtn">申请售后</button>
+      <button class="danger" @click="pay()" v-if="giveUpApplayBtn">放弃退换货</button>
     </div>
     <!-- 弹出层 -->
     <van-popup :show="orderShow" id="orderPop" position="bottom" @close="resonClose">
@@ -216,7 +219,7 @@
           </van-cell>
         </van-cell-group>
       </van-radio-group>
-      <button class="popBtn" @click="cancelOrder">提交</button>
+      <button class="popBtn" @click="cancelOrder">提 交</button>
     </van-popup>
   </div>
 </template>
@@ -228,6 +231,10 @@
   border-radius: 24rpx;
   font-size: 24rpx;
   line-height: 48rpx;
+  color: rgba(102, 102, 102, 1);
+  opacity: 0.6;
+  margin-top: 40rpx;
+  margin-left: 50rpx;
 }
 #orderPop {
   .van-radio {
@@ -449,80 +456,34 @@ export default {
             "title",
             this.detailData.displayOrderStatusTips
           );
-          // this.detailData.orderVo.orderLines.map(goods => {
-          //   goods.propertiesValue = goods.propertiesValue.toArr();
-          // });
 
-          // 1. 催货 2. 确认收获  3. 支付 4.取消订单
-          if (this.detailData.orderVo.logisticsStatus == 6) {
-            this.$set(this.detailData, "typeData", {
-              title: "商家已发货",
-              type: [2, 4],
-              btnShow: [false, true, false, true]
-            });
-          } else if (this.detailData.orderVo.logisticsStatus == 15) {
-            this.$set(this.detailData, "typeData", {
-              title: "商家已发货",
-              type: [],
-              btnShow: [false, false, false, false]
-            });
-          } else if (
-            this.detailData.orderVo.logisticsStatus == 9 &&
-            this.detailData.orderVo.financialStatus == 3
-          ) {
-            this.$set(this.detailData, "typeData", {
-              title: "商家已发货",
-              type: [],
-              btnShow: [false, false, false, false]
-            });
-          } else if (
-            this.detailData.orderVo.logisticsStatus == 9 &&
-            this.detailData.orderVo.financialStatus == 1
-          ) {
-            this.$set(this.detailData, "typeData", {
-              title: "商家已发货",
-              type: [],
-              btnShow: [false, false, false, false]
-            });
-          } else if (this.detailData.orderVo.logisticsStatus == 11) {
-            this.$set(this.detailData, "typeData", {
-              title: "商家已发货",
-              type: [],
-              btnShow: [false, false, false, false]
-            });
-          } else if (
-            this.detailData.orderVo.financialStatus == 1 &&
-            this.detailData.orderVo.paymentType != 1 &&
-            this.detailData.orderVo.logisticsStatus == 1
-          ) {
-            this.$set(this.detailData, "typeData", {
-              title: "商家已发货",
-              type: [3, 4],
-              btnShow: [false, false, true, true]
-            });
-          } else if (
-            (this.detailData.orderVo.financialStatus != 1 &&
-              this.detailData.orderVo.logisticsStatus == 1) ||
-            this.detailData.orderVo.logisticsStatus == 3 ||
-            this.detailData.orderVo.logisticsStatus == 4 ||
-            this.detailData.orderVo.logisticsStatus == 5
-          ) {
-            this.$set(this.detailData, "typeData", {
-              title: "商家已发货",
-              type: [1, 4],
-              btnShow: [true, false, false, true]
-            });
-          } else if (
-            this.detailData.orderVo.logisticsStatus == 10 &&
-            this.detailData.orderVo.financialStatus == 1
-          ) {
-            this.$set(this.detailData, "typeData", {
-              title: "商家已发货",
-              type: [],
-              btnShow: [false, false, false, false]
-            });
-          }
-          // console.log(this.detailData.eventList.includes('orderPayEvent'),656);
+          this.detailData.eventList.map(event => {
+            switch (event) {
+              case "orderCancelEvent":
+                this.orderCancelBtn = true; //取消订单
+                break;
+              case "orderPayEvent":
+                this.orderPayBtn = true; //立即支付
+                break;
+              case "orderDeleteEvent":
+                this.orderDeleteBtn = true; //删除订单
+                break;
+              case "applayOrderCancelEvent":
+                this.applayOrderCancelBtn = true; //申请取消订单
+                break;
+              case "applayAfterSaleEvent":
+                this.applayAfterBtn = true; //申请售后
+                break;
+              case "giveUpApplayEvent":
+                this.giveUpApplayBtn = true; //放弃退换货
+                break;
+              case "confrimReciveEvent":
+                this.confrimReciveBtn = true; //确认收货
+                break;
+              default:
+                break;
+            }
+          });
         }
       })
       .catch(err => {});
@@ -535,7 +496,14 @@ export default {
       reason: "我不想买了",
       orderShow: false, //弹出层是否显示
       //取消订单理由
-      reasons: ["我不想买了", "信息填写错误,重新购买", "买错了", "其他原因"]
+      reasons: ["我不想买了", "信息填写错误,重新购买", "买错了", "其他原因"],
+      orderCancelBtn: false, //取消订单按钮
+      orderPayBtn: false, //立即支付
+      orderDeleteBtn: false, //删除订单
+      applayOrderCancelBtn: false, //申请取消订单
+      applayAfterBtn: false, //申请售后
+      giveUpApplayBtn: false, //放弃退换货
+      confrimReciveBtn: false //确认收货
     };
   },
   components: {},
@@ -544,7 +512,7 @@ export default {
     applyRefund(goods) {
       console.log(goods);
       wx.setStorageSync("refundGoods", goods);
-      wx.setStorageSync("orderInfo", this.detailData.orderVo);
+      wx.setStorageSync("orderInfo", this.detailData);
       wx.navigateTo({
         url: "/pages/refund/main"
       });

@@ -12,7 +12,7 @@
         use-button-slot
         @change="mobileChange"
       >
-        <van-button slot="button" size="small" type="primary">获取本机号码</van-button>
+        <van-button slot="button" size="small" type="primary" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取本机号码</van-button>
       </van-field>
     </van-cell-group>
     <button class="login-btn" open-type="getUserInfo" lang="zh_CN" @getuserinfo="signIn">注册</button>
@@ -21,7 +21,7 @@
 
 <script>
 import { host } from "../../utils";
-import { littleAppLogin, littleAppRegister } from "../../api/login";
+import { littleAppLogin, littleAppRegister,getPhoneNumber } from "../../api/login";
 export default {
   created() {},
   onShow() {
@@ -40,6 +40,26 @@ export default {
   },
   components: {},
   methods: {
+    getPhoneNumber (e) {
+      let params = Object.assign({},e.mp.detail);
+      // console.log(e);
+      wx.login({
+        success: res => {
+          console.log(res,777);
+          params.session_key = res.session_key;
+          getPhoneNumber(params).then((res) => {
+          console.log(res.data);
+            }).catch((err) => {
+              
+          });
+        }
+      })
+      
+      
+    // console.log(e.detail.errMsg)
+    // console.log(e.detail.iv)
+    // console.log(e.detail.encryptedData)
+  },
     //手机号改变 赋值给本地变量
     mobileChange(mp) {
       this.mobile = mp.mp.detail;

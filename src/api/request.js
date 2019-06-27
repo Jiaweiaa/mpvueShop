@@ -53,11 +53,11 @@ fly.interceptors.response.use(
     console.log(err);
     // console.log(err.status);
     //如果接口错误信息是401 则代表请求时没携带token 跳转登录页去获取token
-    // if (err.status == "401") {
-    //   wx.navigateTo({
-    //     url: "/pages/login/main"
-    //   });
-    // }
+    if (err.status == "401") {
+      wx.navigateTo({
+        url: "/pages/login/main"
+      });
+    }
     //  wx.navigateTo({
     //     url: "/pages/login/main"
     //   });
