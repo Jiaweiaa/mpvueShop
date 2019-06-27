@@ -58,14 +58,18 @@
 				  :key="index"
 				  :price="item.subTotal"
 				  :title="item.itemName"
-				  :thumb="'http://qn.gaoshanmall.cn/'+ item.itemImg"
-			  />
+				  :thumb="'http://qn.gaoshanmall.cn/'+ item.itemImg">
+				  <view slot="footer">
+					  退货数量
+				  </view>
+			  </van-card>
+			 
+			  
 		  </div>
 		  <div class="cardType">
 			  <p><span>退款原因</span>{{pageData.reReason}}</p>
 			  <p><span>退款金额</span>{{pageData.applyRefundAmount}}</p>
-			  <!--<p><span>退款说明</span>{{pageData.reReason}}</p>-->
-			  <p><span>申请件数</span>{{pageData.reReason}}</p>
+			  <p><span>退款说明</span>{{pageData.remark}}</p>
 			  <p><span>申请时间</span>{{pageData.reCreateTime}}</p>
 			  <p><span>退款编号</span>{{pageData.code}}</p>
 		  </div>

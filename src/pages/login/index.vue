@@ -21,7 +21,7 @@
 
 <script>
 import { host } from "../../utils";
-import { littleAppLogin, littleAppRegister } from "../../api/login";
+import { littleAppLogin, littleAppRegister, isCapOrSup } from "../../api/login";
 export default {
   created() {},
   onShow() {
@@ -69,6 +69,11 @@ export default {
                   wx.navigateBack({
                     delta: 1
                   });
+
+                  isCapOrSup().then(isRes => {
+                    wx.setStorageSync("isCap", isRes.data.result.isCap);
+                    wx.setStorageSync("isSup", isRes.data.result.isSup);
+                  })
                 }
               })
               .catch(err => {
@@ -81,6 +86,8 @@ export default {
                   wx.setStorageSync("g_i", myCookie);
                 }
               });
+            
+            
           } else {
             console.log("登录失败！" + res.errMsg);
           }

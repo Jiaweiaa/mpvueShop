@@ -186,7 +186,6 @@ import {
 export default {
   onShow() {
     //判断是否登录获取用户信息
-    
     if (login()) {
       this.userInfo = login();
     }
@@ -196,13 +195,14 @@ export default {
     this.openId = getStorageOpenid();
     this.getCartGoodsNum();
     this.goodsDetail();
-  },
-  onHide(){
-    console.log("页面被隐藏");
-    // this.showpop = false;
+		if(wx.getStorageSync('userInfo')) {
+      this.level = wx.getStorageSync('userInfo').level;
+		}
   },
   data() {
     return {
+      level: 1,
+      
       allnumber: 0, //购物车商品数量
       openId: "",
       collectFlag: false,
@@ -408,8 +408,6 @@ export default {
           }
         }
       } else if (this.flag == "addCart") {
-        console.log(this.selectSkuData,1111);
-
         if (toLogin()) {
           if (this.showpop) {
             if (this.selectSkuData != null) {
@@ -498,6 +496,7 @@ export default {
             array.map(vv => {
               str += vv + ";";
             });
+            console.log(v);
             if (v.quantity > 0) {
               this.data[str.substring(0, str.length - 1)] = {
                 price: v.salePrice,

@@ -27,3 +27,14 @@ export const littleAppRegister = params => {
   });
 };
 
+// 是否是团长
+export const isCapOrSup = params => {
+  return fly.request({
+    url: "/shop/froCaptain/isCapOrSup",
+    method: "post",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: params
+  });
+};

@@ -243,7 +243,7 @@ export default {
       if(v.mp.detail.title == '待发货') {
         this.searchParams.orderType = 4;
       }else {
-        this.searchParams.orderType = 7;
+        this.searchParams.orderType = 8;
       }
       this.clearTime();
     },
