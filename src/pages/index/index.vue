@@ -61,6 +61,10 @@ import { shoppingcartCount } from "../../api/shoppingcart";
 export default {
   onShow() {
     this.getCartGoodsNum();
+    if(wx.getStorageSync('data')) {
+    }else {
+      this.toMappage();
+    }
   },
   computed: {
     ...mapState(["cityName"])

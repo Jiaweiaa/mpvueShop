@@ -28,7 +28,7 @@ export default {
       }
     },
     "pages": [
-      "pages/index/main",
+      "^pages/index/main",
       "pages/feedback/main",
       "pages/order/main",
       "pages/cart/main",
@@ -44,7 +44,7 @@ export default {
       "pages/returnGoodsMoney/main",
       "pages/teamView/main",  //团长 我的主页
       "pages/search/main",
-      "^pages/my/main",            // 我的
+      "pages/my/main",            // 我的
       "pages/login/main",
       "pages/refund/main",
       "pages/refundOrder/main",
