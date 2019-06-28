@@ -23,6 +23,12 @@
         </block>
       </swiper>
     </div>
+	  <div class="channel">
+		  <div @click="toCategoryList(item.categoryId, item.name)" v-for="(item, index) in channelList" :key="index">
+			  <img :src="'http://qn.gaoshanmall.cn/'+ item.logo" alt>
+			  <p>{{item.name}}</p>
+		  </div>
+	  </div>
     <div class="newcategory">
       <div class="list" v-for="(item, index) in newCategoryList" :key="index">
         <div class="head">{{item.name}}商品</div>
@@ -62,8 +68,11 @@ export default {
   onShow() {
     this.getCartGoodsNum();
     if(wx.getStorageSync('data')) {
+    
     }else {
-      this.toMappage();
+      wx.navigateTo({
+        url: "/pages/mappage/main"
+      });
     }
   },
   computed: {
@@ -81,11 +90,19 @@ export default {
       newGoods: [],
       hotGoods: [],
       topicList: [],
-      newCategoryList: []
+      newCategoryList: [],
+	    channelList: []
     };
   },
   components: {},
   methods: {
+    // 商品分类
+    toCategoryList(id, name) {
+      wx.navigateTo({
+        url: "../categorylist/main?id=" + id + "&name=" + name
+      });
+    },
+    
     //获取购物车中的商品数量
     getCartGoodsNum() {
       shoppingcartCount()
@@ -153,6 +170,8 @@ export default {
     async getData() {
       const data = await getIndexItem();
       this.banner = data.data.result.banner;
+      this.channelList = data.data.result.indexCategories;
+      console.log(this.channelList);
       this.newCategoryList.push({
 	      name: '热销',
 	      goodsList: data.data.result.hotSale
@@ -162,7 +181,6 @@ export default {
 	      name: '推荐',
         goodsList: data.data.result.recommended
       });
-      console.log(this.newCategoryList);
     },
     goodsDetail(id) {
       wx.navigateTo({

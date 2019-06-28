@@ -8,7 +8,7 @@
     </div>
     <div class="item">
       <picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem">
-        <input type="text" readonly placeholder="身份、城市、区县" v-model="address">
+        <input type="text" disabled placeholder="身份、城市、区县" v-model="address">
       </picker>
     </div>
     <!-- <view class="section">
