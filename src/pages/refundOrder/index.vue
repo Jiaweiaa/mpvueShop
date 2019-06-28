@@ -386,7 +386,6 @@ export default {
 
       applyRefund(params)
         .then(res => {
-          console.log(res.data,'999');
           wx.setStorageSync("refundCode", res.data.result);
           wx.redirectTo({
             url: "/pages/returnGoods/main?code=" + res.data.result

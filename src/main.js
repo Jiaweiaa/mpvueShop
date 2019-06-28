@@ -48,6 +48,7 @@ export default {
       "pages/login/main",
       "pages/refund/main",
       "pages/refundOrder/main",
+      "pages/refundList/main",//退换货列表
       "pages/category/main",
       "pages/beTeam/main",       // 成为团长
       "pages/beGive/main",       // 成为供应商

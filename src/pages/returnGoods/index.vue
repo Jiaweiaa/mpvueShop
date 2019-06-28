@@ -1,10 +1,15 @@
 <template>
-  <div class="page">
+  <div class="page" v-if="pageData!=null">
     <div class="bg">{{ pageData.reName}}</div>
     <div class="codeType">
       <div class="title">{{pageData.reContent}}</div>
-      <div class="message">退款编号:&nbsp;{{pageData.reCode}}</div>
-      <div class="message">申请时间:&nbsp;{{pageData.reCreateTime}}</div>
+      <div class="message">退款编号:&nbsp;{{pageData.myReCode}}</div>
+      <div class="message">申请时间:&nbsp;{{pageData.myReCreateTime}}</div>
+      <div class="message">商家同意或超时未处理，系统将退款给您</div>
+      <div class="message">如商家拒绝，您可以联系商家后再次发起，商家会重新处理</div>
+      <div style="height:50rpx;" v-show="pageData.myReStatus=='0'&&pageData.myReType=='1'">
+        <button class="cancelBtn" @click="cancelRefund(pageData)">撤销申请</button>
+      </div>
     </div>
 
     <div class="codeSession">
@@ -52,35 +57,48 @@
           :title="item.itemName"
           :thumb="'http://qn.gaoshanmall.cn/'+ item.itemImg"
         >
-          <view slot="footer">退货数量</view>
+          <view slot="footer">退货数量:{{item.refundNum}}</view>
         </van-card>
       </div>
       <div class="cardType">
         <p>
           <span>退款原因</span>
-          {{pageData.reReason}}
+          {{pageData.myReReason}}
         </p>
         <p>
-          <span>退款金额</span>
-          {{pageData.applyRefundAmount}}
+          <span>申请退款金额</span>
+          {{pageData.myApplyRefundAmount}}
+        </p>
+        <p>
+          <span>实际退款金额</span>
+          {{pageData.myActualRefundAmount}}
         </p>
         <p>
           <span>退款说明</span>
-          {{pageData.remark}}
+          {{pageData.myRemark}}
         </p>
         <p>
-          <span>申请时间</span>
-          {{pageData.reCreateTime}}
+          <span>申请时间:{{pageData.myReCreateTime}}</span>
         </p>
         <p>
           <span>退款编号</span>
-          {{pageData.code}}
+          {{pageData.myReCode}}
         </p>
       </div>
     </div>
   </div>
 </template>
 <style lang='scss'>
+.cancelBtn {
+  float: right;
+  width: 140rpx;
+  height: 48rpx;
+  border: 1rpx solid rgba(255, 108, 0, 1);
+  border-radius: 6rpx;
+  color: rgba(255, 108, 0, 1);
+  font-size: 26rpx;
+  line-height: 48rpx;
+}
 .cardStyle {
   background: #fff !important;
   margin-bottom: 10px;
@@ -96,7 +114,7 @@
   width: 100%;
   height: 75px;
   background: rgb(214, 70, 30);
-  text-align: left;
+  text-align: center;
   line-height: 75px;
   padding-left: 10px;
   color: #fff;
@@ -239,6 +257,8 @@
 </style>
 <script>
 import { findRefundOrderDetail } from "../../api/return/index";
+import { giveUpRefund } from "../../api/refund/index";
+
 export default {
   onShow() {
     this.getPageData();
@@ -264,19 +284,70 @@ export default {
         }
       ],
       active: 0,
-      pageData: "",
+      pageData: null,
       stepsData: ""
     };
   },
   methods: {
+    //撤销退货
+    cancelRefund(data) {
+      wx.showModal({
+        title: "提示",
+        content: "确认撤销吗",
+        success: res => {
+          if (res.confirm) {
+            let params = {
+              code: data.reCode,
+              refundType: data.reType
+            };
+            giveUpRefund(params)
+              .then(res => {
+                wx.navigateBack({
+                  delta: 1
+                });
+              })
+              .catch(err => {
+                wx.showToast({
+                  title: err.data.message,
+                  icon: "nonde",
+                  duration: 2000
+                });
+              });
+          } else if (res.cancel) {
+            console.log("用户点击取消");
+          }
+        }
+      });
+
+      let params = {
+        code: data.reCode,
+        refundType: data.reType
+      };
+      giveUpRefund(params)
+        .then(res => {})
+        .catch(err => {});
+    },
     async getPageData() {
       let data = await findRefundOrderDetail({
-        reCode: wx.getStorageSync('refundCode')
+        reCode: wx.getStorageSync("refundCode")
       });
       this.pageData = data.data.result;
+      // this.pageData.remark == null
+      //   ? (this.pageData.remark = "无")
+      //   : this.pageData.remark=this.pageData.remark;
+      // this.pageData.reReason == null
+      //   ? (this.pageData.reReason = "无")
+      //   : this.pageData.reReason=this.pageData.reReason;
+      this.pageData.orderLines = this.pageData.orderLines.filter(goods => {
+        return goods.selectStatus == "1";
+      });
       console.log(this.pageData);
+
       this.stepsData = this.pageData.restatusChangeInfo;
-      this.steps[0].desc = this.pageData.reCreateTime;
+      if (this.pageData.restatusChangeInfo.length > 0) {
+        this.steps[0].desc = this.pageData.reCreateTime;
+      }
+
       if (this.stepsData.length > 0) {
         if (this.stepsData[0].afterStatus == 2) {
           this.steps[1].text = "审核驳回";
@@ -304,6 +375,25 @@ export default {
       } else {
         this.steps[1].text = "待审核";
       }
+      console.log("1111");
+      this.$set(this.pageData, "reName", "");
+      this.$set(this.pageData, "reContent", "");
+      this.$set(this.pageData, "myReCreateTime", this.pageData.reCreateTime);
+      this.$set(this.pageData, "myReCode", this.pageData.reCode);
+      this.$set(this.pageData, "myReReason", this.pageData.reReason);
+      this.$set(this.pageData, "myRemark", this.pageData.remark);
+      this.$set(this.pageData, "myReStatus", this.pageData.reStatus);
+      this.$set(this.pageData, "myReType", this.pageData.reType);
+      this.$set(
+        this.pageData,
+        "myApplyRefundAmount",
+        this.pageData.applyRefundAmount
+      ); //申请退款金额
+      this.$set(
+        this.pageData,
+        "myActualRefundAmount",
+        this.pageData.actualRefundAmount
+      ); //实际退款金额
       if (this.pageData.reType == 1) {
         if (this.pageData.reStatus == 0) {
           this.pageData.reName = "已提交退申请";
@@ -324,6 +414,9 @@ export default {
         } else if (this.pageData.reStatus == 2) {
           this.pageData.reName = "商家已拒绝";
           this.pageData.reContent = "您的退货申请已拒绝!";
+        }else if(this.pageData.reStatus == 10){
+          this.pageData.reName = "买家已撤销";
+          this.pageData.reContent = "买家已撤销此次退货申请!";
         }
       }
     }

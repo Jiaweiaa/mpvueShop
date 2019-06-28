@@ -100,12 +100,15 @@ export default {
     if (wx.getStorageSync("userInfo")) {
       this.userInfo = Object.assign({}, wx.getStorageSync("userInfo"));
     }
-    wx.getStorageSync({
-      key: "data",
-      success: res => {
-        this.captainId = res.data.id;
-      }
-    });
+    // wx.getStorageSync({
+    //   key: "data",
+    //   success: res => {
+    //     console.log(res,4556);
+    //     this.captainId = res.data.id;
+    //   }
+    // });
+    this.captainId = wx.getStorageSync("data").id
+    console.log(this.captainId,'888');
     wx.showLoading({
       title: "获取订单信息..", //提示的内容,
       mask: true //显示透明蒙层，防止触摸穿透,
@@ -248,7 +251,7 @@ export default {
         if (this.address != null) {
           params.shppingAddressId = this.address.id;
           params.shppingAddressId = params.shppingAddressId.toString();
-          console.log(this.address, 444);
+          // console.log(this.address, 444);
           //弹起遮罩层 防止二次支付
           wx.showLoading({
             title: "生成订单中...", //提示的内容,

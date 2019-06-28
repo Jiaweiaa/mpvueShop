@@ -1,7 +1,28 @@
 <template>
   <div class="page" v-if="detailData!=null">
+    <!-- 待付款 -->
+    <div
+      class="bg"
+      v-if="detailData.orderVo.financialStatus == '1' && detailData.orderVo.paymentType != '1' && detailData.orderVo.logisticsStatus == '1'"
+    >
+      <h3>
+        <van-icon custom-class="colorW" name="underway"/>
+        <span>待付款</span>
+      </h3>
+      <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
+    </div>
+    <!-- 待发货 -->
+    <div
+      class="bg"
+      v-else-if=" detailData.orderVo.financialStatus != 1 && detailData.orderVo.logisticsStatus == 1 ||detailData.orderVo.logisticsStatus == 3 ||detailData.orderVo.logisticsStatus == 4 ||detailData.orderVo.logisticsStatus == 5">
+      <h3>
+        <van-icon custom-class="colorW" name="underway"/>
+        <span>待发货</span>
+      </h3>
+      <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
+    </div>
     <!--付款之后或COD  发货之前 取消订单 -->
-    <div class="bg" v-if="detailData.newestRefund!=null&&detailData.orderVo.type=='3'">
+    <div class="bg" v-else-if="detailData.newestRefund!=null&&detailData.orderVo.type=='3'">
       <h3>
         <van-icon custom-class="colorW" name="underway"/>
         <span>取消订单：正在处理申请</span>
@@ -11,42 +32,52 @@
     <!-- 退货 -->
     <div
       class="bg"
-      v-if="detailData.newestRefund!=null&&detailData.newestRefund.type == '1' &&  detailData.newestRefund.status !='2' && detailData.newestRefund.status !='4' && detailData.newestRefund.status !='9' && detailData.newestRefund.status !='10'"
+      v-else-if="detailData.newestRefund!=null&&detailData.newestRefund.type == '1' &&  detailData.newestRefund.status !='2' && detailData.newestRefund.status !='4' && detailData.newestRefund.status !='9' && detailData.newestRefund.status !='10'"
     >
       <h3>
-        <van-icon custom-class="colorW" name="underway"/>退货状态：
-        <span>{{detailData.displayRefundTips }}</span>
+        <van-icon custom-class="colorW" name="underway"/>商品状态：
+        <span>{{detailData.title }}</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
     <div
       class="bg"
-      v-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type == '1' &&  detailData.refundProcessing.status !='2' && detailData.refundProcessing.status !='4' && detailData.refundProcessing.status !='9' && detailData.refundProcessing.status !='10'"
+      v-else-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type == '1' &&  detailData.refundProcessing.status !='2' && detailData.refundProcessing.status !='4' && detailData.refundProcessing.status !='9' && detailData.refundProcessing.status !='10'"
     >
       <h3>
-        <van-icon custom-class="colorW" name="underway"/>退货状态：
-        <span>{{detailData.displayRefundTips }}</span>
+        <van-icon custom-class="colorW" name="underway"/>商品状态：
+        <span>{{detailData.title }}</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
     <!-- 换货  -->
     <div
       class="bg"
-      v-if="detailData.newestRefund!=null&&detailData.newestRefund.type == '2' &&  detailData.newestRefund.status !='2' && detailData.newestRefund.status !='4' && detailData.newestRefund.status !='9' && detailData.newestRefund.status !='10'"
+      v-else-if="detailData.newestRefund!=null&&detailData.newestRefund.type == '2' &&  detailData.newestRefund.status !='2' && detailData.newestRefund.status !='4' && detailData.newestRefund.status !='9' && detailData.newestRefund.status !='10'"
     >
       <h3>
         <van-icon custom-class="colorW" name="underway"/>换货状态：
-        <span>{{detailData.displayRefundTips }}</span>
+        <span>{{detailData.title }}</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
     <div
       class="bg"
-      v-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type == '2' &&  detailData.refundProcessing.status !='2' && detailData.refundProcessing.status !='4' && detailData.refundProcessing.status !='9' && detailData.refundProcessing.status !='10'"
+      v-else-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type == '2' &&  detailData.refundProcessing.status !='2' && detailData.refundProcessing.status !='4' && detailData.refundProcessing.status !='9' && detailData.refundProcessing.status !='10'"
     >
       <h3>
         <van-icon custom-class="colorW" name="underway"/>换货状态：
-        <span>{{detailData.displayRefundTips }}</span>
+        <span>{{detailData.title }}</span>
+      </h3>
+      <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
+    </div>
+    <div
+      class="bg"
+      v-else
+    >
+      <h3>
+        <van-icon custom-class="colorW" name="underway"/>
+        <span>已完成</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
@@ -57,24 +88,18 @@
       </div>
       <div class="body">
         <div class="borderT"></div>
-        <div class="item">
-          <div class="left">提货时间</div>
-          <div class="right" style="color:rgb(214,70,60);">预计2019-06-25(周二)可提货</div>
-        </div>
-        <div class="item">
+
+        <div class="item" v-if="detailData.captainVo">
           <div class="left">团长信息</div>
-          <div class="right">没这个字段</div>
+          <div class="right">{{detailData.captainVo.captain.name}}</div>
         </div>
-        <div class="item">
+        <div class="item" v-if="detailData.captainVo">
           <div class="left">提货地点</div>
-          <div class="right">没这个字段</div>
+          <div class="right">{{detailData.captainVo.captain.address}}</div>
         </div>
 
         <div class="borderT"></div>
-        <div class="item">
-          <div class="left">提货方式</div>
-          <div class="right">没这个字段</div>
-        </div>
+
         <div class="item">
           <div class="left">收货人</div>
           <div
@@ -83,7 +108,10 @@
         </div>
       </div>
       <div class="footer">
-        <p class="p1">总价:￥{{detailData.orderVo.totalSalesPrice}} 优惠:￥{{detailData.orderVo.discount}}</p>
+        <p
+          class="p1"
+          v-if="detailData.orderVo.totalSalesPrice!=null"
+        >总价:￥{{detailData.orderVo.totalSalesPrice}} 优惠:￥{{detailData.orderVo.discount}}</p>
         <p class="p2">
           共1件商品,待付
           <span>￥{{detailData.orderVo.totalActure}}</span>
@@ -137,9 +165,11 @@
                   v-if="detailData.orderVo.logisticsStatus=='6'&&detailData.orderVo.financialStatus=='3'&&goods.reType==null&&goods.reStatus==null"
                 >退货</button>
                 <button
+                  @click="applyCancelRefund(goods)"
                   class="refundBtn"
                   v-if="detailData.orderVo.logisticsStatus=='6'&&detailData.orderVo.financialStatus=='3'&&goods.reType=='1'&&goods.reStatus!='8'"
                 >退货中</button>
+
                 <button
                   class="refundBtn"
                   v-if="detailData.orderVo.logisticsStatus=='6'&&detailData.orderVo.financialStatus=='3'&&goods.reType=='1'&&goods.reStatus=='8'"
@@ -165,42 +195,44 @@
           <div class="left">下单时间</div>
           <div class="right">{{detailData.orderVo.createTime}}</div>
         </div>
-        <div class="item">
-          <div class="left">订单期数</div>
-          <div class="right">没这个字段</div>
-        </div>
+
         <div class="item">
           <div class="left">商品总价</div>
           <div class="right">￥{{detailData.orderVo.totalActure}}</div>
         </div>
         <div class="borderT"></div>
-        <div class="item">
+        <!-- <div class="item">
           <div class="left">促销优惠</div>
           <div class="right">没这个字段</div>
         </div>
         <div class="item">
           <div class="left">余额抵扣</div>
           <div class="right">没这个字段</div>
-        </div>
+        </div>-->
         <div class="item">
           <div class="left">在线支付</div>
-          <div class="right">没这个字段</div>
+          <div class="right">￥{{detailData.orderVo.totalActure}}</div>
         </div>
         <div class="item">
           <div class="left">备注信息</div>
-          <div class="right">没这个字段</div>
+          <div class="right">{{detailData.orderVo.remark==null?'无':detailData.orderVo.remark}}</div>
         </div>
       </div>
     </div>
     <!-- 操作区 -->
     <div class="fixed">
-      <button class="plain" @click="orderShow=true" v-if="orderCancelBtn">取消订单</button>
-      <button class="danger" @click="pay()" v-if="confrimReciveBtn">确认收货</button>
+      <button class="plain" @click="orderShow=true;from='cancle'" v-if="orderCancelBtn">取消订单</button>
+      <button class="danger" @click="sureGet()" v-if="confrimReciveBtn">确认收货</button>
       <button class="danger" @click="pay()" v-if="orderPayBtn">立即支付</button>
-      <button class="danger" @click="pay()" v-if="orderDeleteBtn">删除订单</button>
-      <button class="danger" @click="pay()" v-if="applayOrderCancelBtn">申请取消订单</button>
-      <button class="danger" @click="pay()" v-if="applayAfterBtn">申请售后</button>
-      <button class="danger" @click="pay()" v-if="giveUpApplayBtn">放弃退换货</button>
+      <button class="danger" @click="deleteOrder()" v-if="orderDeleteBtn">删除订单</button>
+      <button
+        class="danger"
+        @click="orderShow=true;from='apply'"
+        style="width:100%;"
+        v-if="applayOrderCancelBtn"
+      >申请取消订单</button>
+      <!-- <button class="danger" @click="pay()" v-if="applayAfterBtn">申请售后</button> -->
+      <!-- <button class="danger" @click="pay()" v-if="giveUpApplayBtn">放弃退换货</button> -->
     </div>
     <!-- 弹出层 -->
     <van-popup :show="orderShow" id="orderPop" position="bottom" @close="resonClose">
@@ -432,14 +464,21 @@
 }
 </style>
 <script>
-import { orderDetail, confirmReceive, cancleOrder } from "../../api/order";
 import {
   ShopCartOrderconfirm,
   detailOrderconfirm
 } from "../../api/shoppingcart";
 import { getMemAddressList } from "../../api/address";
 import { get, post, login, getStorageOpenid } from "../../utils";
-import { createOrder, toPay, afterOrderDetail } from "../../api/order";
+import {
+  orderDetail,
+  toPay,
+  afterOrderDetail,
+  applyCancelOrder,
+  cancleOrder,
+  confirmReceive,
+  removeOrderByCode
+} from "../../api/order";
 import Toast from "../../../static/vant/toast/toast";
 import fly from "../../api/request";
 let querystring = require("querystring");
@@ -450,6 +489,7 @@ export default {
       .then(res => {
         if (res.data.code == 200) {
           this.detailData = res.data.result;
+
           // this.detailData.title = this.detailData.displayOrderStatusTips;
           this.$set(
             this.detailData,
@@ -503,11 +543,87 @@ export default {
       applayOrderCancelBtn: false, //申请取消订单
       applayAfterBtn: false, //申请售后
       giveUpApplayBtn: false, //放弃退换货
-      confrimReciveBtn: false //确认收货
+      confrimReciveBtn: false, //确认收货
+      form: ""
     };
   },
   components: {},
   methods: {
+    //删除订单
+    deleteOrder() {
+      wx.showModal({
+        title: "提示",
+        content: "确认删除订单吗?",
+        success: res => {
+          if (res.confirm) {
+            removeOrderByCode({ orderCode: detailData.orderVo.code })
+              .then(res => {
+                wx.showToast({
+                  title: res.data.message
+                });
+                wx.navigateBack({
+                  delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                });
+              })
+              .catch(err => {
+                wx.navigateBack({
+                  delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                });
+              });
+          } else if (res.cancel) {
+            console.log("用户点击取消");
+          }
+        }
+      });
+    },
+    //确认收货
+    sureGet() {
+      wx.showModal({
+        title: "提示",
+        content: "确认收到货物了吗?",
+        success: res => {
+          if (res.confirm) {
+            confirmReceive({ orderCode: detailData.orderVo.code })
+              .then(res => {
+                wx.showToast({
+                  title: res.data.message
+                });
+                wx.navigateBack({
+                  delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                });
+              })
+              .catch(err => {
+                wx.navigateBack({
+                  delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                });
+              });
+          } else if (res.cancel) {
+            console.log("用户点击取消");
+          }
+        }
+      });
+    },
+    //申请取消订单
+    applyCancel() {
+      wx.showLoading();
+      applyCancelOrder({
+        orderId: this.detailData.orderVo.id,
+        cancelReason: this.reason
+      })
+        .then(res => {
+          wx.hideLoading();
+          wx.showToast({
+            title: res.data.result.message
+          });
+
+          wx.navigateBack({
+            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+          });
+        })
+        .catch(err => {
+          wx.hideLoading();
+        });
+    },
     //申请退货
     applyRefund(goods) {
       console.log(goods);
@@ -515,6 +631,13 @@ export default {
       wx.setStorageSync("orderInfo", this.detailData);
       wx.navigateTo({
         url: "/pages/refund/main"
+      });
+    },
+    //取消退换货 跳转至退换货详情去取消
+    applyCancelRefund(goods) {
+      wx.setStorageSync("refundCode", goods.reCode);
+      wx.redirectTo({
+        url: "/pages/returnGoods/main?code=" + goods.reCode
       });
     },
     //取消订单遮罩层关闭
@@ -634,26 +757,48 @@ export default {
     //取消订单
     cancelOrder() {
       wx.showLoading();
-      cancleOrder({
-        orderCode: this.detailData.orderVo.code,
-        reason: this.reason
-      })
-        .then(res => {
-          wx.hideLoading();
-          wx.showToast({
-            title: res.data.result.message
+      if (this.from == "cancle") {
+        cancleOrder({
+          orderCode: this.detailData.orderVo.code,
+          reason: this.reason
+        })
+          .then(res => {
+            wx.hideLoading();
+            wx.showToast({
+              title: res.data.result.message
+            });
+            if (res.data.code == "200") {
+              if (res.data.result.isSuccess == true) {
+                wx.redirectTo({
+                  url: "/pages/myOrder/main"
+                });
+              }
+            }
+          })
+          .catch(err => {
+            wx.hideLoading();
           });
-          if (res.data.code == "200") {
-            if (res.data.result.isSuccess == true) {
+      } else if (this.from == "apply") {
+        applyCancelOrder({
+          orderId: this.detailData.orderVo.id,
+          cancelReason: this.reason
+        })
+          .then(res => {
+            wx.hideLoading();
+            wx.showToast({
+              title: res.data.result.message
+            });
+            if (res.data.code == "200") {
+              wx.setStorageSync("refundCode", res.data.result);
               wx.redirectTo({
-                url: "/pages/myOrder/main"
+                url: "/pages/returnGoodsMoney/main?code=" + res.data.result
               });
             }
-          }
-        })
-        .catch(err => {
-          wx.hideLoading();
-        });
+          })
+          .catch(err => {
+            wx.hideLoading();
+          });
+      }
     }
   },
   computed: {}

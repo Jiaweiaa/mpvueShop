@@ -158,7 +158,7 @@ export default {
         {
           title: "退/换货",
           icon: "more-o",
-          url: "/pages/myOrder/main?refund=true"
+          url: "/pages/refundList/main"
         }
       ],
       myService: [
