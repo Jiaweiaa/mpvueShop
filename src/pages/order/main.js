@@ -18,7 +18,9 @@ export default {
       'van-cell': '/static/vant/cell/index',
       'van-card': '/static/vant/card/index',
       'van-checkbox': '/static/vant/checkbox/index',
-      "van-toast": "/static/vant/toast/index"
+      "van-toast": "/static/vant/toast/index",
+      "van-radio": "/static/vant/radio/index",
+      "van-radio-group": "/static/vant/radio-group/index"
     }
   }
 }

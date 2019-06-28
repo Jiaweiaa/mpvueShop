@@ -28,10 +28,10 @@ export default {
       }
     },
     "pages": [
-      "pages/index/main",
+      "^pages/index/main",
       "pages/feedback/main",
       "pages/order/main",
-      "^pages/cart/main",
+      "pages/cart/main",
       "pages/mappage/main",
       "pages/collectlist/main",
       "pages/addressSelect/main",

@@ -33,6 +33,10 @@
         <div>暂无</div>
       </div>
     </div>
+	  <van-radio-group class="radioStyle" :value="payRadio" @change="typeChange">
+		  <van-radio name="4">微信支付</van-radio>
+		  <van-radio :disabled="scoreAmount <= 0" name="12">积分支付(剩余积分&nbsp;{{scoreAmount}})</van-radio>
+	  </van-radio-group>
     <div class="cartlist">
       <!-- 分店铺形式的购物车列表 -->
       <div class="store-list" v-for="(group,index) in shopList" :key="index">
@@ -62,6 +66,7 @@
         </div>
       </div>
     </div>
+	
     <div class="bottom">
       <div>实付 : ￥{{currentPayAmount}}</div>
       <div @click="pay">支付</div>
@@ -72,6 +77,7 @@
 <script>
 import {
   ShopCartOrderconfirm,
+  getMemberAmount,
   detailOrderconfirm
 } from "../../api/shoppingcart";
 import { getMemAddressList } from "../../api/address";
@@ -84,6 +90,9 @@ let deviceId = new Date().getTime();
 export default {
   onShow() {
     this.getDefaultAddress();
+    getMemberAmount().then(res => {
+      this.scoreAmount = res.data.result.scoreAmount;
+    });
     if (wx.getStorageSync("orderFrom") && wx.getStorageSync("orderParams")) {
       this.from = wx.getStorageSync("orderFrom");
       this.params = JSON.parse(wx.getStorageSync("orderParams"));
@@ -159,6 +168,10 @@ export default {
 
   data() {
     return {
+      //  积分
+      scoreAmount: 0,
+      payRadio: '4',
+      
       addressId: "",
       openId: "",
       allprice: "",
@@ -177,6 +190,12 @@ export default {
   },
   components: {},
   methods: {
+    // 支付状态改变
+    typeChange(val) {
+      if(this.scoreAmount <= 0) return;
+      this.payRadio = val.mp.detail;
+    },
+    
     //获取收货地址列表
     getDefaultAddress() {
       getMemAddressList().then(res => {
@@ -201,7 +220,7 @@ export default {
           expectDeliveryTime: "",
           memberId: this.userInfo.memberId,
           orderLines: [],
-          paymentType: 4,
+          paymentType: this.payRadio,
           shppingAddressId: "", //地址
           captainId: "", //团长ID
           type: 1 //type为1是从商品详情页面进入  2是购物车中进入
@@ -241,7 +260,7 @@ export default {
                 let params = {};
                 let orderCode = res.data.result.scmCode;
                 params.orderCode = res.data.result.scmCode;
-                params.paymentType = 4;
+                params.paymentType = this.payRadio;
                 params.orderTab = orderTab;
                 params.deviceType = 2;
                 //创建订单成功则调用后台支付
@@ -336,6 +355,18 @@ export default {
                         }
                       });
                     }
+                    else {
+                      wx.showToast({
+                        title: res.data.message,
+                        duration: 1500,
+                        mask: true
+                      });
+                      setTimeout(() => {
+                        wx.redirectTo({
+                          url: "/pages/myOrder/main"
+                        });
+                      },1500)
+                    }
                   })
                   .catch(err => {
                     wx.hideLoading();
@@ -374,4 +405,16 @@ export default {
 </script>
 <style lang='scss' scoped>
 @import "./style";
+</style>
+<style lang="scss">
+	.radioStyle {
+		.van-radio {
+			background: #fff;
+			height: 40px;
+			line-height: 30px;
+			display: flex;
+			align-items: center;
+			padding: 0 10px;
+		}
+	}
 </style>

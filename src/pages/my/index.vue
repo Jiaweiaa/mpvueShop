@@ -59,7 +59,6 @@
           class="childContent"
           @click="goTo(item.url)"
           :key="index"
-          v-show="item.isShow"
           v-for="(item, index) in moreService"
         >
           <van-icon size="30px" :name="item.icon"/>
@@ -90,26 +89,47 @@ export default {
       }).catch((err) => {
       });
     }
-	  if(wx.getStorageSync("isCap")) {
+    this.moreService = [''];
+    if(wx.getStorageSync("token")) {
+      this.moreService = [];
       if(wx.getStorageSync("isCap") == false) {
-        this.moreService[0].isShow = true;
-        this.moreService[1].isShow = false;
+        this.moreService.push( {
+          title: "团长招募",
+          icon: "manager-o",
+          url: "/pages/beTeam/main"
+        });
       }else {
-        this.moreService[0].isShow = false;
-        this.moreService[1].isShow = true;
+        this.moreService.push( {
+          title: "我是团长",
+          icon: "manager-o",
+          url: "/pages/teamView/main"
+        });
       }
       if(wx.getStorageSync("isSup") == false) {
-        this.moreService[2].isShow = true;
-        this.moreService[3].isShow = false;
+        this.moreService.push( {
+          title: "供应商招募",
+          icon: "user-o",
+          url: "/pages/beGive/main"
+        });
       }else {
-        this.moreService[2].isShow = false;
-        this.moreService[3].isShow = true;
+        this.moreService.push( {
+          title: "我是供应商",
+          icon: "friends-o",
+          url: "/pages/giver/main"
+        });
       }
+      console.log(this.moreService)
 	  }else {
-      this.moreService[0].isShow = true;
-      this.moreService[1].isShow = false;
-      this.moreService[2].isShow = true;
-      this.moreService[3].isShow = false;
+      this.moreService = [{
+        title: "团长招募",
+        icon: "manager-o",
+        url: "/pages/beTeam/main"
+      },
+      {
+        title: "供应商招募",
+        icon: "user-o",
+        url: "/pages/beGive/main"
+      }]
 	  }
   },
   data() {
@@ -163,26 +183,22 @@ export default {
         {
           title: "团长招募",
           icon: "manager-o",
-          url: "/pages/beTeam/main",
-	        isShow: ''
+          url: "/pages/beTeam/main"
         },
         {
           title: "我是团长",
           icon: "manager-o",
-          url: "/pages/teamView/main",
-          isShow: ''
+          url: "/pages/teamView/main"
         },
         {
           title: "供应商招募",
           icon: "user-o",
-          url: "/pages/beGive/main",
-          isShow: ''
+          url: "/pages/beGive/main"
         },
         {
           title: "我是供应商",
           icon: "friends-o",
-          url: "/pages/giver/main",
-          isShow: ''
+          url: "/pages/giver/main"
         }
       ],
 
