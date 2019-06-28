@@ -73,14 +73,15 @@
   }
 
   .channel {
-    display: flex;
+    width: 100%;
     padding: 20rpx 0;
     background: #ffffff;
-
+    overflow: hidden;
     div {
-      width: 25%;
+      width: calc(20% - 10px);
       text-align: center;
-
+      float: left;
+      padding: 5px;
       img {
         height: 58rpx;
         width: 58rpx;

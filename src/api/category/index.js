@@ -41,3 +41,28 @@ export const getKeyword = params => {
   });
 };
 
+// 存历史记录
+export const setHistorySearch = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: "/product/mallIndex/setHistorySearch",
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: data
+  });
+};
+
+// 获取历史记录
+export const findHistorySearch = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: "/product/mallIndex/findHistorySearch",
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: data
+  });
+};

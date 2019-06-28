@@ -186,12 +186,13 @@
 
 <script>
 import { post, get } from "../../utils";
-import { searchItem, getKeyword } from "../../api/category/index";
+import { searchItem, getKeyword, setHistorySearch ,findHistorySearch} from "../../api/category/index";
 
 export default {
   onShow() {
     this.openid = wx.getStorageSync("openid") || "";
     this.getHotData();
+    this.getHistory();
   },
   // 上啦加载
   async onReachBottom() {
@@ -266,6 +267,13 @@ export default {
     };
   },
   methods: {
+    // 获取历史记录
+    getHistory() {
+      findHistorySearch().then(res => {
+        this.historyData = res.data.result;
+      })
+    },
+    
     //关闭筛选遮罩层
     searchPopupClose(){
       this.searchPopupShow = false;
@@ -386,6 +394,10 @@ export default {
       this.listData = res.data.result.itemDocs;
       this.allCount = res.data.result.totalElements;
      
+      const searchData = await setHistorySearch({
+        keyword: this.words
+      });
+	    this.getHistory();
       if(this.listData.length > 0) {
         this.listData.map(v => {
           v.img = JSON.parse(v.image)[0].images[0];
@@ -442,9 +454,6 @@ export default {
     async getHotData() {
       const data = await getKeyword();
       this.hotData = data.data.result;
-      console.log(this.hotData);
-
-
       this.historyData = [];
     },
     async tipsearch(e) {
