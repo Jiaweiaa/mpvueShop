@@ -28,14 +28,14 @@ export default {
       }
     },
     "pages": [
-      "^pages/index/main",
+      "pages/index/main",
       "pages/feedback/main",
       "pages/order/main",
       "pages/cart/main",
       "pages/mappage/main",
       "pages/collectlist/main",
       "pages/addressSelect/main",
-      "pages/addaddress/main",
+      "^pages/addaddress/main",
       "pages/address/main",
       "pages/myOrder/main",
       "pages/orderDetail/main",
