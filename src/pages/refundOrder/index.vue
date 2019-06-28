@@ -39,13 +39,19 @@
     <div class="refund-cell">
       <div class="title">退货原因</div>
       <div class="item" @click="orderShow=true">
-        <p style="color:rgba(153,153,153,1);">{{reason!=''?reason:'请选择退货原因'}} <van-icon style="float:right;" name="arrow-down"/> </p>
+        <p style="color:rgba(153,153,153,1);">
+          {{reason!=''?reason:'请选择退货原因'}}
+          <van-icon style="float:right;" name="arrow-down"/>
+        </p>
       </div>
     </div>
     <div class="refund-cell">
       <div class="title">订单退款</div>
       <div class="item">
-        <p>退款金额: <span style="color:rgba(255,108,0,1);">￥{{refundPrice}}</span> </p>
+        <p>
+          退款金额:
+          <span style="color:rgba(255,108,0,1);">￥{{refundPrice}}</span>
+        </p>
         <p>
           退款说明:
           <input type="text" placeholder="选填">
@@ -123,7 +129,7 @@
   );
   border-radius: 45rpx;
   color: #fff;
-  font-size:32rpx;
+  font-size: 32rpx;
   line-height: 90rpx;
 }
 .info {
@@ -342,8 +348,8 @@ export default {
       orderInfo: {},
       reason: "",
       refundPrice: null, //退款金额
-      orderShow:false,
-      reasons: ["我不想买了", "信息填写错误,重新购买", "买错了", "其他原因"],
+      orderShow: false,
+      reasons: ["我不想买了", "信息填写错误,重新购买", "买错了", "其他原因"]
     };
   },
   components: {},
@@ -369,6 +375,7 @@ export default {
     },
     //提交退款申请
     submitRefund() {
+      wx.showLoading();
       let params = {
         applylines: this.goodsList,
         orderCode: this.orderInfo.orderVo.code,
@@ -378,8 +385,20 @@ export default {
       };
 
       applyRefund(params)
-        .then(res => {})
-        .catch(err => {});
+        .then(res => {
+          console.log(res.data,'999');
+          wx.setStorageSync("refundCode", res.data.result);
+          wx.redirectTo({
+            url: "/pages/returnGoods/main?code=" + res.data.result
+          });
+          wx.hideLoading();
+        })
+        .catch(err => {
+          wx.hideLoading();
+          wx.navigateBack({
+            delta: 10
+          });
+        });
     }
   },
   computed: {}

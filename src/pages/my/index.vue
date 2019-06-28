@@ -134,6 +134,11 @@ export default {
           title: "已完成",
           icon: "cash-on-deliver",
           url: "/pages/myOrder/main?id=4"
+        },
+        {
+          title: "退/换货",
+          icon: "more-o",
+          url: "/pages/myOrder/main?refund=true"
         }
       ],
       myService: [
@@ -250,7 +255,7 @@ page {
   width: 95%;
   overflow: hidden;
   background: #fff;
-  height: 100px;
+  height: 230rpx;
   border-radius: 5px;
   .title {
     height: 30px;
@@ -275,12 +280,12 @@ page {
   }
   .content {
     overflow: hidden;
-    height: 70px;
+    height: 160rpx;
     .childContent {
       height: 100%;
       padding: 10px;
       float: left;
-      width: calc(25% - 20px);
+      width: calc(19% - 38rpx);
       text-align: center;
       .childText {
         font-size: 24rpx;
