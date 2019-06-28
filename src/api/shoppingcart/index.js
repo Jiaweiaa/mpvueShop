@@ -10,7 +10,7 @@ export const shoppingCartList = params => {
     headers: {
       "Content-Type": "application/json"
     },
-   
+
   });
 };
 // 添加购物车
@@ -109,6 +109,18 @@ export const ShopCartOrderconfirm = params => {
 export const detailOrderconfirm = params => {
   return fly.request({
     url: "/trade/transaction/buyNow/pdp/orderconfirm",
+    method: "post",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: params
+  });
+};
+
+// 获取积分
+export const getMemberAmount = params => {
+  return fly.request({
+    url: "/basic/mem/myAccount/getMemberAmount",
     method: "post",
     headers: {
       "Content-Type": "application/json"

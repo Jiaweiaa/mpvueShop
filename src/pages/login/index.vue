@@ -51,7 +51,7 @@ export default {
           getPhoneNumber(params).then((res) => {
           console.log(res.data);
             }).catch((err) => {
-              
+            
           });
         }
       })
@@ -87,13 +87,12 @@ export default {
                     "token",
                     res.data.result.token.access_token
                   );
-                  wx.navigateBack({
-                    delta: 1
-                  });
-
                   isCapOrSup().then(isRes => {
                     wx.setStorageSync("isCap", isRes.data.result.isCap);
                     wx.setStorageSync("isSup", isRes.data.result.isSup);
+                    wx.navigateBack({
+                      delta: 1
+                    });
                   })
                 }
               })
