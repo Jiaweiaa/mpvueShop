@@ -290,7 +290,6 @@ export default {
     isClickChild(item, group) {
       //记录父节点
       let fatherNode = Object.assign({}, group);
-      console.log("多选状态为", group.multiple);
       //被点击的节点 标识取反
       item.isChecked = !item.isChecked;
       //如果该组是单选 做特殊处理 所有本节点的兄弟节点标识全部为false
@@ -403,14 +402,16 @@ export default {
           v.img = JSON.parse(v.image)[0].images[0];
         });
       }
-      this.filterList = this.navData.facetFilter.facetFilterLineList;
-      if(this.filterList.length > 0) {
-        this.filterList.map((v, index) => {
-          v.isShowAll = true;
-          if (index > 2) {
-            v.isShowAll = false;
-          }
-        });
+	    if(this.navData.facetFilter.facetFilterLineList) {
+        this.filterList = this.navData.facetFilter.facetFilterLineList;
+        if(this.filterList.length > 0) {
+          this.filterList.map((v, index) => {
+            v.isShowAll = true;
+            if (index > 2) {
+              v.isShowAll = false;
+            }
+          });
+        }
       }
       wx.hideLoading();
       this.tipsData = [];
