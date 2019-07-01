@@ -13,6 +13,7 @@
             v-for="(value,index) in list"
             v-show="list!=null&&list.length>0"
             :key="index"
+            class="listViewBox"
             @click="detailOrder(value)"
           >
             <div class="top border-bottom" style="overflow: hidden;">
@@ -31,6 +32,7 @@
             <div v-for="(val,childIndex) in value.orderLines" :key="childIndex">
               <van-card
                 :num="val.quantity"
+                :desc="val.propertiesValue"
                 :price="val.salePrice"
                 :title="val.itemName"
                 :thumb="'http://qn.gaoshanmall.cn/'+val.itemImg"
@@ -548,4 +550,20 @@ export default {
     color: #999;
   }
 }
+.section {
+	background: #fff;
+	.listViewBox {
+		padding: 10px;
+		margin: 10px;
+		border-radius: 10px;
+		border: 1px solid #eee;
+		.van-card {
+			background: #fff;
+			view {
+				background: #fff;
+			}
+		}
+	}
+}
+
 </style>
