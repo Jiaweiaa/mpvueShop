@@ -19,7 +19,7 @@
         <image
           style="width: 100px; height: 100px;"
           mode="scaleToFill"
-          :src="nowData.user? nowData.user.avatar : 'https://bpic.588ku.com/element_pic/19/04/16/4ee64442adb1c6e51b0e020e8c32b198.jpg!/fw/253/quality/90/unsharp/true/compress/true'"></image>
+          :src="nowData.user.avatar? nowData.user.avatar : 'https://bpic.588ku.com/element_pic/19/04/16/4ee64442adb1c6e51b0e020e8c32b198.jpg!/fw/253/quality/90/unsharp/true/compress/true'"></image>
       </view>
       <view class="address">{{nowData.address}}</view>
       <view class="name">团长:{{nowData.name}}</view>
@@ -31,7 +31,7 @@
         <image
           class="img"
           mode="scaleToFill"
-          :src="value.user? value.user.avatar : 'https://bpic.588ku.com/element_pic/19/04/16/4ee64442adb1c6e51b0e020e8c32b198.jpg!/fw/253/quality/90/unsharp/true/compress/true'"></image>
+          :src="value.user.avatar? value.user.avatar : 'https://bpic.588ku.com/element_pic/19/04/16/4ee64442adb1c6e51b0e020e8c32b198.jpg!/fw/253/quality/90/unsharp/true/compress/true'"></image>
         <view class="community">{{value.community}}</view>
         <view class="address">{{value.address}}</view>
         <view class="name">团长:{{value.name}}</view>
@@ -69,7 +69,11 @@
         topicList: [],
         newCategoryList: [],
 
-        list: [{}],
+        list: [{
+          user:  {
+            avatar: ''
+          }
+        }],
         cusLongitude: '',
         cusLatitude: '',
         allCount: null,

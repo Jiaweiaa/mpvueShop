@@ -73,6 +73,7 @@
 import { toLogin, login } from "../../utils";
 import { shoppingcartCount } from "../../api/shoppingcart";
 import { findOrderNum } from "../../api/myOrder";
+import { isCapOrSup } from "../../api/login";
 export default {
   onShow() {
     this.getCartGoodsNum();
@@ -90,7 +91,11 @@ export default {
       });
     }
     this.moreService = [''];
-    if(wx.getStorageSync("shopToken")) {
+    if(wx.getStorage("shopToken")) {
+      isCapOrSup().then(isRes => {
+        wx.setStorageSync("isCap", isRes.data.result.isCap);
+        wx.setStorageSync("isSup", isRes.data.result.isSup);
+      })
       this.moreService = [];
       if(wx.getStorageSync("isCap") == false) {
         this.moreService.push( {

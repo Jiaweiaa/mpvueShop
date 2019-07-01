@@ -258,8 +258,7 @@ export default {
       this.nowIndex = index;
       this.pageNum = 1;
       if (index == 1) {
-        this.order =
-          this.order == "SALE_PRICE-ASC" ? "SALE_PRICE-DESC" : "SALE_PRICE-ASC";
+        this.order = this.order == "SALE_PRICE-ASC" ? "SALE_PRICE-DESC" : "SALE_PRICE-ASC";
       } else if (index == 2) {
         this.order = this.order == "SALES-ASC" ? "SALES-DESC" : "SALES-ASC";
       } else if (index == 0) {
