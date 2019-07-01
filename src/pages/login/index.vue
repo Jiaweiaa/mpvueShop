@@ -87,13 +87,9 @@ export default {
                     "shopToken",
                     res.data.result.token.access_token
                   );
-                  isCapOrSup().then(isRes => {
-                    wx.setStorageSync("isCap", isRes.data.result.isCap);
-                    wx.setStorageSync("isSup", isRes.data.result.isSup);
-                    wx.navigateBack({
-                      delta: 1
-                    });
-                  })
+                  wx.navigateBack({
+                    delta: 1
+                  });
                 }
               })
               .catch(err => {
