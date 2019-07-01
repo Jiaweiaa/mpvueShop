@@ -95,7 +95,13 @@
         </div>
         <div class="item" v-if="detailData.captainVo">
           <div class="left">提货地点</div>
-          <div class="right">{{detailData.captainVo.captain.address}}</div>
+          <div class="right">{{detailData.captainVo.captain.city}}
+            {{detailData.captainVo.captain.address}}
+            {{detailData.captainVo.captain.deliveryAddress}}
+            
+
+
+          </div>
         </div>
 
         <div class="borderT"></div>
@@ -105,6 +111,15 @@
           <div
             class="right"
           >{{detailData.orderVo.shippingAddress.firstName}} {{detailData.orderVo.shippingAddress.mobile}}</div>
+        </div>
+        <div class="item">
+          <div class="left">收货地址</div>
+          <div
+            class="right"
+          >{{detailData.orderVo.shippingAddress.province}} {{detailData.orderVo.shippingAddress.city}}
+          {{detailData.orderVo.shippingAddress.district}}
+          {{detailData.orderVo.shippingAddress.address}}
+          </div>
         </div>
       </div>
       <div class="footer">

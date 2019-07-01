@@ -9,7 +9,7 @@ export const saveOrEditCaptain = params => {
     method: "post",
     body: params,
     headers: {
-      "Content-Type": "application/json"
+      "content-type": "application/json"
     }
   });
 };
@@ -21,7 +21,7 @@ export const addSupplier = params => {
     method: "post",
     body: params,
     headers: {
-      "Content-Type": "application/json"
+      "content-type": "application/json"
     }
   });
 };

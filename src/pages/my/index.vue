@@ -90,7 +90,7 @@ export default {
       });
     }
     this.moreService = [''];
-    if(wx.getStorageSync("token")) {
+    if(wx.getStorageSync("shopToken")) {
       this.moreService = [];
       if(wx.getStorageSync("isCap") == false) {
         this.moreService.push( {
@@ -234,11 +234,11 @@ export default {
       }
     },
     goToLogin() {
-      if (!this.userInfo.avatarUrl) {
+     
         wx.navigateTo({
           url: "/pages/login/main"
         });
-      }
+      
     }
   },
   computed: {}

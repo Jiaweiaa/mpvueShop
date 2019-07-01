@@ -63,7 +63,7 @@
 import amapFile from "../../utils/amap-wx";
 import { getIndexItem } from "../../api/index/index";
 import { mapState, mapMutations } from "vuex";
-import { shoppingcartCount } from "../../api/shoppingcart";
+import { shoppingcartCount } from "../../api/shoppingcart/index";
 export default {
   onShow() {
     this.getCartGoodsNum();
@@ -79,8 +79,12 @@ export default {
     ...mapState(["cityName"])
   },
   mounted() {
+    //  wx.navigateTo({
+    //     url: "/pages/login/main"
+    //   });
     this.getCityName();
     this.getData();
+    
   },
   data() {
     return {

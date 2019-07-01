@@ -1,17 +1,23 @@
 let Fly = require("flyio/dist/npm/wx");
 let fly = new Fly();
-// fly.config.baseURL = " http://47.104.173.227:8003";
-fly.config.baseURL = " http://192.168.0.10:8003";
-// fly.config.baseURL = " http://192.168.1.174:8003";
+fly.config.baseURL = "https://mall.gaoshanapp.com";
+// fly.config.baseURL = "http://192.168.3.29:8003";
+// fly.config.baseURL = "http://39.97.233.168:8003";
 // http://47.104.173.227:8003
 //http://192.168.0.10:8003
 // fly.config.withCredentials = true //允许携带cookie
 fly.interceptors.request.use(
   config => {
-    if (wx.getStorageSync("token") != "") {
-      let token = wx.getStorageSync("token");
+    console.log(wx.getStorageSync("token"),'我在获取token');
+    console.log(wx.getStorageSync("aa"),'我在获取aa');
+    if (wx.getStorageSync("shopToken") != "") {
+      let token = wx.getStorageSync("shopToken");
+      // console.log(token);
       config.headers.Authorization = "Bearer " + token;
     }
+    
+    // config.headers.Authorization = "Bearer " +'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyIqIl0sImV4cCI6MTU2Mjc3MjMyOCwianRpIjoiNDBhNDk1ZDAtZDg3Zi00MDU4LWJjNWEtNTRhNmJkZDBkZjA3IiwiY2xpZW50X2lkIjoiY2xvdWRtYWxsLWNsaWVudC1iYXNpYy1hdXRoIiwidGltZXN0YW1wIjoxNTYxOTA4MzI4MzUyfQ.H-LacYQCYbmuSPcWKEVmiqk5XzhyaBQbg3Z2KLLw6GQ' ;
+
     if (config.method === "GET") {
       let openId = wx.getStorageSync("openId");
       config.headers["openId"] = openId;
@@ -34,7 +40,7 @@ fly.interceptors.response.use(
       wx.showModal({
         title: "提示",
         content: "登录状态已失效是否重新登录",
-        success:(res)=> {
+        success: res => {
           if (res.confirm) {
             wx.navigateTo({
               url: "/pages/login/main"
@@ -52,11 +58,12 @@ fly.interceptors.response.use(
     console.log(err);
     // console.log(err.status);
     //如果接口错误信息是401 则代表请求时没携带token 跳转登录页去获取token
-    if (err.status == "401") {
-      wx.navigateTo({
-        url: "/pages/login/main"
-      });
-    }
+    // if (err.status == "401") {
+    //   wx.navigateTo({
+    //     url: "/pages/login/main"
+    //   });
+    // }
+    console.log("走到我来");
     //  wx.navigateTo({
     //     url: "/pages/login/main"
     //   });

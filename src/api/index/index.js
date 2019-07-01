@@ -2,18 +2,17 @@ import fly from '../request';
 let querystring = require("querystring");
 let deviceId = new Date().getTime();
 
-// 全部订单
+// 团长排行
 export const getDistance = params => {
   return fly.request({
     url: `/shop/captain/getDistance`,
     method: "post",
     body: params,
     headers: {
-      "Content-Type": "application/json"
+       "content-type": "application/json"
     },
   });
 };
-
 
 
 
@@ -24,7 +23,7 @@ export const getIndexItem = params => {
     method: "post",
     body: params,
     headers: {
-      "Content-Type": "application/json"
+      "content-type": "application/json"
     },
   });
 };

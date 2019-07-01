@@ -16,7 +16,6 @@ export default {
       "van-collapse-item": "/static/vant/collapse-item/index",
       "van-button": '/static/vant/button/index',
       "van-icon": "/static/vant/icon/index",
-
       "van-card": '/static/vant/card/index',
       "van-loading": "/static/vant/loading/index",
       "van-dialog": "/static/vant/dialog/index",

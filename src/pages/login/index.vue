@@ -84,7 +84,7 @@ export default {
                 } else if (res.data.code == "200") {
                   wx.setStorageSync("userInfo", res.data.result.memberLoginVo);
                   wx.setStorageSync(
-                    "token",
+                    "shopToken",
                     res.data.result.token.access_token
                   );
                   isCapOrSup().then(isRes => {
@@ -98,13 +98,7 @@ export default {
               })
               .catch(err => {
                 wx.hideLoading();
-                if (wx.getStorageSync("g_i") == "") {
-                  // console.log(err, 555);
-                  let sourceCookie = err.response.headers["set-cookie"][0];
-                  let index = sourceCookie.indexOf(";");
-                  let myCookie = sourceCookie.substring(0, index);
-                  wx.setStorageSync("g_i", myCookie);
-                }
+                
               });
             
             
@@ -129,7 +123,7 @@ export default {
               wx.hideLoading();
               if (res.data.code == "200") {
                 wx.setStorageSync("userInfo", res.data.result.memberLoginVo);
-                wx.setStorageSync("token", res.data.result.token.access_token);
+                wx.setStorageSync("shopToken", res.data.result.token.access_token);
                 wx.navigateBack({
                   delta: 1
                 });

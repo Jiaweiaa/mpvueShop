@@ -47,7 +47,7 @@
 
 <script>
   import Notify from '../../../static/vant/notify/notify';
-	import { getMemberAmount, rechargeScore }  from '@/api/integral/index';
+	import { getMemberAmount, rechargeScore }  from '@/api/integral/index';	
 	
   export default {
     onShow() {

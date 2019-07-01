@@ -71,7 +71,7 @@ export function post(url, data) {
 
 
 export function toLogin() {
-  const userInfo = wx.getStorageSync("token");
+  const userInfo = wx.getStorageSync("shopToken");
   if (!userInfo) {
     wx.navigateTo({
       url: "/pages/login/main"

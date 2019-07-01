@@ -103,21 +103,21 @@
         });
       },
       getCityName() {
-        var _this = this;
+        // var _this = this;
         var myAmapFun = new amapFile.AMapWX({
           key: "e545e7f79a643f23aef187add14e4548"
         });
         myAmapFun.getRegeo({
-          success: function (data) {
+          success: (data) =>{
             //成功回调
-            _this.cusLongitude = data[0].longitude + '';
-            _this.cusLatitude = data[0].latitude + '';
+            this.cusLongitude = data[0].longitude + '';
+            this.cusLatitude = data[0].latitude + '';
             // data[0].regeocodeData.formatted_address
             // _this.cityName = data[0].regeocodeData.formatted_address;
-            _this.update({ cityName: data[0].regeocodeData.formatted_address });
-            _this.getData();
+            this.update({ cityName: data[0].regeocodeData.formatted_address });
+            this.getData();
           },
-          fail: function (info) {
+          fail:  (info)=> {
             //失败回调
             Notify({
               text: info.message,
@@ -127,9 +127,9 @@
             });
             //如果用户拒绝授权
             // 默认为北京
-            _this.cityName = "北京市";
-            _this.update({ cityName: "北京市" });
-            _this.getData();
+            this.cityName = "北京市";
+            this.update({ cityName: "北京市" });
+            this.getData();
           }
         });
       },
@@ -139,12 +139,14 @@
         });
       },
       getData() {
+        
         let params = {
           cusLongitude: this.cusLongitude,
           cusLatitude: this.cusLatitude,
           pageSize: 5,
           pageNum: this.pageNum
         }
+        console.log(params,'000');
         wx.showLoading({
           title: '加载中',
         })
@@ -163,6 +165,9 @@
             this.loading = false
           }
           wx.hideLoading()
+        }).catch(e => {
+          wx.hideLoading()
+          console.log(e, 333)
         })
       },
       lower() {

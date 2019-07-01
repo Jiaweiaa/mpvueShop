@@ -8,7 +8,7 @@ export const insertOrEditMemAddress  = params => {
     url: "/basic/memAddress/insertOrEditMemAddress",
     method: "post",
     headers: {
-      "Content-Type": "application/json"
+      "content-type": "application/json"
     },
     body: params
   });
@@ -21,7 +21,7 @@ export const getMemAddressList = params => {
     method: "post",
     body: params,
     headers: {
-      "Content-Type": "application/json"
+      "content-type": "application/json"
     },
   });
 };
@@ -34,7 +34,7 @@ export const deleteMemAddress = params => {
     method: "post",
     body: data,
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
+      "content-type": "application/x-www-form-urlencoded"
     },
   });
 };
@@ -47,7 +47,7 @@ export const setDefaultAddress = params => {
     method: "post",
     body: data,
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
+      "content-type": "application/x-www-form-urlencoded"
     },
   });
 };
