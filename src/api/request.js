@@ -2,7 +2,7 @@ let Fly = require("flyio/dist/npm/wx");
 let fly = new Fly();
 // fly.config.baseURL = " http://47.104.173.227:8003";
 // fly.config.baseURL = "http://192.168.0.10:8003" ;
-fly.config.baseURL = "http://39.97.233.168:8003";
+fly.config.baseURL = " http://39.97.233.168:8003";
 // http://47.104.173.227:8003
 //http://192.168.0.10:8003
 // fly.config.withCredentials = true //允许携带cookie
