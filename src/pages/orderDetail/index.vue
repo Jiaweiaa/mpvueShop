@@ -87,7 +87,7 @@
         <h3>提货信息</h3>
       </div>
       <div class="body">
-        <div class="borderT"></div>
+        <div class="borderT" v-if="detailData.captainVo"></div>
 
         <div class="item" v-if="detailData.captainVo">
           <div class="left">团长信息</div>
