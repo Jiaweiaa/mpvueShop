@@ -148,6 +148,7 @@ export default {
         s: this.order,
         fq: this.aeo
       });
+     
       if (res.data.code == 200) {
         this.loading = false;
         this.goodsList = this.goodsList.concat(res.data.result.itemDocs);
@@ -228,11 +229,12 @@ export default {
         s: this.order,
         fq: this.aeo
       });
+       wx.hideLoading();
       this.navData = res.data.result;
       this.currentNav = {};
       this.goodsList = this.navData.itemDocs;
       this.allCount = res.data.result.totalElements;
-      wx.hideLoading();
+      // wx.hideLoading();
       this.goodsList.map(v => {
         v.img = JSON.parse(v.image)[0].images[0];
       });

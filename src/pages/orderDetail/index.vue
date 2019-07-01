@@ -6,7 +6,7 @@
       v-if="detailData.orderVo.financialStatus == '1' && detailData.orderVo.paymentType != '1' && detailData.orderVo.logisticsStatus == '1'"
     >
       <h3>
-        <van-icon custom-class="colorW" name="underway"/>
+        <van-icon custom-class="colorW" name="underway" />
         <span>待付款</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
@@ -14,9 +14,10 @@
     <!-- 待发货 -->
     <div
       class="bg"
-      v-else-if=" detailData.orderVo.financialStatus != 1 && detailData.orderVo.logisticsStatus == 1 ||detailData.orderVo.logisticsStatus == 3 ||detailData.orderVo.logisticsStatus == 4 ||detailData.orderVo.logisticsStatus == 5">
+      v-else-if=" detailData.orderVo.financialStatus != 1 && detailData.orderVo.logisticsStatus == 1 ||detailData.orderVo.logisticsStatus == 3 ||detailData.orderVo.logisticsStatus == 4 ||detailData.orderVo.logisticsStatus == 5"
+    >
       <h3>
-        <van-icon custom-class="colorW" name="underway"/>
+        <van-icon custom-class="colorW" name="underway" />
         <span>待发货</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
@@ -24,7 +25,7 @@
     <!--付款之后或COD  发货之前 取消订单 -->
     <div class="bg" v-else-if="detailData.newestRefund!=null&&detailData.orderVo.type=='3'">
       <h3>
-        <van-icon custom-class="colorW" name="underway"/>
+        <van-icon custom-class="colorW" name="underway" />
         <span>取消订单：正在处理申请</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
@@ -35,7 +36,7 @@
       v-else-if="detailData.newestRefund!=null&&detailData.newestRefund.type == '1' &&  detailData.newestRefund.status !='2' && detailData.newestRefund.status !='4' && detailData.newestRefund.status !='9' && detailData.newestRefund.status !='10'"
     >
       <h3>
-        <van-icon custom-class="colorW" name="underway"/>商品状态：
+        <van-icon custom-class="colorW" name="underway" />商品状态：
         <span>{{detailData.title }}</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
@@ -45,7 +46,7 @@
       v-else-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type == '1' &&  detailData.refundProcessing.status !='2' && detailData.refundProcessing.status !='4' && detailData.refundProcessing.status !='9' && detailData.refundProcessing.status !='10'"
     >
       <h3>
-        <van-icon custom-class="colorW" name="underway"/>商品状态：
+        <van-icon custom-class="colorW" name="underway" />商品状态：
         <span>{{detailData.title }}</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
@@ -56,7 +57,7 @@
       v-else-if="detailData.newestRefund!=null&&detailData.newestRefund.type == '2' &&  detailData.newestRefund.status !='2' && detailData.newestRefund.status !='4' && detailData.newestRefund.status !='9' && detailData.newestRefund.status !='10'"
     >
       <h3>
-        <van-icon custom-class="colorW" name="underway"/>换货状态：
+        <van-icon custom-class="colorW" name="underway" />换货状态：
         <span>{{detailData.title }}</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
@@ -66,17 +67,14 @@
       v-else-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type == '2' &&  detailData.refundProcessing.status !='2' && detailData.refundProcessing.status !='4' && detailData.refundProcessing.status !='9' && detailData.refundProcessing.status !='10'"
     >
       <h3>
-        <van-icon custom-class="colorW" name="underway"/>换货状态：
+        <van-icon custom-class="colorW" name="underway" />换货状态：
         <span>{{detailData.title }}</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
-    <div
-      class="bg"
-      v-else
-    >
+    <div class="bg" v-else>
       <h3>
-        <van-icon custom-class="colorW" name="underway"/>
+        <van-icon custom-class="colorW" name="underway" />
         <span>已完成</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
@@ -95,12 +93,10 @@
         </div>
         <div class="item" v-if="detailData.captainVo">
           <div class="left">提货地点</div>
-          <div class="right">{{detailData.captainVo.captain.city}}
+          <div class="right">
+            {{detailData.captainVo.captain.city}}
             {{detailData.captainVo.captain.address}}
             {{detailData.captainVo.captain.deliveryAddress}}
-            
-
-
           </div>
         </div>
 
@@ -114,11 +110,10 @@
         </div>
         <div class="item">
           <div class="left">收货地址</div>
-          <div
-            class="right"
-          >{{detailData.orderVo.shippingAddress.province}} {{detailData.orderVo.shippingAddress.city}}
-          {{detailData.orderVo.shippingAddress.district}}
-          {{detailData.orderVo.shippingAddress.address}}
+          <div class="right">
+            {{detailData.orderVo.shippingAddress.province}} {{detailData.orderVo.shippingAddress.city}}
+            {{detailData.orderVo.shippingAddress.district}}
+            {{detailData.orderVo.shippingAddress.address}}
           </div>
         </div>
       </div>
@@ -143,9 +138,9 @@
         <div class="borderT"></div>
         <div class="store-info">
           <div class="store-name">
-            <van-icon name="shop-o"/>
+            <van-icon name="shop-o" />
             <span>我的店铺</span>
-            <van-icon name="arrow"/>
+            <van-icon name="arrow" />
           </div>
           <div class="goods">
             <div
@@ -154,7 +149,7 @@
               :key="index"
             >
               <div class="img-box">
-                <img :src="'http://qn.gaoshanmall.cn/'+goods.itemImg" alt>
+                <img :src="'http://qn.gaoshanmall.cn/'+goods.itemImg" alt />
               </div>
               <div class="goods-info">
                 <h3 class="van-ellipsis" style="font-size:26rpx;">{{goods.itemName}}</h3>
@@ -262,7 +257,7 @@
             :data-name="reasonItem"
             @click="changeReason(reasonItem)"
           >
-            <van-radio :name="reasonItem" custom-class="radioLabel"/>
+            <van-radio :name="reasonItem" custom-class="radioLabel" />
           </van-cell>
         </van-cell-group>
       </van-radio-group>
@@ -308,9 +303,8 @@
 }
 
 .page {
-  padding-bottom: 200rpx;
-  //  padding-bottom: 10rpx;
-  min-height: 140vh;
+  padding-bottom: 150rpx;
+  min-height: 100vh;
 }
 .bg {
   width: 100%;
