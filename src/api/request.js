@@ -8,8 +8,8 @@ fly.config.baseURL = "https://mall.gaoshanapp.com";
 // fly.config.withCredentials = true //允许携带cookie
 fly.interceptors.request.use(
   config => {
-    console.log(wx.getStorageSync("token"),'我在获取token');
-    console.log(wx.getStorageSync("aa"),'我在获取aa');
+    // console.log(wx.getStorageSync("token"),'我在获取token');
+    // console.log(wx.getStorageSync("aa"),'我在获取aa');
     if (wx.getStorageSync("shopToken") != "") {
       let token = wx.getStorageSync("shopToken");
       // console.log(token);
