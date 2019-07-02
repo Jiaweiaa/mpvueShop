@@ -91,7 +91,7 @@ export default {
       });
     }
     this.moreService = [''];
-    if(wx.getStorage("shopToken")) {
+    if(wx.getStorageSync("shopToken")) {
       isCapOrSup().then(isRes => {
         wx.setStorageSync("isCap", isRes.data.result.isCap);
         wx.setStorageSync("isSup", isRes.data.result.isSup);
