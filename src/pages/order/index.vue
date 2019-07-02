@@ -35,7 +35,7 @@
     </div>
 	  <van-radio-group class="radioStyle" :value="payRadio" @change="typeChange">
 		  <van-radio name="4">微信支付</van-radio>
-		  <van-radio :disabled="scoreAmount <= 0" name="12">积分支付(剩余积分&nbsp;{{scoreAmount}})</van-radio>
+		  <!-- <van-radio :disabled="scoreAmount <= 0" name="12">积分支付(剩余积分&nbsp;{{scoreAmount}})</van-radio> -->
 	  </van-radio-group>
     <div class="cartlist">
       <!-- 分店铺形式的购物车列表 -->
