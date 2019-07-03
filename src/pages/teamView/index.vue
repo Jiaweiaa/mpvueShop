@@ -65,11 +65,11 @@
             icon: "shop-collect-o",
             url: "/pages/myCommunity/main"
 		      },
-          {
-            title: "商品销量",
-            icon: "fire-o",
-            url: "/pages/myOrder/main?id=2"
-          },
+          // {
+          //   title: "商品销量",
+          //   icon: "fire-o",
+          //   url: "/pages/myOrder/main?id=2"
+          // },
           {
             title: "团长排行",
             icon: "medel-o",
