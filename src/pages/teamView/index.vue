@@ -13,8 +13,10 @@
     </div>
 	  <div class="myMenu boxMenu">
 		  <div class="left">
-			  <van-icon size="35px" name="scan" />
-			  <p>扫码核销</p>
+			 <button @tap="scanFun">
+				 <van-icon size="35px" name="scan" />
+				 <p>扫码核销</p>
+			 </button>
 		  </div>
 		  <div class="right" @click="toMyOrder">
 			  <van-icon size="35px" name="description" />
@@ -96,6 +98,21 @@
       };
     },
     methods: {
+      /*
+      * 扫码核销  扫码之后相当于调取接口 返回json 通过返回json的code值判断是否获取到商品唯一标识 未获取到提示不是商城商品
+      * code正确 拿唯一标识调取后台核销端口改变商品状态
+      * */
+      scanFun() {
+        wx.scanCode({
+          scanType: ['qrCode'],
+          onlyFromCamera: true,
+          complete: (res) => {
+            console.log(res);
+          }
+        })
+      },
+      
+      // 去哪页
       goTo(url) {
         if(url == '/pages/my/main') {
           wx.switchTab({
