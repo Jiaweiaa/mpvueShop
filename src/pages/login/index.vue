@@ -1,6 +1,8 @@
 <template>
   <div class="login" v-if="signFlag">
-    <div class="logo"></div>
+    <div class="logo">
+      我是品牌Logo
+    </div>
     <van-cell-group>
       <van-field
         v-model="mobile"
@@ -12,7 +14,7 @@
         use-button-slot
         @change="mobileChange"
       >
-        <van-button slot="button" size="small" type="primary" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取本机号码</van-button>
+        <!-- <van-button slot="button" size="small" type="primary" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取本机号码</van-button> -->
       </van-field>
     </van-cell-group>
     <button class="login-btn" open-type="getUserInfo" lang="zh_CN" @getuserinfo="signIn">注册</button>
