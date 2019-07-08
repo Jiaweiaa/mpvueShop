@@ -46,14 +46,22 @@
 			  </div>
 		  </div>
 	  </div>
+	
+	  <van-notify id="van-notify" />
+	  <van-dialog id="van-dialog" />
   </div>
 </template>
 
 <script>
   import {
-    myDetile,
-	writeOffByQRcode
+    myDetile
   } from "../../api/myTeam/index";
+  import Notify from '../../../static/vant/notify/notify';
+  import Dialog from '../../../static/vant/dialog/dialog';
+  import {
+    writeOff
+  } from '../../api/myOrder/index'
+  
   export default {
     onShow() {
       this.getTeamData();
@@ -100,37 +108,44 @@
     },
     methods: {
       /*
-      * 扫码核销  扫码之后相当于调取接口 返回json 通过返回json的code值判断是否获取到商品唯一标识 未获取到提示不是商城商品
-      * code正确 拿唯一标识调取后台核销端口改变商品状态
+      * 扫码核销  扫码之后相当于调取接口 返回json 通过返回json的result值判断是否获取到商品唯一标识 未获取到提示不是商城商品
+      * 拿唯一标识调取后台核销端口改变商品状态
       * */
       scanFun() {
         wx.scanCode({
           scanType: ['qrCode'],
           onlyFromCamera: true,
           complete: (res) => {
-            console.log(res,'888');
-			writeOffByQRcode({orderCode:res.result}).then((res) => {
-				if(res.data.code=="200"){
-					wx.showToast({
-						title: res.data.message,
-						icon: 'success',
-						duration: 2000
-					})
-
-				}else{
-					wx.showToast({
-						title: res.data.message,
-						icon: 'none',
-						duration: 2000
-					})
-				}
-			}).catch((err) => {
-				wx.showToast({
-						title: '网络错误',
-						icon: 'none',
-						duration: 2000
-					})
-			});
+	          if(res.result) {
+              console.log(res.result);
+              Dialog.confirm({
+                title: '商品核销',
+                message: '确认核销该商品吗?'
+              }).then(() => {
+                let data = [];
+                data.push(res.result);
+                writeOff({
+	                storeId: wx.getStorageSync("userInfo").storeId,
+                  orderCodes: data
+                }).then(res => {
+                  console.log(res);
+                  if(res.data.code == 200) {
+                    Notify({
+                      text: res.data.result.message,
+                      duration: 1000,
+                      selector: '#custom-selector',
+                      backgroundColor: '#1989fa'
+                    });
+                  }else {
+                    Notify(res.message);
+                  }
+                })
+              }).catch(() => {
+                // on cancel
+              });
+	          }else {
+              Notify('该二维码已失效');
+	          }
           }
         })
       },

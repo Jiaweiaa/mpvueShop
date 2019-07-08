@@ -92,6 +92,9 @@ export default {
       });
     }
   },
+  onShareAppMessage(res) {
+    console.log(res);
+  },
   computed: {
     ...mapState(["cityName"])
   },

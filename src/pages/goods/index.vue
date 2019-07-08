@@ -10,7 +10,7 @@
       >
         <block v-for="(item, index) in gallery " :key="index">
           <swiper-item class="swiper-item">
-            <img :src="'http://qn.gaoshanmall.cn/'+item.picUrl" class="slide-image" />
+            <img :src="'http://qn.gaoshanmall.cn/'+item.picUrl" class="slide-image">
           </swiper-item>
         </block>
       </swiper>
@@ -26,7 +26,7 @@
         <p>￥{{goodsInfo.salePrice}}</p>
         <p>{{goodsInfo.title}}</p>
         <p>{{goodsInfo.sketch}}</p>
-
+        
         <!--<div v-if="brand.name" class="brand">-->
         <!--<p>{{brand.name}}</p>-->
         <!--</div>-->
@@ -36,19 +36,10 @@
       <div>请选择规格数量</div>
       <div></div>
     </div>
-    <div>
-      <div class="section-nav record">
-        <div  class="label">购买记录 
-          <p class="item">已有<span>69</span>人购买,商品共销售<span>76</span>份</p>
-        </div>
-        <div></div>
-      </div>
-      <div class="img_group">
-        <div class="img_item">
-
-        </div>
-      </div>
-    </div>
+    <!-- <div @click="showType" class="section-nav">
+      <div>用户评价</div>
+      <div></div>
+    </div>-->
 
     <div v-if="attribute.length!=0" class="attribute">
       <div class="head">商品参数</div>
@@ -58,15 +49,50 @@
       </div>
     </div>
     <div v-if="goods_desc" class="detail">
-      <wxParse :content="goods_desc" />
+      <wxParse :content="goods_desc"/>
     </div>
-   
+    <!-- 常见问题 -->
+    <div class="common-problem">
+      <div class="h">
+        <div class="line"></div>
+        <text class="title">常见问题</text>
+        <div class="line"></div>
+      </div>
+      <div class="b">
+        <div class="item" v-for="(item, index) in issueList" :key="index">
+          <div class="question-box">
+            <text class="spot"></text>
+            <text class="question">{{item.question}}</text>
+          </div>
+          <div class="answer">{{item.answer}}</div>
+        </div>
+      </div>
+    </div>
+    <!-- 大家都在看 -->
+    <!-- <div class="common-problem">
+      <div class="h">
+        <div class="line"></div>
+        <text class="title">大家都在看</text>
+        <div class="line"></div>
+      </div>
+      <div class="sublist">
+        <div
+          @click="togoodsDetail(subitem.id)"
+          v-for="(subitem, subindex) in productList"
+          :key="subindex"
+        >
+          <img :src="subitem.list_pic_url" alt>
+          <p>{{subitem.name}}</p>
+          <p>￥{{subitem.retail_price}}</p>
+        </div>
+      </div>
+    </div>-->
 
     <!-- sku -->
     <van-popup class="attr-pop" position="bottom" :show="showpop" @close="showType">
       <div class="top">
         <div class="left">
-          <img v-if="gallery.length>0" :src="'http://qn.gaoshanmall.cn/'+gallery[0].picUrl" />
+          <img v-if="gallery.length>0" :src="'http://qn.gaoshanmall.cn/'+gallery[0].picUrl">
         </div>
         <div class="right">
           <div>
@@ -109,7 +135,7 @@
       </div>
       <!-- <p>请选择商品数量</p> -->
       <div style="display:flex;justify-content: space-between;align-items:center;">
-        <p style="margin-left:30px;font-size:16px;">我要买:</p>
+        <p style="margin-left:30px;font-size:15px;">我要买:</p>
         <van-stepper
           style="margin-right:30px;"
           @plus="plusGoodsNum()"
@@ -127,18 +153,13 @@
     </van-popup>
 
     <div class="bottom-fixed">
-      <div>
-        <div class="car">
-          <img src="/static/images/ic_menu_choice_nor.png" />
-        </div>
-      </div>
       <div @click="collect">
         <div class="collect" :class="[collectFlag ? 'active' :'']"></div>
       </div>
       <div @click="toCart">
         <div class="car">
           <span>{{allnumber}}</span>
-          <img src="/static/images/ic_menu_shoping_nor.png" />
+          <img src="/static/images/ic_menu_shoping_nor.png">
         </div>
       </div>
       <div @click="openSku('buyNow')">立即购买</div>
@@ -174,14 +195,14 @@ export default {
     this.openId = getStorageOpenid();
     this.getCartGoodsNum();
     this.goodsDetail();
-    if (wx.getStorageSync("userInfo")) {
-      this.level = wx.getStorageSync("userInfo").level;
-    }
+		if(wx.getStorageSync('userInfo')) {
+      this.level = wx.getStorageSync('userInfo').level;
+		}
   },
   data() {
     return {
       level: 1,
-
+      
       allnumber: 0, //购物车商品数量
       openId: "",
       collectFlag: false,
@@ -202,7 +223,7 @@ export default {
       flag: "",
       selectSkuData: null, //已选中的sku对象
       goodsNum: 1,
-      quantity: "-",
+      quantity: '-',
       keys: [
         // {
         //   name: "颜色",
@@ -278,36 +299,27 @@ export default {
   },
   //商品转发
   onShareAppMessage() {
-    let that = this;
+    let that =this;
     return {
-      title: "商品转发", // 转发后 所显示的title
-      path: "/pages/group/index", // 相对的路径
-      success: res => {
-        // 成功后要做的事情
-        console.log(res.shareTickets[0]);
-        // console.log
-
+      title: '商品转发', // 转发后 所显示的title
+      path: '/pages/goods/main?id='+ that.id, // 相对的路径
+      success: (res)=>{    // 成功后要做的事情
         wx.getShareInfo({
           shareTicket: res.shareTickets[0],
-          success: res => {
+          success: (res)=> {
             that.setData({
-              isShow: true
-            });
-            console.log(that.setData.isShow);
+              isShow:true
+            })
           },
-          fail: function(res) {
-            console.log(res);
-          },
-          complete: function(res) {
-            console.log(res);
-          }
-        });
+          fail: function (res) { console.log(res) },
+          complete: function (res) { console.log(res) }
+        })
       },
-      fail: function(res) {
+      fail: function (res) {
         // 分享失败
-        console.log(res);
+        console.log(res)
       }
-    };
+    }
   },
   components: {
     wxParse
@@ -378,7 +390,7 @@ export default {
               };
               let model = JSON.stringify(params);
               wx.setStorageSync("orderParams", model);
-              wx.setStorageSync("orderFrom", "goodsDetail");
+              wx.setStorageSync("orderFrom", 'goodsDetail');
               wx.navigateTo({
                 url: "/pages/order/main"
               });
@@ -480,7 +492,6 @@ export default {
             array.map(vv => {
               str += vv + ";";
             });
-            console.log(v);
             if (v.quantity > 0) {
               this.data[str.substring(0, str.length - 1)] = {
                 price: v.salePrice,
@@ -488,7 +499,6 @@ export default {
               };
             }
           });
-          console.log(this.data, 5656);
           this.queryDGoodsById();
         })
         .catch(err => {
@@ -765,10 +775,6 @@ export default {
 @import "./style.scss";
 </style>
 <style>
-.goods{
-  margin-bottom: 100rpx;
-  padding-bottom: 1rpx;
-}
 .goods .sku {
   height: 25px;
   line-height: 25px;
@@ -798,16 +804,5 @@ export default {
 .goods .van-stepper {
   width: 200px !important;
   margin: 30px !important;
-}
-.record .label{
-  flex-grow: 1;
-}
-.record .item{
-  float:right;color:#999;
-  font-size: 28rpx;
-}
-.record .item span{
-  font-size: 30rpx;
-  color: #d8001a;
 }
 </style>
