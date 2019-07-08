@@ -1,8 +1,8 @@
 let Fly = require("flyio/dist/npm/wx");
 let fly = new Fly();
 // fly.config.baseURL = " http://47.104.173.227:8003";
-// fly.config.baseURL = "http://192.168.0.10:8003" ;
-fly.config.baseURL = " http://39.97.233.168:8003";
+fly.config.baseURL = "http://192.168.1.188:8003" ;
+// fly.config.baseURL = " http://39.97.233.168:8003";
 // fly.config.baseURL = " https://mall.gaoshanapp.com";
 // http://47.104.173.227:8003
 //http://192.168.0.10:8003

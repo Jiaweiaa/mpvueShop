@@ -5,19 +5,16 @@
         <wxParse :content="goods_desc" />
       </div>
     </div>
-    <div class="list">
-      <p class="title">专题推荐</p>
-      <div v-for="(item, index) in recommendList" :key="index" class="item">
-        <img :src="item.scene_pic_url" alt="">
-        <p>{{item.title}}</p>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
-import { get } from "../../utils";
+  import {
+    getNewsById
+  } from '../../api/topic/index'
+
 import wxParse from "mpvue-wxparse";
+
 export default {
   created() {},
   mounted() {
@@ -36,11 +33,10 @@ export default {
   },
   methods: {
     async getListData() {
-      const data = await get("/topic/detailaction", {
+      const data = await getNewsById({
         id: this.id
       });
-      this.goods_desc = data.data.content;
-      this.recommendList = data.recommendList;
+      this.goods_desc = data.data.result.content;
     }
   },
   computed: {}

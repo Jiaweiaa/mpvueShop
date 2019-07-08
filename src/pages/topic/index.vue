@@ -3,12 +3,11 @@
     <ul class="list">
       <li @click="topicDetail(item.id)" v-for="(item, index) in topicList" :key="index">
         <div class="t-img">
-          <img :src="item.scene_pic_url" alt="">
+          <img :src="'http://qn.gaoshanmall.cn/'+ item.img" alt="">
         </div>
         <div class="info">
           <p>{{item.title}}</p>
-          <p>{{item.subtitle}}</p>
-          <p>{{item.price_info}}元起</p>
+          <p>{{item.spare}}</p>
         </div>
       </li>
     </ul>
@@ -16,6 +15,10 @@
 </template>
 
 <script>
+import {
+  getNewsPage
+} from '../../api/topic/index'
+
 import { get } from "../../utils";
 export default {
   onPullDownRefresh() {
@@ -42,22 +45,20 @@ export default {
       total: ""
     };
   },
-  components: {},
   methods: {
     async getListData(first) {
-      const data = await get("/topic/listaction", {
-        page: this.page
+      const data = await getNewsPage({
+        pageNum: this.page
       });
-      this.total = data.total;
+      this.total = data.data.result.pages;
       if (first) {
-        this.topicList = data.data;
+        this.topicList = data.data.result.records;
       } else {
         //上拉加载跟多
-        this.topicList = this.topicList.concat(data.data);
+        this.topicList = this.topicList.concat(data.data.result.records);
       }
     },
     topicDetail(id) {
-      console.log(id);
       wx.navigateTo({ url: "/pages/topicdetail/main?id=" + id });
     }
   },

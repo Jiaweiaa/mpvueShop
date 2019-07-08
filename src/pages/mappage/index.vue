@@ -240,7 +240,7 @@
       border-radius: 50%;
       position: absolute;
       right: 10px;
-      top: 50px;
+      top: 9px;
     }
     .address {
       font-size: 14px;
