@@ -12,7 +12,7 @@
           focus="true"
           v-model="words"
           @click="inputFocus"
-          @input="tipsearch"
+         
           @confirm="searchWords"
           placeholder="商品搜索"
         >
@@ -45,7 +45,7 @@
 	    缓存搜索记录
 	    推送什么的
     -->
-    <div v-if="listData <= 0 ">
+    <div v-if="listData <= 0 " class="helpSearch">
       <div class="history" v-if="historyData.length!=0">
         <div class="t">
           <div>历史记录</div>
@@ -376,7 +376,7 @@ export default {
       //商品清空
       this.listData = [];
       //展示搜索提示信息
-      this.tipsearch();
+      // this.tipsearch();
     },
     async getlistData() {
       wx.showLoading({
@@ -443,10 +443,10 @@ export default {
     async searchWords(e) {
       var value = e.currentTarget.dataset.value;
       this.words = value || this.words;
-      const data = await post("/search/addhistoryaction", {
-        openId: this.openid,
-        keyword: value || this.words
-      });
+      // const data = await post("/search/addhistoryaction", {
+      //   openId: this.openid,
+      //   keyword: value || this.words
+      // });
       //获取人们数据
       this.getHotData();
       //获取商品列表

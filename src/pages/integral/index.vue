@@ -2,7 +2,7 @@
   <div class="my">
 	  <van-icon class="icon" custom-class="iconBorder" name="gold-coin" size="60px" color="orange"/>
 	  <div class="title">
-		  我的积分
+		  我的联盟券
 	  </div>
 	  <div class="myMoney">
 		  <span style="display: inline-block; vertical-align: middle;">
@@ -10,8 +10,8 @@
 		  </span>{{score}}
 	  </div>
 	  <div class="btnRow">
-		  <van-button custom-class="btnStyle" @click="getIntegral" type="primary">充值积分</van-button>
-		  <van-button custom-class="btnStyle" @click="integralList" type="default">积分明细</van-button>
+		  <van-button custom-class="btnStyle" @click="getIntegral" type="primary">充值联盟券</van-button>
+		  <van-button custom-class="btnStyle" @click="integralList" type="default">联盟券明细</van-button>
 	  </div>
 	 
 	  
@@ -23,15 +23,15 @@
 		  position="bottom"
 		  @close="onClose">
 		 <div class="popupBox">
-			 <div class="title">积分充值</div>
+			 <div class="title">联盟券充值</div>
 			 <div class="content">
 				 <van-cell-group>
 					 <van-field
 						 :value="code"
 						 required
 						 clearable
-						 label="积分code"
-						 placeholder="请输入积分code"
+						 label="联盟券码"
+						 placeholder="请输入联盟券码"
 						 @change="fieldChange"
 					 />
 				 </van-cell-group>

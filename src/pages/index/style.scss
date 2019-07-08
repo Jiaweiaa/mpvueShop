@@ -5,27 +5,45 @@
 
   .search {
     width: 100%;
+    position: fixed;
+    top: 0;
     box-sizing: border-box;
     padding: 0 25rpx 0 10rpx;
     position: fixed;
     top: 0;
     z-index: 99;
-    height: 80rpx;
+    min-height: 80rpx;
     display: flex;
     align-items: center;
     background: #fff;
 
-    div:nth-child(1) {
-      width: 115rpx;
-      text-align: center;
+    .captain {
+      width: 315rpx;
+      // text-align: center;
+      display: -webkit-box;
       overflow: hidden;
-      white-space: nowrap;
       text-overflow: ellipsis;
+      word-wrap: break-word;
+      white-space: normal !important;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
       font-size: 20rpx;
       padding-right: 15rpx;
+      .toggle_btn {
+        font-size: 24rpx;
+        border: 1rpx solid red;
+        border-radius: 5rpx;
+        text-align: center;
+        display: block;
+        float: right;
+        padding: 3rpx 10rpx;
+        margin-right: 35rpx;
+        background: rgb(214, 70, 60);
+        color: #fff;
+      }
     }
 
-    div:nth-child(2) {
+    .search_bar {
       flex: 1;
       position: relative;
 
@@ -42,7 +60,8 @@
         position: absolute;
         top: 15rpx;
         left: 10rpx;
-        background: url('http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/search2-2fb94833aa.png') center no-repeat;
+        background: url("http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/search2-2fb94833aa.png")
+          center no-repeat;
         background-size: 100%;
         width: 28rpx;
         height: 28rpx;
@@ -137,7 +156,7 @@
       margin-top: 20rpx;
       height: 260rpx;
       width: 100%;
-      background: url('../../../static/images/bgnew.png') no-repeat;
+      background: url("../../../static/images/bgnew.png") no-repeat;
       background-size: 100% 100%;
       text-align: center;
       display: flex;
@@ -208,7 +227,7 @@
             }
           }
 
-          li:nth-child(n+2) {
+          li:nth-child(n + 2) {
             border-left: 1rpx solid #f4f4f4;
           }
         }
@@ -218,7 +237,7 @@
 
   .hotgoods {
     .newgoods-top {
-      background: url('../../../static/images/bgtopic.png') no-repeat;
+      background: url("../../../static/images/bgtopic.png") no-repeat;
       background-size: 100% 100%;
 
       .top {
@@ -260,7 +279,7 @@
         width: 32rpx;
         height: 32rpx;
         margin-left: 5rpx;
-        background: url('../../../static//images/right.png') no-repeat;
+        background: url("../../../static//images/right.png") no-repeat;
         background-size: 100% 100%;
         vertical-align: middle;
       }
@@ -395,7 +414,7 @@
           display: inline-block;
           width: 70rpx;
           height: 70rpx;
-          background: url('../../../static/images/rightbig.png') no-repeat;
+          background: url("../../../static/images/rightbig.png") no-repeat;
           background-size: 100% 100%;
           margin-top: 60rpx;
         }

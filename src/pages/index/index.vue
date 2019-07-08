@@ -1,9 +1,18 @@
 <template>
   <div class="index">
     <div class="search">
-      <div @click="toMappage">{{cityName}}</div>
-      <div @click="toSearch">
-        <input type="text" placeholder="搜索商品">
+      <div @click="toMappage" class="captain">
+        
+        <div v-if="captainInfo!=null">
+          <div style="font-size: 30rpx;">{{captainInfo.address}} <span class="toggle_btn">切换</span> </div>
+          <div style="font-size: 24rpx;color:#999;">提货位置:{{captainInfo.deliveryAddress}}</div>
+        </div>
+        <div v-else>
+          {{cityName}}
+        </div>
+      </div>
+      <div @click="toSearch" class="search_bar">
+        <input type="text" placeholder="搜索商品" />
         <span class="icon"></span>
       </div>
     </div>
@@ -18,17 +27,25 @@
       >
         <block v-for="(item, index) in banner " :key="index">
           <swiper-item class="swiper-item">
-            <img @click="goodsDetail(item.itemId)" :src="'http://qn.gaoshanmall.cn/' + item.banner" class="slide-image">
+            <img
+              @click="goodsDetail(item.itemId)"
+              :src="'http://qn.gaoshanmall.cn/' + item.banner"
+              class="slide-image"
+            />
           </swiper-item>
         </block>
       </swiper>
     </div>
-	  <div class="channel">
-		  <div @click="toCategoryList(item.categoryId, item.name)" v-for="(item, index) in channelList" :key="index">
-			  <img :src="'http://qn.gaoshanmall.cn/'+ item.logo" alt>
-			  <p>{{item.name}}</p>
-		  </div>
-	  </div>
+    <div class="channel">
+      <div
+        @click="toCategoryList(item.categoryId, item.name)"
+        v-for="(item, index) in channelList"
+        :key="index"
+      >
+        <img :src="'http://qn.gaoshanmall.cn/'+ item.logo" alt />
+        <p>{{item.name}}</p>
+      </div>
+    </div>
     <div class="newcategory">
       <div class="list" v-for="(item, index) in newCategoryList" :key="index">
         <div class="head">{{item.name}}商品</div>
@@ -38,24 +55,24 @@
             v-for="(subitem, subindex) in item.goodsList"
             :key="subindex"
           >
-            <img :src="'http://qn.gaoshanmall.cn/'+ subitem.img" alt>
+            <img :src="'http://qn.gaoshanmall.cn/'+ subitem.img" alt />
             <p>{{subitem.name}}</p>
             <p>￥{{subitem.salePrice}}</p>
           </div>
           <!--<div @click="categoryList(item)">-->
-            <!--<div class="last">-->
-              <!--<p>{{item.name}}商品</p>-->
-              <!--<span class="icon"></span>-->
-            <!--</div>-->
+          <!--<div class="last">-->
+          <!--<p>{{item.name}}商品</p>-->
+          <!--<span class="icon"></span>-->
+          <!--</div>-->
           <!--</div>-->
         </div>
       </div>
     </div>
-	  <div v-if="newCategoryList.length > 0" class="title">
-		  <span>—</span>
-		  <span>我也是有底线的</span>
-		  <span>—</span>
-	  </div>
+    <div v-if="newCategoryList.length > 0" class="title">
+      <span>—</span>
+      <span>我也是有底线的</span>
+      <span>—</span>
+    </div>
   </div>
 </template>
 
@@ -67,9 +84,9 @@ import { shoppingcartCount } from "../../api/shoppingcart/index";
 export default {
   onShow() {
     this.getCartGoodsNum();
-    if(wx.getStorageSync('data')) {
-    
-    }else {
+    if (wx.getStorageSync("data")) {
+      this.captainInfo = Object.assign({}, wx.getStorageSync("data"));
+    } else {
       wx.navigateTo({
         url: "/pages/mappage/main"
       });
@@ -84,7 +101,6 @@ export default {
     //   });
     this.getCityName();
     this.getData();
-    
   },
   data() {
     return {
@@ -95,7 +111,8 @@ export default {
       hotGoods: [],
       topicList: [],
       newCategoryList: [],
-	    channelList: []
+      channelList: [],
+      captainInfo: null
     };
   },
   components: {},
@@ -106,7 +123,7 @@ export default {
         url: "../categorylist/main?id=" + id + "&name=" + name
       });
     },
-    
+
     //获取购物车中的商品数量
     getCartGoodsNum() {
       shoppingcartCount()
@@ -170,19 +187,19 @@ export default {
         url: "/pages/search/main"
       });
     },
-	  
+
     async getData() {
       const data = await getIndexItem();
       this.banner = data.data.result.banner;
       this.channelList = data.data.result.indexCategories;
       console.log(this.channelList);
       this.newCategoryList.push({
-	      name: '热销',
-	      goodsList: data.data.result.hotSale
+        name: "热销",
+        goodsList: data.data.result.hotSale
       });
-      
+
       this.newCategoryList.push({
-	      name: '推荐',
+        name: "推荐",
         goodsList: data.data.result.recommended
       });
     },
@@ -191,7 +208,7 @@ export default {
         url: "/pages/goods/main?id=" + id
       });
     },
-	  // 更多分类
+    // 更多分类
     categoryList(item) {
       wx.navigateTo({
         url: "/pages/categorylist/main?id=" + id
@@ -236,18 +253,18 @@ export default {
 <style lang='scss' scoped>
 @import "./style.scss";
 .title {
-	text-align: center;
-	padding: 20rpx 0;
-	width: 100%;
-	
-	span:nth-child(2) {
-		font-size: 24rpx;
-		color: #333;
-		padding: 0 10rpx;
-	}
-	
-	span:nth-child(2n + 1) {
-		color: #999;
-	}
+  text-align: center;
+  padding: 20rpx 0;
+  width: 100%;
+
+  span:nth-child(2) {
+    font-size: 24rpx;
+    color: #333;
+    padding: 0 10rpx;
+  }
+
+  span:nth-child(2n + 1) {
+    color: #999;
+  }
 }
 </style>

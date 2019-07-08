@@ -38,7 +38,7 @@
                 :thumb="'http://qn.gaoshanmall.cn/'+val.itemImg"
               ></van-card>
             </div>
-           <!-- <div v-if="val.orderReVo.orderSts!=''">{{val.orderReVo.orderSts}}</div> -->
+            <!-- <div v-if="val.orderReVo.orderSts!=''">{{val.orderReVo.orderSts}}</div> -->
             <view slot="footer" style="display:flex;justify-content: flex-end;">
               <van-button
                 @click.stop="detailOrder(value)"
@@ -109,20 +109,28 @@ import noDataView from "../../components/noDataView/index";
 export default {
   onShow() {
     if (this.$root.$mp.query.id) {
-      this.currentActive = this.$root.$mp.query.id;
+      this.orderType = this.$root.$mp.query.id
+      this.currentActive = Number(this.$root.$mp.query.id)-1;
+      if(this.$root.$mp.query.id==4){
+        this.currentActive = 2;
+      }
+      if(this.$root.$mp.query.id==3){
+        this.currentActive = 3;
+      }
     }
     this.getOrderList();
   },
   data() {
     return {
       scmCode: "", //已选择的订单scmCode
-      currentActive: 0,
+      currentActive: 0, 
+      orderType: 1, //默认为全部
       pageNum: 1,
       list: [],
       allCount: "",
       loading: false,
       onLoadLoading: false,
-      tabs: ["全部", "待支付", "待收货", "待发货", "已完成"],
+      tabs: ["全部", "待支付", "待发货", "待收货", "已完成"],
       reason: "我不想买了",
       reasonShow: false, //弹出层是否显示
       //取消订单理由
@@ -153,7 +161,7 @@ export default {
       let params = {
         pageNum: this.pageNum,
         pageSize: 5,
-        orderType: Number(this.currentActive) + 1
+        orderType: this.orderType
       };
       findAllOrders(params).then(res => {
         // console.log(999);
@@ -190,7 +198,6 @@ export default {
                 seeBtn: true, //查看物流
                 afrimBtn: true //确认收货
               });
-
             } else if (order.logisticsStatus == 15) {
               this.$set(order, "typeData", {
                 title: "交易成功",
@@ -199,7 +206,6 @@ export default {
                 seeBtn: false,
                 afrimBtn: false
               });
-             
             } else if (
               order.logisticsStatus == 9 &&
               order.financialStatus == 3
@@ -211,7 +217,6 @@ export default {
                 seeBtn: false,
                 afrimBtn: true
               });
-        
             } else if (
               order.logisticsStatus == 9 &&
               order.financialStatus == 1
@@ -223,7 +228,6 @@ export default {
                 seeBtn: false,
                 afrimBtn: false
               });
-           
             } else if (order.logisticsStatus == 11) {
               this.$set(order, "typeData", {
                 title: "退款成功",
@@ -232,7 +236,6 @@ export default {
                 seeBtn: false,
                 afrimBtn: false
               });
-            
             } else if (
               order.financialStatus == 1 &&
               order.paymentType != 1 &&
@@ -245,7 +248,6 @@ export default {
                 seeBtn: false,
                 afrimBtn: false
               });
-           
             } else if (
               (order.financialStatus != 1 && order.logisticsStatus == 1) ||
               order.logisticsStatus == 3 ||
@@ -259,7 +261,6 @@ export default {
                 seeBtn: false,
                 afrimBtn: false
               });
-            
             } else if (
               order.logisticsStatus == 10 &&
               order.financialStatus == 1
@@ -271,7 +272,6 @@ export default {
                 seeBtn: true,
                 afrimBtn: false
               });
-           
             }
           });
           // console.log(this.list);
@@ -293,11 +293,7 @@ export default {
     popClose() {
       this.reasonShow = false;
     },
-    //选择取消原因
-    onChange(mp) {
-      this.reason = mp.mp.detail;
-      console.log(mp);
-    },
+
     //选择取消原因
     changeReason(reasonItem) {
       this.reason = reasonItem;
@@ -356,7 +352,7 @@ export default {
       let params = {
         pageNum: this.pageNum,
         pageSize: 5,
-        orderType: Number(this.currentActive) + 1
+        orderType:this.orderType
       };
       this.list = [];
       // 1是立即支付  2是取消订单 3查看详情 4查看物流
@@ -490,7 +486,29 @@ export default {
     },
 
     onChange(val) {
+      console.log(val, "888");
+      switch (val.target.title) {
+        case "全部":
+          this.orderType = 1;
+          break;
+        case "待支付":
+          this.orderType = 2;
+          break;
+        case "待发货":
+          this.orderType = 4;
+          break;
+        case "待收货":
+          this.orderType = 3;
+          break;
+        case "已完成":
+          this.orderType = 5;
+          break;
+        default:
+          break;
+      }
+
       this.currentActive = val.target.index;
+
       this.pageNum = 1;
       this.list = [];
       this.getOrderList();
@@ -551,19 +569,18 @@ export default {
   }
 }
 .section {
-	background: #fff;
-	.listViewBox {
-		padding: 10px;
-		margin: 10px;
-		border-radius: 10px;
-		border: 1px solid #eee;
-		.van-card {
-			background: #fff;
-			view {
-				background: #fff;
-			}
-		}
-	}
+  background: #fff;
+  .listViewBox {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    .van-card {
+      background: #fff;
+      view {
+        background: #fff;
+      }
+    }
+  }
 }
-
 </style>

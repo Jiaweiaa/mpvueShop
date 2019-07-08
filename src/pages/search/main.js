@@ -8,6 +8,7 @@ export default {
     "backgroundTextStyle":"dark",
     "backgroundColor": "#fff",
     enablePullDownRefresh: true,
+    // navigationBarTitleText: '时刻易每佳',
     "usingComponents": {
       "van-popup": "/static/vant/popup/index",
       "van-transition": "/static/vant/transition/index",

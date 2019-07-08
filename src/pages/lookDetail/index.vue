@@ -22,7 +22,7 @@
 						  <div class="item" v-for="(item, index) in listData" :key="index">
 							  <div class="box">
 								  <div class="title">{{item.commissionType == 3 ? '提现佣金' : '到账佣金'}}</div>
-								  <div class="money">{{item.commission}}</div>
+								  <div class="money">￥{{item.commission}}</div>
 								  <div class="date">{{item.createTime}}</div>
 							  </div>
 						  </div>
@@ -45,7 +45,7 @@
 						  <div class="item" v-for="(item, index) in listData" :key="index">
 							  <div class="box">
 								  <div class="title">未到账佣金</div>
-								  <div class="money">{{item.commission}}</div>
+								  <div class="money">￥{{item.commission}}</div>
 								  <div class="date">{{item.createTime}}</div>
 							  </div>
 						  </div>

@@ -19,7 +19,7 @@
           class="price"
           :class="[2==nowIndex ?'active':'', order =='SALES-DESC'? 'desc':'asc']"
         >销量</div>
-        <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">分类</div>
+        <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
       </div>
       <!--<div class="sortlist">-->
       <!--<div @click="goodsDetail(item.id)" v-for="(item, index) in listData" :key="index" :class="[(listData.length)%2==0?'active':'none']" class="item">-->
@@ -122,7 +122,7 @@
 <script>
 import { searchItem } from "../../api/category/index";
 export default {
-  onShow() {
+  mounted() {
     //获取页面传的参数
     if (this.$root.$mp) {
       this.categoryId = this.$root.$mp.query.id;
@@ -379,7 +379,13 @@ export default {
   background: #b4282d !important;
   color: #fff !important;
 }
+.goodsList{
+  position: fixed;
+  top: 88rpx;
+}
 .sortnav {
+  // margin-top: 88rpx;
+  // padding-top: 1rpx;
   display: flex;
   width: 100%;
   height: 78rpx;
@@ -387,7 +393,7 @@ export default {
   background: #fff;
   border-bottom: 1rpx solid #d9d9d9;
   div {
-    width: 250rpx;
+    width: 183rpx;
     height: 100%;
     text-align: center;
   }

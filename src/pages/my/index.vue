@@ -84,8 +84,8 @@ export default {
       findOrderNum().then((res) => {
         let result = res.data.result;
         this.$set(this.orderMenu[0],"total",result.waitPayCount);
-        this.$set(this.orderMenu[1],"total",result.waitReciveCount);
-        this.$set(this.orderMenu[2],"total",result.waitSendCount);
+        this.$set(this.orderMenu[1],"total",result.waitSendCount);
+        this.$set(this.orderMenu[2],"total",result.waitReciveCount);
         this.$set(this.orderMenu[3],"total",result.waitBackCount);
       }).catch((err) => {
       });
@@ -143,22 +143,23 @@ export default {
         {
           title: "待支付",
           icon: "pending-payment",
-          url: "/pages/myOrder/main?id=1"
+          url: "/pages/myOrder/main?id=2"
+        },
+        
+        {
+          title: "待发货",
+          icon: "paid",
+          url: "/pages/myOrder/main?id=4"
         },
         {
           title: "待收货",
           icon: "tosend",
-          url: "/pages/myOrder/main?id=2"
-        },
-        {
-          title: "待发货",
-          icon: "paid",
           url: "/pages/myOrder/main?id=3"
         },
         {
           title: "已完成",
           icon: "cash-on-deliver",
-          url: "/pages/myOrder/main?id=4"
+          url: "/pages/myOrder/main?id=5"
         },
         {
           title: "退/换货",
@@ -178,7 +179,7 @@ export default {
           url: "/pages/address/main"
         },
         // {
-        //   title: "积分管理",
+        //   title: "百团联盟券",
         //   icon: "after-sale",
         //   url: "/pages/integral/main"
         // },

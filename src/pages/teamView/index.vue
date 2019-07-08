@@ -51,7 +51,8 @@
 
 <script>
   import {
-    myDetile
+    myDetile,
+	writeOffByQRcode
   } from "../../api/myTeam/index";
   export default {
     onShow() {
@@ -107,7 +108,29 @@
           scanType: ['qrCode'],
           onlyFromCamera: true,
           complete: (res) => {
-            console.log(res);
+            console.log(res,'888');
+			writeOffByQRcode({orderCode:res.result}).then((res) => {
+				if(res.data.code=="200"){
+					wx.showToast({
+						title: res.data.message,
+						icon: 'success',
+						duration: 2000
+					})
+
+				}else{
+					wx.showToast({
+						title: res.data.message,
+						icon: 'none',
+						duration: 2000
+					})
+				}
+			}).catch((err) => {
+				wx.showToast({
+						title: '网络错误',
+						icon: 'none',
+						duration: 2000
+					})
+			});
           }
         })
       },

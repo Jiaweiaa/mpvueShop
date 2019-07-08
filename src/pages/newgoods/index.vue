@@ -6,7 +6,7 @@
     <div class="sortnav">
       <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">综合</div>
       <div @click="changeTab(1)" class="price" :class="[1==nowIndex ?'active':'', order =='desc'? 'desc':'asc']">价格</div>
-      <div @click="changeTab(2)" :class="[2==nowIndex ?'active':'']">分类</div>
+      <div @click="changeTab(2)" :class="[2==nowIndex ?'active':'']">筛选</div>
     </div>
     <div class="sortlist">
       <div @click="goodsDetail(item.id)" v-for="(item, index) in listData" :key="index" class="item">

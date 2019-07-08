@@ -9,7 +9,7 @@
       <label>
         所在地区:
       </label>
-      <input type="text" v-model="teamForm.city" placeholder="请输入所在地区">
+      <input type="text" v-model="teamForm.city" placeholder="请输入所在城市">
     </div>
 	  <div class="connect">
 		  <label>
@@ -33,13 +33,13 @@
 		  <label>
 			  你的姓名:
 		  </label>
-		  <input type="text" v-model="teamForm.name" placeholder="输入您的姓名">
+		  <input type="text" v-model="teamForm.name" placeholder="请输入您的姓名">
 	  </div>
 	  <div class="connect">
 		  <label>
 			  联系电话:
 		  </label>
-		  <input type="text" v-model="teamForm.mobile" placeholder="输入您的手机号">
+		  <input type="text" v-model="teamForm.mobile" placeholder="请输入您的手机号">
 	  </div>
 	  
 	  <van-button custom-class="btnStyle" class="btnView" :loading="btnLoading" loading-text="提交中..."  @click="submitMes" type="primary">提交申请</van-button>

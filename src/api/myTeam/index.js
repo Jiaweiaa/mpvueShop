@@ -13,6 +13,18 @@ export const myDetile = params => {
     },
   });
 };
+//扫码核销
+export const writeOffByQRcode = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `/trade/ActOrd/writeOffByQRcode`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};
 
 // 获取所有订单
 export const findAllCapOrders = params => {

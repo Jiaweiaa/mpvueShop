@@ -1,0 +1,209 @@
+.refundBtn {
+  width: 120rpx;
+  height: 48rpx;
+  border: 1rpx solid rgba(153, 153, 153, 1);
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  line-height: 48rpx;
+  color: rgba(102, 102, 102, 1);
+  opacity: 0.6;
+  margin-top: 40rpx;
+  margin-left: 50rpx;
+}
+#orderPop {
+  .van-radio {
+    justify-content: flex-end !important;
+  }
+  .van-radio__icon--checked {
+    background-color: rgb(214, 70, 60) !important;
+    border-color: rgb(214, 70, 60) !important;
+    color: #fff !important;
+  }
+  .radioLabel {
+    color: #fff !important;
+  }
+  .popBtn {
+    width: 100%;
+    height: 85rpx;
+    font-size: 30rpx;
+    color: #000;
+    line-height: 85rpx;
+    border-radius: 0;
+    background: linear-gradient(70deg, rgb(214, 70, 60), red);
+    color: #fff;
+  }
+}
+
+.page {
+  padding-bottom: 150rpx;
+  min-height: 100vh;
+}
+.bg {
+  width: 100%;
+  height: 300rpx;
+  background: rgb(214, 70, 30);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h3 {
+    .colorW {
+      color: #fff !important;
+    }
+    color: #fff;
+    height: 40rpx;
+    line-height: 40rpx;
+  }
+}
+.info {
+  background: #fff;
+  border-radius: 20rpx;
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 30rpx;
+
+  padding-top: 1rpx;
+  padding-bottom: 20rpx;
+
+  .header {
+    width: 94%;
+    margin: 3%;
+    padding-top: 1rpx;
+    display: flex;
+    justify-content: space-between;
+    h3 {
+      font-size: 28rpx;
+    }
+    span {
+      font-size: 22rpx;
+      color: #999;
+    }
+  }
+  .body {
+    width: 94%;
+    margin: 0 3%;
+    .borderT {
+      border-top: 1rpx solid #999;
+      height: 1rpx;
+      margin: 20rpx 0 !important;
+      padding-top: 1rpx !important;
+    }
+    //正常文本cell样式
+    .item {
+      display: flex;
+      margin: 10rpx 0;
+      .left {
+        width: 50%;
+        font-size: 22rpx;
+        text-align: left;
+        color: #999;
+      }
+      .right {
+        width: 50%;
+        font-size: 22rpx;
+        text-align: right;
+        color: #000;
+        .code {
+          width: 300rpx;
+          height: 300rpx;
+        }
+      }
+    }
+    //商品cell样式
+    .store-info {
+      .store-name {
+        display: flex;
+        align-items: center;
+        height: 47rpx;
+        van-icon {
+          height: 49rpx;
+        }
+        span {
+          height: 48rpx;
+          font-size: 27rpx;
+          // line-height: 50rpx;
+        }
+      }
+      .goods {
+        .goods-item {
+          display: flex;
+          // align-items: flex-start;
+          .img-box {
+            width: 20%;
+            height: 120rpx;
+            display: flex;
+            // justify-content: center;
+            img {
+              width: 120rpx;
+              height: auto;
+            }
+          }
+          .goods-info {
+            // margin-left: 20rpx;
+            width: 50%;
+            h3 {
+            }
+            p:nth-child(1) {
+              color: #999;
+              font-size: 18rpx;
+            }
+            p:nth-child(2) {
+              color: red;
+              font-size: 26rpx;
+              del {
+                color: #999;
+              }
+            }
+          }
+          .goods-num {
+            width: 30%;
+            color: #999;
+            font-size: 20rpx;
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+  .footer {
+    width: 94%;
+    margin: 0 3%;
+    text-align: right !important;
+    .p1 {
+      font-size: 22rpx;
+      color: #999;
+    }
+    .p2 {
+      font-size: 24rpx;
+      span {
+        font-size: 36rpx;
+        color: red;
+      }
+    }
+  }
+}
+.fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  height: 85rpx;
+  button {
+    width: 50%;
+    height: 85rpx;
+    font-size: 30rpx;
+    color: #000;
+    line-height: 85rpx;
+    border-radius: 0;
+  }
+  .plain {
+    background: #fff;
+    color: #999;
+  }
+  .danger {
+    background: linear-gradient(70deg, rgb(214, 70, 60), red);
+    color: #fff;
+  }
+}

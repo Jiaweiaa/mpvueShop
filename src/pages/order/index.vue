@@ -1,6 +1,6 @@
 <template>
   <div class="order">
-    <van-toast id="van-toast"/>
+    <van-toast id="van-toast" />
     <div @click="toAddressList" v-if="address!=null" class="address">
       <div class="item">
         <div class="list">
@@ -33,17 +33,17 @@
         <div>暂无</div>
       </div>
     </div>
-	  <van-radio-group class="radioStyle" :value="payRadio" @change="typeChange">
-		  <van-radio name="4">微信支付</van-radio>
-		  <!-- <van-radio :disabled="scoreAmount <= 0" name="12">积分支付(剩余积分&nbsp;{{scoreAmount}})</van-radio> -->
-	  </van-radio-group>
+    <van-radio-group class="radioStyle" :value="payRadio" @change="typeChange">
+      <!-- <van-radio :disabled="scoreAmount <= 0" name="12">联盟券支付(余额&nbsp;{{scoreAmount}})</van-radio> -->
+      <van-radio name="4">微信支付</van-radio>
+    </van-radio-group>
     <div class="cartlist">
       <!-- 分店铺形式的购物车列表 -->
       <div class="store-list" v-for="(group,index) in shopList" :key="index">
         <!-- 店铺名称 -->
         <van-cell>
           <div class="store-name" style="display:flex;">
-            <van-icon name="shop-o"/>
+            <van-icon name="shop-o" />
             <span>{{group.storeInfoVo.name}}</span>
           </div>
         </van-cell>
@@ -66,7 +66,7 @@
         </div>
       </div>
     </div>
-	
+
     <div class="bottom">
       <div>实付 : ￥{{currentPayAmount}}</div>
       <div @click="pay">支付</div>
@@ -92,6 +92,9 @@ export default {
     this.getDefaultAddress();
     getMemberAmount().then(res => {
       this.scoreAmount = res.data.result.scoreAmount;
+      if (this.scoreAmount <= 0) {
+        this.payRadio = "4";
+      }
     });
     if (wx.getStorageSync("orderFrom") && wx.getStorageSync("orderParams")) {
       this.from = wx.getStorageSync("orderFrom");
@@ -107,8 +110,8 @@ export default {
     //     this.captainId = res.data.id;
     //   }
     // });
-    this.captainId = wx.getStorageSync("data").id
-    console.log(this.captainId,'888');
+    this.captainId = wx.getStorageSync("data").id;
+    console.log(this.captainId, "888");
     wx.showLoading({
       title: "获取订单信息..", //提示的内容,
       mask: true //显示透明蒙层，防止触摸穿透,
@@ -171,10 +174,10 @@ export default {
 
   data() {
     return {
-      //  积分
+      //  联盟券
       scoreAmount: 0,
-      payRadio: '4',
-      
+      payRadio: "4",
+
       addressId: "",
       openId: "",
       allprice: "",
@@ -195,10 +198,10 @@ export default {
   methods: {
     // 支付状态改变
     typeChange(val) {
-      if(this.scoreAmount <= 0) return;
       this.payRadio = val.mp.detail;
+      if (this.scoreAmount <= 0) return;
     },
-    
+
     //获取收货地址列表
     getDefaultAddress() {
       getMemAddressList().then(res => {
@@ -272,111 +275,149 @@ export default {
                   title: "校验支付状态...", //提示的内容,
                   mask: true //显示透明蒙层，防止触摸穿透,
                 });
-                toPay(params)
-                  .then(res => {
-                    wx.hideLoading();
-                    //如果调用toPay方法成功 则拉起微信登录方法获取code传给后台并调用
-                    if (res.data.code == "200") {
-                      let params = {
-                        subOrdinate: res.data.result.subOrdinate,
-                        deviceType: 2
-                      };
-                      let url = `/trade${res.data.result.redirectUrl}`;
-                      let querystring = require("querystring");
-                      wx.login({
-                        success: res => {
-                          console.log(res, 111);
-                          if (res.code) {
-                            params.code = res.code;
+                //如果paymentType为  则是用积分支付 不调用微信支付接口
+                if (params.paymentType == 12) {
+                  toPay(params)
+                    .then(res => {
+                      wx.hideLoading();
+                      //如果调用toPay方法成功 则拉起微信登录方法获取code传给后台并调用
+                      if (res.data.code == "200") {
+                        wx.showToast({
+                          title: "支付成功!",
+                          icon: "success",
+                          duration: 2000,
+                          mask: true
+                        });
 
-                            //成功的话  拉起wxPay方法  获取支付所需要的一切参数
-                            const wxPay = params => {
-                              let data = querystring.encode(params);
-                              return fly.request({
-                                url: url,
-                                method: "post",
-                                body: data,
-                                headers: {
-                                  "Content-Type":
-                                    "application/x-www-form-urlencoded"
-                                }
-                              });
-                            };
-                            wxPay(params)
-                              .then(res => {
-                                wx.hideLoading();
-                                //如果成功 拉起微信支付API进行支付
-                                if (res.data.code == "200") {
-                                  wx.requestPayment({
-                                    timeStamp:
-                                      res.data.result.wechatJsApiPayCommand
-                                        .timeStamp,
-                                    nonceStr:
-                                      res.data.result.wechatJsApiPayCommand
-                                        .nonceStr,
-                                    package:
-                                      res.data.result.wechatJsApiPayCommand
-                                        .packAge,
-                                    signType:
-                                      res.data.result.wechatJsApiPayCommand
-                                        .signType,
-                                    paySign:
-                                      res.data.result.wechatJsApiPayCommand
-                                        .paySign,
-                                    success: res => {
-                                      wx.showToast({
-                                        title: "支付成功!",
-                                        icon: "success",
-                                        duration: 2000,
-                                        mask: true
-                                      });
-
-                                      wx.redirectTo({
-                                        url: "/pages/myOrder/main"
-                                      });
-                                    },
-                                    fail: res => {
-                                      wx.redirectTo({
-                                        url: "/pages/myOrder/main"
-                                      });
-                                    }
-                                  });
-                                }
-                              })
-                              .catch(err => {
-                                wx.hideLoading();
-                                wx.redirectTo({
-                                  url: "/pages/myOrder/main"
-                                });
-                              });
-                          } else {
-                            console.log("登录失败！" + res.errMsg);
-                          }
-                        },
-                        fail: err => {
-                          console.log(err, 222);
-                        }
-                      });
-                    }
-                    else {
-                      wx.showToast({
-                        title: res.data.message,
-                        duration: 1500,
-                        mask: true
-                      });
-                      setTimeout(() => {
                         wx.redirectTo({
                           url: "/pages/myOrder/main"
                         });
-                      },1500)
-                    }
-                  })
-                  .catch(err => {
-                    wx.hideLoading();
-                    wx.redirectTo({
-                      url: "/pages/myOrder/main"
+                      } else {
+                        wx.showToast({
+                          title: res.data.message,
+                          duration: 1500,
+                          mask: true
+                        });
+                        setTimeout(() => {
+                          wx.redirectTo({
+                            url: "/pages/myOrder/main"
+                          });
+                        }, 1500);
+                      }
+                    })
+                    .catch(err => {
+                      wx.hideLoading();
+                      wx.redirectTo({
+                        url: "/pages/myOrder/main"
+                      });
                     });
-                  });
+                } else if (params.paymentType == 4) {
+                  //4是调用微信支付
+                  toPay(params)
+                    .then(res => {
+                      wx.hideLoading();
+                      //如果调用toPay方法成功 则拉起微信登录方法获取code传给后台并调用
+                      if (res.data.code == "200") {
+                        let params = {
+                          subOrdinate: res.data.result.subOrdinate,
+                          deviceType: 2
+                        };
+                        let url = `/trade${res.data.result.redirectUrl}`;
+                        let querystring = require("querystring");
+                        wx.login({
+                          success: res => {
+                            console.log(res, 111);
+                            if (res.code) {
+                              params.code = res.code;
+
+                              //成功的话  拉起wxPay方法  获取支付所需要的一切参数
+                              const wxPay = params => {
+                                let data = querystring.encode(params);
+                                return fly.request({
+                                  url: url,
+                                  method: "post",
+                                  body: data,
+                                  headers: {
+                                    "Content-Type":
+                                      "application/x-www-form-urlencoded"
+                                  }
+                                });
+                              };
+                              wxPay(params)
+                                .then(res => {
+                                  wx.hideLoading();
+                                  //如果成功 拉起微信支付API进行支付
+                                  if (res.data.code == "200") {
+                                    wx.requestPayment({
+                                      timeStamp:
+                                        res.data.result.wechatJsApiPayCommand
+                                          .timeStamp,
+                                      nonceStr:
+                                        res.data.result.wechatJsApiPayCommand
+                                          .nonceStr,
+                                      package:
+                                        res.data.result.wechatJsApiPayCommand
+                                          .packAge,
+                                      signType:
+                                        res.data.result.wechatJsApiPayCommand
+                                          .signType,
+                                      paySign:
+                                        res.data.result.wechatJsApiPayCommand
+                                          .paySign,
+                                      success: res => {
+                                        wx.showToast({
+                                          title: "支付成功!",
+                                          icon: "success",
+                                          duration: 2000,
+                                          mask: true
+                                        });
+
+                                        wx.redirectTo({
+                                          url: "/pages/myOrder/main"
+                                        });
+                                      },
+                                      fail: res => {
+                                        wx.redirectTo({
+                                          url: "/pages/myOrder/main"
+                                        });
+                                      }
+                                    });
+                                  }
+                                })
+                                .catch(err => {
+                                  wx.hideLoading();
+                                  wx.redirectTo({
+                                    url: "/pages/myOrder/main"
+                                  });
+                                });
+                            } else {
+                              console.log("登录失败！" + res.errMsg);
+                            }
+                          },
+                          fail: err => {
+                            console.log(err, 222);
+                          }
+                        });
+                      } else {
+                        wx.showToast({
+                          title: res.data.message,
+                          duration: 1500,
+                          mask: true
+                        });
+                        setTimeout(() => {
+                          wx.redirectTo({
+                            url: "/pages/myOrder/main"
+                          });
+                        }, 1500);
+                      }
+                    })
+                    .catch(err => {
+                      wx.hideLoading();
+                      wx.redirectTo({
+                        url: "/pages/myOrder/main"
+                      });
+                    });
+                }
               }
             })
 
@@ -410,14 +451,14 @@ export default {
 @import "./style";
 </style>
 <style lang="scss">
-	.radioStyle {
-		.van-radio {
-			background: #fff;
-			height: 40px;
-			line-height: 30px;
-			display: flex;
-			align-items: center;
-			padding: 0 10px;
-		}
-	}
+.radioStyle {
+  .van-radio {
+    background: #fff;
+    height: 40px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+  }
+}
 </style>

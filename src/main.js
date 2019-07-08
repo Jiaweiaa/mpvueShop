@@ -28,7 +28,7 @@ export default {
       }
     },
     "pages": [
-      "pages/index/main",
+      "^pages/index/main",
       "pages/feedback/main",
       "pages/order/main",
       "pages/cart/main",
@@ -42,7 +42,7 @@ export default {
       "pages/team/main",     // 团长订单
       "pages/returnGoods/main",
       "pages/returnGoodsMoney/main",
-      "^pages/teamView/main",  //团长 我的主页
+      "pages/teamView/main",  //团长 我的主页
       "pages/search/main",
       "pages/my/main",            // 我的
       "pages/login/main",
@@ -55,6 +55,7 @@ export default {
       "pages/categorylist/main",
       "pages/topic/main",
       "pages/goods/main",
+      "pages/record/main",       //购买记录详情
       "pages/branddetail/main",
       "pages/brandlist/main",    // 商品详情
       "pages/newgoods/main",     // 原来带的商品分类
@@ -73,7 +74,7 @@ export default {
     "window": {
       "backgroundTextStyle": "light",
       "navigationBarBackgroundColor": "#fff",
-      "navigationBarTitleText": "科比",
+      "navigationBarTitleText": "时刻益每家团购",
       "navigationBarTextStyle": "black"
     },
     "tabBar": {

@@ -127,11 +127,6 @@
     </van-popup>
 
     <div class="bottom-fixed">
-      <div>
-        <div class="car">
-          <img src="/static/images/ic_menu_choice_nor.png" />
-        </div>
-      </div>
       <div @click="collect">
         <div class="collect" :class="[collectFlag ? 'active' :'']"></div>
       </div>
