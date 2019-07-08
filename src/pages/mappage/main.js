@@ -10,7 +10,8 @@ export default {
     "usingComponents": {
       "van-notify": '/static/vant/notify/index',
       "van-loading": "/static/vant/loading/index",
-      "van-tag": "/static/vant/tag/index"
+      "van-tag": "/static/vant/tag/index",
+      "van-icon": "/static/vant/icon/index"
     }
   }
 }

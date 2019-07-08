@@ -261,13 +261,13 @@
       border-bottom: 1px solid #ccc;
       overflow: hidden;
       position: relative;
-      height: 80px;
       .img {
         width: 60px;
         height: 60px;
         border-radius: 50%;
         float: left;
         margin-top: 10px;
+	      margin-bottom: 10px;
       }
       .community {
         margin-top: 10px;
@@ -278,7 +278,6 @@
       }
       .name {
         width: calc(100% - 100px);
-        height: 30%;
         margin-left: 70px;
         font-size: 13px;
         color: #9e9e9e;
