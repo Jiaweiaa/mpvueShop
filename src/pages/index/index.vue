@@ -91,6 +91,7 @@ export default {
         url: "/pages/mappage/main"
       });
     }
+    this.getData();
   },
   onShareAppMessage(res) {
     console.log(res);
@@ -103,7 +104,6 @@ export default {
     //     url: "/pages/login/main"
     //   });
     this.getCityName();
-    this.getData();
   },
   data() {
     return {
