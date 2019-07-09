@@ -50,7 +50,7 @@
         <div class="head">{{item.name}}商品</div>
         <div class="sublist">
           <div
-            @click="goodsDetail(subitem.itemId)"
+            @click="goodsDetail(subitem)"
             v-for="(subitem, subindex) in item.goodsList"
             :key="subindex"
           >
@@ -82,6 +82,10 @@ import { mapState, mapMutations } from "vuex";
 import { shoppingcartCount } from "../../api/shoppingcart/index";
 export default {
   onShow() {
+    this.brandList = [];
+	  this.newGoods = [];
+    this.hotGoods = [];
+    this.newCategoryList = [];
     this.getCartGoodsNum();
     if (wx.getStorageSync("data")) {
       this.captainInfo = Object.assign({}, wx.getStorageSync("data"));
@@ -194,7 +198,6 @@ export default {
       const data = await getIndexItem();
       this.banner = data.data.result.banner;
       this.channelList = data.data.result.indexCategories;
-      console.log(this.channelList);
       this.newCategoryList.push({
         name: "热销",
         goodsList: data.data.result.hotSale
@@ -206,16 +209,15 @@ export default {
       });
     },
     goodsDetail(item) {
-      if(item.status == 0) {
-        wx.navigateTo({
-          url: "/pages/goods/main?id=" + item.itemId
-        });
-      }else {
+      if(item.status == 1) {
         wx.navigateTo({
           url: "/pages/topicdetail/main?id=" + item.itemId
         });
+      }else {
+        wx.navigateTo({
+          url: "/pages/goods/main?id=" + item.itemId
+        });
       }
-     
     },
     // 更多分类
     categoryList(item) {
