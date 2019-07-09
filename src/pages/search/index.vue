@@ -5,24 +5,23 @@
         <img
           src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/search2-2fb94833aa.png"
           alt
-        >
+        />
         <input
           type="text"
           confirm-type="search"
           focus="true"
           v-model="words"
           @click="inputFocus"
-         
           @confirm="searchWords"
           placeholder="商品搜索"
-        >
+        />
         <!-- <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword.keyword}}" /> -->
         <img
           @click="clearInput"
           class="del"
           src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/clearIpt-f71b83e3c2.png"
           alt
-        >
+        />
       </div>
       <div @click="cancel">取消</div>
     </div>
@@ -90,20 +89,40 @@
           class="price"
           :class="[2==nowIndex ?'active':'', order =='SALES-DESC'? 'desc':'asc']"
         >销量</div>
-        <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">分类</div>
+        <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
       </div>
-      <div class="sortlist">
-        <div
+      <div class="goodsList">
+        <van-card
+          :thumb-link="'/pages/goods/main?id='+item.id"
+          :tag="item.tag"
+          :lazy-load="true"
+          :price="item.salePrice"
+          :origin-price="item.listPrice"
+          :desc="item.keyword"
+          :title="item.title"
+          thumb-class="goods-image"
+          title-class="goods-title"
+          desc-class="goods-desc"
+          v-for="(item, index) in listData"
+          :key="index"
+          @click="goodsDetail(item.id)"
+          :thumb="'http://qn.gaoshanmall.cn/' + item.img"
+        >
+          <div slot="bottom" class="goods-bottom">
+            <span>已有100人付款 沈阳</span>
+          </div>
+        </van-card>
+        <!-- <div
           @click="goodsDetail(item.id)"
           v-for="(item, index) in listData"
           :key="index"
           :class="[(listData.length)%2==0?'active':'none']"
           class="item"
         >
-          <img :src="'http://qn.gaoshanmall.cn/' + item.img" alt>
+          <img :src="'http://qn.gaoshanmall.cn/' + item.img" alt />
           <p class="name">{{item.title}} - {{item.subtitle}}</p>
           <p class="price">￥{{item.salePrice}}</p>
-        </div>
+        </div>-->
         <div class="title">
           <span>—</span>
           <span>我也是有底线的</span>
@@ -132,7 +151,7 @@
             >-</div>
             <input placeholder-class="center" placeholder="最高价  ">
           </div>
-        </div> -->
+        </div>-->
         <div
           class="item"
           v-show="filterList.length>0"
@@ -186,7 +205,12 @@
 
 <script>
 import { post, get } from "../../utils";
-import { searchItem, getKeyword, setHistorySearch ,findHistorySearch} from "../../api/category/index";
+import {
+  searchItem,
+  getKeyword,
+  setHistorySearch,
+  findHistorySearch
+} from "../../api/category/index";
 
 export default {
   onShow() {
@@ -238,7 +262,13 @@ export default {
       this.tipsData = this.listData;
       this.allCount = res.data.result.totalElements;
       this.listData.map(v => {
+        if (this.order == "SALES-ASC") {
+          if (index < 5) {
+            this.$set(v, "tag", "热销");
+          }
+        }
         v.img = JSON.parse(v.image)[0].images[0];
+        this.$set(v, "keyword", v.keywords.join("||"));
       });
       this.tipsData = [];
     }
@@ -253,7 +283,7 @@ export default {
       tipsData: [],
       listData: [],
       aeo: "", //筛选项拼接字符串
-      selectArr:[],//本地已选择的节点数组
+      selectArr: [], //本地已选择的节点数组
       filterList: [],
       openid: "",
       order: "",
@@ -271,11 +301,11 @@ export default {
     getHistory() {
       findHistorySearch().then(res => {
         this.historyData = res.data.result;
-      })
+      });
     },
-    
+
     //关闭筛选遮罩层
-    searchPopupClose(){
+    searchPopupClose() {
       this.searchPopupShow = false;
     },
     //重置筛选项
@@ -392,19 +422,25 @@ export default {
       this.navData = res.data.result;
       this.listData = res.data.result.itemDocs;
       this.allCount = res.data.result.totalElements;
-     
+
       const searchData = await setHistorySearch({
         keyword: this.words
       });
-	    this.getHistory();
-      if(this.listData.length > 0) {
-        this.listData.map(v => {
+      this.getHistory();
+      if (this.listData.length > 0) {
+        this.listData.map((v, index) => {
+          if (this.order == "SALES-ASC") {
+            if (index < 5) {
+              this.$set(v, "tag", "热销");
+            }
+          }
           v.img = JSON.parse(v.image)[0].images[0];
+          this.$set(v, "keyword", v.keywords.join("||"));
         });
       }
-	    if(this.navData.facetFilter.facetFilterLineList) {
+      if (this.navData.facetFilter.facetFilterLineList) {
         this.filterList = this.navData.facetFilter.facetFilterLineList;
-        if(this.filterList.length > 0) {
+        if (this.filterList.length > 0) {
           this.filterList.map((v, index) => {
             v.isShowAll = true;
             if (index > 2) {
@@ -428,7 +464,15 @@ export default {
       } else if (index == 0) {
         this.order = "LIST_TIME-DESC";
       } else {
-        this.searchPopupShow = true;
+        if (this.filterList != null && this.filterList.length > 0) {
+          return (this.popupShow = true);
+        } else {
+          return wx.showToast({
+            title: "暂无筛选项数据",
+            icon: "none",
+            duration: 2000
+          });
+        }
       }
       this.getlistData();
     },

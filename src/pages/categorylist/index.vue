@@ -34,16 +34,36 @@
       <p>性价比超高.</p>
     </div>
     <div class="list" v-if="goodsList.length!=0">
-      <div
+      <van-card
+        :thumb-link="'/pages/goods/main?id='+item.id"
+        :tag="item.tag"
+        :lazy-load="true"
+        :price="item.salePrice"
+        :origin-price="item.listPrice"
+        :desc="item.keyword"
+        :title="item.title"
+        thumb-class="goods-image"
+        title-class="goods-title"
+        desc-class="goods-desc"
+        v-for="(item, index) in goodsList"
+        :key="index"
+        @click="goodsDetail(item.id)"
+        :thumb="'http://qn.gaoshanmall.cn/' + item.img"
+      >
+        <div slot="bottom" class="goods-bottom">
+          <span>已有100人付款 沈阳</span>
+        </div>
+      </van-card>
+      <!-- <div
         @click="goodsDetail(item.id)"
         class="item"
         v-for="(item, index) in goodsList"
         :key="index"
       >
-        <img :src="'http://qn.gaoshanmall.cn/' + item.img" alt>
+        <img :src="'http://qn.gaoshanmall.cn/' + item.img" alt />
         <p class="name">{{item.title}} - {{item.subtitle}}</p>
         <p class="price">￥{{item.salePrice}}</p>
-      </div>
+      </div>-->
       <div class="title">
         <span>—</span>
         <span>我也是有底线的</span>
@@ -72,32 +92,40 @@
             >-</div>
             <input placeholder-class="center" placeholder="最高价  ">
           </div>
-        </div> -->
-        <div class="item" v-show="filterList.length>0" v-for="(group, grouPindex) in filterList" :key="grouPindex">
-          <div class="itemTitle" @click="showTabber(grouPindex)">
-            <div style="width: 40%; float: left;">{{group.label}}</div>
-            <van-icon
-              style="float: right;margin-right: 10px;"
-              :name="group.isShowAll ? 'arrow-up' : 'arrow-down'"
-            />
-          </div>
-          <van-transition
-            style="overflow: hidden;"
-            :show="group.isShowAll"
-            custom-class="block"
-            name="slide-down"
+        </div>-->
+        <div style=" min-height: 80vh;">
+          <div
+            class="item"
+            v-show="filterList.length>0"
+            v-for="(group, grouPindex) in filterList"
+            :key="grouPindex"
           >
-            <div class="content">
-              <div
-                class="childItem active"
-                @click="isClickChild(item, group)"
-                :class="{'activeSearch': item.isChecked == true}"
-                v-for="(item, childItem) in group.facetFilterUnitList"
-                :key="childItem"
-              >{{item.label}}</div>
+            <div class="itemTitle" @click="showTabber(grouPindex)">
+              <div style="width: 40%; float: left;">{{group.label}}</div>
+              <van-icon
+                style="float: right;margin-right: 10px;"
+                :name="group.isShowAll ? 'arrow-up' : 'arrow-down'"
+              />
             </div>
-          </van-transition>
+            <van-transition
+              style="overflow: hidden;"
+              :show="group.isShowAll"
+              custom-class="block"
+              name="slide-down"
+            >
+              <div class="content">
+                <div
+                  class="childItem active"
+                  @click="isClickChild(item, group)"
+                  :class="{'activeSearch': item.isChecked == true}"
+                  v-for="(item, childItem) in group.facetFilterUnitList"
+                  :key="childItem"
+                >{{item.label}}</div>
+              </div>
+            </van-transition>
+          </div>
         </div>
+
         <div class="footer">
           <van-button
             size="small"
@@ -148,13 +176,14 @@ export default {
         s: this.order,
         fq: this.aeo
       });
-     
+
       if (res.data.code == 200) {
         this.loading = false;
         this.goodsList = this.goodsList.concat(res.data.result.itemDocs);
         this.allCount = res.data.result.totalElements;
         this.goodsList.map(v => {
           v.img = JSON.parse(v.image)[0].images[0];
+          this.$set(v, "keyword", v.keywords.join("||"));
         });
       } else {
         this.loading = false;
@@ -175,8 +204,16 @@ export default {
     if (res.data.code == 200) {
       this.goodsList = res.data.result.itemDocs;
       this.allCount = res.data.result.totalElements;
-      this.goodsList.map(v => {
+      this.goodsList.map((v, index) => {
+        if (this.order == "SALES-ASC") {
+          if (index < 5) {
+            this.$set(v, "tag", "热销");
+          }
+        }
+
         v.img = JSON.parse(v.image)[0].images[0];
+        this.$set(v, "keyword", v.keywords.join("||"));
+        // console.log(v.keyword,'---');
       });
       this.tipsData = [];
     }
@@ -229,14 +266,20 @@ export default {
         s: this.order,
         fq: this.aeo
       });
-       wx.hideLoading();
+      wx.hideLoading();
       this.navData = res.data.result;
       this.currentNav = {};
       this.goodsList = this.navData.itemDocs;
       this.allCount = res.data.result.totalElements;
       // wx.hideLoading();
-      this.goodsList.map(v => {
+      this.goodsList.map((v, index) => {
+        if (this.order == "SALES-ASC") {
+          if (index < 5) {
+            this.$set(v, "tag", "热销");
+          }
+        }
         v.img = JSON.parse(v.image)[0].images[0];
+        this.$set(v, "keyword", v.keywords.join("||"));
       });
       this.filterList = this.navData.facetFilter.facetFilterLineList;
       this.filterList.map((v, index) => {
@@ -245,7 +288,6 @@ export default {
           v.isShowAll = false;
         }
       });
-    
     },
 
     // 商品详情
@@ -260,13 +302,22 @@ export default {
       this.nowIndex = index;
       this.pageNum = 1;
       if (index == 1) {
-        this.order = this.order == "SALE_PRICE-ASC" ? "SALE_PRICE-DESC" : "SALE_PRICE-ASC";
+        this.order =
+          this.order == "SALE_PRICE-ASC" ? "SALE_PRICE-DESC" : "SALE_PRICE-ASC";
       } else if (index == 2) {
         this.order = this.order == "SALES-ASC" ? "SALES-DESC" : "SALES-ASC";
       } else if (index == 0) {
         this.order = "LIST_TIME-DESC";
       } else {
-        this.popupShow = true;
+        if (this.filterList != null && this.filterList.length > 0) {
+          return (this.popupShow = true);
+        } else {
+          return wx.showToast({
+            title: "暂无筛选项数据",
+            icon: "none",
+            duration: 2000
+          });
+        }
       }
       this.getAllData();
     },
@@ -379,8 +430,9 @@ export default {
   background: #b4282d !important;
   color: #fff !important;
 }
-.goodsList{
+.goodsList {
   position: fixed;
+  z-index: 99;
   top: 88rpx;
 }
 .sortnav {
@@ -428,6 +480,7 @@ export default {
     padding: 15rpx 0;
     border-bottom: 1rpx solid #d9d9d9;
     border-right: 1rpx solid #d9d9d9;
+
     img {
       display: block;
       width: 302rpx;

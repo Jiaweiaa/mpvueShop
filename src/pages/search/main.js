@@ -8,13 +8,14 @@ export default {
     "backgroundTextStyle":"dark",
     "backgroundColor": "#fff",
     enablePullDownRefresh: true,
-    // navigationBarTitleText: '时刻易每佳',
+    navigationBarTitleText: '商品列表',
     "usingComponents": {
       "van-popup": "/static/vant/popup/index",
       "van-transition": "/static/vant/transition/index",
       "van-cell": "/static/vant/cell/index",
       "van-button": "/static/vant/button/index",
-      "van-icon": "/static/vant/icon/index"
+      "van-icon": "/static/vant/icon/index",
+      "van-card": "/static/vant/card/index"
     }
   }
 }

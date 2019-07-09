@@ -1,14 +1,24 @@
 <template>
   <div class="goods" v-if="goodsInfo!=null">
-    <div class="goodsInfo">
-      <div class="picture">
-        <img src="http://yanxuan.nosdn.127.net/1541445967645114dd75f6b0edc4762d.png" alt />
-      </div>
-      <div class="desc">
-        <p>{{goodsInfo.title}}</p>
-        <p>￥{{goodsInfo.salePrice}}</p>
-      </div>
-    </div>
+    <van-card
+        
+        :tag="goodsInfo.tag"
+        :lazy-load="true"
+        :price="goodsInfo.salePrice"
+        :origin-price="goodsInfo.listPrice"
+        :desc="goodsInfo.keyword"
+        :title="goodsInfo.title"
+        thumb-class="goods-image"
+        title-class="goods-title"
+        desc-class="goods-desc"
+        @click="goodsDetail(item.id)"
+        :thumb="'http://qn.gaoshanmall.cn/' + goodsInfo.itemImages[0].picUrl"
+      >
+        <div slot="bottom" class="goods-bottom">
+          <span>已有100人付款 沈阳</span>
+        </div>
+      </van-card>
+  
 
     <div>
       <div class="record">
@@ -407,6 +417,7 @@ export default {
           });
           this.gallery = data.item.itemImages;
           this.goodsInfo = data.item;
+          console.log(this.goodsInfo,'888');
           // 商品数据渲染
           this.goodsList.map(v => {
             let data = {
@@ -762,6 +773,7 @@ export default {
 .goodsInfo .picture {
   width: 150rpx;
   height: 150rpx;
+  border-radius: 20rpx;
 }
 .goodsInfo .picture img {
   width: 150rpx;
@@ -782,7 +794,7 @@ export default {
 
 .img_group .img_item {
   display: flex;
-  height: 160rpx;
+  height: 130rpx;
   align-items: center;
   padding: 0 10rpx;
   border-top: 1rpx solid #999;
@@ -793,7 +805,7 @@ export default {
   border-radius: 50%;
 }
 .img_group .img_item .user {
-  font-size: 38rpx;
+  font-size: 32rpx;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -801,6 +813,7 @@ export default {
 }
 .img_group .img_item .num {
   width: 160rpx;
+  font-size: 28rpx;
 }
 .img_group .img_item .time {
   flex-grow: 1;

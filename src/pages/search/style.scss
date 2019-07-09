@@ -67,7 +67,7 @@
     padding-top: 1rpx;
   }
   .goodsList {
-    margin-top: 91rpx;
+    margin-top: 50rpx;
     padding-top: 1rpx;
     position: relative;
     .sortnav {
@@ -174,4 +174,25 @@
   .hotsearch {
     margin-top: 20rpx;
   }
+}
+.goods-image{
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 20rpx;
+}
+.goods-title{
+  margin-top: 20rpx;
+  min-height: 50rpx;
+}
+.goods-desc{
+  min-height: 24rpx;
+}
+.goods-bottom{
+  font-size: 24rpx;
+  color: #999;
+}
+.van-card__thumb{
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 20rpx;
 }

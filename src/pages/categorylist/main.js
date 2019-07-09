@@ -13,7 +13,8 @@ export default {
       "van-transition": "/static/vant/transition/index",
       "van-cell": "/static/vant/cell/index",
       "van-button": "/static/vant/button/index",
-      "van-icon": "/static/vant/icon/index"
+      "van-icon": "/static/vant/icon/index",
+      "van-card": "/static/vant/card/index"
     }
   }
 }

@@ -53,6 +53,9 @@
           <div class="img_item" v-for="(item,index) in recordList" :key="index">
             <img :src="item.avatar" />
           </div>
+          <div class="img_item">
+            <img src="/static/images/omit.png" alt />
+          </div>
           <!-- <div class="img_item">
             <img :src="item.avatar" />
           </div>-->
@@ -233,97 +236,31 @@ export default {
       SKUResult: {},
       nowPrice: "--",
 
-        allnumber: 0, //购物车商品数量
-        openId: "",
-        collectFlag: false,
-        number: 0,
-        showpop: false,
-        gallery: [],
-        goodsInfo: {}, //商品数据
-        brand: {},
-        attribute: [],
-        issueList: [],
-        productList: [],
-        goods_desc: "", //商品详情富文本
-        id: "",
-        userInfo: "",
-        goodsId: "",
-        allPrise: "",
-        quantList: null, //sku数据
-        flag: "",
-        selectSkuData: null, //已选中的sku对象
-        goodsNum: 1,
-        quantity: "-",
-        keys: [
-          // {
-          //   name: "颜色",
-          //   isActive: true,
-          //   value: [
-          //     {
-          //       id: "24",
-          //       cname: "黄色",
-          //       isActiveC: false,
-          //       notClick: false
-          //     },
-          //     {
-          //       id: "25",
-          //       cname: "红色",
-          //       isActiveC: false,
-          //       notClick: false
-          //     }
-          //   ]
-          // },
-          // {
-          //   name: "属性",
-          //   isActive: false,
-          //   value: [
-          //     {
-          //       id: "12",
-          //       cname: "大",
-          //       isActiveC: false,
-          //       notClick: false
-          //     },
-          //     {
-          //       id: "13",
-          //       cname: "小",
-          //       isActiveC: false,
-          //       notClick: false
-          //     }
-          //   ]
-          // },
-          // {
-          //   name: "尺寸",
-          //   isActive: false,
-          //   value: [
-          //     {
-          //       id: "31",
-          //       cname: "长方形",
-          //       isActiveC: false,
-          //       notClick: false
-          //     },
-          //     {
-          //       id: "32",
-          //       cname: "圆形",
-          //       isActiveC: false,
-          //       notClick: false
-          //     }
-          //   ]
-          // }
-        ],
-        data: {
-          // "24;12;31": {
-          //   price: 366.0,
-          //   count: 46
-          // },
-          // "25;12;32": {
-          //   price: 406,
-          //   count: 66
-          // }
-        },
-        SKUResult: {},
-        nowPrice: "--",
-
-       
+      allnumber: 0, //购物车商品数量
+      openId: "",
+      collectFlag: false,
+      number: 0,
+      showpop: false,
+      gallery: [],
+      goodsInfo: {}, //商品数据
+      brand: {},
+      attribute: [],
+      issueList: [],
+      productList: [],
+      goods_desc: "", //商品详情富文本
+      id: "",
+      userInfo: "",
+      goodsId: "",
+      allPrise: "",
+      quantList: null, //sku数据
+      flag: "",
+      selectSkuData: null, //已选中的sku对象
+      goodsNum: 1,
+      quantity: "-",
+      keys: [],
+      data: {},
+      SKUResult: {},
+      nowPrice: "--"
     };
   },
   components: {
@@ -351,7 +288,7 @@ export default {
       let that = this;
       return {
         title: "商品转发", // 转发后 所显示的title
-        path: "/pages/goods/main?id="+ that.id, // 相对的路径
+        path: "/pages/goods/main?id=" + that.id, // 相对的路径
         success: res => {
           // 成功后要做的事情
           console.log(res.shareTickets[0]);
@@ -510,7 +447,11 @@ export default {
     },
     //获取商品购买记录
     async goodsRecord() {
-      itemPurchaseHistory({ itemId: this.id })
+      itemPurchaseHistory({
+        itemId: this.id,
+        pageNum: this.pageNum,
+        pageSize: this.pageSize
+      })
         .then(res => {
           this.recordList = res.data.result.purchaseHistoryPage.records;
           this.total = res.data.result.purchaseHistoryPage.total;
@@ -518,9 +459,16 @@ export default {
           this.buyerNum = "";
           this.buyCount = res.data.result.buyCount;
           this.buyerNum = res.data.result.buyerNum;
-          console.log(res, "333");
+          // console.log(res, "333");
         })
         .catch(err => {});
+    },
+
+    //去购物车
+    toCart() {
+      wx.switchTab({
+        url: "/pages/cart/main"
+      });
     },
     //获取商品详情
     async goodsDetail() {
@@ -528,28 +476,7 @@ export default {
         itemId: this.id
       })
         .then(res => {
-          this.keys = [];
-          const data = res.data.result;
-          this.goods_desc = data.item.itemChannel.description; //详情描述富文本
-          this.goodsList = data.item.pdpPropertiesCommands;
-          this.quantityData = JSON.parse(data.skuJson); //SKU信息
-          this.quantList = JSON.parse(res.data.result.skuJson);
-          this.quantList.map(v => {
-            v.properties = JSON.parse(v.properties).toString();
-          });
-        })
-      },
-      //去购物车
-      toCart() {
-        wx.switchTab({
-          url: "/pages/cart/main"
-        });
-      },
-      async goodsDetail() {
-        getGoodsDetail({
-          itemId: this.id
-        })
-          .then(res => {
+          if (res.data.code == "200") {
             this.keys = [];
             const data = res.data.result;
             this.goods_desc = data.item.itemChannel.description; //详情描述富文本
@@ -596,276 +523,287 @@ export default {
                 };
               }
             });
-            console.log(this.data, 5656);
             this.queryDGoodsById();
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      showType() {
-        this.showpop = !this.showpop;
-      },
-
-      /*商品详情数据*/
-      queryDGoodsById() {
-        this.initSKU(); //初始化，得到SKUResult
-        /*根据SKUResult得到初始化的时候哪些不能点击*/
-        for (let i = 0; i < this.keys.length; i++) {
-          for (let j = 0; j < this.keys[i].value.length; j++) {
-            if (this.SKUResult[this.keys[i].value[j].id] == null) {
-              this.keys[i].value[j].notClick = true;
-            }
-          }
-        }
-      },
-      //获得对象的key
-      getObjKeys(obj) {
-        if (obj !== Object(obj)) throw new TypeError("Invalid object");
-        var keys = [];
-        for (var key in obj)
-          if (Object.prototype.hasOwnProperty.call(obj, key))
-            keys[keys.length] = key;
-        return keys;
-      },
-
-      //把组合的key放入结果集SKUResult
-      add2SKUResult(combArrItem, sku) {
-        var key = combArrItem.join(";");
-        if (this.SKUResult[key]) {
-          //SKU信息key属性·
-          this.SKUResult[key].count += sku.count;
-          this.SKUResult[key].prices.push(sku.price);
-        } else {
-          this.SKUResult[key] = {
-            count: sku.count,
-            prices: [sku.price]
-          };
-        }
-      },
-
-      //初始化得到结果集
-      initSKU() {
-        var i,
-          j,
-          skuKeys = this.getObjKeys(this.data);
-        for (i = 0; i < skuKeys.length; i++) {
-          var skuKey = skuKeys[i]; //一条SKU信息key
-          var sku = this.data[skuKey]; //一条SKU信息value
-          var skuKeyAttrs = skuKey.split(";"); //SKU信息key属性值数组
-          skuKeyAttrs.sort(function(value1, value2) {
-            return parseInt(value1) - parseInt(value2);
-          });
-
-          //对每个SKU信息key属性值进行拆分组合
-          var combArr = this.combInArray(skuKeyAttrs);
-          for (j = 0; j < combArr.length; j++) {
-            this.add2SKUResult(combArr[j], sku);
-          }
-
-          //结果集接放入SKUResult
-          this.SKUResult[skuKeyAttrs.join(";")] = {
-            count: sku.count,
-            prices: [sku.price]
-          };
-        }
-      },
-
-      /**
-       * 从数组中生成指定长度的组合
-       * 方法: 先生成[0,1...]形式的数组, 然后根据0,1从原数组取元素，得到组合数组
-       */
-      combInArray(aData) {
-        if (!aData || !aData.length) {
-          return [];
-        }
-
-        var len = aData.length;
-        var aResult = [];
-
-        for (var n = 1; n < len; n++) {
-          var aaFlags = this.getCombFlags(len, n);
-          while (aaFlags.length) {
-            var aFlag = aaFlags.shift();
-            var aComb = [];
-            for (var i = 0; i < len; i++) {
-              aFlag[i] && aComb.push(aData[i]);
-            }
-            aResult.push(aComb);
-          }
-        }
-
-        return aResult;
-      },
-
-      /**
-       * 得到从 m 元素中取 n 元素的所有组合
-       * 结果为[0,1...]形式的数组, 1表示选中，0表示不选
-       */
-      getCombFlags(m, n) {
-        if (!n || n < 1) {
-          return [];
-        }
-
-        var aResult = [];
-        var aFlag = [];
-        var bNext = true;
-        var i, j, iCnt1;
-
-        for (i = 0; i < m; i++) {
-          aFlag[i] = i < n ? 1 : 0;
-        }
-
-        aResult.push(aFlag.concat());
-
-        while (bNext) {
-          iCnt1 = 0;
-          for (i = 0; i < m - 1; i++) {
-            if (aFlag[i] == 1 && aFlag[i + 1] == 0) {
-              for (j = 0; j < i; j++) {
-                aFlag[j] = j < iCnt1 ? 1 : 0;
-              }
-              aFlag[i] = 0;
-              aFlag[i + 1] = 1;
-              var aTmp = aFlag.concat();
-              aResult.push(aTmp);
-              if (
-                aTmp
-                  .slice(-n)
-                  .join("")
-                  .indexOf("0") == -1
-              ) {
-                bNext = false;
-              }
-              break;
-            }
-            aFlag[i] == 1 && iCnt1++;
-          }
-        }
-        return aResult;
-      },
-      /*商品条件筛选*/
-      tabInfoChange(index, cindex, cid, e) {
-        let orderInfo = this.keys; /*所有规格*/
-        let orderInfoChild = this.keys[index]
-          .value; /*当前点击的规格的所有子属性内容*/
-        //选中自己，兄弟节点取消选中
-        if (orderInfoChild[cindex].notClick != true) {
-          if (orderInfoChild[cindex].isActiveC == true) {
-            orderInfoChild[cindex].isActiveC = false;
+            console.log(this.data, 5656);
           } else {
-            for (let i = 0; i < orderInfoChild.length; i++) {
-              orderInfoChild[i].isActiveC = false;
-            }
-            orderInfoChild[cindex].isActiveC = true;
-          }
-        }
-
-        //已经选择的节点
-        let haveChangedId = [];
-        for (let i = 0; i < this.keys.length; i++) {
-          for (let j = 0; j < this.keys[i].value.length; j++) {
-            if (this.keys[i].value[j].isActiveC == true) {
-              haveChangedId.push(this.keys[i].value[j].id);
-            }
-          }
-        }
-        if (haveChangedId.length) {
-          //获得组合key价格
-          haveChangedId.sort(function(value1, value2) {
-            return parseInt(value1) - parseInt(value2);
-          });
-          var len = haveChangedId.length;
-          var prices = this.SKUResult[haveChangedId.join(";")].prices;
-          var maxPrice = Math.max.apply(Math, prices);
-          var minPrice = Math.min.apply(Math, prices);
-          this.nowPrice =
-            maxPrice > minPrice
-              ? minPrice + "-" + maxPrice
-              : maxPrice; /*筛选价格*/
-
-          //用已选中的节点验证待测试节点
-          let daiceshi = []; //待测试节点
-          let daiceshiId = [];
-          for (let i = 0; i < this.keys.length; i++) {
-            for (let j = 0; j < this.keys[i].value.length; j++) {
-              if (this.keys[index].value[cindex].id != this.keys[i].value[j].id) {
-                daiceshi.push({
-                  index: i,
-                  cindex: j,
-                  id: this.keys[i].value[j].id
-                });
-                daiceshiId.push(this.keys[i].value[j].id);
-              }
-            }
-          }
-          for (let i = 0; i < haveChangedId.length; i++) {
-            var indexs = daiceshiId.indexOf(haveChangedId[i]);
-            if (indexs > -1) {
-              daiceshi.splice(indexs, 1);
-            }
-          }
-          for (let i = 0; i < daiceshi.length; i++) {
-            let testAttrIds = []; //从选中节点中去掉选中的兄弟节点
-            let siblingsId = "";
-            for (let m = 0; m < this.keys[daiceshi[i].index].value.length; m++) {
-              if (this.keys[daiceshi[i].index].value[m].isActiveC == true) {
-                siblingsId = this.keys[daiceshi[i].index].value[m].id;
-              }
-            }
-            if (siblingsId != "") {
-              for (let j = 0; j < len; j++) {
-                haveChangedId[j] != siblingsId &&
-                testAttrIds.push(haveChangedId[j]);
-              }
-            } else {
-              testAttrIds = haveChangedId.concat();
-            }
-            testAttrIds = testAttrIds.concat(
-              this.keys[daiceshi[i].index].value[daiceshi[i].cindex].id
-            );
-            testAttrIds.sort(function(value1, value2) {
-              return parseInt(value1) - parseInt(value2);
+            wx.showToast({
+              icon: "none",
+              title: res.data.message
             });
-            if (!this.SKUResult[testAttrIds.join(";")]) {
-              this.keys[daiceshi[i].index].value[
-                daiceshi[i].cindex
-                ].notClick = true;
-              this.keys[daiceshi[i].index].value[
-                daiceshi[i].cindex
-                ].isActiveC = false;
-            } else {
-              this.keys[daiceshi[i].index].value[
-                daiceshi[i].cindex
-                ].notClick = false;
-            }
+            setTimeout(() => {
+              wx.navigateBack({
+                delta: 1
+              });
+            }, 1500);
           }
-        } else {
-          //设置默认价格
-          this.nowPrice = "--";
-          //设置属性状态
-          for (let i = 0; i < this.keys.length; i++) {
-            for (let j = 0; j < this.keys[i].value.length; j++) {
-              if (this.SKUResult[this.keys[i].value[j].id]) {
-                this.keys[i].value[j].notClick = false;
-              } else {
-                this.keys[i].value[j].notClick = true;
-                this.keys[i].value[j].isActiveC = false;
-              }
-            }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    showType() {
+      this.showpop = !this.showpop;
+    },
+
+    /*商品详情数据*/
+    queryDGoodsById() {
+      this.initSKU(); //初始化，得到SKUResult
+      /*根据SKUResult得到初始化的时候哪些不能点击*/
+      for (let i = 0; i < this.keys.length; i++) {
+        for (let j = 0; j < this.keys[i].value.length; j++) {
+          if (this.SKUResult[this.keys[i].value[j].id] == null) {
+            this.keys[i].value[j].notClick = true;
           }
         }
-        this.quantList.map(v => {
-          if (v.properties == haveChangedId) {
-            //  console.log(v, 1)
-            this.selectSkuData = v;
-            this.quantity = this.selectSkuData.quantity;
-          }
-        });
       }
     },
-    computed: {}
-  };
+    //获得对象的key
+    getObjKeys(obj) {
+      if (obj !== Object(obj)) throw new TypeError("Invalid object");
+      var keys = [];
+      for (var key in obj)
+        if (Object.prototype.hasOwnProperty.call(obj, key))
+          keys[keys.length] = key;
+      return keys;
+    },
+
+    //把组合的key放入结果集SKUResult
+    add2SKUResult(combArrItem, sku) {
+      var key = combArrItem.join(";");
+      if (this.SKUResult[key]) {
+        //SKU信息key属性·
+        this.SKUResult[key].count += sku.count;
+        this.SKUResult[key].prices.push(sku.price);
+      } else {
+        this.SKUResult[key] = {
+          count: sku.count,
+          prices: [sku.price]
+        };
+      }
+    },
+
+    //初始化得到结果集
+    initSKU() {
+      var i,
+        j,
+        skuKeys = this.getObjKeys(this.data);
+      for (i = 0; i < skuKeys.length; i++) {
+        var skuKey = skuKeys[i]; //一条SKU信息key
+        var sku = this.data[skuKey]; //一条SKU信息value
+        var skuKeyAttrs = skuKey.split(";"); //SKU信息key属性值数组
+        skuKeyAttrs.sort(function(value1, value2) {
+          return parseInt(value1) - parseInt(value2);
+        });
+
+        //对每个SKU信息key属性值进行拆分组合
+        var combArr = this.combInArray(skuKeyAttrs);
+        for (j = 0; j < combArr.length; j++) {
+          this.add2SKUResult(combArr[j], sku);
+        }
+
+        //结果集接放入SKUResult
+        this.SKUResult[skuKeyAttrs.join(";")] = {
+          count: sku.count,
+          prices: [sku.price]
+        };
+      }
+    },
+
+    /**
+     * 从数组中生成指定长度的组合
+     * 方法: 先生成[0,1...]形式的数组, 然后根据0,1从原数组取元素，得到组合数组
+     */
+    combInArray(aData) {
+      if (!aData || !aData.length) {
+        return [];
+      }
+
+      var len = aData.length;
+      var aResult = [];
+
+      for (var n = 1; n < len; n++) {
+        var aaFlags = this.getCombFlags(len, n);
+        while (aaFlags.length) {
+          var aFlag = aaFlags.shift();
+          var aComb = [];
+          for (var i = 0; i < len; i++) {
+            aFlag[i] && aComb.push(aData[i]);
+          }
+          aResult.push(aComb);
+        }
+      }
+
+      return aResult;
+    },
+
+    /**
+     * 得到从 m 元素中取 n 元素的所有组合
+     * 结果为[0,1...]形式的数组, 1表示选中，0表示不选
+     */
+    getCombFlags(m, n) {
+      if (!n || n < 1) {
+        return [];
+      }
+
+      var aResult = [];
+      var aFlag = [];
+      var bNext = true;
+      var i, j, iCnt1;
+
+      for (i = 0; i < m; i++) {
+        aFlag[i] = i < n ? 1 : 0;
+      }
+
+      aResult.push(aFlag.concat());
+
+      while (bNext) {
+        iCnt1 = 0;
+        for (i = 0; i < m - 1; i++) {
+          if (aFlag[i] == 1 && aFlag[i + 1] == 0) {
+            for (j = 0; j < i; j++) {
+              aFlag[j] = j < iCnt1 ? 1 : 0;
+            }
+            aFlag[i] = 0;
+            aFlag[i + 1] = 1;
+            var aTmp = aFlag.concat();
+            aResult.push(aTmp);
+            if (
+              aTmp
+                .slice(-n)
+                .join("")
+                .indexOf("0") == -1
+            ) {
+              bNext = false;
+            }
+            break;
+          }
+          aFlag[i] == 1 && iCnt1++;
+        }
+      }
+      return aResult;
+    },
+    /*商品条件筛选*/
+    tabInfoChange(index, cindex, cid, e) {
+      let orderInfo = this.keys; /*所有规格*/
+      let orderInfoChild = this.keys[index]
+        .value; /*当前点击的规格的所有子属性内容*/
+      //选中自己，兄弟节点取消选中
+      if (orderInfoChild[cindex].notClick != true) {
+        if (orderInfoChild[cindex].isActiveC == true) {
+          orderInfoChild[cindex].isActiveC = false;
+        } else {
+          for (let i = 0; i < orderInfoChild.length; i++) {
+            orderInfoChild[i].isActiveC = false;
+          }
+          orderInfoChild[cindex].isActiveC = true;
+        }
+      }
+
+      //已经选择的节点
+      let haveChangedId = [];
+      for (let i = 0; i < this.keys.length; i++) {
+        for (let j = 0; j < this.keys[i].value.length; j++) {
+          if (this.keys[i].value[j].isActiveC == true) {
+            haveChangedId.push(this.keys[i].value[j].id);
+          }
+        }
+      }
+      if (haveChangedId.length) {
+        //获得组合key价格
+        haveChangedId.sort(function(value1, value2) {
+          return parseInt(value1) - parseInt(value2);
+        });
+        var len = haveChangedId.length;
+        var prices = this.SKUResult[haveChangedId.join(";")].prices;
+        var maxPrice = Math.max.apply(Math, prices);
+        var minPrice = Math.min.apply(Math, prices);
+        this.nowPrice =
+          maxPrice > minPrice
+            ? minPrice + "-" + maxPrice
+            : maxPrice; /*筛选价格*/
+
+        //用已选中的节点验证待测试节点
+        let daiceshi = []; //待测试节点
+        let daiceshiId = [];
+        for (let i = 0; i < this.keys.length; i++) {
+          for (let j = 0; j < this.keys[i].value.length; j++) {
+            if (this.keys[index].value[cindex].id != this.keys[i].value[j].id) {
+              daiceshi.push({
+                index: i,
+                cindex: j,
+                id: this.keys[i].value[j].id
+              });
+              daiceshiId.push(this.keys[i].value[j].id);
+            }
+          }
+        }
+        for (let i = 0; i < haveChangedId.length; i++) {
+          var indexs = daiceshiId.indexOf(haveChangedId[i]);
+          if (indexs > -1) {
+            daiceshi.splice(indexs, 1);
+          }
+        }
+        for (let i = 0; i < daiceshi.length; i++) {
+          let testAttrIds = []; //从选中节点中去掉选中的兄弟节点
+          let siblingsId = "";
+          for (let m = 0; m < this.keys[daiceshi[i].index].value.length; m++) {
+            if (this.keys[daiceshi[i].index].value[m].isActiveC == true) {
+              siblingsId = this.keys[daiceshi[i].index].value[m].id;
+            }
+          }
+          if (siblingsId != "") {
+            for (let j = 0; j < len; j++) {
+              haveChangedId[j] != siblingsId &&
+                testAttrIds.push(haveChangedId[j]);
+            }
+          } else {
+            testAttrIds = haveChangedId.concat();
+          }
+          testAttrIds = testAttrIds.concat(
+            this.keys[daiceshi[i].index].value[daiceshi[i].cindex].id
+          );
+          testAttrIds.sort(function(value1, value2) {
+            return parseInt(value1) - parseInt(value2);
+          });
+          if (!this.SKUResult[testAttrIds.join(";")]) {
+            this.keys[daiceshi[i].index].value[
+              daiceshi[i].cindex
+            ].notClick = true;
+            this.keys[daiceshi[i].index].value[
+              daiceshi[i].cindex
+            ].isActiveC = false;
+          } else {
+            this.keys[daiceshi[i].index].value[
+              daiceshi[i].cindex
+            ].notClick = false;
+          }
+        }
+      } else {
+        //设置默认价格
+        this.nowPrice = "--";
+        //设置属性状态
+        for (let i = 0; i < this.keys.length; i++) {
+          for (let j = 0; j < this.keys[i].value.length; j++) {
+            if (this.SKUResult[this.keys[i].value[j].id]) {
+              this.keys[i].value[j].notClick = false;
+            } else {
+              this.keys[i].value[j].notClick = true;
+              this.keys[i].value[j].isActiveC = false;
+            }
+          }
+        }
+      }
+      this.quantList.map(v => {
+        if (v.properties == haveChangedId) {
+          //  console.log(v, 1)
+          this.selectSkuData = v;
+          this.quantity = this.selectSkuData.quantity;
+        }
+      });
+    }
+  },
+  computed: {}
+};
 </script>
 
 <style lang='scss' scoped>
