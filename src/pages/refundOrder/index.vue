@@ -380,7 +380,7 @@ export default {
         applylines: this.goodsList,
         orderCode: this.orderInfo.orderVo.code,
         orderId: this.orderInfo.orderVo.id,
-        refundReason: this.reson,
+        refundReason: this.reason,
         refundType: 1
       };
 

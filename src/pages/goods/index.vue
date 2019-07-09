@@ -194,7 +194,6 @@ export default {
   data() {
     return {
       level: 1,
-
       allnumber: 0, //购物车商品数量
       openId: "",
       collectFlag: false,
@@ -223,41 +222,6 @@ export default {
       total: null, //数据总条数
       buyCount: "", //总购买数
       buyerNum: "", //购买总人数
-      data: {
-        // "24;12;31": {
-        //   price: 366.0,
-        //   count: 46
-        // },
-        // "25;12;32": {
-        //   price: 406,
-        //   count: 66
-        // }
-      },
-      SKUResult: {},
-      nowPrice: "--",
-
-      allnumber: 0, //购物车商品数量
-      openId: "",
-      collectFlag: false,
-      number: 0,
-      showpop: false,
-      gallery: [],
-      goodsInfo: {}, //商品数据
-      brand: {},
-      attribute: [],
-      issueList: [],
-      productList: [],
-      goods_desc: "", //商品详情富文本
-      id: "",
-      userInfo: "",
-      goodsId: "",
-      allPrise: "",
-      quantList: null, //sku数据
-      flag: "",
-      selectSkuData: null, //已选中的sku对象
-      goodsNum: 1,
-      quantity: "-",
-      keys: [],
       data: {},
       SKUResult: {},
       nowPrice: "--"
@@ -316,120 +280,107 @@ export default {
         }
       };
     },
-    components: {
-      wxParse
-    },
-    methods: {
-      //获取购物车中的商品数量
-      getCartGoodsNum() {
-        shoppingcartCount()
-          .then(res => {
-            if (res.data.code == "200") {
-              this.allnumber = res.data.result;
-            }
-          })
-          .catch(err => {});
-      },
-      // 加商品
-      plusGoodsNum() {
-        if (this.selectSkuData != null) {
-          //  console.log(this.selectSkuData);
-          if (this.goodsNum > this.selectSkuData.quantity) {
-            this.goodsNum--;
-          } else {
-            this.goodsNum++;
-          }
-        }
-      },
-      //减商品
-      minusGoodsNum(goods) {
-        this.goodsNum--;
-      },
-      togoodsDetail(id) {
-        wx.redirectTo({ url: "/pages/goods/main?id=" + id });
-      },
-      add() {
-        this.number = this.number + 1;
-      },
-      reduce() {
-        if (this.number > 1) {
-          this.number = this.number - 1;
+    // 加商品
+    plusGoodsNum() {
+      if (this.selectSkuData != null) {
+        //  console.log(this.selectSkuData);
+        if (this.goodsNum > this.selectSkuData.quantity) {
+          this.goodsNum--;
         } else {
-          return false;
+          this.goodsNum++;
         }
-      },
-      //打开SKU
-      async openSku(data) {
-        this.selectSkuData = null;
-        if (data) {
-          this.flag = data;
-        }
-        this.showpop = true;
-      },
-      //提交
-      submit() {
-        if (this.flag == "buyNow") {
-          if (toLogin()) {
-            if (this.showpop) {
-              if (this.selectSkuData != null) {
-                let params = {
-                  bundleGroup: "",
-                  bundleId: "",
-                  buyType: "N",
-                  itemId: this.selectSkuData.itemId,
-                  offerType: "",
-                  quantity: this.goodsNum,
-                  skuId: this.selectSkuData.id,
-                  skuIdInfo: this.selectSkuData.id,
-                  storeId: this.selectSkuData.storeId
-                };
-                let model = JSON.stringify(params);
-                wx.setStorageSync("orderParams", model);
-                wx.setStorageSync("orderFrom", "goodsDetail");
-                wx.navigateTo({
-                  url: "/pages/order/main"
-                });
-              } else {
-                wx.showToast({
-                  title: "请选择商品规格",
-                  icon: "none",
-                  duration: 1500
-                });
-              }
+      }
+    },
+    //减商品
+    minusGoodsNum(goods) {
+      this.goodsNum--;
+    },
+    togoodsDetail(id) {
+      wx.redirectTo({ url: "/pages/goods/main?id=" + id });
+    },
+    add() {
+      this.number = this.number + 1;
+    },
+    reduce() {
+      if (this.number > 1) {
+        this.number = this.number - 1;
+      } else {
+        return false;
+      }
+    },
+    //打开SKU
+    async openSku(data) {
+      this.selectSkuData = null;
+      if (data) {
+        this.flag = data;
+      }
+      this.showpop = true;
+    },
+    //提交
+    submit() {
+      if (this.flag == "buyNow") {
+        if (toLogin()) {
+          if (this.showpop) {
+            if (this.selectSkuData != null) {
+              let params = {
+                bundleGroup: "",
+                bundleId: "",
+                buyType: "N",
+                itemId: this.selectSkuData.itemId,
+                offerType: "",
+                quantity: this.goodsNum,
+                skuId: this.selectSkuData.id,
+                skuIdInfo: this.selectSkuData.id,
+                storeId: this.selectSkuData.storeId
+              };
+              let model = JSON.stringify(params);
+              wx.setStorageSync("orderParams", model);
+              wx.setStorageSync("orderFrom", "goodsDetail");
+              wx.navigateTo({
+                url: "/pages/order/main"
+              });
+            } else {
+              wx.showToast({
+                title: "请选择商品规格",
+                icon: "none",
+                duration: 1500
+              });
             }
           }
-        } else if (this.flag == "addCart") {
-          if (toLogin()) {
-            if (this.showpop) {
-              if (this.selectSkuData != null) {
-                let params = {
-                  skuIdArray: [],
-                  skuQtyArray: []
-                };
-                params.skuIdArray.push(this.selectSkuData.id);
-                params.skuQtyArray.push(this.goodsNum);
-                // console.log(params);
-                addShoppingcart(params)
-                  .then(res => {
-                    wx.showToast({ title: res.data.message });
-                    this.showpop = false;
-                    this.getCartGoodsNum();
-                  })
-                  .catch(err => {
-                    this.showpop = false;
-                  });
-              } else {
-                wx.showToast({
-                  title: "请选择商品规格",
-                  icon: "none",
-                  duration: 1500
+        }
+      } else if (this.flag == "addCart") {
+        if (toLogin()) {
+          if (this.showpop) {
+            if (this.selectSkuData != null) {
+              let params = {
+                skuIdArray: [],
+                skuQtyArray: []
+              };
+              params.skuIdArray.push(this.selectSkuData.id);
+              params.skuQtyArray.push(this.goodsNum);
+              // console.log(params);
+              addShoppingcart(params)
+                .then(res => {
+                  wx.showToast({ title: res.data.message });
+                  this.showpop = false;
+                  this.getCartGoodsNum();
+                })
+                .catch(err => {
+                  this.showpop = false;
                 });
-              }
+            } else {
+              wx.showToast({
+                title: "请选择商品规格",
+                icon: "none",
+                duration: 1500
+              });
             }
           }
         }
       }
     },
+    
+
     async collect() {
       if (toLogin()) {
         this.collectFlag = !this.collectFlag;
@@ -464,12 +415,6 @@ export default {
         .catch(err => {});
     },
 
-    //去购物车
-    toCart() {
-      wx.switchTab({
-        url: "/pages/cart/main"
-      });
-    },
     //获取商品详情
     async goodsDetail() {
       getGoodsDetail({
