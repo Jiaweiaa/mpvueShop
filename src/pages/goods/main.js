@@ -10,7 +10,8 @@ export default {
     'usingComponents': {
       'van-stepper': '/static/vant/stepper/index',
       'van-popup': '/static/vant/popup/index',
-      'van-button': '/static/vant/button/index'
+      'van-button': '/static/vant/button/index',
+      "van-icon": "/static/vant/icon/index"
     }
   }
 }

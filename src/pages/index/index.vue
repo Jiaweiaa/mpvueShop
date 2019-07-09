@@ -2,7 +2,6 @@
   <div class="index">
     <div class="search">
       <div @click="toMappage" class="captain">
-        
         <div v-if="captainInfo!=null">
           <div style="font-size: 30rpx;">{{captainInfo.address}} <span class="toggle_btn">切换</span> </div>
           <div style="font-size: 24rpx;color:#999;">提货位置:{{captainInfo.deliveryAddress}}</div>
@@ -28,7 +27,7 @@
         <block v-for="(item, index) in banner " :key="index">
           <swiper-item class="swiper-item">
             <img
-              @click="goodsDetail(item.itemId)"
+              @click="goodsDetail(item)"
               :src="'http://qn.gaoshanmall.cn/' + item.banner"
               class="slide-image"
             />
@@ -91,6 +90,10 @@ export default {
         url: "/pages/mappage/main"
       });
     }
+    this.getData();
+  },
+  onShareAppMessage(res) {
+    console.log(res);
   },
   computed: {
     ...mapState(["cityName"])
@@ -100,7 +103,6 @@ export default {
     //     url: "/pages/login/main"
     //   });
     this.getCityName();
-    this.getData();
   },
   data() {
     return {
@@ -203,10 +205,17 @@ export default {
         goodsList: data.data.result.recommended
       });
     },
-    goodsDetail(id) {
-      wx.navigateTo({
-        url: "/pages/goods/main?id=" + id
-      });
+    goodsDetail(item) {
+      if(item.status == 0) {
+        wx.navigateTo({
+          url: "/pages/goods/main?id=" + item.itemId
+        });
+      }else {
+        wx.navigateTo({
+          url: "/pages/topicdetail/main?id=" + item.itemId
+        });
+      }
+     
     },
     // 更多分类
     categoryList(item) {

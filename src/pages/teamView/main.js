@@ -11,7 +11,9 @@ export default {
       "van-tabbar": "/static/vant//tabbar/index",
       "van-tabbar-item": "/static/vant/tabbar-item/index",
       "van-icon": "/static/vant/icon/index",
-      "van-button": "/static/vant/button/index"
+      "van-button": "/static/vant/button/index",
+      "van-notify": "/static/vant/notify/index",
+      "van-dialog": "/static/vant/dialog/index"
     }
   }
 }
