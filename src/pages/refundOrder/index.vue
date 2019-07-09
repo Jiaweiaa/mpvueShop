@@ -14,9 +14,9 @@
           <div class="goods">
             <div class="goods-item" v-for="(goods,index) in goodsList" :key="index">
               <div class="img-box">
-                <img :src="'http://qn.gaoshanmall.cn/'+goods.itemImg" alt>
+                <img :src="'http://qn.gaoshanmall.cn/'+goods.itemImg" alt />
               </div>
-              <div class="goods-info">
+              <div class="goods-info" >
                 <h3 class="van-ellipsis" style="font-size:26rpx;">{{goods.itemName}}</h3>
                 <p>
                   <span style="font-size:21rpx;">{{goods.propertiesValue}}</span>
@@ -41,7 +41,7 @@
       <div class="item" @click="orderShow=true">
         <p style="color:rgba(153,153,153,1);">
           {{reason!=''?reason:'请选择退货原因'}}
-          <van-icon style="float:right;" name="arrow-down"/>
+          <van-icon style="float:right;" name="arrow-down" />
         </p>
       </div>
     </div>
@@ -54,7 +54,7 @@
         </p>
         <p>
           退款说明:
-          <input type="text" placeholder="选填">
+          <input type="text" placeholder="选填" />
         </p>
       </div>
     </div>
@@ -80,7 +80,7 @@
             :data-name="reasonItem"
             @click="changeReason(reasonItem)"
           >
-            <van-radio :name="reasonItem" custom-class="radioLabel"/>
+            <van-radio :name="reasonItem" custom-class="radioLabel" />
           </van-cell>
         </van-cell-group>
       </van-radio-group>
@@ -224,7 +224,7 @@
             }
           }
           .goods-info {
-            // margin-left: 20rpx;
+            margin-left: 10rpx;
             width: 50%;
             h3 {
             }
@@ -332,6 +332,7 @@ export default {
     this.goodsList = [];
     this.orderInfo = Object.assign({}, wx.getStorageSync("orderInfo"));
     this.goodsList = wx.getStorageSync("refundGoodsList");
+    console.log(this.orderInfo, "444");
     // console.log(object);
     this.refundPrice = null;
     this.goodsList.map(goods => {
@@ -375,7 +376,9 @@ export default {
     },
     //提交退款申请
     submitRefund() {
-      wx.showLoading();
+      wx.showLoading({
+        title: '加载中'
+      });
       let params = {
         applylines: this.goodsList,
         orderCode: this.orderInfo.orderVo.code,
@@ -386,10 +389,17 @@ export default {
 
       applyRefund(params)
         .then(res => {
-          wx.setStorageSync("refundCode", res.data.result);
-          wx.redirectTo({
-            url: "/pages/returnGoods/main?code=" + res.data.result
-          });
+          if (res.data.code == "200") {
+            wx.setStorageSync("refundCode", res.data.result);
+            wx.redirectTo({
+              url: "/pages/returnGoods/main?code=" + res.data.result
+            });
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              icon: "none"
+            });
+          }
           wx.hideLoading();
         })
         .catch(err => {

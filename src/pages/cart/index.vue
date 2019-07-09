@@ -103,6 +103,17 @@ import {
   orderconfirm
 } from "../../api/shoppingcart";
 export default {
+  onPullDownRefresh: function() {
+    wx.removeTabBarBadge({
+      index: 3
+    });
+    this.openId = getStorageOpenid();
+    this.getListData();
+    this.cartShow = false;
+    this.allCheck = false;
+    //刷新完成后关闭
+    wx.stopPullDownRefresh();
+  },
   onShow() {
     wx.removeTabBarBadge({
       index: 3
@@ -231,7 +242,9 @@ export default {
     },
     //获取购物车数据
     async getListData() {
-      wx.showLoading();
+      wx.showLoading({
+        title: '加载中'
+      });
       shoppingCartList()
         .then(res => {
           if (res.data.code == "200") {

@@ -27,7 +27,7 @@
           :key="index"
           v-for="(item, index) in orderMenu"
         >
-          <van-icon size="30px" :info="item.total == 0 ? '': item.total" :name="item.icon"/>
+          <van-icon size="30px" :info="item.total == 0 ? '': item.total" :name="item.icon" />
           <div class="childText">{{item.title}}</div>
         </div>
       </div>
@@ -44,7 +44,7 @@
           :key="index"
           v-for="(item, index) in myService"
         >
-          <van-icon size="30px" :name="item.icon"/>
+          <van-icon size="30px" :name="item.icon" />
           <div class="childText">{{item.title}}</div>
         </div>
       </div>
@@ -61,7 +61,7 @@
           :key="index"
           v-for="(item, index) in moreService"
         >
-          <van-icon size="30px" :name="item.icon"/>
+          <van-icon size="30px" :name="item.icon" />
           <div class="childText">{{item.title}}</div>
         </div>
       </div>
@@ -75,67 +75,137 @@ import { shoppingcartCount } from "../../api/shoppingcart";
 import { findOrderNum } from "../../api/myOrder";
 import { isCapOrSup } from "../../api/login";
 export default {
+  onPullDownRefresh() {
+    this.getCartGoodsNum();
+    // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
+    if (login()) {
+      this.userInfo = login();
+      this.avator = this.userInfo.avatarUrl;
+      findOrderNum()
+        .then(res => {
+          let result = res.data.result;
+          this.$set(this.orderMenu[0], "total", result.waitPayCount);
+          this.$set(this.orderMenu[1], "total", result.waitSendCount);
+          this.$set(this.orderMenu[2], "total", result.waitReciveCount);
+          this.$set(this.orderMenu[3], "total", result.waitBackCount);
+        })
+        .catch(err => {});
+    }
+    this.moreService = [""];
+    if (wx.getStorageSync("shopToken")) {
+      isCapOrSup().then(isRes => {
+        wx.setStorageSync("isCap", isRes.data.result.isCap);
+        wx.setStorageSync("isSup", isRes.data.result.isSup);
+      });
+      this.moreService = [];
+      if (wx.getStorageSync("isCap") == false) {
+        this.moreService.push({
+          title: "团长招募",
+          icon: "manager-o",
+          url: "/pages/beTeam/main"
+        });
+      } else {
+        this.moreService.push({
+          title: "我是团长",
+          icon: "manager-o",
+          url: "/pages/teamView/main"
+        });
+      }
+      if (wx.getStorageSync("isSup") == false) {
+        this.moreService.push({
+          title: "供应商招募",
+          icon: "user-o",
+          url: "/pages/beGive/main"
+        });
+      } else {
+        this.moreService.push({
+          title: "我是供应商",
+          icon: "friends-o",
+          url: "/pages/giver/main"
+        });
+      }
+      console.log(this.moreService);
+    } else {
+      this.moreService = [
+        {
+          title: "团长招募",
+          icon: "manager-o",
+          url: "/pages/beTeam/main"
+        },
+        {
+          title: "供应商招募",
+          icon: "user-o",
+          url: "/pages/beGive/main"
+        }
+      ];
+    }
+    //刷新完成后关闭
+    wx.stopPullDownRefresh();
+  },
   onShow() {
     this.getCartGoodsNum();
     // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
     if (login()) {
       this.userInfo = login();
       this.avator = this.userInfo.avatarUrl;
-      findOrderNum().then((res) => {
-        let result = res.data.result;
-        this.$set(this.orderMenu[0],"total",result.waitPayCount);
-        this.$set(this.orderMenu[1],"total",result.waitSendCount);
-        this.$set(this.orderMenu[2],"total",result.waitReciveCount);
-        this.$set(this.orderMenu[3],"total",result.waitBackCount);
-      }).catch((err) => {
-      });
+      findOrderNum()
+        .then(res => {
+          let result = res.data.result;
+          this.$set(this.orderMenu[0], "total", result.waitPayCount);
+          this.$set(this.orderMenu[1], "total", result.waitSendCount);
+          this.$set(this.orderMenu[2], "total", result.waitReciveCount);
+          this.$set(this.orderMenu[3], "total", result.waitBackCount);
+        })
+        .catch(err => {});
     }
-    this.moreService = [''];
-    if(wx.getStorageSync("shopToken")) {
+    this.moreService = [""];
+    if (wx.getStorageSync("shopToken")) {
       isCapOrSup().then(isRes => {
         wx.setStorageSync("isCap", isRes.data.result.isCap);
         wx.setStorageSync("isSup", isRes.data.result.isSup);
-      })
+      });
       this.moreService = [];
-      if(wx.getStorageSync("isCap") == false) {
-        this.moreService.push( {
+      if (wx.getStorageSync("isCap") == false) {
+        this.moreService.push({
           title: "团长招募",
           icon: "manager-o",
           url: "/pages/beTeam/main"
         });
-      }else {
-        this.moreService.push( {
+      } else {
+        this.moreService.push({
           title: "我是团长",
           icon: "manager-o",
           url: "/pages/teamView/main"
         });
       }
-      if(wx.getStorageSync("isSup") == false) {
-        this.moreService.push( {
+      if (wx.getStorageSync("isSup") == false) {
+        this.moreService.push({
           title: "供应商招募",
           icon: "user-o",
           url: "/pages/beGive/main"
         });
-      }else {
-        this.moreService.push( {
+      } else {
+        this.moreService.push({
           title: "我是供应商",
           icon: "friends-o",
           url: "/pages/giver/main"
         });
       }
-      console.log(this.moreService)
-	  }else {
-      this.moreService = [{
-        title: "团长招募",
-        icon: "manager-o",
-        url: "/pages/beTeam/main"
-      },
-      {
-        title: "供应商招募",
-        icon: "user-o",
-        url: "/pages/beGive/main"
-      }]
-	  }
+      console.log(this.moreService);
+    } else {
+      this.moreService = [
+        {
+          title: "团长招募",
+          icon: "manager-o",
+          url: "/pages/beTeam/main"
+        },
+        {
+          title: "供应商招募",
+          icon: "user-o",
+          url: "/pages/beGive/main"
+        }
+      ];
+    }
   },
   data() {
     return {
@@ -145,7 +215,7 @@ export default {
           icon: "pending-payment",
           url: "/pages/myOrder/main?id=2"
         },
-        
+
         {
           title: "待发货",
           icon: "paid",
@@ -177,13 +247,12 @@ export default {
           title: "地址管理",
           icon: "home-o",
           url: "/pages/address/main"
-        },
+        }
         // {
         //   title: "百团联盟券",
         //   icon: "after-sale",
         //   url: "/pages/integral/main"
         // },
-	      
       ],
       moreService: [
         {
@@ -240,11 +309,9 @@ export default {
       }
     },
     goToLogin() {
-     
-        wx.navigateTo({
-          url: "/pages/login/main"
-        });
-      
+      wx.navigateTo({
+        url: "/pages/login/main"
+      });
     }
   },
   computed: {}

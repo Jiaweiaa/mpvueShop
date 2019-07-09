@@ -1,6 +1,15 @@
 <template>
   <div class="order">
+    <!-- 轻提醒 -->
     <van-toast id="van-toast" />
+    <!-- 上拉选项菜单 -->
+    <van-action-sheet
+      :show="sheetShow"
+      :actions="deliveryOption"
+      cancel-text="取消"
+      @close="onClose"
+      @select="onSelect"
+    />
     <div @click="toAddressList" v-if="address!=null" class="address">
       <div class="item">
         <div class="list">
@@ -23,6 +32,10 @@
       <div class="item">
         <div>商品合计</div>
         <div>￥{{originPayAmount}}</div>
+      </div>
+      <div class="item" @click="sheetShow=true">
+        <div>配送方式</div>
+        <div>{{deliveryObj.name}}</div>
       </div>
       <div class="item">
         <div>运费</div>
@@ -174,6 +187,22 @@ export default {
 
   data() {
     return {
+      //上拉菜单是否显示
+      sheetShow: false,
+      deliveryObj:{
+        name:'自提',
+        value:1
+      },
+      deliveryOption: [
+        {
+          name: "自提",
+          value: 1
+        },
+        {
+          name: "送货上门",
+          value: 2
+        }
+      ],
       //  联盟券
       scoreAmount: 0,
       payRadio: "4",
@@ -196,6 +225,17 @@ export default {
   },
   components: {},
   methods: {
+    //关闭上拉菜单
+    onClose(){
+      this.sheetShow = false;
+    },
+    //选中项改变本地变量值
+    onSelect(e){
+      // console.log(e,'234');
+      this.deliveryObj = Object.assign({},e.mp.detail);
+      this.sheetShow = false;
+      console.log(this.deliveryObj);
+    },
     // 支付状态改变
     typeChange(val) {
       this.payRadio = val.mp.detail;
@@ -221,7 +261,7 @@ export default {
           codPaymentType: "",
           deliveryDescription: "",
           deliveryTimebar: "",
-          deliveryType: "",
+          deliveryType: this.deliveryObj.value, //配送方式
           expectDeliveryDate: "",
           expectDeliveryTime: "",
           memberId: this.userInfo.memberId,

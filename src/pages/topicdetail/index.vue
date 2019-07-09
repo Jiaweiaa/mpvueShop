@@ -16,6 +16,12 @@
 import wxParse from "mpvue-wxparse";
 
 export default {
+  onPullDownRefresh: function() {
+    this.id = this.$root.$mp.query.id;
+    this.getListData();
+    //刷新完成后关闭
+    wx.stopPullDownRefresh();
+  },
   created() {},
   mounted() {
     this.id = this.$root.$mp.query.id;

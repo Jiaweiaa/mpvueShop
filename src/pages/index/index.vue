@@ -3,12 +3,13 @@
     <div class="search">
       <div @click="toMappage" class="captain">
         <div v-if="captainInfo!=null">
-          <div style="font-size: 30rpx;">{{captainInfo.address}} <span class="toggle_btn">切换</span> </div>
+          <div style="font-size: 30rpx;">
+            {{captainInfo.address}}
+            <span class="toggle_btn">切换</span>
+          </div>
           <div style="font-size: 24rpx;color:#999;">提货位置:{{captainInfo.deliveryAddress}}</div>
         </div>
-        <div v-else>
-          {{cityName}}
-        </div>
+        <div v-else>{{cityName}}</div>
       </div>
       <div @click="toSearch" class="search_bar">
         <input type="text" placeholder="搜索商品" />
@@ -81,9 +82,26 @@ import { getIndexItem } from "../../api/index/index";
 import { mapState, mapMutations } from "vuex";
 import { shoppingcartCount } from "../../api/shoppingcart/index";
 export default {
+  onPullDownRefresh: function() {
+    this.brandList = [];
+    this.newGoods = [];
+    this.hotGoods = [];
+    this.newCategoryList = [];
+    this.getCartGoodsNum();
+    if (wx.getStorageSync("data")) {
+      this.captainInfo = Object.assign({}, wx.getStorageSync("data"));
+    } else {
+      wx.navigateTo({
+        url: "/pages/mappage/main"
+      });
+    }
+    this.getData();
+    //刷新完成后关闭
+    wx.stopPullDownRefresh();
+  },
   onShow() {
     this.brandList = [];
-	  this.newGoods = [];
+    this.newGoods = [];
     this.hotGoods = [];
     this.newCategoryList = [];
     this.getCartGoodsNum();
@@ -209,11 +227,11 @@ export default {
       });
     },
     goodsDetail(item) {
-      if(item.status == 1) {
+      if (item.status == 1) {
         wx.navigateTo({
           url: "/pages/topicdetail/main?id=" + item.itemId
         });
-      }else {
+      } else {
         wx.navigateTo({
           url: "/pages/goods/main?id=" + item.itemId
         });

@@ -300,7 +300,9 @@ export default {
     },
     //取消订单
     cancelOrder() {
-      wx.showLoading();
+      wx.showLoading({
+        title: '加载中'
+      });
       cancleOrder({ orderCode: this.scmCode, reason: this.reason })
         .then(res => {
           wx.hideLoading();
@@ -347,7 +349,9 @@ export default {
     },
 
     getOrderList() {
-      wx.showLoading();
+      wx.showLoading({
+        title: '加载中'
+      });
       this.onLoadLoading = true;
       let params = {
         pageNum: this.pageNum,

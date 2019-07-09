@@ -69,7 +69,9 @@ export default {
     },
     //根据code调取登录接口获取openid 如果用户已注册 则同时返回用户信息
     doLogin() {
-      wx.showLoading();
+      wx.showLoading({
+        title: '加载中'
+      });
       wx.login({
         success: res => {
           if (res.code) {
@@ -108,7 +110,9 @@ export default {
     },
     //注册接口
     signIn(params) {
-      wx.showLoading();
+      wx.showLoading({
+        title: '加载中'
+      });
       wx.getUserInfo({
         success: res => {
           this.userInfo = res.userInfo;

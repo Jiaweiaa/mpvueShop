@@ -6,6 +6,7 @@ app.$mount()
 export default {
   config: {
     navigationBarTitleText: '我的',
+    enablePullDownRefresh: true,
     "usingComponents": {
       'van-cell': '/static/vant/cell/index',
       'van-cell-group': '/static/vant/cell-group/index',

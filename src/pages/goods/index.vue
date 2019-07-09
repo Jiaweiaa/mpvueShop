@@ -379,7 +379,6 @@ export default {
         }
       }
     },
-    
 
     async collect() {
       if (toLogin()) {
@@ -427,6 +426,7 @@ export default {
             this.goods_desc = data.item.itemChannel.description; //详情描述富文本
             this.goodsList = data.item.pdpPropertiesCommands;
             this.quantityData = JSON.parse(data.skuJson); //SKU信息
+            console.log(this.quantityData, "555");
             this.quantList = JSON.parse(res.data.result.skuJson);
             this.quantList.map(v => {
               v.properties = JSON.parse(v.properties).toString();
@@ -483,7 +483,15 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          wx.showToast({
+            icon: "none",
+            title: '网络错误'
+          });
+          setTimeout(() => {
+            wx.navigateBack({
+              delta: 1
+            });
+          }, 1500);
         });
     },
     showType() {

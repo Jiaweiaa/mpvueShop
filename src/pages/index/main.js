@@ -8,6 +8,7 @@ export default {
   config: {
     // 页面配置，即 page.json 的内容
     navigationBarTitleText: '首页',
+    enablePullDownRefresh: true,
     'usingComponents': {
       'van-search': '/static/vant/search/index',
       'van-row': '/static/vant/row/index',

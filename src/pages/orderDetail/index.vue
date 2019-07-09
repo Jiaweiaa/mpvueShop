@@ -22,6 +22,17 @@
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
+    <!-- 待收货 -->
+    <div
+      class="bg"
+      v-else-if=" detailData.orderVo.financialStatus == 3 && detailData.orderVo.logisticsStatus == 6"
+    >
+      <h3>
+        <van-icon custom-class="colorW" name="underway" />
+        <span>待收货</span>
+      </h3>
+      <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
+    </div>
     <!--付款之后或COD  发货之前 取消订单 -->
     <div class="bg" v-else-if="detailData.newestRefund!=null&&detailData.orderVo.type=='3'">
       <h3>
@@ -72,7 +83,7 @@
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
-    <div class="bg" v-else>
+    <div class="bg" v-else-if="detailData.orderVo.logisticsStatus == 15">
       <h3>
         <van-icon custom-class="colorW" name="underway" />
         <span>已完成</span>
@@ -90,6 +101,10 @@
         <div class="item" v-if="detailData.captainVo">
           <div class="left">团长信息</div>
           <div class="right">{{detailData.captainVo.captain.name}}</div>
+        </div>
+        <div class="item" v-if="detailData.orderVo.shippingAddress.deliveryType!=''">
+          <div class="left">提货方式</div>
+          <div class="right">{{detailData.orderVo.shippingAddress.deliveryType=='1'? '自提':'送货上门'}}</div>
         </div>
         <div class="item" v-if="detailData.captainVo">
           <div class="left">提货地点</div>
@@ -417,7 +432,9 @@ export default {
     },
     //申请取消订单
     applyCancel() {
-      wx.showLoading();
+      wx.showLoading({
+        title: '加载中'
+      });
       applyCancelOrder({
         orderId: this.detailData.orderVo.id,
         cancelReason: this.reason
@@ -448,7 +465,7 @@ export default {
     //取消退换货 跳转至退换货详情去取消
     applyCancelRefund(goods) {
       wx.setStorageSync("refundCode", goods.reCode);
-      wx.redirectTo({
+      wx.navigateTo({
         url: "/pages/returnGoods/main?code=" + goods.reCode
       });
     },
@@ -568,7 +585,9 @@ export default {
     },
     //取消订单
     cancelOrder() {
-      wx.showLoading();
+      wx.showLoading({
+        title: '加载中'
+      });
       if (this.from == "cancle") {
         cancleOrder({
           orderCode: this.detailData.orderVo.code,

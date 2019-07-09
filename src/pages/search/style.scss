@@ -62,7 +62,7 @@
       margin-top: 300rpx;
     }
   }
-  .helpSearch{
+  .helpSearch {
     margin-top: 91rpx;
     padding-top: 1rpx;
   }
@@ -88,15 +88,18 @@
         color: #b4282d;
       }
       .price {
-        background: url(//yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/no-3127092a69.png) 165rpx center no-repeat;
+        background: url(//yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/no-3127092a69.png)
+          165rpx center no-repeat;
         background-size: 15rpx 21rpx;
       }
       .active.desc {
-        background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/down-95e035f3e5.png) 165rpx center no-repeat;
+        background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/down-95e035f3e5.png)
+          165rpx center no-repeat;
         background-size: 15rpx 21rpx;
       }
       .active.asc {
-        background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/up-636b92c0a5.png) 165rpx center no-repeat;
+        background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/up-636b92c0a5.png)
+          165rpx center no-repeat;
         background-size: 15rpx 21rpx;
       }
     }
@@ -153,7 +156,8 @@
       div:nth-child(2) {
         width: 55rpx;
         height: 55rpx;
-        background: url("http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/del1-93f0a4add4.png") no-repeat;
+        background: url("http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/del1-93f0a4add4.png")
+          no-repeat;
         background-size: 100% 100%;
       }
     }
@@ -175,23 +179,29 @@
     margin-top: 20rpx;
   }
 }
-.goods-image{
+.goods-image {
   width: 200rpx;
   height: 200rpx;
   border-radius: 20rpx;
 }
-.goods-title{
-  margin-top: 20rpx;
-  min-height: 50rpx;
+.goods-title {
+  margin-top: 15rpx;
+  min-height: 40rpx;
 }
-.goods-desc{
+.goods-desc {
   min-height: 24rpx;
 }
-.goods-bottom{
-  font-size: 24rpx;
-  color: #999;
+.goods-bottom {
+  margin: 5rpx 0;
+  div {
+    font-size: 24rpx;
+    color: #999;
+  }
+  .sketch {
+    font-size: 20rpx;
+  }
 }
-.van-card__thumb{
+.van-card__thumb {
   width: 200rpx;
   height: 200rpx;
   border-radius: 20rpx;

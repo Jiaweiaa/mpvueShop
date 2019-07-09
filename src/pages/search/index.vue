@@ -96,8 +96,8 @@
           :thumb-link="'/pages/goods/main?id='+item.id"
           :tag="item.tag"
           :lazy-load="true"
-          :price="item.salePrice"
-          :origin-price="item.listPrice"
+          :price="item.listPrice"
+          :origin-price="item.salePrice"
           :desc="item.keyword"
           :title="item.title"
           thumb-class="goods-image"
@@ -108,8 +108,9 @@
           @click="goodsDetail(item.id)"
           :thumb="'http://qn.gaoshanmall.cn/' + item.img"
         >
-          <div slot="bottom" class="goods-bottom">
-            <span>已有100人付款 沈阳</span>
+          <div slot="desc" class="goods-bottom">
+            <div>{{item.keyword}}</div>
+            <div class="sketch">{{item.sketch}}</div>
           </div>
         </van-card>
         <!-- <div

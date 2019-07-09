@@ -183,7 +183,7 @@
             }
           }
           .goods-info {
-            // margin-left: 20rpx;
+            margin-left: 10rpx;
             width: 50%;
             h3 {
             }
@@ -278,7 +278,7 @@ export default {
       let refundGoodsList = [];
       refundGoodsList.push(this.goods);
       wx.setStorageSync("refundGoodsList", refundGoodsList);
-      wx.navigateTo({
+      wx.redirectTo({
         url: "/pages/refundOrder/main"
       });
     }

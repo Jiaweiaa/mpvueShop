@@ -120,7 +120,9 @@ export default {
       wx.hideLoading();
     } else {
       this.pageNum++;
-      wx.showLoading();
+      wx.showLoading({
+        title: '加载中'
+      });
       this.onLoadLoading = true;
       let params = {
         pageNum: this.pageNum,
@@ -164,7 +166,9 @@ export default {
     },
     //取消订单
     cancelOrder() {
-      wx.showLoading();
+      wx.showLoading({
+        title: '加载中'
+      });
       cancleOrder({ orderCode: this.scmCode, reason: this.reason })
         .then(res => {
           wx.hideLoading();
@@ -211,7 +215,9 @@ export default {
     },
     //获取退换货订单
     getRefundList() {
-      wx.showLoading();
+      wx.showLoading({
+        title: '加载中'
+      });
       this.onLoadLoading = true;
       let params = {
         pageNum: this.pageNum,

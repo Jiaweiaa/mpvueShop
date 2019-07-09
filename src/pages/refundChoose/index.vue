@@ -267,7 +267,9 @@ export default {
   methods: {
     //获取订单内可退货订单行
     getGoodsGroup() {
-      wx.showLoading();
+      wx.showLoading({
+        title: '加载中'
+      });
       let params = {
         orderId: this.orderInfo.orderVo.id,
         applylines: this.goodsList
