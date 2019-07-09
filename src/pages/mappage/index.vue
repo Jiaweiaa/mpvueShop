@@ -113,6 +113,8 @@
         });
         myAmapFun.getRegeo({
           success: (data) =>{
+            let str = data[0].regeocodeData.addressComponent.province + data[0].regeocodeData.addressComponent.city + data[0].regeocodeData.addressComponent.district;
+            wx.setStorageSync('address', str);
             //成功回调
             this.cusLongitude = data[0].longitude + '';
             this.cusLatitude = data[0].latitude + '';
@@ -143,14 +145,12 @@
         });
       },
       getData() {
-        
         let params = {
           cusLongitude: this.cusLongitude,
           cusLatitude: this.cusLatitude,
           pageSize: 5,
           pageNum: this.pageNum
         }
-        console.log(params,'000');
         wx.showLoading({
           title: '加载中',
         })
@@ -171,7 +171,6 @@
           wx.hideLoading()
         }).catch(e => {
           wx.hideLoading()
-          console.log(e, 333)
         })
       },
       lower() {
