@@ -323,27 +323,7 @@ export default {
         SKUResult: {},
         nowPrice: "--",
 
-<<<<<<< HEAD
-        wx.getShareInfo({
-          shareTicket: res.shareTickets[0],
-          success: res => {
-            that.setData({
-              isShow: true
-            });
-            console.log(that.setData.isShow);
-          },
-          fail: function(res) {
-            console.log(res);
-          },
-          complete: function(res) {
-            console.log(res);
-          }
-        });
-      },
-      fail: function(res) {
-        // 分享失败
-        console.log(res);
-      }
+       
     };
   },
   components: {
@@ -365,11 +345,6 @@ export default {
           }
         })
         .catch(err => {});
-=======
-        quantityData: [],
-        goodsList: []
-      };
->>>>>>> 26124294ea789d73fda8cca230a05f34f19d8111
     },
     //商品转发
     onShareAppMessage() {
@@ -516,7 +491,6 @@ export default {
             }
           }
         }
-<<<<<<< HEAD
       }
     },
     async collect() {
@@ -562,17 +536,8 @@ export default {
           this.quantList = JSON.parse(res.data.result.skuJson);
           this.quantList.map(v => {
             v.properties = JSON.parse(v.properties).toString();
-=======
-      },
-      async collect() {
-        if (toLogin()) {
-          this.collectFlag = !this.collectFlag;
-          const data = await post("/collect/addcollect", {
-            openId: this.userInfo.openId,
-            goodsId: this.goodsId
->>>>>>> 26124294ea789d73fda8cca230a05f34f19d8111
           });
-        }
+        })
       },
       //去购物车
       toCart() {
@@ -904,11 +869,10 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-	@import url("~mpvue-wxparse/src/wxParse.css");
-	@import "./style.scss";
+@import url("~mpvue-wxparse/src/wxParse.css");
+@import "./style.scss";
 </style>
 <style>
-<<<<<<< HEAD
 .goods {
   margin-bottom: 100rpx;
   padding-bottom: 1rpx;
@@ -967,51 +931,4 @@ export default {
   height: 70rpx;
   border-radius: 50%;
 }
-=======
-	.goods{
-		margin-bottom: 100rpx;
-		padding-bottom: 1rpx;
-	}
-	.goods .sku {
-		height: 25px;
-		line-height: 25px;
-		overflow: hidden;
-		border: 1px solid #ccc;
-		width: auto;
-		padding: 0px 20px;
-		float: left;
-		font-size: 13px;
-		border-radius: 20px;
-		margin-right: 10px;
-		margin-top: 10px;
-	}
-	.notClick {
-		background: #999999;
-		color: white;
-	}
-	#goodsinfo .tabContent {
-		overflow: hidden;
-		padding: 10px;
-	}
-	
-	#goodsinfo .tabContent .active {
-		background: red;
-		color: white;
-	}
-	.goods .van-stepper {
-		width: 200px !important;
-		margin: 30px !important;
-	}
-	.record .label{
-		flex-grow: 1;
-	}
-	.record .item{
-		float:right;color:#999;
-		font-size: 28rpx;
-	}
-	.record .item span{
-		font-size: 30rpx;
-		color: #d8001a;
-	}
->>>>>>> 26124294ea789d73fda8cca230a05f34f19d8111
 </style>
