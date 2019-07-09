@@ -64,6 +64,11 @@
         btnLoading: false
       };
     },
+    onShow() {
+      if(wx.getStorageSync('address')) {
+        this.teamForm.city = wx.getStorageSync('address');
+      }
+    },
     components: {},
     methods: {
 

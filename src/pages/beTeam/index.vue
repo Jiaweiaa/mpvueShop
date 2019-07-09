@@ -51,6 +51,7 @@
     saveOrEditCaptain
   } from '../../api/beTeam'
   import Toast from '../../../static/vant/toast/toast';
+  import amapFile from "../../utils/amap-wx";
   
   export default {
     data() {
@@ -71,6 +72,11 @@
       };
     },
     components: {},
+	  onShow() {
+      if(wx.getStorageSync('address')) {
+        this.teamForm.city = wx.getStorageSync('address');
+      }
+	  },
     methods: {
       getMap(){
         wx.getLocation({
