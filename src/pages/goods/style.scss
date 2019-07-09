@@ -101,9 +101,8 @@
       }
     }
   }
-
   .section-nav {
-    height: 108rpx;
+    min-height: 108rpx;
     background: #fff;
     margin: 0 20rpx;
     margin-bottom: 20rpx;
@@ -112,12 +111,30 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     div:nth-child(2) {
       width: 52rpx;
       height: 52rpx;
       background: url("../../../static/images/address_right.png") no-repeat;
       background-size: 100% 100%;
+    }
+  }
+  .record {
+    min-height: 108rpx;
+    background: #fff;
+    margin: 0 20rpx;
+    margin-bottom: 20rpx;
+    border-radius: 20rpx;
+    padding: 0 20rpx;
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      div:nth-child(2) {
+        width: 52rpx;
+        height: 52rpx;
+        background: url("../../../static/images/address_right.png") no-repeat;
+        background-size: 100% 100%;
+      }
     }
   }
 

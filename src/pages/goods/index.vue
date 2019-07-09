@@ -36,16 +36,26 @@
       <div>请选择规格数量</div>
       <div></div>
     </div>
-    <div>
-      <div class="section-nav record">
-        <div  class="label">购买记录 
-          <p class="item">已有<span>69</span>人购买,商品共销售<span>76</span>份</p>
+    <div v-if="recordList.length>0">
+      <div class="record" @click="toRecord">
+        <div class="header">
+          <div class="label">
+            购买记录
+            <p class="item">
+              已有
+              <span>{{buyerNum}}</span>人购买,商品共销售
+              <span>{{buyCount}}</span>份
+            </p>
+          </div>
+          <div></div>
         </div>
-        <div></div>
-      </div>
-      <div class="img_group">
-        <div class="img_item">
-
+        <div class="img_group">
+          <div class="img_item" v-for="(item,index) in recordList" :key="index">
+            <img :src="item.avatar" />
+          </div>
+          <!-- <div class="img_item">
+            <img :src="item.avatar" />
+          </div>-->
         </div>
       </div>
     </div>
@@ -60,7 +70,6 @@
     <div v-if="goods_desc" class="detail">
       <wxParse :content="goods_desc" />
     </div>
-   
 
     <!-- sku -->
     <van-popup class="attr-pop" position="bottom" :show="showpop" @close="showType">
@@ -149,7 +158,7 @@
 
 <script>
 import { toLogin, login, getStorageOpenid } from "../../utils";
-import { getGoodsDetail } from "../../api/home";
+import { getGoodsDetail, itemPurchaseHistory } from "../../api/goods";
 import wxParse from "mpvue-wxparse";
 import {
   insertOrEditMemAddress,
@@ -174,6 +183,7 @@ export default {
     this.openId = getStorageOpenid();
     this.getCartGoodsNum();
     this.goodsDetail();
+    this.goodsRecord();
     if (wx.getStorageSync("userInfo")) {
       this.level = wx.getStorageSync("userInfo").level;
     }
@@ -203,62 +213,13 @@ export default {
       selectSkuData: null, //已选中的sku对象
       goodsNum: 1,
       quantity: "-",
-      keys: [
-        // {
-        //   name: "颜色",
-        //   isActive: true,
-        //   value: [
-        //     {
-        //       id: "24",
-        //       cname: "黄色",
-        //       isActiveC: false,
-        //       notClick: false
-        //     },
-        //     {
-        //       id: "25",
-        //       cname: "红色",
-        //       isActiveC: false,
-        //       notClick: false
-        //     }
-        //   ]
-        // },
-        // {
-        //   name: "属性",
-        //   isActive: false,
-        //   value: [
-        //     {
-        //       id: "12",
-        //       cname: "大",
-        //       isActiveC: false,
-        //       notClick: false
-        //     },
-        //     {
-        //       id: "13",
-        //       cname: "小",
-        //       isActiveC: false,
-        //       notClick: false
-        //     }
-        //   ]
-        // },
-        // {
-        //   name: "尺寸",
-        //   isActive: false,
-        //   value: [
-        //     {
-        //       id: "31",
-        //       cname: "长方形",
-        //       isActiveC: false,
-        //       notClick: false
-        //     },
-        //     {
-        //       id: "32",
-        //       cname: "圆形",
-        //       isActiveC: false,
-        //       notClick: false
-        //     }
-        //   ]
-        // }
-      ],
+      keys: [],
+      pageNum: 1,
+      pageSize: 19,
+      recordList: [], //购买记录列表
+      total: null, //数据总条数
+      buyCount: "", //总购买数
+      buyerNum: "", //购买总人数
       data: {
         // "24;12;31": {
         //   price: 366.0,
@@ -313,6 +274,12 @@ export default {
     wxParse
   },
   methods: {
+    //跳转商品购买记录页面
+    toRecord() {
+      wx.navigateTo({
+        url: "/pages/record/main?id=" + this.id
+      });
+    },
     //获取购物车中的商品数量
     getCartGoodsNum() {
       shoppingcartCount()
@@ -437,6 +404,21 @@ export default {
         url: "/pages/cart/main"
       });
     },
+    //获取商品购买记录
+    async goodsRecord() {
+      itemPurchaseHistory({ itemId: this.id })
+        .then(res => {
+          this.recordList = res.data.result.purchaseHistoryPage.records;
+          this.total = res.data.result.purchaseHistoryPage.total;
+          this.buyCount = "";
+          this.buyerNum = "";
+          this.buyCount = res.data.result.buyCount;
+          this.buyerNum = res.data.result.buyerNum;
+          console.log(res, "333");
+        })
+        .catch(err => {});
+    },
+    //获取商品详情
     async goodsDetail() {
       getGoodsDetail({
         itemId: this.id
@@ -765,7 +747,7 @@ export default {
 @import "./style.scss";
 </style>
 <style>
-.goods{
+.goods {
   margin-bottom: 100rpx;
   padding-bottom: 1rpx;
 }
@@ -799,15 +781,28 @@ export default {
   width: 200px !important;
   margin: 30px !important;
 }
-.record .label{
+.record .label {
   flex-grow: 1;
 }
-.record .item{
-  float:right;color:#999;
+.record .item {
+  float: right;
+  color: #999;
   font-size: 28rpx;
 }
-.record .item span{
+.record .item span {
   font-size: 30rpx;
   color: #d8001a;
+}
+.img_group {
+  display: flex;
+  flex-wrap: wrap;
+}
+.img_group .img_item {
+  padding: 0 10rpx;
+}
+.img_group .img_item img {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
 }
 </style>

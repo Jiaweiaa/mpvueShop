@@ -5,7 +5,7 @@ const app = new Vue(App)
 app.$mount()
 export default {
   config: {
-    navigationBarTitleText: '积分管理',
+    navigationBarTitleText: '联盟券管理',
     "usingComponents": {
       "van-icon": "/static/vant/icon/index",
       "van-popup": "/static/vant/popup/index",
