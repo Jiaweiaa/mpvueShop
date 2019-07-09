@@ -1,66 +1,37 @@
 <template>
-  <div class="goods">
-    <div class="swiper">
-      <swiper
-        class="swiper-container"
-        indicator-dots="true"
-        autoplay="true"
-        interval="3000"
-        duration="1000"
-      >
-        <block v-for="(item, index) in gallery " :key="index">
-          <swiper-item class="swiper-item">
-            <img :src="'http://qn.gaoshanmall.cn/'+item.picUrl" class="slide-image" />
-          </swiper-item>
-        </block>
-      </swiper>
-      <button class="share" hover-class="none" open-type="share" value>分享商品</button>
-    </div>
-    <div class="swiper-b">
-      <div class="item">30天无忧退货</div>
-      <div class="item">48小时快速退款</div>
-      <div class="item">满88元免邮费</div>
-    </div>
-    <div class="goods-info">
-      <div class="c">
-        <p>￥{{goodsInfo.salePrice}}</p>
+  <div class="goods" v-if="goodsInfo!=null">
+    <div class="goodsInfo">
+      <div class="picture">
+        <img src="http://yanxuan.nosdn.127.net/1541445967645114dd75f6b0edc4762d.png" alt />
+      </div>
+      <div class="desc">
         <p>{{goodsInfo.title}}</p>
-        <p>{{goodsInfo.sketch}}</p>
-
-        <!--<div v-if="brand.name" class="brand">-->
-        <!--<p>{{brand.name}}</p>-->
-        <!--</div>-->
+        <p>￥{{goodsInfo.salePrice}}</p>
       </div>
     </div>
-    <div @click="openSku('buyNow')" class="section-nav">
-      <div>请选择规格数量</div>
-      <div></div>
-    </div>
+
     <div>
-      <div class="section-nav record">
-        <div  class="label">购买记录 
-          <p class="item">已有<span>69</span>人购买,商品共销售<span>76</span>份</p>
+      <div class="record">
+        <div class="header">
+          <div class="label">
+            购买记录
+            <p class="item">
+              <span>{{buyerNum}}</span>人购买,商品共销售
+              <span>{{buyCount}}</span>份
+            </p>
+          </div>
+          <div></div>
         </div>
-        <div></div>
-      </div>
-      <div class="img_group">
-        <div class="img_item">
-
+        <div class="img_group">
+          <div class="img_item" v-for="(item,index) in recordList" :key="index">
+            <img :src="item.avatar" />
+            <p class="user">{{item.memberName}}</p>
+            <p class="num">购买了{{item.quantity}}份</p>
+            <p class="time">{{item.createTime}}</p>
+          </div>
         </div>
       </div>
     </div>
-
-    <div v-if="attribute.length!=0" class="attribute">
-      <div class="head">商品参数</div>
-      <div v-for="(item,index) in attribute" :key="index" class="item">
-        <div>{{item.name}}</div>
-        <div>{{item.value}}</div>
-      </div>
-    </div>
-    <div v-if="goods_desc" class="detail">
-      <wxParse :content="goods_desc" />
-    </div>
-   
 
     <!-- sku -->
     <van-popup class="attr-pop" position="bottom" :show="showpop" @close="showType">
@@ -76,19 +47,7 @@
         </div>
         <div @click="showType" class="close">X</div>
       </div>
-      <!-- <div style="display:block;min-width:50px;min-height:50px;">
-        <div style="float:left;">
-          <img
-            v-if="gallery.length>0"
-            style="width:50px;height:50px;"
-            :src="'http://qn.gaoshanmall.cn/'+gallery[0].picUrl"
-          >
-        </div>
-        <div style="float:right;">
-          <h3>{{goodsInfo.title}}</h3>
-          <span>{{nowPrice}}</span>
-        </div>
-      </div>-->
+
       <div id="goodsinfo">
         <div v-for="(item,index) in keys" :key="index">
           <div class="tabContent">
@@ -127,6 +86,11 @@
     </van-popup>
 
     <div class="bottom-fixed">
+      <div>
+        <div class="car">
+          <img src="/static/images/ic_menu_choice_nor.png" />
+        </div>
+      </div>
       <div @click="collect">
         <div class="collect" :class="[collectFlag ? 'active' :'']"></div>
       </div>
@@ -144,7 +108,7 @@
 
 <script>
 import { toLogin, login, getStorageOpenid } from "../../utils";
-import { getGoodsDetail } from "../../api/home";
+import { getGoodsDetail, itemPurchaseHistory } from "../../api/goods";
 import wxParse from "mpvue-wxparse";
 import {
   insertOrEditMemAddress,
@@ -169,8 +133,35 @@ export default {
     this.openId = getStorageOpenid();
     this.getCartGoodsNum();
     this.goodsDetail();
+    this.goodsRecord();
     if (wx.getStorageSync("userInfo")) {
       this.level = wx.getStorageSync("userInfo").level;
+    }
+  },
+  onReachBottom() {
+    // 下拉触底，先判断是否有请求正在进行中
+    // 以及检查当前请求页数是不是小于数据总页数，如符合条件，则发送请求
+    if (this.recordList.length < this.total) {
+      console.log(this.total);
+      this.pageNum += 1;
+      itemPurchaseHistory({
+        itemId: this.id,
+        pageNum: this.pageNum,
+        pageSize: this.pageSize
+      })
+        .then(res => {
+          this.recordList = this.recordList.concat(
+            res.data.result.purchaseHistoryPage.records
+          );
+          this.total = res.data.result.purchaseHistoryPage.total;
+        })
+        .catch(err => {});
+    } else {
+      wx.showToast({
+        title: "没有更多了",
+        icon: "none",
+        duration: 2000
+      });
     }
   },
   data() {
@@ -183,7 +174,7 @@ export default {
       number: 0,
       showpop: false,
       gallery: [],
-      goodsInfo: {}, //商品数据
+      goodsInfo: null, //商品数据
       brand: {},
       attribute: [],
       issueList: [],
@@ -198,62 +189,13 @@ export default {
       selectSkuData: null, //已选中的sku对象
       goodsNum: 1,
       quantity: "-",
-      keys: [
-        // {
-        //   name: "颜色",
-        //   isActive: true,
-        //   value: [
-        //     {
-        //       id: "24",
-        //       cname: "黄色",
-        //       isActiveC: false,
-        //       notClick: false
-        //     },
-        //     {
-        //       id: "25",
-        //       cname: "红色",
-        //       isActiveC: false,
-        //       notClick: false
-        //     }
-        //   ]
-        // },
-        // {
-        //   name: "属性",
-        //   isActive: false,
-        //   value: [
-        //     {
-        //       id: "12",
-        //       cname: "大",
-        //       isActiveC: false,
-        //       notClick: false
-        //     },
-        //     {
-        //       id: "13",
-        //       cname: "小",
-        //       isActiveC: false,
-        //       notClick: false
-        //     }
-        //   ]
-        // },
-        // {
-        //   name: "尺寸",
-        //   isActive: false,
-        //   value: [
-        //     {
-        //       id: "31",
-        //       cname: "长方形",
-        //       isActiveC: false,
-        //       notClick: false
-        //     },
-        //     {
-        //       id: "32",
-        //       cname: "圆形",
-        //       isActiveC: false,
-        //       notClick: false
-        //     }
-        //   ]
-        // }
-      ],
+      keys: [],
+      pageNum: 1,
+      pageSize: 19,
+      recordList: [], //购买记录列表
+      total: null,
+      buyCount: "", //总购买数
+      buyerNum: "", //购买总人数
       data: {
         // "24;12;31": {
         //   price: 366.0,
@@ -374,7 +316,7 @@ export default {
               let model = JSON.stringify(params);
               wx.setStorageSync("orderParams", model);
               wx.setStorageSync("orderFrom", "goodsDetail");
-              wx.navigateTo({
+              wx.redirectTo({
                 url: "/pages/order/main"
               });
             } else {
@@ -432,6 +374,23 @@ export default {
         url: "/pages/cart/main"
       });
     },
+    //获取商品购买记录
+    async goodsRecord() {
+      itemPurchaseHistory({
+        itemId: this.id,
+        pageNum: this.pageNum,
+        pageSize: this.pageSize
+      })
+        .then(res => {
+          this.recordList = res.data.result.purchaseHistoryPage.records;
+          this.total = res.data.result.purchaseHistoryPage.total;
+          this.buyCount = res.data.result.buyCount;
+          this.buyerNum = res.data.result.buyerNum;
+          console.log(res, "333");
+        })
+        .catch(err => {});
+    },
+    //获取商品详情
     async goodsDetail() {
       getGoodsDetail({
         itemId: this.id
@@ -760,7 +719,7 @@ export default {
 @import "./style.scss";
 </style>
 <style>
-.goods{
+.goods {
   margin-bottom: 100rpx;
   padding-bottom: 1rpx;
 }
@@ -794,15 +753,59 @@ export default {
   width: 200px !important;
   margin: 30px !important;
 }
-.record .label{
+.goodsInfo {
+  display: flex;
+  border-radius: 20rpx;
+  width: 90%;
+  margin: 20rpx auto;
+}
+.goodsInfo .picture {
+  width: 150rpx;
+  height: 150rpx;
+}
+.goodsInfo .picture img {
+  width: 150rpx;
+  height: 150rpx;
+}
+.record .label {
   flex-grow: 1;
 }
-.record .item{
-  float:right;color:#999;
+.record .item {
+  float: right;
+  color: #999;
   font-size: 28rpx;
 }
-.record .item span{
+.record .item span {
   font-size: 30rpx;
   color: #d8001a;
+}
+
+.img_group .img_item {
+  display: flex;
+  height: 160rpx;
+  align-items: center;
+  padding: 0 10rpx;
+  border-top: 1rpx solid #999;
+}
+.img_group .img_item img {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+}
+.img_group .img_item .user {
+  font-size: 38rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 160rpx;
+}
+.img_group .img_item .num {
+  width: 160rpx;
+}
+.img_group .img_item .time {
+  flex-grow: 1;
+  text-align: right;
+  color: #999;
+  font-size: 24rpx;
 }
 </style>

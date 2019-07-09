@@ -1,7 +1,7 @@
 <template>
   <div class="login" v-if="signFlag">
     <div class="logo">
-      我是品牌Logo
+      <img src="/static/images/baituan_logo.jpeg" alt="">
     </div>
     <van-cell-group>
       <van-field

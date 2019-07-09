@@ -307,11 +307,7 @@ export default {
             "title",
             this.detailData.displayOrderStatusTips
           );
-          this.$set(
-            this.detailData,
-            "orCode",
-            this.detailData.orcode
-          );
+          this.$set(this.detailData, "orCode", this.detailData.orcode);
 
           this.detailData.eventList.map(event => {
             switch (event) {
