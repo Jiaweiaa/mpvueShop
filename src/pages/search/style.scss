@@ -163,9 +163,10 @@
       display: flex;
       flex-wrap: wrap;
       div {
-        padding: 10rpx 10rpx;
-        border: 1rpx solid #999;
+        padding: 10rpx 20px;
         margin: 0 30rpx 20rpx 0;
+        background: #eee;
+        border-radius: 15px;
       }
       .active {
         border: 1rpx solid #b4282d;
