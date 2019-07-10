@@ -175,12 +175,15 @@ import {
   orderconfirm
 } from "../../api/shoppingcart";
 export default {
-  onShow() {
+  onLoad() {
     //判断是否登录获取用户信息
     if (login()) {
       this.userInfo = login();
     }
-
+    wx.showLoading({
+      title: "加载中",
+      mask:true
+    });
     this.id = this.$root.$mp.query.id;
 
     this.openId = getStorageOpenid();
@@ -190,6 +193,7 @@ export default {
     if (wx.getStorageSync("userInfo")) {
       this.level = wx.getStorageSync("userInfo").level;
     }
+   
   },
   data() {
     return {
@@ -255,7 +259,6 @@ export default {
         path: "/pages/goods/main?id=" + that.id, // 相对的路径
         success: res => {
           // 成功后要做的事情
-          console.log(res.shareTickets[0]);
           // console.log
 
           wx.getShareInfo({
@@ -264,7 +267,6 @@ export default {
               that.setData({
                 isShow: true
               });
-              console.log(that.setData.isShow);
             },
             fail: function(res) {
               console.log(res);
@@ -283,7 +285,6 @@ export default {
     // 加商品
     plusGoodsNum() {
       if (this.selectSkuData != null) {
-        //  console.log(this.selectSkuData);
         if (this.goodsNum > this.selectSkuData.quantity) {
           this.goodsNum--;
         } else {
@@ -310,6 +311,9 @@ export default {
     },
     //打开SKU
     async openSku(data) {
+      this.keys.map(v => {
+        v.value[0].isActiveC = false;
+      })
       this.selectSkuData = null;
       if (data) {
         this.flag = data;
@@ -358,7 +362,6 @@ export default {
               };
               params.skuIdArray.push(this.selectSkuData.id);
               params.skuQtyArray.push(this.goodsNum);
-              // console.log(params);
               addShoppingcart(params)
                 .then(res => {
                   wx.showToast({ title: res.data.message });
@@ -421,12 +424,12 @@ export default {
       })
         .then(res => {
           if (res.data.code == "200") {
+            wx.hideLoading();
             this.keys = [];
             const data = res.data.result;
             this.goods_desc = data.item.itemChannel.description; //详情描述富文本
             this.goodsList = data.item.pdpPropertiesCommands;
             this.quantityData = JSON.parse(data.skuJson); //SKU信息
-            console.log(this.quantityData, "555");
             this.quantList = JSON.parse(res.data.result.skuJson);
             this.quantList.map(v => {
               v.properties = JSON.parse(v.properties).toString();
@@ -460,7 +463,6 @@ export default {
               array.map(vv => {
                 str += vv + ";";
               });
-              console.log(v);
               if (v.quantity > 0) {
                 this.data[str.substring(0, str.length - 1)] = {
                   price: v.salePrice,
@@ -469,7 +471,6 @@ export default {
               }
             });
             this.queryDGoodsById();
-            console.log(this.data, 5656);
           } else {
             wx.showToast({
               icon: "none",
@@ -483,7 +484,6 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err,'567');
           wx.showToast({
             icon: "none",
             title: '网络错误'
@@ -749,7 +749,6 @@ export default {
       }
       this.quantList.map(v => {
         if (v.properties == haveChangedId) {
-          //  console.log(v, 1)
           this.selectSkuData = v;
           this.quantity = this.selectSkuData.quantity;
         }

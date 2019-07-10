@@ -45,7 +45,7 @@
 	    推送什么的
     -->
     <div v-if="listData <= 0 " class="helpSearch">
-      <div class="history" v-if="historyData.length!=0">
+      <div class="history" v-if="historyData.length > 0">
         <div class="t">
           <div>历史记录</div>
           <div @click="clearHistory"></div>
@@ -214,7 +214,7 @@ import {
 } from "../../api/category/index";
 
 export default {
-  onShow() {
+  onLoad() {
     this.openid = wx.getStorageSync("openid") || "";
     this.getHotData();
     this.getHistory();
@@ -299,10 +299,9 @@ export default {
   },
   methods: {
     // 获取历史记录
-    getHistory() {
-      findHistorySearch().then(res => {
-        this.historyData = res.data.result;
-      });
+    async getHistory() {
+     let data = await findHistorySearch();
+     this.historyData =data.data.result;
     },
 
     //关闭筛选遮罩层

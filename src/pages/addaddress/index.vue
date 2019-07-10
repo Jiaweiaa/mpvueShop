@@ -8,7 +8,7 @@
     </div>
     <div class="item">
       <picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem">
-        <input type="text" disabled placeholder="身份、城市、区县" v-model="address">
+        <input type="text" disabled placeholder="省份、城市、区县" v-model="address">
       </picker>
     </div>
     <!-- <view class="section">
@@ -40,8 +40,6 @@
 
 <script>
 import {
-  get,
-  post,
   getStorageOpenid
 } from "../../utils";
 import Notify from '../../../static/vant/notify/notify';
@@ -49,7 +47,6 @@ import {
   insertOrEditMemAddress
 } from '../../api/address/index'
 export default {
-  created() { },
   mounted() {
     // 一键导入功能
     this.openId = getStorageOpenid();
@@ -63,6 +60,9 @@ export default {
     
     if (this.$root.$mp.query.edit) {
       this.getDetail();
+      wx.setNavigationBarTitle({
+        title: '修改地址',
+      });
     }
   },
   data() {
