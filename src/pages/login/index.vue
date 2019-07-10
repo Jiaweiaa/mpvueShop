@@ -88,8 +88,8 @@ export default {
                 } else if (res.data.code == "200") {
                   wx.setStorageSync("userInfo", res.data.result.memberLoginVo);
                   wx.setStorageSync(
-                    "shopToken",
-                    res.data.result.token.access_token
+                    "tokenInfo",
+                    res.data.result.token
                   );
                   wx.navigateBack({
                     delta: 1
@@ -125,7 +125,7 @@ export default {
               wx.hideLoading();
               if (res.data.code == "200") {
                 wx.setStorageSync("userInfo", res.data.result.memberLoginVo);
-                wx.setStorageSync("shopToken", res.data.result.token.access_token);
+                wx.setStorageSync("tokenInfo", res.data.result.token);
                 wx.navigateBack({
                   delta: 1
                 });

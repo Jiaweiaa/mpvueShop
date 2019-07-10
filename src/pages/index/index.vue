@@ -99,11 +99,15 @@ export default {
     //刷新完成后关闭
     wx.stopPullDownRefresh();
   },
+  mounted(){
+    this.getCityName();
+    this.getData();
+  },
   onShow() {
-    this.brandList = [];
-    this.newGoods = [];
-    this.hotGoods = [];
-    this.newCategoryList = [];
+    // this.brandList = [];
+    // this.newGoods = [];
+    // this.hotGoods = [];
+    // this.newCategoryList = [];
     this.getCartGoodsNum();
     if (wx.getStorageSync("data")) {
       this.captainInfo = Object.assign({}, wx.getStorageSync("data"));
@@ -112,7 +116,7 @@ export default {
         url: "/pages/mappage/main"
       });
     }
-    this.getData();
+    
   },
   onShareAppMessage(res) {
     console.log(res);
@@ -120,12 +124,7 @@ export default {
   computed: {
     ...mapState(["cityName"])
   },
-  mounted() {
-    //  wx.navigateTo({
-    //     url: "/pages/login/main"
-    //   });
-    this.getCityName();
-  },
+  
   data() {
     return {
       banner: [],

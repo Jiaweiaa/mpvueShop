@@ -74,7 +74,7 @@ export default {
     "window": {
       "backgroundTextStyle": "light",
       "navigationBarBackgroundColor": "#fff",
-      "navigationBarTitleText": "时刻益每家团购",
+      "navigationBarTitleText": "百团联盟商城",
       "navigationBarTextStyle": "black"
     },
     "tabBar": {

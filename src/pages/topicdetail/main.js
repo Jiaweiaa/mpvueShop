@@ -5,7 +5,7 @@ const app = new Vue(App)
 app.$mount()
 export default {
   config: {
-    navigationBarTitleText: "首页",
+    navigationBarTitleText: "专题",
     enablePullDownRefresh: true,
   }
 };

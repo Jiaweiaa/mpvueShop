@@ -47,7 +47,7 @@
       </div>
     </div>
     <van-radio-group class="radioStyle" :value="payRadio" @change="typeChange">
-      <!-- <van-radio :disabled="scoreAmount <= 0" name="12">联盟券支付(余额&nbsp;{{scoreAmount}})</van-radio> -->
+      <van-radio :disabled="scoreAmount <= 0" name="12">联盟券支付(余额&nbsp;{{scoreAmount}})</van-radio>
       <van-radio name="4">微信支付</van-radio>
     </van-radio-group>
     <div class="cartlist">
@@ -62,7 +62,7 @@
         </van-cell>
         <!-- 购物车中所选的该店铺商品 -->
         <div v-for="(item,key) in group.shoppingCartLineDtos" :key="key">
-          <van-swipe-cell :right-width="65">
+          
             <van-cell>
               <div style="display:flex;">
                 <van-card
@@ -75,7 +75,7 @@
                 ></van-card>
               </div>
             </van-cell>
-          </van-swipe-cell>
+          
         </div>
       </div>
     </div>
@@ -205,7 +205,7 @@ export default {
       ],
       //  联盟券
       scoreAmount: 0,
-      payRadio: "4",
+      payRadio: "12",
 
       addressId: "",
       openId: "",

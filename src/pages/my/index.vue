@@ -247,12 +247,12 @@ export default {
           title: "地址管理",
           icon: "home-o",
           url: "/pages/address/main"
-        }
-        // {
-        //   title: "百团联盟券",
-        //   icon: "after-sale",
-        //   url: "/pages/integral/main"
-        // },
+        },
+        {
+          title: "百团联盟券",
+          icon: "after-sale",
+          url: "/pages/integral/main"
+        },
       ],
       moreService: [
         {

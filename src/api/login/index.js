@@ -26,6 +26,17 @@ export const littleAppRegister = params => {
     body: params
   });
 };
+//刷新token接口
+export const refreshToken = params => {
+  return fly.request({
+    url: "basic/auth/user/refreshToken",
+    method: "post",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: params
+  });
+};
 //解密手机号
 export const getPhoneNumber = params => {
   let data = querystring.encode(params);

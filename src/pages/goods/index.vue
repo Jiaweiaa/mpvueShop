@@ -483,6 +483,7 @@ export default {
           }
         })
         .catch(err => {
+          console.log(err,'567');
           wx.showToast({
             icon: "none",
             title: '网络错误'

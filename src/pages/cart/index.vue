@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { get, post, login, getStorageOpenid } from "../../utils";
+import { get, post, login, getStorageOpenid,numMulti } from "../../utils";
 import {
   shoppingCartList,
   addShoppingcart,
@@ -350,7 +350,7 @@ export default {
         this.shopList.map(v => {
           v.shoppingCartLineDtos.map(vv => {
             if (vv.checked) {
-              tatol += vv.quantity * vv.salePrice;
+              tatol += numMulti(vv.quantity,vv.salePrice);
             }
           });
         });

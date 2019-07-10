@@ -144,7 +144,7 @@
           v-if="detailData.orderVo.totalSalesPrice!=null"
         >总价:￥{{detailData.orderVo.totalSalesPrice}} 优惠:￥{{detailData.orderVo.discount}}</p>
         <p class="p2">
-          共1件商品,待付
+          共1件商品,合计
           <span>￥{{detailData.orderVo.totalActure}}</span>
         </p>
       </div>
@@ -183,9 +183,9 @@
                 </p>
                 <p>
                   <span style="font-size:23rpx;">￥{{goods.salePrice}}</span>
-                  <span
+                  <!-- <span
                     style="text-decoration:line-through;color:#999;font-size:22rpx;"
-                  >￥{{goods.listPrice}}</span>
+                  >￥{{goods.listPrice}}</span> -->
                 </p>
               </div>
               <div class="goods-num">
