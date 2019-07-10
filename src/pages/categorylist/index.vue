@@ -35,7 +35,7 @@
     </div>
     <div class="list" v-if="goodsList.length!=0">
       <van-card
-        :thumb-link="'/pages/goods/main?id='+item.id"
+       
         :tag="item.tag"
         :lazy-load="true"
         :price="item.listPrice"

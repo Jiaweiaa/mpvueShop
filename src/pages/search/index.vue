@@ -93,7 +93,7 @@
       </div>
       <div class="goodsList">
         <van-card
-          :thumb-link="'/pages/goods/main?id='+item.id"
+         
           :tag="item.tag"
           :lazy-load="true"
           :price="item.listPrice"

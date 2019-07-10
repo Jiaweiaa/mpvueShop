@@ -139,7 +139,7 @@
     </van-popup>
 
     <div class="bottom-fixed">
-      <div>
+      <div @click="toIndex()">
         <div class="car">
           <img src="/static/images/ic_menu_choice_nor.png" />
         </div>
@@ -175,7 +175,7 @@ import {
   orderconfirm
 } from "../../api/shoppingcart";
 export default {
-  onLoad() {
+  onReady() {
     //判断是否登录获取用户信息
     if (login()) {
       this.userInfo = login();
@@ -185,7 +185,6 @@ export default {
       mask:true
     });
     this.id = this.$root.$mp.query.id;
-
     this.openId = getStorageOpenid();
     this.getCartGoodsNum();
     this.goodsDetail();
@@ -235,6 +234,12 @@ export default {
     wxParse
   },
   methods: {
+    //跳转到首页
+    toIndex(){
+      wx.switchTab({
+        url: "/pages/index/main" 
+      });
+    },
     //跳转商品购买记录页面
     toRecord() {
       wx.navigateTo({
@@ -436,6 +441,7 @@ export default {
             });
             this.gallery = data.item.itemImages;
             this.goodsInfo = data.item;
+            console.log(this.goodsInfo,'999');
             // 商品数据渲染
             this.goodsList.map(v => {
               let data = {

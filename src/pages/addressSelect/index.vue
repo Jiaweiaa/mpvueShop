@@ -1,6 +1,5 @@
 <template>
   <div class="address">
-
     <scroll-view scroll-y="true" class="addcont" style="height: 100%;">
       <!-- <div class="addcont"> -->
       <div v-if="listData.length!=0" class="item">
@@ -8,19 +7,15 @@
           <div class="addresslist" :style="item.textStyle">
             <div>
               <span>{{item.firstName}}</span>
-              <div v-if="item.defalutFlag" class="moren">
-                默认
-              </div>
+              <div v-if="item.defalutFlag" class="moren">默认</div>
             </div>
             <div @click="selAddress(item.id)" class="info">
               <p>{{item.mobile}}</p>
               <p>{{item.dizhi}}</p>
             </div>
-            <div @click="toDetail(item.id)"></div>
-
+            <div @click="toDetail(item)"></div>
           </div>
         </div>
-
       </div>
 
       <div v-else class="center">
@@ -36,7 +31,7 @@
 
 <script>
 import { get, getStorageOpenid } from "../../utils";
-import { getMemAddressList, setDefaultAddress } from '../../api/address';
+import { getMemAddressList, setDefaultAddress } from "../../api/address";
 
 export default {
   onShow() {
@@ -59,33 +54,48 @@ export default {
         delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
       });
     },
-    toDetail(id) {
-      console.log(id);
+    toDetail(item) {
+      // console.log(id);
+      wx.setStorageSync("address", item);
       wx.navigateTo({
-        url: "/pages/addaddress/main?id=" + id
+        url: "/pages/addaddress/main?edit=true"
       });
     },
     async getAddressList() {
-     getMemAddressList().then(res => {
+      wx.showLoading({
+        title: "加载中",
+        mask: true
+      });
+      getMemAddressList()
+        .then(res => {
           if (res.data.code == 200) {
             this.showFlag = false;
             this.listData = res.data.result;
-            this.listData.map((v) => {
-              this.$set(
-                v,
-                "dizhi",
-                v.province +v.city +v.town +v.address  
-              );
-            })
-            for (let i = 0; i < this.list.length; i++) {
-              this.listData[i].name = this.list[i].firstName;
-              this.listData[i].tel = this.list[i].mobile;
-              if(this.listData[i].defalutFlag == true) {
+            this.listData.map(v => {
+              this.$set(v, "dizhi", v.province + v.city + v.town + v.address);
+            });
+            for (let i = 0; i < this.listData.length; i++) {
+              this.listData[i].name = this.listData[i].firstName;
+              this.listData[i].tel = this.listData[i].mobile;
+              if (this.listData[i].defalutFlag == true) {
                 this.chosenAddressId = this.listData[i].id;
               }
             }
           }
+          wx.hideLoading();
         })
+        .catch(err => {
+          wx.hideLoading();
+          wx.showToast({
+            title: "网络错误",
+            icon: "none"
+          });
+          setTimeout(() => {
+            wx.navigateBack({
+              delta: 1
+            });
+          }, 1500);
+        });
     },
     wxaddress(index) {
       if (index == 1) {

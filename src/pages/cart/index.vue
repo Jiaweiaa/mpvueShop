@@ -16,7 +16,7 @@
               @click="storeChange(group)"
               :class="[ group.storeAllCheck==true ? 'active' : '',{active:allCheck}]"
             ></div>
-            <van-icon name="shop-o"/>
+            <van-icon name="shop-o" />
             <span>{{group.storeInfoVo.name}}</span>
           </div>
         </van-cell>
@@ -34,8 +34,8 @@
                     ></div>
                   </div>
                   <van-card
-	                  custom-class="cardStyle"
-	                  style="width: 100%;"
+                    custom-class="cardStyle"
+                    style="width: 100%;"
                     :num="item.quantity"
                     :price="item.salePrice"
                     desc="描述信息"
@@ -71,7 +71,7 @@
       <img
         src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png"
         alt
-      >
+      />
       <p style="text-align:center;">购物车中空空如也,快点击我去购物吧!</p>
     </div>
 
@@ -90,7 +90,14 @@
 </template>
 
 <script>
-import { get, post, login, getStorageOpenid,numMulti } from "../../utils";
+import {
+  get,
+  post,
+  login,
+  getStorageOpenid,
+  accMul,
+  accAdd
+} from "../../utils";
 import {
   shoppingCartList,
   addShoppingcart,
@@ -174,23 +181,7 @@ export default {
           this.$toast("抛出异常");
         });
     },
-    // 删除商品
-    deletes() {
-      let id = [];
-      this.shopList.forEach(item => {
-        if (item.check) {
-          id.push(item.cid);
-          this.$dialog
-            .confirm({
-              title: "提示",
-              message: `确认删除商品吗?`
-            })
-            .then(() => {
-              this.deleteShop(id);
-            });
-        }
-      });
-    },
+
     // 提交订单
     goAccount() {
       let shoppingCartIds = [];
@@ -230,6 +221,14 @@ export default {
             delShoppingcart(params)
               .then(res => {
                 if (res.data.code == "200") {
+                  this.allCheck = false;
+                  this.shopList.map(v => {
+                    v.storeAllCheck = this.allCheck;
+                    v.shoppingCartLineDtos.map(vv => {
+                      // console.log(vv);
+                      vv.checked = this.allCheck;
+                    });
+                  });
                   this.getListData();
                 }
               })
@@ -243,7 +242,8 @@ export default {
     //获取购物车数据
     async getListData() {
       wx.showLoading({
-        title: '加载中'
+        title: "加载中",
+        mask:true
       });
       shoppingCartList()
         .then(res => {
@@ -345,17 +345,18 @@ export default {
   },
   computed: {
     totalPrice() {
-      let tatol = 0;
+      let total = 0;
       if (this.shopList) {
         this.shopList.map(v => {
           v.shoppingCartLineDtos.map(vv => {
             if (vv.checked) {
-              tatol += numMulti(vv.quantity,vv.salePrice);
+              // console.log(typeof(vv.quantity));
+              total = accAdd(total, accMul(vv.quantity, vv.salePrice));
             }
           });
         });
 
-        return tatol;
+        return total;
       }
 
       return 0;
@@ -364,29 +365,29 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-	@import "./style";
-	.deleteBtn {
-	  color: #fff !important;
-	  font-size: 15px;
-	  width: 65px;
-	  height: 100%;
-	  display: flex;
-	  flex-direction: column;
-	  justify-content: center;
-	  text-align: center;
-	  line-height: 44px;
-	  background-color: #f44;
-	}
-	.cartView {
-		.cardStyle {
-			background: #fff;
-		}
-	}
+@import "./style";
+.deleteBtn {
+  color: #fff !important;
+  font-size: 15px;
+  width: 65px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  line-height: 44px;
+  background-color: #f44;
+}
+.cartView {
+  .cardStyle {
+    background: #fff;
+  }
+}
 </style>
 <style lang="scss">
-	.van-card__bottom {
-		position: absolute;
-		left: -5px;
-		bottom: -25px;
-	}
+.van-card__bottom {
+  position: absolute;
+  left: -5px;
+  bottom: -25px;
+}
 </style>
