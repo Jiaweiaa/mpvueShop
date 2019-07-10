@@ -210,6 +210,7 @@ import {
   searchItem,
   getKeyword,
   setHistorySearch,
+  removeHistorySearch,
   findHistorySearch
 } from "../../api/category/index";
 
@@ -477,10 +478,8 @@ export default {
       this.getlistData();
     },
     async clearHistory() {
-      const data = await post("/search/clearhistoryAction", {
-        openId: this.openid
-      });
-      if (data) {
+      const data = await removeHistorySearch();
+      if(data.data.code == 200) {
         this.historyData = [];
       }
     },

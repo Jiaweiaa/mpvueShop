@@ -66,3 +66,16 @@ export const findHistorySearch = params => {
     body: data
   });
 };
+
+// 清除历史
+export const removeHistorySearch = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: "/product/mallIndex/removeHistorySearch",
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: data
+  });
+};
