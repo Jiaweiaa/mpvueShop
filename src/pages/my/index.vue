@@ -159,7 +159,7 @@ export default {
         .catch(err => {});
     }
     this.moreService = [""];
-    if (wx.getStorageSync("shopToken")) {
+    if (wx.getStorageSync("tokenInfo").access_token) {
       isCapOrSup().then(isRes => {
         wx.setStorageSync("isCap", isRes.data.result.isCap);
         wx.setStorageSync("isSup", isRes.data.result.isSup);
