@@ -188,7 +188,10 @@ export default {
       } else {
         this.loading = false;
       }
-      wx.hideLoading();
+      setTimeout(() => {
+          wx.hideLoading();
+      }, 350);
+      
     }
   },
 

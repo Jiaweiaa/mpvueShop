@@ -239,7 +239,9 @@ export default {
     // 支付状态改变
     typeChange(val) {
       this.payRadio = val.mp.detail;
-      if (this.scoreAmount <= 0) return;
+      if (this.scoreAmount <= 0){
+        return this.payRadio = "4"
+      } 
     },
 
     //获取收货地址列表
