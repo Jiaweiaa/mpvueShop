@@ -68,22 +68,27 @@
       </van-tab>
       <van-tab title="已发货">
         <div class="content">
+	        <van-panel custom-class="panelStyle">
+		        <view class="btnStyle" plain>
+			        <!--<van-icon size="13px"   custom-class="iconStyle" name="arrow-down" />-->
+			        <span @click.stop="showPopup(1)">{{startDate}}</span>
+			        &nbsp;一&nbsp;
+			        <span @click.stop="showPopup(2)">{{endDate}}</span>
+			        <van-icon
+					        v-if="startDate !== '开始时间' || endDate !== '结束时间'"
+					        @click.stop="clearTime"
+					        name="cross"
+					        color="#999"
+					        custom-class="iconStyle"
+			        />
+		        </view>
+	        </van-panel>
           <van-collapse :value="activeName" @change="onChange">
             <van-collapse-item name="1">
               <view slot="title">
-                <view class="btnStyle" plain>
-                  <!--<van-icon size="13px"   custom-class="iconStyle" name="arrow-down" />-->
-                  <span @click.stop="showPopup(1)">{{startDate}}</span>
-                  &nbsp;一&nbsp;
-                  <span @click.stop="showPopup(2)">{{endDate}}</span>
-                  <van-icon
-                    v-if="startDate !== '开始时间' || endDate !== '结束时间'"
-                    @click.stop="clearTime"
-                    name="cross"
-                    color="#999"
-                    custom-class="iconStyle"
-                  />
-                </view>
+	              <view slot="title">
+		              待发货总览
+	              </view>
               </view>
               <span style="font-size: 14px;margin-left: 5px;margin-bottom: 5px;">已发货总览</span>
               <van-card
@@ -206,14 +211,18 @@ export default {
     this.loading = true;
     if (this.orderList.length >= this.allCount) {
       this.loading = false;
-      wx.hideLoading();
+      setTimeout(() => {
+        wx.hideLoading();
+      }, 1000);
     } else {
       this.searchParams.pageNum++;
       findAllSupOrders(params).then(res => {
         this.orderList = this.orderList.concat(res.data.result.orders.records);
         this.loading = false;
         this.allCount = res.data.result.orders.total;
-        wx.hideLoading();
+        setTimeout(() => {
+          wx.hideLoading();
+        }, 1000);
       });
     }
   },
@@ -236,7 +245,9 @@ export default {
         this.orderList = res.data.result.orders.records;
         this.allCount = res.data.result.orders.total;
         wx.stopPullDownRefresh(); //停止下拉刷新
-        wx.hideLoading();
+        setTimeout(() => {
+          wx.hideLoading();
+        }, 1000);
         this.onLoadLoading = false;
       });
     },

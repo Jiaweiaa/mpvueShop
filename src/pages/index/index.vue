@@ -236,7 +236,6 @@ export default {
           goodsList: data.data.result.recommended
         });
       }
-
       setTimeout(() => {
         wx.hideLoading();
       }, 1000);

@@ -28,7 +28,7 @@ export default {
       }
     },
     pages: [
-      "pages/index/main",
+      "^pages/index/main",
       "pages/logisticsDetail/main", //物流详情页
       "pages/feedback/main",
       "pages/order/main",
@@ -70,7 +70,7 @@ export default {
       "pages/withdraw/main", //  提现
       "pages/integral/main", // 积分管理
       "pages/integralList/main", // 积分明细列表
-      "^pages/giver/main"
+      "pages/giver/main"
     ],
     window: {
       backgroundTextStyle: "light",
