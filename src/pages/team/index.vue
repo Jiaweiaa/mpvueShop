@@ -4,12 +4,27 @@
 
     <van-tabs tab-class="tabClass" :active="currentActive" @change="onChange">
       <van-search
-        :value="searchVal"
+        :value="searchParams.searchVal"
         placeholder="请输入手机号"
         show-action
         @search="onSearch"
         @cancel="onCancel"
       />
+	    <van-panel custom-class="panelStyle">
+		    <view class="btnStyle" plain>
+			    <!--<van-icon size="13px"   custom-class="iconStyle" name="arrow-down" />-->
+			    <span @click.stop="showPopup(1)">{{startDate}}</span>
+			    &nbsp;一&nbsp;
+			    <span @click.stop="showPopup(2)">{{endDate}}</span>
+			    <van-icon
+					    v-if="startDate !== '开始时间' || endDate !== '结束时间'"
+					    @click.stop="clearTime"
+					    name="cross"
+					    color="#999"
+					    custom-class="iconStyle"
+			    />
+		    </view>
+	    </van-panel>
       <noDataView v-if="(list.length <=0  && onLoadLoading == false)"></noDataView>
       <checkbox-group @change="onSelectChange">
         <van-tab
@@ -107,7 +122,18 @@
         </van-tab>
       </checkbox-group>
     </van-tabs>
-
+	
+	  <van-popup :show="popupShow" position="bottom" @close="onClose">
+		  <van-datetime-picker
+			  type="date"
+			  :value="currentDate"
+			  :min-date="minDate"
+			  :max-date="maxDate"
+			  @confirm="dateConfirm"
+			  @cancel="dateCancel"
+		  />
+	  </van-popup>
+	  
     <van-button
       v-if="getActive == 2"
       style="position: fixed; right: 30px; bottom: 30px;"
@@ -121,6 +147,7 @@
 
 <script>
 import { findAllCapOrders, writeOff } from "../../api/myOrder/index";
+import { formatTime } from "../../utils";
 import Dialog from "../../../static/vant/dialog/dialog";
 import noDataView from "../../components/noDataView/index";
 
@@ -246,34 +273,74 @@ export default {
   },
   data() {
     return {
+      popupShow: false,
+      minDate: "",
+      maxDate: new Date().getTime(),
+      currentDate: new Date().getTime(),
+      
       currentActive: 0,
       pageNum: 1,
       list: [],
-      searchVal: "",
+      searchParams: {
+        searchVal: "",
+        startTime: '',
+	      endTime: ''
+      },
+	    
       getActive: "3",
       allCount: "",
       loading: false,
       tabs: ["待发货", "待核销", "已核销"],
       resultCheck: [],
-      onLoadLoading: false
+      onLoadLoading: false,
+
+      startDate: "开始时间",
+      endDate: "结束时间"
     };
   },
   methods: {
+    // 时间选择
+    // 展示popup
+    showPopup(val) {
+      this.dateType = val;
+      this.popupShow = true;
+    },
+    // 关闭popup
+    onClose() {
+      this.popupShow = false;
+    },
+    // 确认选择时间
+    dateConfirm(val) {
+      if (this.dateType == 1) {
+        this.startDate = formatTime(val.mp.detail).year;
+        this.searchParams.startTime = formatTime(val.mp.detail).year;
+      } else {
+        this.endDate = formatTime(val.mp.detail).year;
+        this.searchParams.endTime = formatTime(val.mp.detail).year;
+      }
+      this.getOrderList();
+      this.onClose();
+    },
+    // 取消选择时间
+    dateCancel() {
+      this.onClose();
+    },
+
+
     //拨打电话
     call(mobile) {
       wx.makePhoneCall({
-        phoneNumber: mobile 
+        phoneNumber: mobile
       });
     },
     // 获取数据列表
     getOrderList() {
       this.pageNum = 1;
-      let params = {
+      let params = Object.assign( {
         pageNum: this.pageNum,
         pageSize: 5,
-        buyerMobile: this.searchVal,
         orderType: Number(this.getActive) + 1
-      };
+      }, this.searchParams);
       wx.showLoading({
         title: "加载中"
       });
@@ -436,10 +503,33 @@ export default {
             // on cancel
           });
       }
+    },
+    // 清除时间 默认获取两天前的
+    clearTime() {
+      this.startDate = "开始时间";
+      this.endDate = "结束时间";
+      let timeStamp = new Date(new Date());
+      // 获取时间戳 一天是86400 截取2天前的
+      let ageTimeStamp = timeStamp - 86400 * 2;
+      this.searchParams.startTime = "";
+      this.searchParams.endTime = "";
+      this.getOrderList();
     }
   }
 };
 </script>
 <style lang='scss'>
 @import "./style.scss";
+.btnStyle {
+	border: none;
+	color: #ab2b2b;
+	padding: 0 5px;
+	width: 80%;
+	.iconStyle {
+		margin-left: 10px;
+	}
+}
+.panelStyle {
+	padding: 10px 10px;
+}
 </style>

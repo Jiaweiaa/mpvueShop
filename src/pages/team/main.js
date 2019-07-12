@@ -16,7 +16,10 @@ export default {
       "van-dialog": "/static/vant/dialog/index",
       "van-loading": "/static/vant/loading/index",
       "van-search": "/static/vant/search/index",
-      "van-icon": "/static/vant/icon/index"
+      "van-icon": "/static/vant/icon/index",
+      "van-popup": "/static/vant/popup/index",
+      "van-panel": "/static/vant/panel/index",
+      "van-datetime-picker": "/static/vant/datetime-picker/index"
     }
   }
 }
