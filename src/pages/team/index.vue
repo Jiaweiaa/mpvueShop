@@ -19,12 +19,7 @@
           v-for="(itemTab, indexTab) in tabs"
         >
           <view class="section">
-            <div
-              v-for="(value,index) in list"
-              class="mapListView"
-              :key="index"
-              @click="detailOrder(value)"
-            >
+            <div v-for="(value,index) in list" class="mapListView" :key="index">
               <div class="top border-bottom" style="overflow: hidden;">
                 <checkbox
                   v-if="getActive == 2"
@@ -55,19 +50,18 @@
                   <view slot="footer"></view>
                 </van-card>
               </div>
-              <div
-                class="sketch"
-                v-if="value.shippingAddress!=null"
-              >
-              <van-icon name="manager" size="20rpx;" />
-              收货人:{{value.shippingAddress.firstName}}</div>
+              <div class="sketch" v-if="value.shippingAddress!=null">
+                <van-icon name="manager" size="20rpx;" />
+                收货人:{{value.shippingAddress.firstName}}
+              </div>
               <div
                 class="sketch"
                 v-if="value.shippingAddress!=null"
                 @click.stop="call(value.shippingAddress.mobile)"
               >
-              <van-icon name="phone" size="20rpx;" />
-              收货电话:{{value.shippingAddress.mobile}}</div>
+                <van-icon name="phone" size="20rpx;" />
+                收货电话:{{value.shippingAddress.mobile}}
+              </div>
               <div class="sketch" v-if="value.shippingAddress!=null">
                 <van-icon name="map-marked" size="20rpx;" />
                 收货地址:{{value.shippingAddress.province}}
@@ -262,7 +256,7 @@ export default {
     //拨打电话
     call(mobile) {
       wx.makePhoneCall({
-        phoneNumber: mobile 
+        phoneNumber: mobile
       });
     },
     // 获取数据列表
@@ -365,7 +359,7 @@ export default {
       let params = Object.assign({}, val);
       let model = JSON.stringify(params);
       wx.navigateTo({
-        url: "/pages/orderDetail/main?id=" + params.id
+        url: "/pages/orderDetail/main?id=" + params.id + "&&capationFlag=111"
       });
     },
 
@@ -393,11 +387,26 @@ export default {
         .then(() => {
           let data = [];
           data.push(valueData.code);
+
           writeOff({
             orderCodes: data
           }).then(res => {
-            console.log(res);
-            this.getOrderList();
+            if (res.data.code == 200) {
+              Dialog.alert({
+                message: res.data.result
+              }).then(() => {
+                // on close
+              });
+              this.getOrderList();
+              // });
+            } else {
+              Dialog.alert({
+                message: res.data.message
+              }).then(() => {
+                // on close
+              });
+            }
+           
           });
         })
         .catch(() => {

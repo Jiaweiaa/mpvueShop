@@ -76,6 +76,7 @@ import { myDetile } from "../../api/myTeam/index";
 import Notify from "../../../static/vant/notify/notify";
 import Dialog from "../../../static/vant/dialog/dialog";
 import { writeOff } from "../../api/myOrder/index";
+import { writeOffByQRcode } from "../../api/myTeam/index";
 
 export default {
   onShow() {
@@ -141,10 +142,10 @@ export default {
             })
               .then(() => {
                 let data = [];
-                data.push(res.result);
-                writeOff({
-                  storeId: wx.getStorageSync("userInfo").storeId,
-                  orderCodes: data
+                // data.push(res.result);
+                writeOffByQRcode({
+                  
+                  orderCode: res.result
                 }).then(res => {
                   //   console.log(res.data, "456");
                   if (res.data.code == 200) {
