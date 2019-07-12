@@ -1,6 +1,7 @@
 <template>
-	<div class="my">
-		<div class="myinfo">
+	<div class="captain_rank">
+    <div class="my">
+      <div class="myinfo">
 			<image
 				class="avatar"
 				mode="scaleToFill"
@@ -9,7 +10,7 @@
 			<open-data :type="teamData.avatar" ></open-data>
 			<div class="title">{{teamData.name}}<van-tag style="margin-left: 5px;" color="#fff" mark plain>{{teamData.city}}</van-tag></div>
 			<div class="myAddress">我的社区: {{teamData.community}}</div>
-			<div class="money">总佣金:<span style="color: red; margin-left: 10px; font-size: 16px">¥&nbsp;{{teamData.commission}}</span></div>
+			<div class="money">总佣金:<span style="color:rgb(122,239,185); margin-left: 10px; font-size: 16px">¥&nbsp;{{teamData.commission}}</span></div>
 			<div class="rank">第<span style="padding: 0 5px; display:inline-block; font-size: 28px">{{reakingNum	}}</span>名</div>
 		</div>
 		<div class="list">
@@ -33,6 +34,8 @@
 				</div>
 			</div>
 		</div>
+    </div>
+		
 	</div>
 </template>
 
@@ -112,128 +115,8 @@
 		background: #eee;
 	}
 </style>
-<style lang='scss' scoped>
-	.my {
-		position: relative;
-		height: 100vh;
-		.myinfo {
-			padding: 10px 30px 0;
-			width: 100%;
-			height: 100px;
-			background: #ab2b2b;
-			box-sizing: border-box;
-			position: absolute;
-			left: 0;
-			top: 0;
-			div {
-				color: #fff;
-				position: absolute;
-				left: 100px;
-			}
-			.title {
-				top: 20px;
-				font-size: 18px;
-			}
-			.myAddress {
-				top: 43px;
-				font-size: 10px;
-				color: #ccc;
-			}
-			.money {
-				top: 63px;
-			}
-			.rank {
-				left: 280px;
-				top: 20px;
-			}
-		}
-		.list {
-			background: #fff;
-			width: 100%;
-			padding: 10px;
-			position: absolute;
-			top: 120px;
-			left: 0;
-			.child {
-				position: relative;
-				height: 100px;
-				border-bottom: 1px solid #ccc;
-				div {
-					position: absolute;
-					left: 120px;
-				}
-				.myAddress {
-					top: 55px;
-					font-size: 12px;
-					color: #999;
-				}
-				.money {
-					color: #ab2b2b;
-					width: 80px;
-					text-align: right;
-					left: 515rpx;
-					top: 65rpx;
-					font-size: 18px;
-				}
-				.all {
-					width: 60px;
-					left: 285px;
-					bottom: 25px;
-					text-align: center;
-					color: #999;
-				}
-				.title {
-					top: 20px;
-					font-size: 16px;
-				}
-				.avatar {
-					left: 50px;
-				}
-				.num {
-					position: absolute;
-					left: 10px;
-					top: 22px;
-					font-weight: bold;
-					font-style: italic;
-				}
-				.first {
-					color: #ab2b2b;
-					font-size: 35px;
-				}
-				.second {
-					font-size: 32px;
-					color: #999;
-				}
-				.three {
-					font-size: 29px;
-					color: #e0a354;
-				}
-				.other {
-					font-size: 27px;
-					color: #333333;
-				}
-			}
-		}
-	}
-	.avatar {
-		width: 50px;
-		height: 50px;
-		border-radius: 50%;
-		position: absolute;
-		left: 20px;
-		top: 15px;
-	}
-	.endTitle {
-		text-align: center;
-		padding: 20rpx 0;
-		width: 100%;
-		span:nth-child(2){
-			font-size: 24rpx;
-			color: #333;
-			padding: 0 10rpx;
-		}
-		span:nth-child(2n + 1) {
-			color: #999;
-		}
-	}
+<style lang='scss' >
+@import "./style.scss";
+
+	
 </style>

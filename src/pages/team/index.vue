@@ -1,5 +1,5 @@
 <template>
-  <div class="myOrder">
+  <div class="captain_order">
     <van-dialog id="van-dialog" />
 
     <van-tabs tab-class="tabClass" :active="currentActive" @change="onChange">
@@ -42,27 +42,58 @@
                   :price="val.salePrice"
                   :title="val.itemName"
                   :thumb="'http://qn.gaoshanmall.cn/' +val.itemImg"
+                  custom-class="goods-card"
+                  thumb-class="goods-image"
+                  origin-price-class="goods-origin-price"
+                  price-class="goods-price"
+                  title-class="goods-title"
+                  desc-class="goods-desc"
                 >
-                  <view slot="footer">
-                    <van-button
-                      plain
-                      round
-                      @click.stop="detailOrder(value)"
-                      class="childBtn"
-                      size="small"
-                      v-if="value.typeData.seeBtn"
-                    >查看订单</van-button>
-                    <van-button
-                      plain
-                      round
-                      @click.stop="payBtn(value)"
-                      type="primary"
-                      class="childBtn"
-                      size="small"
-                      v-if="getActive == 2"
-                    >核销</van-button>
-                  </view>
+                  <div slot="desc" class="goods-bottom">
+                    <div class="sketch">{{val.propertiesValue}}</div>
+                  </div>
+                  <view slot="footer"></view>
                 </van-card>
+              </div>
+              <div
+                class="sketch"
+                v-if="value.shippingAddress!=null"
+              >
+              <van-icon name="manager" size="20rpx;" />
+              收货人:{{value.shippingAddress.firstName}}</div>
+              <div
+                class="sketch"
+                v-if="value.shippingAddress!=null"
+                @click.stop="call(value.shippingAddress.mobile)"
+              >
+              <van-icon name="phone" size="20rpx;" />
+              收货电话:{{value.shippingAddress.mobile}}</div>
+              <div class="sketch" v-if="value.shippingAddress!=null">
+                <van-icon name="map-marked" size="20rpx;" />
+                收货地址:{{value.shippingAddress.province}}
+                {{value.shippingAddress.city}}
+                {{value.shippingAddress.district}}
+                {{value.shippingAddress.address}}
+              </div>
+              <div class="btn-group">
+                <van-button
+                  plain
+                  round
+                  @click.stop="detailOrder(value)"
+                  class="childBtn"
+                  size="small"
+                  v-if="value.typeData.seeBtn"
+                >查看订单</van-button>
+
+                <van-button
+                  plain
+                  round
+                  @click.stop="payBtn(value)"
+                  type="primary"
+                  class="childBtn"
+                  size="small"
+                  v-if="getActive == 2"
+                >核销</van-button>
               </div>
             </div>
             <div style="width: 100%; text-align: center;margin-top: 5px;">
@@ -202,7 +233,7 @@ export default {
       });
     }
   },
-  onShow() {
+  mounted() {
     this.getOrderList();
   },
   components: {
@@ -223,6 +254,12 @@ export default {
     };
   },
   methods: {
+    //拨打电话
+    call(mobile) {
+      wx.makePhoneCall({
+        phoneNumber: mobile 
+      });
+    },
     // 获取数据列表
     getOrderList() {
       this.pageNum = 1;
@@ -397,73 +434,5 @@ export default {
 };
 </script>
 <style lang='scss'>
-.mapListView {
-  overflow: hidden;
-  background: #fff;
-  display: block;
-  width: calc(94% - 10px);
-  padding: 5px;
-  margin-left: 3%;
-  border-radius: 8px;
-  margin-top: 10px;
-  position: relative;
-  .van-card {
-    background: #fff;
-  }
-  .orderCode {
-    height: 30px;
-    line-height: 30px;
-    font-size: 13px;
-    width: 300px;
-    margin-left: 7px;
-    margin-top: 10px;
-    text-align: left;
-  }
-  .checkBox {
-    vertical-align: middle;
-    width: 100%;
-    margin-top: 10px;
-    margin-left: 10px;
-  }
-  .orderTitle {
-    margin-top: 16px;
-    font-size: 13px;
-    color: #ab2b2b;
-    position: absolute;
-    right: 10px;
-    top: 5px;
-  }
-  .orderTime {
-    height: 30px;
-    line-height: 30px;
-    font-size: 13px;
-    margin-left: 10px;
-    margin-bottom: 10px;
-  }
-}
-
-.tabClass {
-  flex-basis: 20% !important;
-}
-.scroll-view-item {
-  width: 100%;
-  height: 200px;
-}
-.childBtn {
-  margin-left: 8px;
-}
-.title {
-  text-align: center;
-  padding: 20 rpx 0;
-  width: 100%;
-  margin-bottom: 10px;
-  span:nth-child(2) {
-    font-size: 24rpx;
-    color: #333;
-    padding: 0 10rpx;
-  }
-  span:nth-child(2n + 1) {
-    color: #999;
-  }
-}
+@import "./style.scss";
 </style>

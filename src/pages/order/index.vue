@@ -397,7 +397,6 @@ export default {
                 params.orderTab = orderTab;
                 params.deviceType = 2;
                 //创建订单成功则调用后台支付
-                wx.hideLoading();
                 wx.showLoading({
                   title: "校验支付状态...", //提示的内容,
                   mask: true //显示透明蒙层，防止触摸穿透,
@@ -442,7 +441,7 @@ export default {
                   //4是调用微信支付
                   toPay(params)
                     .then(res => {
-                      wx.hideLoading();
+                     
                       //如果调用toPay方法成功 则拉起微信登录方法获取code传给后台并调用
                       if (res.data.code == "200") {
                         let params = {
@@ -522,6 +521,7 @@ export default {
                             }
                           },
                           fail: err => {
+                             wx.hideLoading();
                             console.log(err, 222);
                           }
                         });

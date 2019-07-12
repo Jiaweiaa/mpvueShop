@@ -1,0 +1,42 @@
+.my_community{
+    .my {
+        position: relative;
+        height: 100vh;
+        .myinfo {
+          padding: 10px 30px 0;
+          width: 100%;
+          height: 100px;
+          background: $main-color;
+          box-sizing: border-box;
+          position: absolute;
+          left: 0;
+          top: 0;
+          .title {
+            height: 60px;
+            line-height: 60px;
+            font-size: 25px;
+            color: #fff;
+          }
+          .address {
+            height: 20px;
+            line-height: 20px;
+            font-size: 16px;
+            color: #fff;
+          }
+        }
+        .contentBox {
+          position: absolute;
+          top: 100px;
+          width: 100%;
+          height: calc(100% - 100px);
+        }
+      }
+      .btnClass {
+        background: $main-color !important;
+        color: #fff !important;
+        border: none !important;
+        width: 97%;
+        margin: 0 auto;
+        border-radius: 10px !important;
+      }
+}
