@@ -90,7 +90,7 @@
 		              待发货总览
 	              </view>
               </view>
-              <span style="font-size: 14px;margin-left: 5px;margin-bottom: 5px;">已发货总览</span>
+              <span style="font-size: 14px;margin-left: 5px;margin-bottom: 5px;">待发货总览</span>
               <van-card
                 v-for="(item, index) in overviewData"
                 :key="index"
@@ -188,7 +188,7 @@ export default {
       searchParams: {
         orderType: 4,
         pageNum: 1,
-        pageSize: 10
+        pageSize: 3
       },
       startDate: "开始时间",
       endDate: "结束时间"
@@ -210,19 +210,18 @@ export default {
     });
     this.loading = true;
     if (this.orderList.length >= this.allCount) {
+      console.log(2)
       this.loading = false;
       setTimeout(() => {
         wx.hideLoading();
       }, 1000);
     } else {
       this.searchParams.pageNum++;
-      findAllSupOrders(params).then(res => {
+      findAllSupOrders(this.searchParams).then(res => {
         this.orderList = this.orderList.concat(res.data.result.orders.records);
         this.loading = false;
         this.allCount = res.data.result.orders.total;
-        setTimeout(() => {
-          wx.hideLoading();
-        }, 1000);
+        wx.hideLoading();
       });
     }
   },
