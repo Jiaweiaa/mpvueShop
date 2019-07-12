@@ -204,6 +204,7 @@ export default {
     
     
     async getAddressList() {
+      wx.showLoading();
       getMemAddressList().then(res => {
         if (res.data.code == 200) {
           this.listData = res.data.result;
@@ -216,6 +217,9 @@ export default {
             }
           }
         }
+        wx.hideLoading();
+      }).catch((err) => {
+        wx.hideLoading();
       })
     },
     wxaddress(index) {

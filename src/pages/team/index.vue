@@ -4,7 +4,7 @@
 
     <van-tabs tab-class="tabClass" :active="currentActive" @change="onChange">
       <van-search
-        :value="searchParams.searchVal"
+        :value="searchParams.buyerMobile"
         placeholder="请输入手机号"
         show-action
         @search="onSearch"
@@ -276,7 +276,7 @@ export default {
       pageNum: 1,
       list: [],
       searchParams: {
-        searchVal: "",
+        buyerMobile: "",
         startTime: '',
 	      endTime: ''
       },
@@ -437,7 +437,7 @@ export default {
 
     // 搜索
     onSearch(val) {
-      this.searchVal = val.mp.detail;
+      this.searchParams.buyerMobile = String(val.mp.detail);
       this.getOrderList();
     },
     onCancel() {
