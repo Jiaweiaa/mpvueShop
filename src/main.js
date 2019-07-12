@@ -1,7 +1,7 @@
 import Vue from "vue";
 import App from "./App";
 import "weapp-cookie"; //解决小程序不能自动保存服务端的cookie问题
-//引入自定义scss公共样式  
+//引入自定义scss公共样式
 import "./assets/styles/shike.scss";
 //全局处理重复页面跳转详情初始化,和详情跳详情返回的bug
 import MyPlugin from "./minxins";
@@ -28,7 +28,7 @@ export default {
       }
     },
     pages: [
-      "^pages/index/main",
+      "pages/index/main",
       "pages/logisticsDetail/main", //物流详情页
       "pages/feedback/main",
       "pages/order/main",
@@ -70,7 +70,7 @@ export default {
       "pages/withdraw/main", //  提现
       "pages/integral/main", // 积分管理
       "pages/integralList/main", // 积分明细列表
-      "pages/giver/main"
+      "^pages/giver/main"
     ],
     window: {
       backgroundTextStyle: "light",

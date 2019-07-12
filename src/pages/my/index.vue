@@ -129,7 +129,6 @@ export default {
           url: "/pages/giver/main"
         });
       }
-      console.log(this.moreService);
     } else {
       this.moreService = [
         {
