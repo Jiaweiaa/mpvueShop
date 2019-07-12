@@ -123,7 +123,7 @@ export default {
   data() {
     return {
       scmCode: "", //已选择的订单scmCode
-      currentActive: 0, 
+      currentActive: 0,
       orderType: 1, //默认为全部
       pageNum: 1,
       list: [],
@@ -155,7 +155,9 @@ export default {
     this.loading = true;
     if (this.list.length >= this.allCount) {
       this.loading = false;
-      wx.hideLoading();
+      setTimeout(() => {
+        wx.hideLoading();
+      }, 1000);
     } else {
       this.pageNum++;
       let params = {
@@ -279,7 +281,9 @@ export default {
         } else {
           this.loading = false;
         }
-        wx.hideLoading();
+        setTimeout(() => {
+          wx.hideLoading();
+        }, 1000);
       });
     }
   },
@@ -287,7 +291,6 @@ export default {
     openPopup(value) {
       this.reasonShow = true;
       this.scmCode = value.scmCode;
-      console.log(111);
     },
     //取消订单遮罩层关闭
     popClose() {
@@ -305,7 +308,6 @@ export default {
       });
       cancleOrder({ orderCode: this.scmCode, reason: this.reason })
         .then(res => {
-          wx.hideLoading();
           wx.showToast({
             title: res.data.message
           });
@@ -314,7 +316,9 @@ export default {
           }
         })
         .catch(err => {
-          wx.hideLoading();
+          setTimeout(() => {
+            wx.hideLoading();
+          }, 1000);
         });
     },
     //跳转到商城首页
@@ -469,7 +473,9 @@ export default {
             }
           });
           this.allCount = res.data.result.orders.total;
-          wx.hideLoading();
+          setTimeout(() => {
+            wx.hideLoading();
+          }, 1000);
           wx.stopPullDownRefresh(); //停止下拉刷新
           this.onLoadLoading = false;
         })

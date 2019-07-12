@@ -136,6 +136,9 @@ export default {
     this.loading = true;
     if (this.list.length >= this.allCount) {
       this.loading = false;
+      setTimeout(() => {
+        wx.hideLoading();
+      }, 1000);
     } else {
       wx.showLoading({
         title: "加载中"
@@ -229,7 +232,9 @@ export default {
           this.allCount = res.data.result.orders.total;
         }
         this.loading = false;
-        wx.hideLoading();
+        setTimeout(() => {
+          wx.hideLoading();
+        }, 1000);
       });
     }
   },
@@ -347,7 +352,9 @@ export default {
             };
           }
         });
-        wx.hideLoading();
+        setTimeout(() => {
+          wx.hideLoading();
+        }, 1000);
         this.onLoadLoading = false;
         this.allCount = res.data.result.orders.total;
       });
