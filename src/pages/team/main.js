@@ -15,7 +15,8 @@ export default {
       "van-button": '/static/vant/button/index',
       "van-dialog": "/static/vant/dialog/index",
       "van-loading": "/static/vant/loading/index",
-      "van-search": "/static/vant/search/index"
+      "van-search": "/static/vant/search/index",
+      "van-icon": "/static/vant/icon/index"
     }
   }
 }

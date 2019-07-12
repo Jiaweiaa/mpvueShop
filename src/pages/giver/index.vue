@@ -4,31 +4,29 @@
     <van-tabs @change="tabClick">
       <van-tab title="待发货">
         <div class="content">
-	        <van-panel custom-class="panelStyle">
-		        <view class="btnStyle" plain>
-			        <!--<van-icon size="13px"   custom-class="iconStyle" name="arrow-down" />-->
-			        <span @click.stop="showPopup(1)">{{startDate}}</span>
-			        &nbsp;一&nbsp;
-			        <span @click.stop="showPopup(2)">{{endDate}}</span>
-			        <van-icon
-					        v-if="startDate !== '开始时间' || endDate !== '结束时间'"
-					        @click.stop="clearTime"
-					        name="cross"
-					        color="#999"
-					        custom-class="iconStyle"
-			        />
-		        </view>
-	        </van-panel>
+          <van-panel custom-class="panelStyle">
+            <view class="btnStyle" plain>
+              <!--<van-icon size="13px"   custom-class="iconStyle" name="arrow-down" />-->
+              <span @click.stop="showPopup(1)">{{startDate}}</span>
+              &nbsp;一&nbsp;
+              <span @click.stop="showPopup(2)">{{endDate}}</span>
+              <van-icon
+                v-if="startDate !== '开始时间' || endDate !== '结束时间'"
+                @click.stop="clearTime"
+                name="cross"
+                color="#999"
+                custom-class="iconStyle"
+              />
+            </view>
+          </van-panel>
           <van-collapse :value="activeName" @change="onChange">
             <van-collapse-item name="1">
-              <view slot="title">
-	              待发货总览
-              </view>
+              <view slot="title">待发货总览</view>
               <van-card
                 v-for="(item, index) in overviewData"
                 :key="index"
                 title-class="cardTitleStyle"
-								:desc="item.saleProperties"
+                :desc="item.saleProperties"
                 :num="item.quantity"
                 :title="item.itemName"
                 :thumb="'http://qn.gaoshanmall.cn/' + item.itemImg"
@@ -47,7 +45,7 @@
                 <van-card
                   :num="val.quantity"
                   :price="val.salePrice"
-				  :desc="val.propertiesValue"
+                  :desc="val.propertiesValue"
                   :title="val.itemName"
                   :thumb="'http://qn.gaoshanmall.cn/' +val.itemImg"
                 ></van-card>
@@ -271,19 +269,18 @@ export default {
                   icon: "none",
                   title: res.data.result
                 });
-				Dialog.alert({
-                      message: res.data.result
-                    }).then(() => {
-                      // on close
-                    });
+                Dialog.alert({
+                  message: res.data.result
+                }).then(() => {
+                  // on close
+                });
                 this.getAllData();
               } else {
-				  Dialog.alert({
-                      message: res.data.message
-                    }).then(() => {
-                      // on close
-                    });
-                
+                Dialog.alert({
+                  message: res.data.message
+                }).then(() => {
+                  // on close
+                });
               }
               // console.log(res.data,'56780');
             });
@@ -347,8 +344,8 @@ export default {
 };
 </script>
 <style lang='scss'>
-.panelStyle{
-	padding: 20px 10px;
+.panelStyle {
+  padding: 20px 10px;
 }
 .content {
   .btnStyle {
