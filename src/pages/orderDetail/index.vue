@@ -312,7 +312,13 @@ let querystring = require("querystring");
 let deviceId = new Date().getTime();
 export default {
   onLoad: function(options) {
-    orderDetail({ id: options.id })
+    let params = {
+      id:options.id
+    }
+    if(options.capationFlag){
+      params.capationFlag = options.capationFlag;
+    }
+    orderDetail(params)
       .then(res => {
         if (res.data.code == 200) {
           this.detailData = res.data.result;
