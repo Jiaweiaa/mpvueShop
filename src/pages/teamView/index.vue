@@ -147,19 +147,25 @@ export default {
                   orderCodes: data
                 }).then(res => {
                   //   console.log(res.data, "456");
-                  if (res.data.code == 200 && res.data.result.isSuccess) {
-                    Notify({
-                      text: res.data.result.message,
-                      duration: 1000,
-                      selector: "#custom-selector",
-                      backgroundColor: "rgb(78,170,104)"
+                  if (res.data.code == 200) {
+                    Dialog.alert({
+                      message: res.data.result
+                    }).then(() => {
+                      // on close
                     });
+
+                    // });
                   } else {
-                    Notify(res.data.result.message);
+                    Dialog.alert({
+                      message: res.data.message
+                    }).then(() => {
+                      // on close
+                    });
                   }
                 });
               })
               .catch(() => {
+                Notify("网络错误,请检查网络");
                 // on cancel
               });
           } else {
