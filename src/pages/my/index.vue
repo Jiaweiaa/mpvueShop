@@ -1,11 +1,11 @@
 <template>
   <div class="my">
     <div class="myinfo">
-      <div style="width: 130rpx;height: 130rpx;border-radius: 50%;overflow: hidden;">
+      <div class="avatar" style="width: 130rpx;height: 130rpx;border-radius: 50%;overflow: hidden;">
         <open-data style="width:130rpx;height:130rpx;border-raduis:50%;" type="userAvatarUrl"></open-data>
       </div>
-      <div>
-        <div v-if="userInfo.nickname">
+      <div class="user">
+        <div class="" v-if="userInfo.nickname">
           <p>{{userInfo.nickname}}</p>
           <p style="color:#fff;">
             <open-data type="userProvince" lang="zh_CN"></open-data>省
@@ -13,6 +13,11 @@
           </p>
         </div>
         <p v-else @click="goToLogin">点击登录</p>
+      </div>
+      <div class="refresh">
+        <button @click="goToLogin()">
+          <van-icon size="50rpx" name="replay" />
+        </button>
       </div>
     </div>
     <div class="myMenu boxMenu">
@@ -252,7 +257,7 @@ export default {
           title: "百团联盟券",
           icon: "after-sale",
           url: "/pages/integral/main"
-        },
+        }
       ],
       moreService: [
         {
@@ -324,62 +329,4 @@ page {
 </style>
 <style lang='scss' scoped>
 @import "./style";
-.myMenu {
-  position: absolute;
-  left: 2.5%;
-  top: 150px;
-}
-.mySecond {
-  position: absolute;
-  top: 275px;
-  left: 2.5%;
-}
-
-.myThree {
-  position: absolute;
-  top: 400px;
-  left: 2.5%;
-}
-.boxMenu {
-  width: 95%;
-  overflow: hidden;
-  background: #fff;
-  height: 230rpx;
-  border-radius: 5px;
-  .title {
-    height: 30px;
-    width: 95%;
-    margin: 0 auto;
-    border-bottom: 1px solid #ccc;
-    line-height: 30px;
-    .navTitle {
-      float: left;
-      width: 40%;
-      font-weight: bold;
-      padding-left: 10px;
-    }
-    .navBody {
-      width: calc(60% - 20px);
-      text-align: right;
-      float: left;
-      padding-right: 10px;
-      color: #999;
-      font-size: 20rpx;
-    }
-  }
-  .content {
-    overflow: hidden;
-    height: 160rpx;
-    .childContent {
-      height: 100%;
-      padding: 10px;
-      float: left;
-      width: calc(19% - 38rpx);
-      text-align: center;
-      .childText {
-        font-size: 24rpx;
-      }
-    }
-  }
-}
 </style>

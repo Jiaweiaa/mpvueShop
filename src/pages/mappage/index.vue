@@ -12,7 +12,7 @@
 
     <div class="forFirst">
       <div style="padding-top: 15px;">
-        <van-tag mark size="medium" type="primary">我的社区</van-tag>
+        <van-tag custom-class="shequtag" mark size="medium" type="primary">我的社区</van-tag>
       </div>
       <view class="cityName">{{nowData.community}}</view>
       <view class="avatar">
@@ -24,7 +24,7 @@
       <view class="address">{{nowData.address}}</view>
       <view class="name">团长:{{nowData.name}}</view>
     </div>
-    <view style=" color: #1989fa;font-size: 18px;margin-left: 20px; margin-top: 20px;">附近社区</view>
+    <view class="fujinshequ" >附近社区</view>
 
     <scroll-view scroll-y class="scrollViewStyle" @scrolltolower="lower" >
       <div class="scrollChild" v-for="(value,index) in list" :key="index" @click="detailOrder(value)">
@@ -215,6 +215,17 @@
     created() { }
   };
 </script>
+<style lang="scss">
+.shequtag{
+  background: $main-color!important;
+}
+.fujinshequ{
+  color: $main-color;
+  font-size: 18px;
+  margin-left: 20px;
+   margin-top: 20px;
+}
+</style>
 
 <style lang='scss' scoped>
   @import "./style.scss";
@@ -226,7 +237,7 @@
     margin: 10px auto;
     position: relative;
     .cityName {
-      color: #1989fa;
+      color: $main-color;
       height: 35px;
       line-height: 35px;
       font-size: 22px;

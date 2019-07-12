@@ -169,7 +169,7 @@
 		.myinfo {
 			width: 100%;
 			height: 184px;
-			background: #ab2b2b;
+			background: $main-color;
 			padding: 0 30rpx;
 			box-sizing: border-box;
 			position: absolute;

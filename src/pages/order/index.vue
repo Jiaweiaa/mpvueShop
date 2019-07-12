@@ -4,11 +4,20 @@
     <van-toast id="van-toast" />
     <!-- 上拉选项菜单 -->
     <van-action-sheet
+      id="delivery"
       :show="sheetShow"
       :actions="deliveryOption"
       cancel-text="取消"
       @close="onClose"
       @select="onSelect"
+    />
+    <van-action-sheet
+      id="pay"
+      :show="paySheetShow"
+      :actions="payOption"
+      cancel-text="取消"
+      @close="onPayClose"
+      @select="onPaySelect"
     />
     <div @click="toAddressList" v-if="address!=null" class="address">
       <div class="item">
@@ -33,6 +42,14 @@
         <div>商品合计</div>
         <div>￥{{originPayAmount}}</div>
       </div>
+      <div class="item" @click="paySheetShow=true">
+        <div>支付方式</div>
+        <div>{{payObj.name}}</div>
+      </div>
+      <div class="item" v-if="payObj.value==12">
+        <div>联盟券余额</div>
+        <div>余额&nbsp;{{scoreAmount}}</div>
+      </div>
       <div class="item" @click="sheetShow=true">
         <div>配送方式</div>
         <div>{{deliveryObj.name}}</div>
@@ -46,10 +63,10 @@
         <div>暂无</div>
       </div>
     </div>
-    <van-radio-group class="radioStyle" :value="payRadio" @change="typeChange">
+    <!-- <van-radio-group class="radioStyle" :value="payRadio" @change="typeChange">
       <van-radio :disabled="scoreAmount <= 0" name="12">联盟券支付(余额&nbsp;{{scoreAmount}})</van-radio>
       <van-radio name="4">微信支付</van-radio>
-    </van-radio-group>
+    </van-radio-group> -->
     <div class="cartlist">
       <!-- 分店铺形式的购物车列表 -->
       <div class="store-list" v-for="(group,index) in shopList" :key="index">
@@ -62,20 +79,43 @@
         </van-cell>
         <!-- 购物车中所选的该店铺商品 -->
         <div v-for="(item,key) in group.shoppingCartLineDtos" :key="key">
-          
-            <van-cell>
-              <div style="display:flex;">
-                <van-card
-                  style="width: 100%;"
-                  :num="item.quantity"
-                  :price="item.salePrice"
-                  desc="描述信息"
-                  :title="item.itemTitle"
-                  :thumb="'http://qn.gaoshanmall.cn/'+item.imageUrl"
-                ></van-card>
+          <van-cell>
+            <!-- <van-card
+                style="width: 100%;"
+                :num="item.quantity"
+                :price="item.salePrice"
+                desc="描述信息"
+                :title="item.itemTitle"
+                :thumb="'http://qn.gaoshanmall.cn/'+item.imageUrl"
+            ></van-card>-->
+            <van-card
+              :tag="item.tag"
+              :lazy-load="true"
+              :price="item.listPrice"
+              :origin-price="item.salePrice"
+              :title="item.itemTitle"
+              :num="item.quantity"
+              thumb-class="goods-image"
+              title-class="goods-title"
+              price-class="goods-price"
+              desc-class="goods-desc"
+              :key="key"
+              :thumb="'http://qn.gaoshanmall.cn/' + item.imageUrl"
+            >
+              <div slot="desc" class="goods-bottom">
+                <div class="sketch">
+                  <span
+                    v-for="(property,proIndex) in item.saleProperties"
+                    :key="proIndex"
+                  >{{property}}&nbsp;</span>
+                </div>
               </div>
-            </van-cell>
-          
+              <!-- <div slot="desc" class="goods-bottom">
+                <div>{{item.keyword}}</div>
+                <div class="sketch">{{item.sketch}}</div>
+              </div>-->
+            </van-card>
+          </van-cell>
         </div>
       </div>
     </div>
@@ -106,7 +146,7 @@ export default {
     getMemberAmount().then(res => {
       this.scoreAmount = res.data.result.scoreAmount;
       if (this.scoreAmount <= 0) {
-        this.payRadio = "4";
+        this.payObj.value = 4;
       }
     });
     if (wx.getStorageSync("orderFrom") && wx.getStorageSync("orderParams")) {
@@ -187,11 +227,11 @@ export default {
 
   data() {
     return {
-      //上拉菜单是否显示
+      //配送方式上拉菜单是否显示
       sheetShow: false,
-      deliveryObj:{
-        name:'自提',
-        value:1
+      deliveryObj: {
+        name: "自提",
+        value: 1
       },
       deliveryOption: [
         {
@@ -201,6 +241,22 @@ export default {
         {
           name: "送货上门",
           value: 2
+        }
+      ],
+      //支付方式
+      payObj: {
+        name: "联盟券",
+        value: 12
+      },
+      paySheetShow:false,
+      payOption: [
+        {
+          name: "微信",
+          value: 4
+        },
+        {
+          name: "联盟券",
+          value: 12
         }
       ],
       //  联盟券
@@ -226,22 +282,32 @@ export default {
   components: {},
   methods: {
     //关闭上拉菜单
-    onClose(){
+    onClose() {
       this.sheetShow = false;
     },
     //选中项改变本地变量值
-    onSelect(e){
+    onSelect(e) {
       // console.log(e,'234');
-      this.deliveryObj = Object.assign({},e.mp.detail);
+      this.deliveryObj = Object.assign({}, e.mp.detail);
       this.sheetShow = false;
       console.log(this.deliveryObj);
+    },
+    //关闭支付上拉菜单
+    onPayClose() {
+      this.paySheetShow = false;
+    },
+    onPaySelect(e) {
+      // console.log(e,'234');
+      this.payObj = Object.assign({}, e.mp.detail);
+      this.paySheetShow = false;
+      // console.log(this.deliveryObj);
     },
     // 支付状态改变
     typeChange(val) {
       this.payRadio = val.mp.detail;
-      if (this.scoreAmount <= 0){
-        return this.payRadio = "4"
-      } 
+      if (this.scoreAmount <= 0) {
+        return (this.payRadio = "4");
+      }
     },
 
     //获取收货地址列表
@@ -308,7 +374,7 @@ export default {
                 let params = {};
                 let orderCode = res.data.result.scmCode;
                 params.orderCode = res.data.result.scmCode;
-                params.paymentType = this.payRadio;
+                params.paymentType = this.payObj.value;
                 params.orderTab = orderTab;
                 params.deviceType = 2;
                 //创建订单成功则调用后台支付
@@ -489,7 +555,7 @@ export default {
   computed: {}
 };
 </script>
-<style lang='scss' scoped>
+<style lang='scss' >
 @import "./style";
 </style>
 <style lang="scss">

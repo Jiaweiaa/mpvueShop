@@ -35,7 +35,6 @@
     </div>
     <div class="list" v-if="goodsList.length!=0">
       <van-card
-       
         :tag="item.tag"
         :lazy-load="true"
         :price="item.listPrice"
@@ -51,19 +50,10 @@
       >
         <div slot="desc" class="goods-bottom">
           <div>{{item.keyword}}</div>
-         <div class="sketch">{{item.sketch}}</div>
+          <div class="sketch">{{item.sketch}}</div>
         </div>
       </van-card>
-      <!-- <div
-        @click="goodsDetail(item.id)"
-        class="item"
-        v-for="(item, index) in goodsList"
-        :key="index"
-      >
-        <img :src="'http://qn.gaoshanmall.cn/' + item.img" alt />
-        <p class="name">{{item.title}} - {{item.subtitle}}</p>
-        <p class="price">￥{{item.salePrice}}</p>
-      </div>-->
+
       <div class="title">
         <span>—</span>
         <span>我也是有底线的</span>
@@ -189,9 +179,8 @@ export default {
         this.loading = false;
       }
       setTimeout(() => {
-          wx.hideLoading();
+        wx.hideLoading();
       }, 350);
-      
     }
   },
 

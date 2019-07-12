@@ -1,18 +1,16 @@
 <template>
-  <div class="index">
+  <div class="index_home">
     <div class="search">
       <div @click="toMappage" class="captain">
         <div v-if="captainInfo!=null">
-          <div style="font-size: 30rpx;">
-            {{captainInfo.address}}
-            <span class="toggle_btn">切换</span>
-          </div>
-          <div style="font-size: 24rpx;color:#999;">提货位置:{{captainInfo.deliveryAddress}}</div>
+          <div class="title">{{captainInfo.address}}</div>
+          <span class="toggle_btn">切 换</span>
+          <div class="address">提货位置:{{captainInfo.deliveryAddress}}</div>
         </div>
         <div v-else>{{cityName}}</div>
       </div>
       <div @click="toSearch" class="search_bar">
-        <input type="text" placeholder="搜索商品" />
+        <input type="text" placeholder="搜索您要的商品" placeholder-class="phcolor" />
         <span class="icon"></span>
       </div>
     </div>
@@ -48,27 +46,39 @@
     </div>
     <div class="newcategory">
       <div class="list" v-for="(item, index) in newCategoryList" :key="index">
-        <div class="head">{{item.name}}商品</div>
+        <div class="head">{{item.name}}</div>
         <div class="sublist">
-          <div
-            @click="goodsDetail(subitem)"
-            v-for="(subitem, subindex) in item.goodsList"
-            :key="subindex"
+          <van-card
+            :lazy-load="true"
+            :price="good.listPrice"
+            :origin-price="good.salePrice"
+            :title="good.name"
+            custom-class="goods-card"
+            thumb-class="goods-image"
+            origin-price-class="goods-origin-price"
+            price-class="goods-price"
+            title-class="goods-title"
+            desc-class="goods-desc"
+            v-for="(good, goodIndex) in item.goodsList"
+            :key="goodIndex"
+            @click="goodsDetail(good)"
+            :thumb="'http://qn.gaoshanmall.cn/' + good.img"
           >
-            <img :src="'http://qn.gaoshanmall.cn/'+ subitem.img" alt />
-            <p>{{subitem.name}}</p>
-            <p>￥{{subitem.salePrice}}</p>
-          </div>
-          <!--<div @click="categoryList(item)">-->
-          <!--<div class="last">-->
-          <!--<p>{{item.name}}商品</p>-->
-          <!--<span class="icon"></span>-->
-          <!--</div>-->
-          <!--</div>-->
+            <div slot="desc" class="goods-bottom">
+              <div class="sketch">{{good.sketch}}</div>
+              <div class="hot">热销中</div>
+              <div class="sale">
+                <span class="sold">已售113份</span>
+                <span class="remain">仅剩105份</span>
+              </div>
+             
+            </div>
+          </van-card>
+        
         </div>
       </div>
     </div>
-    <div v-if="newCategoryList.length > 0" class="title">
+    <div v-if="newCategoryList.length > 0" class="no_more_data">
       <span>—</span>
       <span>我也是有底线的</span>
       <span>—</span>
@@ -106,7 +116,6 @@ export default {
   },
   onShow() {
     this.getCartGoodsNum();
-    console.log(3333);
     if (wx.getStorageSync("data")) {
       this.captainInfo = Object.assign({}, wx.getStorageSync("data"));
     } else {
@@ -210,18 +219,26 @@ export default {
     },
 
     async getData() {
+      wx.showLoading({
+        title:'加载中',
+        mask:true
+      })
       const data = await getIndexItem();
       this.banner = data.data.result.banner;
       this.channelList = data.data.result.indexCategories;
       this.newCategoryList.push({
-        name: "热销",
+        name: "热销爆品",
         goodsList: data.data.result.hotSale
       });
 
       this.newCategoryList.push({
-        name: "推荐",
+        name: "新品上市",
         goodsList: data.data.result.recommended
       });
+      
+      setTimeout(() => {
+          wx.hideLoading();
+      }, 1000);
     },
     goodsDetail(item) {
       if (item.status == 1) {
@@ -276,21 +293,6 @@ export default {
 };
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
 @import "./style.scss";
-.title {
-  text-align: center;
-  padding: 20rpx 0;
-  width: 100%;
-
-  span:nth-child(2) {
-    font-size: 24rpx;
-    color: #333;
-    padding: 0 10rpx;
-  }
-
-  span:nth-child(2n + 1) {
-    color: #999;
-  }
-}
 </style>

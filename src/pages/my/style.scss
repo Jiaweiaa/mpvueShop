@@ -1,28 +1,96 @@
 .my {
   position: relative;
+  .myMenu {
+    position: absolute;
+    left: 2.5%;
+    top: 150px;
+  }
+  .mySecond {
+    position: absolute;
+    top: 275px;
+    left: 2.5%;
+  }
+
+  .myThree {
+    position: absolute;
+    top: 400px;
+    left: 2.5%;
+  }
+  .boxMenu {
+    width: 95%;
+    overflow: hidden;
+    background: #fff;
+    height: 230rpx;
+    border-radius: 5px;
+    .title {
+      height: 30px;
+      width: 95%;
+      margin: 0 auto;
+      border-bottom: 1px solid #ccc;
+      line-height: 30px;
+      .navTitle {
+        float: left;
+        width: 40%;
+        font-weight: bold;
+        padding-left: 10px;
+      }
+      .navBody {
+        width: calc(60% - 20px);
+        text-align: right;
+        float: left;
+        padding-right: 10px;
+        color: #999;
+        font-size: 20rpx;
+      }
+    }
+    .content {
+      overflow: hidden;
+      height: 160rpx;
+      .childContent {
+        height: 100%;
+        padding: 10px;
+        float: left;
+        width: calc(19% - 38rpx);
+        text-align: center;
+        .childText {
+          font-size: 24rpx;
+        }
+      }
+    }
+  }
   .myinfo {
     width: 100%;
     height: 184px;
     display: flex;
     align-items: center;
-    background: #ab2b2b;
+    background: $main-color;
     padding: 0 30rpx;
     box-sizing: border-box;
+    position: relative;
     img {
       height: 170rpx;
       width: 170rpx;
-      border-radius: 50%
+      border-radius: 50%;
     }
     div {
       margin-left: 30rpx;
       p {
         color: #fff;
         font-size: 36rpx;
-        margin-bottom: 10rpx
+        margin-bottom: 10rpx;
+        width: 200rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       p:nth-child(2) {
         font-size: 28rpx;
       }
+    }
+    .refresh {
+      position: absolute;
+      top: 150rpx;
+      right: 120rpx;
     }
   }
 }

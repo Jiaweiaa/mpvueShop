@@ -4,7 +4,7 @@
       <swiper
         class="swiper-container"
         indicator-dots="true"
-        autoplay="true"
+        autoplay="tru/e"
         interval="3000"
         duration="1000"
       >
@@ -14,27 +14,34 @@
           </swiper-item>
         </block>
       </swiper>
-      <button class="share" hover-class="none" open-type="share" value>分享商品</button>
     </div>
-    <div class="swiper-b">
-      <div class="item">30天无忧退货</div>
-      <div class="item">48小时快速退款</div>
-      <div class="item">满88元免邮费</div>
+    <div class="price-bg">
+      <p class="listPrice">￥{{goodsInfo.salePrice}}</p>
+      <p class="salePrice">
+        ￥{{goodsInfo.listPrice}}
+        <span class="tag">优惠价</span>
+      </p>
+      <div class="countDown">
+        <p class="title">距结束仅剩</p>
+        <div class="time">
+          <span>{{day}}</span>天
+          <span>{{h}}</span>:
+          <span>{{m}}</span>:
+          <span>{{s}}</span>
+        </div>
+      </div>
     </div>
     <div class="goods-info">
       <div class="c">
-        <p>￥{{goodsInfo.salePrice}}</p>
-        <p>{{goodsInfo.title}}</p>
-        <p>{{goodsInfo.sketch}}</p>
-
-        <!--<div v-if="brand.name" class="brand">-->
-        <!--<p>{{brand.name}}</p>-->
-        <!--</div>-->
+        <button class="share" hover-class="none" open-type="share" value>分 享</button>
+        <p class="title">{{goodsInfo.title}}</p>
+        <div class="tags" v-if="goodsInfo!=null">
+          <span class="item" v-for="(tag,tagIndex) in goodsInfo.itemTags" :key="tagIndex">
+            {{tag}}
+          </span>
+        </div>
+        <p class="sketch">{{goodsInfo.sketch}}</p>
       </div>
-    </div>
-    <div @click="openSku('buyNow')" class="section-nav">
-      <div>请选择规格数量</div>
-      <div></div>
     </div>
     <div v-if="recordList.length>0">
       <div class="record" @click="toRecord">
@@ -56,9 +63,6 @@
           <div class="img_item">
             <img src="/static/images/omit.png" alt />
           </div>
-          <!-- <div class="img_item">
-            <img :src="item.avatar" />
-          </div>-->
         </div>
       </div>
     </div>
@@ -134,27 +138,31 @@
       </div>
       <!-- <div v-if="selectSkuData!=null" style="margin-left:30px;color:#ccc;font-size:14px;">商品剩余数量:{{selectSkuData.quantity}}</div> -->
       <div class="handle">
-        <van-button type="danger" size="large" @click="submit()">确定</van-button>
+        <van-button type="danger" size="large" custom-class="buyBtn" @click="submit()">确定</van-button>
       </div>
     </van-popup>
 
     <div class="bottom-fixed">
-      <div @click="toIndex()">
+      <div @click="toIndex()" class="home">
         <div class="car">
-          <img src="/static/images/ic_menu_choice_nor.png" />
+          <img src="/static/images/sk_home_active.png" />
+          <span class="text">首页</span>
         </div>
       </div>
-      <div @click="collect">
+      <!-- <div @click="collect">
         <div class="collect" :class="[collectFlag ? 'active' :'']"></div>
-      </div>
-      <div @click="toCart">
+      </div>-->
+      <div @click="toCart" class="cart">
         <div class="car">
           <span>{{allnumber}}</span>
-          <img src="/static/images/ic_menu_shoping_nor.png" />
+          <img src="/static/images/sk_cart_active.png" />
+          <p class="text">购物车</p>
         </div>
       </div>
-      <div @click="openSku('buyNow')">立即购买</div>
-      <div @click="openSku('addCart')">加入购物车</div>
+      <div class="btn-group">
+        <div class="addCart" @click="openSku('addCart')">加入购物车</div>
+        <div class="buyNow" @click="openSku('buyNow')">立即购买</div>
+      </div>
     </div>
   </div>
 </template>
@@ -180,9 +188,10 @@ export default {
     if (login()) {
       this.userInfo = login();
     }
+    this.countTime();
     wx.showLoading({
       title: "加载中",
-      mask:true
+      mask: true
     });
     this.id = this.$root.$mp.query.id;
     this.openId = getStorageOpenid();
@@ -192,7 +201,6 @@ export default {
     if (wx.getStorageSync("userInfo")) {
       this.level = wx.getStorageSync("userInfo").level;
     }
-   
   },
   data() {
     return {
@@ -227,17 +235,46 @@ export default {
       buyerNum: "", //购买总人数
       data: {},
       SKUResult: {},
-      nowPrice: "--"
+      nowPrice: "--",
+      h:"",
+      m:"",
+      s:"",
+      day:""
     };
   },
   components: {
     wxParse
   },
   methods: {
+    //倒计时
+    countTime: function() {
+      //获取当前时间
+      var date = new Date();
+      var now = date.getTime();
+      //设置截止时间
+      var endDate = new Date("2020-10-22 23:23:23");
+      var end = endDate.getTime();
+      //时间差
+      var leftTime = end - now;
+      //定义变量 d,h,m,s保存倒计时的时间
+      if (leftTime >= 0) {
+        this.day = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+        this.h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+        this.h<10?this.h = "0"+String(this.h):this.h=this.h;
+        this.m = Math.floor((leftTime / 1000 / 60) % 60);
+        this.m<10?this.m = "0"+String(this.m):this.m=this.m;
+        this.s = Math.floor((leftTime / 1000) % 60);
+        this.s<10?this.s = "0"+String(this.s):this.s=this.s;
+      }
+      // console.log(this.s);
+      //递归每秒调用countTime方法，显示动态时间效果
+      setTimeout(this.countTime, 1000);
+    },
+
     //跳转到首页
-    toIndex(){
+    toIndex() {
       wx.switchTab({
-        url: "/pages/index/main" 
+        url: "/pages/index/main"
       });
     },
     //跳转商品购买记录页面
@@ -318,7 +355,7 @@ export default {
     async openSku(data) {
       this.keys.map(v => {
         v.value[0].isActiveC = false;
-      })
+      });
       this.selectSkuData = null;
       if (data) {
         this.flag = data;
@@ -426,6 +463,7 @@ export default {
     async goodsDetail() {
       getGoodsDetail({
         itemId: this.id
+        // itemId: 503
       })
         .then(res => {
           if (res.data.code == "200") {
@@ -441,7 +479,7 @@ export default {
             });
             this.gallery = data.item.itemImages;
             this.goodsInfo = data.item;
-            console.log(this.goodsInfo,'999');
+            console.log(this.goodsInfo, "999");
             // 商品数据渲染
             this.goodsList.map(v => {
               let data = {
@@ -492,7 +530,7 @@ export default {
         .catch(err => {
           wx.showToast({
             icon: "none",
-            title: '网络错误'
+            title: "网络错误"
           });
           setTimeout(() => {
             wx.navigateBack({
@@ -765,11 +803,11 @@ export default {
 };
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss' >
 @import url("~mpvue-wxparse/src/wxParse.css");
 @import "./style.scss";
 </style>
-<style>
+<style lang='scss'>
 .goods {
   margin-bottom: 100rpx;
   padding-bottom: 1rpx;
@@ -797,7 +835,7 @@ export default {
 }
 
 #goodsinfo .tabContent .active {
-  background: red;
+  background: $main-color;
   color: white;
 }
 .goods .van-stepper {

@@ -253,6 +253,7 @@
     <!-- 操作区 -->
     <div class="fixed">
       <button class="plain" @click="orderShow=true;from='cancle'" v-if="orderCancelBtn">取消订单</button>
+      <button class="plain" v-if="confrimReciveBtn">查看物流</button>
       <button class="danger" @click="sureGet()" v-if="confrimReciveBtn">确认收货</button>
       <button class="danger" @click="pay()" v-if="orderPayBtn">立即支付</button>
       <button class="danger" @click="deleteOrder()" v-if="orderDeleteBtn">删除订单</button>

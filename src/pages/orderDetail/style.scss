@@ -41,7 +41,7 @@
 .bg {
   width: 100%;
   height: 300rpx;
-  background: rgb(214, 70, 30);
+  background: $main-color;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -203,7 +203,7 @@
     color: #999;
   }
   .danger {
-    background: linear-gradient(70deg, rgb(214, 70, 60), red);
+    background: linear-gradient(70deg,  $buy-btn,$main-color);
     color: #fff;
   }
 }
