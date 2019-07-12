@@ -1,7 +1,10 @@
 <template>
   <div class="login" v-if="signFlag">
     <div class="logo">
-      <img src="/static/images/baituan_logo.jpeg" alt="">
+      <!-- 百团 -->
+      <!-- <img src="/static/images/baituan_logo.jpeg" alt=""> -->
+      <!-- 时刻 -->
+      <img src="/static/images/shike_logo.jpeg" alt="">
     </div>
     <van-cell-group>
       <van-field

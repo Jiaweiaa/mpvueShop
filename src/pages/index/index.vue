@@ -68,13 +68,11 @@
               <div class="sketch">{{good.sketch}}</div>
               <div class="hot">热销中</div>
               <div class="sale">
-                <span class="sold">已售113份</span>
-                <span class="remain">仅剩105份</span>
+                <span class="sold">已售{{good.saleCount}}份</span>
+                <span class="remain">仅剩{{good.totalStock}}份</span>
               </div>
-             
             </div>
           </van-card>
-        
         </div>
       </div>
     </div>
@@ -157,7 +155,6 @@ export default {
     getCartGoodsNum() {
       shoppingcartCount()
         .then(res => {
-          console.log("888");
           if (res.data.code == "200") {
             wx.showTabBarRedDot({
               index: 3
@@ -220,24 +217,28 @@ export default {
 
     async getData() {
       wx.showLoading({
-        title:'加载中',
-        mask:true
-      })
-      const data = await getIndexItem();
-      this.banner = data.data.result.banner;
-      this.channelList = data.data.result.indexCategories;
-      this.newCategoryList.push({
-        name: "热销爆品",
-        goodsList: data.data.result.hotSale
-      });
-
-      this.newCategoryList.push({
-        name: "新品上市",
-        goodsList: data.data.result.recommended
+        title: "加载中",
+        mask: true
       });
       
+      const data = await getIndexItem();
+      // console.log(data,'666');
+      if (data.data.code=="200") {
+        this.banner = data.data.result.banner;
+        this.channelList = data.data.result.indexCategories;
+        this.newCategoryList.push({
+          name: "热销爆品",
+          goodsList: data.data.result.hotSale
+        });
+
+        this.newCategoryList.push({
+          name: "新品上市",
+          goodsList: data.data.result.recommended
+        });
+      }
+
       setTimeout(() => {
-          wx.hideLoading();
+        wx.hideLoading();
       }, 1000);
     },
     goodsDetail(item) {

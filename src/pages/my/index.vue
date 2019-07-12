@@ -5,7 +5,7 @@
         <open-data style="width:130rpx;height:130rpx;border-raduis:50%;" type="userAvatarUrl"></open-data>
       </div>
       <div class="user">
-        <div class="" v-if="userInfo.nickname">
+        <div class v-if="userInfo.nickname">
           <p>{{userInfo.nickname}}</p>
           <p style="color:#fff;">
             <open-data type="userProvince" lang="zh_CN"></open-data>省
@@ -97,7 +97,7 @@ export default {
         .catch(err => {});
     }
     this.moreService = [""];
-    if (wx.getStorageSync("shopToken")) {
+    if (wx.getStorageSync("tokenInfo").access_token) {
       isCapOrSup().then(isRes => {
         wx.setStorageSync("isCap", isRes.data.result.isCap);
         wx.setStorageSync("isSup", isRes.data.result.isSup);
@@ -252,12 +252,12 @@ export default {
           title: "地址管理",
           icon: "home-o",
           url: "/pages/address/main"
-        },
-        {
-          title: "百团联盟券",
-          icon: "after-sale",
-          url: "/pages/integral/main"
         }
+        // {
+        //   title: "百团联盟券",
+        //   icon: "after-sale",
+        //   url: "/pages/integral/main"
+        // }
       ],
       moreService: [
         {

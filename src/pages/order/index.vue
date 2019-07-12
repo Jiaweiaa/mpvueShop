@@ -9,6 +9,7 @@
       :actions="deliveryOption"
       cancel-text="取消"
       @close="onClose"
+      @cancel="onClose"
       @select="onSelect"
     />
     <van-action-sheet
@@ -17,6 +18,7 @@
       :actions="payOption"
       cancel-text="取消"
       @close="onPayClose"
+      @cancel="onPayClose"
       @select="onPaySelect"
     />
     <div @click="toAddressList" v-if="address!=null" class="address">
@@ -63,10 +65,7 @@
         <div>暂无</div>
       </div>
     </div>
-    <!-- <van-radio-group class="radioStyle" :value="payRadio" @change="typeChange">
-      <van-radio :disabled="scoreAmount <= 0" name="12">联盟券支付(余额&nbsp;{{scoreAmount}})</van-radio>
-      <van-radio name="4">微信支付</van-radio>
-    </van-radio-group> -->
+
     <div class="cartlist">
       <!-- 分店铺形式的购物车列表 -->
       <div class="store-list" v-for="(group,index) in shopList" :key="index">
@@ -92,7 +91,6 @@
               :tag="item.tag"
               :lazy-load="true"
               :price="item.listPrice"
-              :origin-price="item.salePrice"
               :title="item.itemTitle"
               :num="item.quantity"
               thumb-class="goods-image"
@@ -188,6 +186,18 @@ export default {
             this.currentPayAmount = res.data.result.currentPayAmount;
             this.originPayAmount = res.data.result.originPayAmount;
             this.currentShippingFee = res.data.result.currentShippingFee;
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              icon: "none",
+              duration: 2000,
+              mask: true
+            });
+            setTimeout(() => {
+              wx.navigateBack({
+                delta: 1
+              });
+            }, 1000);
           }
           wx.hideLoading();
         })
@@ -215,6 +225,18 @@ export default {
             this.currentPayAmount = res.data.result.currentPayAmount;
             this.originPayAmount = res.data.result.originPayAmount;
             this.currentShippingFee = res.data.result.currentShippingFee;
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              icon: "none",
+              duration: 2000,
+              mask: true
+            });
+            setTimeout(() => {
+              wx.navigateBack({
+                delta: 1
+              });
+            }, 1000);
           }
           wx.hideLoading();
         })
@@ -243,25 +265,29 @@ export default {
           value: 2
         }
       ],
-      //支付方式
+      //百团支付方式
+      // payObj: {
+      //   name: "联盟券",
+      //   value: 12
+      // },
+      // 时刻支付方式
       payObj: {
-        name: "联盟券",
-        value: 12
+        name: "微信",
+        value: 4
       },
-      paySheetShow:false,
+      paySheetShow: false,
       payOption: [
         {
           name: "微信",
           value: 4
-        },
-        {
-          name: "联盟券",
-          value: 12
         }
+        // {
+        //   name: "联盟券",
+        //   value: 12
+        // }
       ],
       //  联盟券
       scoreAmount: 0,
-      payRadio: "12",
 
       addressId: "",
       openId: "",
@@ -302,13 +328,6 @@ export default {
       this.paySheetShow = false;
       // console.log(this.deliveryObj);
     },
-    // 支付状态改变
-    typeChange(val) {
-      this.payRadio = val.mp.detail;
-      if (this.scoreAmount <= 0) {
-        return (this.payRadio = "4");
-      }
-    },
 
     //获取收货地址列表
     getDefaultAddress() {
@@ -334,7 +353,7 @@ export default {
           expectDeliveryTime: "",
           memberId: this.userInfo.memberId,
           orderLines: [],
-          paymentType: this.payRadio,
+          paymentType: this.payObj.value,
           shppingAddressId: "", //地址
           captainId: "", //团长ID
           type: 1 //type为1是从商品详情页面进入  2是购物车中进入
@@ -383,7 +402,7 @@ export default {
                   title: "校验支付状态...", //提示的内容,
                   mask: true //显示透明蒙层，防止触摸穿透,
                 });
-                //如果paymentType为  则是用积分支付 不调用微信支付接口
+                //如果paymentType为 12 则是用积分支付 不调用微信支付接口
                 if (params.paymentType == 12) {
                   toPay(params)
                     .then(res => {

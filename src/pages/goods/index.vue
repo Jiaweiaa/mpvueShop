@@ -21,14 +21,15 @@
         ￥{{goodsInfo.listPrice}}
         <span class="tag">优惠价</span>
       </p>
-      <div class="countDown">
-        <p class="title">距结束仅剩</p>
-        <div class="time">
+      <div class="countDown" v-if="timeFlag">
+        <p v-if="havaTimeFlag&&!textFlag" class="title">距结束仅剩</p>
+        <div class="time" v-if="havaTimeFlag&&!textFlag">
           <span>{{day}}</span>天
           <span>{{h}}</span>:
           <span>{{m}}</span>:
           <span>{{s}}</span>
         </div>
+        <p class="title" v-if="havaTimeFlag&&textFlag">活动已结束</p>
       </div>
     </div>
     <div class="goods-info">
@@ -36,9 +37,7 @@
         <button class="share" hover-class="none" open-type="share" value>分 享</button>
         <p class="title">{{goodsInfo.title}}</p>
         <div class="tags" v-if="goodsInfo!=null">
-          <span class="item" v-for="(tag,tagIndex) in goodsInfo.itemTags" :key="tagIndex">
-            {{tag}}
-          </span>
+          <span class="item" v-for="(tag,tagIndex) in goodsInfo.itemTags" :key="tagIndex">{{tag}}</span>
         </div>
         <p class="sketch">{{goodsInfo.sketch}}</p>
       </div>
@@ -188,7 +187,7 @@ export default {
     if (login()) {
       this.userInfo = login();
     }
-    this.countTime();
+
     wx.showLoading({
       title: "加载中",
       mask: true
@@ -236,10 +235,13 @@ export default {
       data: {},
       SKUResult: {},
       nowPrice: "--",
-      h:"",
-      m:"",
-      s:"",
-      day:""
+      h: "",
+      m: "",
+      s: "",
+      day: "",
+      timeFlag:false,//倒计时是否显示
+      havaTimeFlag:false,
+      textFlag:false,
     };
   },
   components: {
@@ -248,27 +250,34 @@ export default {
   methods: {
     //倒计时
     countTime: function() {
-      //获取当前时间
-      var date = new Date();
-      var now = date.getTime();
-      //设置截止时间
-      var endDate = new Date("2020-10-22 23:23:23");
-      var end = endDate.getTime();
-      //时间差
-      var leftTime = end - now;
-      //定义变量 d,h,m,s保存倒计时的时间
-      if (leftTime >= 0) {
-        this.day = Math.floor(leftTime / 1000 / 60 / 60 / 24);
-        this.h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
-        this.h<10?this.h = "0"+String(this.h):this.h=this.h;
-        this.m = Math.floor((leftTime / 1000 / 60) % 60);
-        this.m<10?this.m = "0"+String(this.m):this.m=this.m;
-        this.s = Math.floor((leftTime / 1000) % 60);
-        this.s<10?this.s = "0"+String(this.s):this.s=this.s;
+      if (this.goodsInfo.activeEndTime) {
+        //获取当前时间
+        var date = new Date();
+        var now = date.getTime();
+        //设置截止时间
+        var endDate = new Date("2019-07-12 10:29:20");
+        var end = endDate.getTime();
+        //时间差
+        var leftTime = end - now;
+        //定义变量 d,h,m,s保存倒计时的时间
+        if (leftTime >= 0) {
+          this.havaTimeFlag = true
+          this.timeFlag = true
+          this.day = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+          this.h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+          this.h < 10 ? (this.h = "0" + String(this.h)) : (this.h = this.h);
+          this.m = Math.floor((leftTime / 1000 / 60) % 60);
+          this.m < 10 ? (this.m = "0" + String(this.m)) : (this.m = this.m);
+          this.s = Math.floor((leftTime / 1000) % 60);
+          this.s < 10 ? (this.s = "0" + String(this.s)) : (this.s = this.s);
+        }else{
+          // this.havaTimeFlag = true;
+          this.textFlag = true;
+        }
+        // console.log(this.s);
+        //递归每秒调用countTime方法，显示动态时间效果
+        setTimeout(this.countTime, 1000);
       }
-      // console.log(this.s);
-      //递归每秒调用countTime方法，显示动态时间效果
-      setTimeout(this.countTime, 1000);
     },
 
     //跳转到首页
@@ -468,6 +477,7 @@ export default {
         .then(res => {
           if (res.data.code == "200") {
             wx.hideLoading();
+
             this.keys = [];
             const data = res.data.result;
             this.goods_desc = data.item.itemChannel.description; //详情描述富文本
@@ -514,6 +524,7 @@ export default {
                 };
               }
             });
+            this.countTime();
             this.queryDGoodsById();
           } else {
             wx.showToast({
@@ -530,7 +541,7 @@ export default {
         .catch(err => {
           wx.showToast({
             icon: "none",
-            title: "网络错误"
+            title: "商品状态异常"
           });
           setTimeout(() => {
             wx.navigateBack({

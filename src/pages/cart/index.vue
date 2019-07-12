@@ -1,9 +1,9 @@
 <template>
-  <div class="cart">
+  <div class="cart_main">
     <div class="top">
-      <div>30天无忧退货</div>
-      <div>48小时快速退款</div>
-      <div>满88元免邮费</div>
+      <div>时刻益每家商城</div>
+      <div>轻松购</div>
+      <div>乐享购</div>
     </div>
     <div class="cartlist" v-if="shopList!=null&&shopList.length>0">
       <!-- 分店铺形式的购物车列表 -->
@@ -38,10 +38,19 @@
                     style="width: 100%;"
                     :num="item.quantity"
                     :price="item.salePrice"
-                    desc="描述信息"
                     :title="item.itemTitle"
+                    title-class="goods-title"
                     :thumb="'http://qn.gaoshanmall.cn/'+item.imageUrl"
                   >
+                    <div slot="desc" class="goods-bottom">
+                      <div class="sketch">{{item.sketch}}</div>
+                      <div class="sketch">
+                        <span
+                          v-for="(property,proIndex) in item.saleProperties"
+                          :key="proIndex"
+                        >{{property}}&nbsp;</span>
+                      </div>
+                    </div>
                     <div slot="footer">
                       <!-- <div>￥  {{item.salePrice}}</div> -->
                       <van-stepper
@@ -243,7 +252,7 @@ export default {
     async getListData() {
       wx.showLoading({
         title: "加载中",
-        mask:true
+        mask: true
       });
       shoppingCartList()
         .then(res => {
@@ -364,7 +373,7 @@ export default {
   }
 };
 </script>
-<style lang='scss' scoped>
+<style lang='scss' >
 @import "./style";
 .deleteBtn {
   color: #fff !important;

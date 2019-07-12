@@ -229,6 +229,7 @@ export default {
           supSendConfrim({
             orderCodes: this.resultCheck
           }).then(res => {
+			console.log(res.data,'56780');
             this.getAllData();
           })
         }).catch(() => {
