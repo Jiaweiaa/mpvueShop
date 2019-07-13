@@ -57,7 +57,7 @@ export default {
       this.address = `${this.res.provinceName} ${this.res.cityName} ${this.res.countyName}`;
       this.detailadress = this.res.detailInfo;
     }
-    
+		this.id = '';
     if (this.$root.$mp.query.edit) {
       this.getDetail();
       wx.setNavigationBarTitle({
@@ -67,6 +67,7 @@ export default {
   },
   data() {
     return {
+      id: '',
       region: [],
       customItem: "",
       edit: "",

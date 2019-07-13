@@ -114,7 +114,7 @@
         myAmapFun.getRegeo({
           success: (data) =>{
             let str = data[0].regeocodeData.addressComponent.province + data[0].regeocodeData.addressComponent.city + data[0].regeocodeData.addressComponent.district;
-            wx.setStorageSync('address', str);
+            wx.setStorageSync('addressToBe', str);
             //成功回调
             this.cusLongitude = data[0].longitude + '';
             this.cusLatitude = data[0].latitude + '';

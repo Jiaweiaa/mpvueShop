@@ -74,7 +74,7 @@
     components: {},
 	  onShow() {
       if(wx.getStorageSync('address')) {
-        this.teamForm.city = wx.getStorageSync('address');
+        this.teamForm.city = wx.getStorageSync('addressToBe');
       }
 	  },
     methods: {
