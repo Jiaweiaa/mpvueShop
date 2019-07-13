@@ -72,7 +72,7 @@ export default {
             this.showFlag = false;
             this.listData = res.data.result;
             this.listData.map(v => {
-              this.$set(v, "dizhi", v.province + v.city + v.town + v.address);
+              this.$set(v, "dizhi", v.province + v.city + v.district + v.address);
             });
             for (let i = 0; i < this.listData.length; i++) {
               this.listData[i].name = this.listData[i].firstName;
