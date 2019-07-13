@@ -248,7 +248,6 @@ export default {
   },
   onHide(){
     this.selectSkuData = null;
-    console.log(21213, this.keys);
     this.keys.map(v => {
       v.isActiveC = false;
       v.value.map(vv => {
@@ -269,7 +268,6 @@ export default {
               title: "购买数量超过最大值",
               icon: "none"
             });
-            console.log(this.selectSkuData.quantity);
             this.goodsNum = this.selectSkuData.quantity;
           }
         }
@@ -405,11 +403,26 @@ export default {
     },
     //提交
     submit() {
-      
       if (this.flag == "buyNow") {
         if (toLogin()) {
           if (this.showpop) {
             if (this.selectSkuData != null) {
+              let num = 0;
+              this.keys.map(v => {
+                v.value.map(vv => {
+                  if(vv.isActiveC) {
+                    num += 1;
+                  }
+                })
+              });
+              if(num < this.keys.length) {
+                wx.showToast({
+                  title: "请选择商品规格",
+                  icon: "none",
+                  duration: 1500
+                });
+                return;
+              }
               let params = {
                 bundleGroup: "",
                 bundleId: "",
@@ -440,6 +453,22 @@ export default {
         if (toLogin()) {
           if (this.showpop) {
             if (this.selectSkuData != null) {
+              let num = 0;
+              this.keys.map(v => {
+                v.value.map(vv => {
+                  if(vv.isActiveC) {
+                    num += 1;
+                  }
+                })
+              });
+              if(num < this.keys.length) {
+                wx.showToast({
+                  title: "请选择商品规格",
+                  icon: "none",
+                  duration: 1500
+                });
+                return;
+              }
               let params = {
                 skuIdArray: [],
                 skuQtyArray: []
@@ -522,7 +551,6 @@ export default {
             });
             this.gallery = data.item.itemImages;
             this.goodsInfo = data.item;
-            console.log(this.goodsInfo, "999");
             // 商品数据渲染
             this.goodsList.map(v => {
               let data = {
