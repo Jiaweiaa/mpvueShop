@@ -3,7 +3,7 @@
     <van-notify id="van-notify" />
 
     <div class="search">
-      <div @click="toMappage">{{cityName}}</div>
+      <div >{{cityName}}</div>
       <div @click="toSearch">
         <input type="text" placeholder="点击搜索社区">
         <span class="icon"></span>

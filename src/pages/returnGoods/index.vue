@@ -17,7 +17,7 @@
       <van-steps custom-class="stepStyle" :steps="steps" :active="active"/>
     </div>
 
-    <div class="codeSession">
+    <!-- <div class="codeSession">
       <div class="title">退货说明</div>
       <div class="content">
         <div>
@@ -43,7 +43,7 @@
           <span></span>请与商家确认真实的退货物流信息，逾期未确认申请将关闭。
         </li>
       </ul>
-    </div>
+    </div> -->
 
     <div class="codeSession">
       <div class="title">退款信息</div>
@@ -57,7 +57,7 @@
           :title="item.itemName"
           :thumb="'http://qn.gaoshanmall.cn/'+ item.itemImg"
         >
-          <view slot="footer">退货数量:{{item.refundNum}}</view>
+          <view style="color:#666;font-size:24rpx;" slot="footer">退货数量:{{item.refundNum}}</view>
         </van-card>
       </div>
       <div class="cardType">
@@ -67,18 +67,18 @@
         </p>
         <p>
           <span>申请退款金额</span>
-          {{pageData.myApplyRefundAmount}}
+          ￥{{pageData.myApplyRefundAmount}}
         </p>
-        <p>
+        <p v-if="pageData.myActualRefundAmount!=null">
           <span>实际退款金额</span>
-          {{pageData.myActualRefundAmount}}
+           ￥{{pageData.myActualRefundAmount}}
         </p>
         <p>
           <span>退款说明</span>
-          {{pageData.myRemark}}
+          {{pageData.myRemark==null?'无':pageData.myRemark}}
         </p>
         <p>
-          <span>申请时间:{{pageData.myReCreateTime}}</span>
+          <span>申请时间:{{pageData.myReCreateTime==null?'无':pageData.myReCreateTime}}</span>
         </p>
         <p>
           <span>退款编号</span>

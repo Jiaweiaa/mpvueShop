@@ -10,6 +10,42 @@
   margin-top: 40rpx;
   margin-left: 50rpx;
 }
+.countDown {
+  margin-top: 50rpx;
+  .title {
+    color: #fff;
+    font-size: 22rpx;
+    text-align: center;
+    font-weight: 400;
+    margin-bottom: 5rpx;
+  }
+
+  .time {
+    display: flex;
+    align-items: center;
+    height: 30rpx;
+    color: #ffff;
+    span {
+      display: block;
+      height: 30rpx;
+      border-radius: 4rpx;
+      width: 40rpx;
+      text-align: center;
+      font-size: 22rpx;
+      line-height: 30rpx;
+      background: #fff;
+      color: #000;
+    }
+  }
+}
+.position{
+  position: absolute;
+  top: 180rpx;
+  display: flex;
+  justify-content: center;
+  color: #fff;
+  width: 100%;
+}
 #orderPop {
   .van-radio {
     justify-content: flex-end !important;

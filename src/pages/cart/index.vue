@@ -1,7 +1,7 @@
 <template>
   <div class="cart_main">
     <div class="top">
-      <div>时刻益每家商城</div>
+      <div>时刻益每家</div>
       <div>轻松购</div>
       <div>乐享购</div>
     </div>
@@ -57,6 +57,7 @@
                         v-model="item.quantity"
                         @plus="plusGoodsNum(item)"
                         @minus="minusGoodsNum(item)"
+                        :disable-input="true"
                         async-change
                         integer
                         :min="1"
@@ -155,6 +156,7 @@ export default {
   },
   components: {},
   methods: {
+   
     //跳转到商城首页
     toIndex() {
       wx.switchTab({
@@ -163,7 +165,6 @@ export default {
     },
     // 加商品
     plusGoodsNum(goods) {
-      console.log(goods);
       goods.quantity++;
       updateShoppingcart(goods)
         .then(res => {
@@ -171,6 +172,10 @@ export default {
           if (res.data.code != "200") {
             // this.$toast(res.data.message);
             goods.quantity -= 1;
+            wx.showToast({
+              title:res.data.message,
+              icon:'none'
+            })
           }
         })
         .catch(error => {

@@ -7,8 +7,32 @@
     >
       <h3>
         <van-icon custom-class="colorW" name="underway" />
-        <span>待付款</span>
+        <span>{{detailData.title}}</span>
       </h3>
+      <div class="countDown">
+        <div class="title">
+          <span>您于{{detailData.orderVo.createTime}}下单</span>
+        </div>
+        <div class="title">
+          <span>请于{{detailData.orderVo.willCancelTime}}前支付,否则订单将自动取消</span>
+        </div>
+      </div>
+      <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
+    </div>
+    <!-- 取消订单 -->
+    <div
+      class="bg"
+      v-if=" detailData.orderVo.logisticsStatus == '9'||detailData.orderVo.logisticsStatus == '10'&&detailData.orderVo.financialStatus==1"
+    >
+      <h3>
+        <van-icon custom-class="colorW" name="underway" />
+        <span>{{detailData.title}}</span>
+      </h3>
+      <div class="countDown">
+        <div class="title">
+          <span>您于{{detailData.orderVo.cancelTime}}以"{{detailData.orderVo.cancelReason}}"为由取消订单</span>
+        </div>
+      </div>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
     <!-- 待发货 -->
@@ -18,7 +42,16 @@
     >
       <h3>
         <van-icon custom-class="colorW" name="underway" />
-        <span>待发货</span>
+        <span>{{detailData.title}}</span>
+        <!-- 申请取消订单 -->
+        <div
+          class="countDown"
+          v-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type=='3'"
+        >
+          <div class="title">
+            <span>您于{{detailData.refundProcessing.createTime}}以"{{detailData.refundProcessing.reason}}"为由申请取消订单</span>
+          </div>
+        </div>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
@@ -29,7 +62,7 @@
     >
       <h3>
         <van-icon custom-class="colorW" name="underway" />
-        <span>待收货</span>
+        <span>{{detailData.title}}</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
@@ -37,7 +70,7 @@
     <div class="bg" v-else-if="detailData.newestRefund!=null&&detailData.orderVo.type=='3'">
       <h3>
         <van-icon custom-class="colorW" name="underway" />
-        <span>取消订单：正在处理申请</span>
+        <span>取消订单：正在处理</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
@@ -86,10 +119,28 @@
     <div class="bg" v-else-if="detailData.orderVo.logisticsStatus == 15">
       <h3>
         <van-icon custom-class="colorW" name="underway" />
-        <span>已完成</span>
+        <span>{{detailData.title }}</span>
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
+    <div class="position">
+      <span v-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type==3">取消订单:正在处理中</span>
+      <!-- 退货 -->
+      <span
+        v-if="detailData.newestRefund!=null&&detailData.newestRefund.type==1 && detailData.newestRefund.status!=2 && (detailData.newestRefund.status!=4 && detailData.newestRefund.status!=9 && detailData.newestRefund.status!=10)"
+      >退货状态：{{detailData.refundTitle}}</span>
+      <span
+        v-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type==1 && (detailData.refundProcessing.status!=2 && detailData.refundProcessing.status!=4 && detailData.refundProcessing.status!=9 && detailData.refundProcessing.status!=10)"
+      >退货状态：{{detailData.refundTitle}}</span>
+      <!-- 换货 -->
+      <span
+        v-if="detailData.newestRefund!=null&&detailData.newestRefund.type==2 &&  (detailData.newestRefund.status!=2 && detailData.newestRefund.status!=4 && detailData.newestRefund.status!=9 &&detailData.newestRefund.status!=10)"
+      >换货状态：{{detailData.refundTitle}}</span>
+      <span
+        v-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type==2 &&  (detailData.refundProcessing.status!=2 && detailData.refundProcessing.status!=4 && detailData.refundProcessing.status!=9 &&detailData.refundProcessing.status!=10)"
+      >换货状态：{{detailData.refundTitle}}</span>
+    </div>
+
     <!-- 第一个板块 -->
     <div class="info">
       <div class="header">
@@ -185,7 +236,7 @@
                   <span style="font-size:23rpx;">￥{{goods.salePrice}}</span>
                   <!-- <span
                     style="text-decoration:line-through;color:#999;font-size:22rpx;"
-                  >￥{{goods.listPrice}}</span> -->
+                  >￥{{goods.listPrice}}</span>-->
                 </p>
               </div>
               <div class="goods-num">
@@ -312,16 +363,27 @@ let querystring = require("querystring");
 let deviceId = new Date().getTime();
 export default {
   onLoad: function(options) {
-    let params = {
-      id:options.id
+    this.orderObj.id = options.id;
+
+    // let params = {
+    //   id:options.id
+    // }
+    if (options.capationFlag) {
+      // params.capationFlag = options.capationFlag;
+      this.orderObj.capationFlag = options.capationFlag;
     }
-    if(options.capationFlag){
-      params.capationFlag = options.capationFlag;
-    }
+  },
+  onShow() {
+    let params = Object.assign({}, this.orderObj);
     orderDetail(params)
       .then(res => {
         if (res.data.code == 200) {
           this.detailData = res.data.result;
+          // if (this.detailData != null) {
+          //   if (this.detailData.orderVo.willCancelTime != null) {
+          //     this.countTime();
+          //   }
+          // }
 
           // this.detailData.title = this.detailData.displayOrderStatusTips;
           this.$set(
@@ -329,6 +391,16 @@ export default {
             "title",
             this.detailData.displayOrderStatusTips
           );
+          if (
+            this.detailData.displayRefundTips &&
+            this.detailData.displayRefundTips != null
+          ) {
+            this.$set(
+              this.detailData,
+              "refundTitle",
+              this.detailData.displayRefundTips
+            );
+          }
           this.$set(this.detailData, "orCode", this.detailData.orcode);
 
           this.detailData.eventList.map(event => {
@@ -362,10 +434,18 @@ export default {
       })
       .catch(err => {});
   },
-  onShow() {},
   created() {},
   data() {
     return {
+      h: "",
+      m: "",
+      s: "",
+      day: "",
+      timeFlag: false, //倒计时是否显示
+      textFlag: false,
+      orderObj: {
+        id: ""
+      },
       detailData: null, //订单信息
       reason: "我不想买了",
       orderShow: false, //弹出层是否显示
@@ -383,6 +463,36 @@ export default {
   },
   components: {},
   methods: {
+    //倒计时
+    countTime: function() {
+      if (this.detailData.orderVo.willCancelTime) {
+        //获取当前时间
+        var date = new Date();
+        var now = date.getTime();
+        //设置截止时间
+        var endDate = new Date(this.detailData.orderVo.willCancelTime);
+        var end = endDate.getTime();
+        //时间差
+        var leftTime = end - now;
+        //定义变量 d,h,m,s保存倒计时的时间
+        if (leftTime >= 0) {
+          this.timeFlag = true;
+          this.day = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+          this.h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+          this.h < 10 ? (this.h = "0" + String(this.h)) : (this.h = this.h);
+          this.m = Math.floor((leftTime / 1000 / 60) % 60);
+          this.m < 10 ? (this.m = "0" + String(this.m)) : (this.m = this.m);
+          this.s = Math.floor((leftTime / 1000) % 60);
+          this.s < 10 ? (this.s = "0" + String(this.s)) : (this.s = this.s);
+        } else {
+          // this.havaTimeFlag = true;
+          this.textFlag = true;
+        }
+        // console.log(this.s);
+        //递归每秒调用countTime方法，显示动态时间效果
+        setTimeout(this.countTime, 1000);
+      }
+    },
     //删除订单
     deleteOrder() {
       wx.showModal({
@@ -440,7 +550,7 @@ export default {
     //申请取消订单
     applyCancel() {
       wx.showLoading({
-        title: '加载中'
+        title: "加载中"
       });
       applyCancelOrder({
         orderId: this.detailData.orderVo.id,
@@ -593,7 +703,7 @@ export default {
     //取消订单
     cancelOrder() {
       wx.showLoading({
-        title: '加载中'
+        title: "加载中"
       });
       if (this.from == "cancle") {
         cancleOrder({

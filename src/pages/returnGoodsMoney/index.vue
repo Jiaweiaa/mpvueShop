@@ -7,10 +7,10 @@
       <div class="message">申请时间:&nbsp;{{pageData.myReCreateTime}}</div>
     </div>
 
-    <div class="codeSession">
+    <!-- <div class="codeSession">
       <div class="title">退款进度</div>
       <van-steps custom-class="stepStyle" :steps="steps" :active="active"/>
-    </div>
+    </div> -->
 
     <div class="codeSession">
       <div class="title">退款信息</div>

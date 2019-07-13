@@ -75,7 +75,7 @@ export default {
     window: {
       backgroundTextStyle: "light",
       navigationBarBackgroundColor: "#fff",
-      navigationBarTitleText: "时刻益每佳商城",
+      navigationBarTitleText: "时刻益每佳",
       navigationBarTextStyle: "black"
     },
     tabBar: {

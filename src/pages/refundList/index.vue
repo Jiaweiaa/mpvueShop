@@ -1,57 +1,59 @@
 <template>
-  <div class="myOrder">
-    <noDataView v-if="(list.length <=0  && onLoadLoading == false)"></noDataView>
-    <view class="section" v-else>
-      <div
-        v-for="(value,index) in list"
-        v-show="list!=null&&list.length>0"
-        :key="index"
-        @click="detailOrder(value)"
-      >
-        <div class="top border-bottom" style="overflow: hidden;">
-          <div
-            style="height: 30px; line-height: 30px; font-size: 12px; width: 70%; float: left; margin-left: 10px; margin-top: 10px;"
-          >订单编号: {{value.orderCode}}</div>
-          <div
-            v-if="value.reType=='1'"
-            class="order-ok"
-            style="width: calc(30% - 20px); float: right; padding-right: 10px; margin-top: 10px; font-size: 13px; text-align: right;"
-          >退货退款</div>
-          <div
-            v-if="value.reType=='2'"
-            class="order-ok"
-            style="width: calc(30% - 20px); float: right; padding-right: 10px; margin-top: 10px; font-size: 13px; text-align: right;"
-          >换货</div>
-          <div
-            class="order-ok"
-            v-if="value.reType=='3'"
-            style="width: calc(30% - 20px); float: right; padding-right: 10px; margin-top: 10px; font-size: 13px; text-align: right;"
-          >仅退款</div>
-        </div>
+  <div class="refund_list">
+    <div class="myOrder">
+      <noDataView v-if="(list.length <=0  && onLoadLoading == false)"></noDataView>
+      <view class="section" v-else>
         <div
-          class="timer bottom border-top"
-          style="height: 30px; line-height: 30px; font-size: 13px; margin-left: 10px; margin-bottom: 10px;"
-        >创建时间: {{value.createTime}}</div>
-        <div v-for="(val,childIndex) in value.orderLines" :key="childIndex">
-          <van-card
-            :num="val.quantity"
-            :price="val.salePrice"
-            :title="val.itemName"
-            :thumb="'http://qn.gaoshanmall.cn/'+val.itemImg"
-          ></van-card>
+          v-for="(value,index) in list"
+          v-show="list!=null&&list.length>0"
+          :key="index"
+          @click="detailOrder(value)"
+        >
+          <div class="top border-bottom" style="overflow: hidden;">
+            <div
+              style="height: 30px; line-height: 30px; font-size: 12px; width: 70%; float: left; margin-left: 10px; margin-top: 10px;"
+            >订单编号: {{value.orderCode}}</div>
+            <div
+              v-if="value.reType=='1'"
+              class="order-ok"
+              style="width: calc(30% - 20px); float: right; padding-right: 10px; margin-top: 10px; font-size: 13px; text-align: right;"
+            >退货退款</div>
+            <div
+              v-if="value.reType=='2'"
+              class="order-ok"
+              style="width: calc(30% - 20px); float: right; padding-right: 10px; margin-top: 10px; font-size: 13px; text-align: right;"
+            >换货</div>
+            <div
+              class="order-ok"
+              v-if="value.reType=='3'"
+              style="width: calc(30% - 20px); float: right; padding-right: 10px; margin-top: 10px; font-size: 13px; text-align: right;"
+            >仅退款</div>
+          </div>
+          <div
+            class="timer bottom border-top"
+            style="height: 30px; line-height: 30px; font-size: 13px; margin-left: 10px; margin-bottom: 10px;"
+          >创建时间: {{value.createTime}}</div>
+          <div v-for="(val,childIndex) in value.orderLines" :key="childIndex">
+            <van-card
+              :num="val.quantity"
+              :price="val.salePrice"
+              :title="val.itemName"
+              :thumb="'http://qn.gaoshanmall.cn/'+val.itemImg"
+            ></van-card>
+            
+          </div>
         </div>
-      </div>
-      <div style="width: 100%; text-align: center;margin-top: 5px;">
-        <div class="title" v-if="allCount!=''&&list.length >= allCount && list.length > 0">
-          <span>—</span>
-          <span>我也是有底线的</span>
-          <span>—</span>
+        <div style="width: 100%; text-align: center;margin-top: 5px;">
+          <div class="title" v-if="allCount!=''&&list.length >= allCount && list.length > 0">
+            <span>—</span>
+            <span>我也是有底线的</span>
+            <span>—</span>
+          </div>
         </div>
-      </div>
-    </view>
+      </view>
 
-    <!-- 弹出层 -->
-    <!-- <van-popup :show="reasonShow" id="reasonPop" position="bottom" @close="popClose">
+      <!-- 弹出层 -->
+      <!-- <van-popup :show="reasonShow" id="reasonPop" position="bottom" @close="popClose">
       <van-radio-group :value="reason" @change="onChange" >
         <van-cell-group>
           <van-cell
@@ -68,7 +70,8 @@
         </van-cell-group>
       </van-radio-group>
       <button class="popBtn" @click="cancelOrder">提交</button>
-    </van-popup>-->
+      </van-popup>-->
+    </div>
   </div>
 </template>
 
@@ -121,7 +124,7 @@ export default {
     } else {
       this.pageNum++;
       wx.showLoading({
-        title: '加载中'
+        title: "加载中"
       });
       this.onLoadLoading = true;
       let params = {
@@ -132,7 +135,7 @@ export default {
       // 1是立即支付  2是取消订单 3查看详情 4查看物流
       findAllRefundOrders(params)
         .then(res => {
-          this.list = res.data.result.records;
+          this.list = this.list.concat(res.data.result.records);
           this.allCount = res.data.result.total;
           wx.hideLoading();
           wx.stopPullDownRefresh(); //停止下拉刷新
@@ -167,7 +170,7 @@ export default {
     //取消订单
     cancelOrder() {
       wx.showLoading({
-        title: '加载中'
+        title: "加载中"
       });
       cancleOrder({ orderCode: this.scmCode, reason: this.reason })
         .then(res => {
@@ -216,7 +219,7 @@ export default {
     //获取退换货订单
     getRefundList() {
       wx.showLoading({
-        title: '加载中'
+        title: "加载中"
       });
       this.onLoadLoading = true;
       let params = {
@@ -246,7 +249,7 @@ export default {
         wx.navigateTo({
           url: "/pages/returnGoods/main?code=" + val.reCode
         });
-      }else if(val.reType=='3'){
+      } else if (val.reType == "3") {
         wx.navigateTo({
           url: "/pages/returnGoodsMoney/main?code=" + val.reCode
         });
@@ -264,54 +267,5 @@ export default {
 };
 </script>
 <style lang='scss'>
-#reasonPop {
-  .van-radio {
-    justify-content: flex-end !important;
-  }
-  .van-radio__icon--checked {
-    background-color: rgb(214, 70, 60) !important;
-    border-color: rgb(214, 70, 60) !important;
-    color: #fff !important;
-  }
-  .radioLabel {
-    color: #fff !important;
-  }
-  .popBtn {
-    width: 100%;
-    height: 85rpx;
-    font-size: 30rpx;
-    color: #000;
-    line-height: 85rpx;
-    border-radius: 0;
-    background: linear-gradient(70deg, rgb(214, 70, 60), red);
-    color: #fff;
-  }
-}
-.tabClass {
-  flex-basis: 20% !important;
-}
-.scroll-view-item {
-  width: 100%;
-  height: 200px;
-}
-.myOrder {
-  background: #fafafa;
-}
-.childBtn {
-  margin: 0 8px;
-}
-.title {
-  text-align: center;
-  padding: 20 rpx 0;
-  width: 100%;
-  margin-bottom: 10px;
-  span:nth-child(2) {
-    font-size: 24rpx;
-    color: #333;
-    padding: 0 10rpx;
-  }
-  span:nth-child(2n + 1) {
-    color: #999;
-  }
-}
+@import "./style";
 </style>

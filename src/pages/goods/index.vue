@@ -130,6 +130,7 @@
           @plus="plusGoodsNum()"
           @minus="minusGoodsNum()"
           async-change
+          @change="valueChange"
           :step="1"
           :min="1"
           :value="goodsNum"
@@ -239,15 +240,38 @@ export default {
       m: "",
       s: "",
       day: "",
-      timeFlag:false,//倒计时是否显示
-      havaTimeFlag:false,
-      textFlag:false,
+      timeFlag: false, //倒计时是否显示
+      havaTimeFlag: false,
+      textFlag: false
     };
   },
   components: {
     wxParse
   },
   methods: {
+    valueChange(e) {
+      // console.log(e.mp.detail);
+      if (this.selectSkuData) {
+        if (e.mp.detail == "") {
+          this.goodsNum = 1;
+        } else {
+          this.goodsNum = e.mp.detail;
+          if (this.goodsNum > this.selectSkuData.quantity) {
+            wx.showToast({
+              title: "购买数量超过最大值",
+              icon: "none"
+            });
+            console.log(this.selectSkuData.quantity);
+            this.goodsNum = this.selectSkuData.quantity;
+          }
+        }
+      } else {
+        wx.showToast({
+          title: "请选择商品规格",
+          icon: "none"
+        });
+      }
+    },
     //倒计时
     countTime: function() {
       if (this.goodsInfo.activeEndTime) {
@@ -255,14 +279,14 @@ export default {
         var date = new Date();
         var now = date.getTime();
         //设置截止时间
-        var endDate = new Date("2019-07-12 10:29:20");
+        var endDate = new Date(this.goodsInfo.activeEndTime);
         var end = endDate.getTime();
         //时间差
         var leftTime = end - now;
         //定义变量 d,h,m,s保存倒计时的时间
         if (leftTime >= 0) {
-          this.havaTimeFlag = true
-          this.timeFlag = true
+          this.havaTimeFlag = true;
+          this.timeFlag = true;
           this.day = Math.floor(leftTime / 1000 / 60 / 60 / 24);
           this.h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
           this.h < 10 ? (this.h = "0" + String(this.h)) : (this.h = this.h);
@@ -270,7 +294,7 @@ export default {
           this.m < 10 ? (this.m = "0" + String(this.m)) : (this.m = this.m);
           this.s = Math.floor((leftTime / 1000) % 60);
           this.s < 10 ? (this.s = "0" + String(this.s)) : (this.s = this.s);
-        }else{
+        } else {
           // this.havaTimeFlag = true;
           this.textFlag = true;
         }

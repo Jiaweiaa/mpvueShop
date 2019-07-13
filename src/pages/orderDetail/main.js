@@ -6,7 +6,7 @@ app.$mount();
 export default {
   config: {
     navigationBarTitleText: "订单详情",
-    enablePullDownRefresh: true,
+    enablePullDownRefresh: false,
     usingComponents: {
       "van-tab": "/static/vant/tab/index",
       "van-tabs": "/static/vant/tabs/index",
