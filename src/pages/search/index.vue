@@ -499,7 +499,6 @@ export default {
     async getHotData() {
       const data = await getKeyword();
       this.hotData = data.data.result;
-      this.historyData = [];
     },
 
     topicDetail(id) {
