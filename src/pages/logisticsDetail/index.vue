@@ -8,7 +8,7 @@
 import { host } from "../../utils";
 import { orderDetail } from "../../api/order";
 export default {
-  created() {
+  onShow() {
     orderDetail({ id: "42" })
       .then(res => {
         console.log(res.data, "678");

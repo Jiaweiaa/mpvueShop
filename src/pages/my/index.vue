@@ -2,17 +2,19 @@
   <div class="my">
     <div class="myinfo">
       <div class="avatar" style="width: 130rpx;height: 130rpx;border-radius: 50%;overflow: hidden;">
-        <open-data style="width:130rpx;height:130rpx;border-raduis:50%;" type="userAvatarUrl"></open-data>
+        <img v-if="userInfo.avatar" style="width:130rpx;height:130rpx;border-raduis:50%;" :src="'https:'+userInfo.avatar"/>
+        <img v-else style="width:130rpx;height:130rpx;border-raduis:50%;" src="https://dwz.cn/N1nmqNcq"/>
       </div>
       <div class="user">
         <div class v-if="userInfo.nickname">
           <p>{{userInfo.nickname}}</p>
-          <p style="color:#fff;">
-            <open-data type="userProvince" lang="zh_CN"></open-data>省
-            <open-data type="userCity" lang="zh_CN"></open-data>市
-          </p>
+          <p>欢迎您,时刻益每家会员</p>
+          <!-- <p style="color:#fff;">
+            <span ></span>省
+            <span type="userCity" lang="zh_CN"></span>市
+          </p> -->  
         </div>
-        <p v-else @click="goToLogin">点击登录</p>
+        <p v-else @click="goToLogin">点我登录</p>
       </div>
       <div class="refresh">
         <button @click="goToLogin()">

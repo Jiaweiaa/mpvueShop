@@ -127,8 +127,7 @@
         <p style="margin-left:30px;font-size:16px;">我要买:</p>
         <van-stepper
           style="margin-right:30px;"
-          @plus="plusGoodsNum()"
-          @minus="minusGoodsNum()"
+         
           async-change
           @change="valueChange"
           :step="1"
@@ -136,7 +135,7 @@
           :value="goodsNum"
         />
       </div>
-      <!-- <div v-if="selectSkuData!=null" style="margin-left:30px;color:#ccc;font-size:14px;">商品剩余数量:{{selectSkuData.quantity}}</div> -->
+      
       <div class="handle">
         <van-button type="danger" size="large" custom-class="buyBtn" @click="submit()">确定</van-button>
       </div>
@@ -183,12 +182,11 @@ import {
   orderconfirm
 } from "../../api/shoppingcart";
 export default {
-  onReady() {
+  onShow() {
     //判断是否登录获取用户信息
     if (login()) {
       this.userInfo = login();
     }
-
     wx.showLoading({
       title: "加载中",
       mask: true
@@ -247,6 +245,16 @@ export default {
   },
   components: {
     wxParse
+  },
+  onHide(){
+    this.selectSkuData = null;
+    console.log(21213, this.keys);
+    this.keys.map(v => {
+      v.isActiveC = false;
+      v.value.map(vv => {
+        vv.isActiveC = false;
+      })
+    })
   },
   methods: {
     valueChange(e) {
@@ -397,6 +405,7 @@ export default {
     },
     //提交
     submit() {
+      
       if (this.flag == "buyNow") {
         if (toLogin()) {
           if (this.showpop) {

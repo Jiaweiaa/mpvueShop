@@ -7,7 +7,7 @@
       <img src="/static/images/shike_logo.jpeg" alt="">
     </div>
     <van-cell-group>
-      <van-field
+      <!-- <van-field
         v-model="mobile"
         center
         clearable
@@ -17,10 +17,11 @@
         use-button-slot
         @change="mobileChange"
       >
-        <!-- <van-button slot="button" size="small" type="primary" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取本机号码</van-button> -->
-      </van-field>
+        <van-button slot="button" size="small" type="primary" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取本机号码</van-button>
+      </van-field> -->
     </van-cell-group>
-    <button class="login-btn" open-type="getUserInfo" lang="zh_CN" @getuserinfo="signIn">注册</button>
+    <p class="join">欢迎加入时刻益每家!轻松购!乐享购!</p>
+    <button class="login-btn" open-type="getUserInfo" lang="zh_CN" @getuserinfo="signIn">点击授权</button>
   </div>
 </template>
 
