@@ -27,7 +27,7 @@
           <div class="addresslist">
             <div>
               <span>{{address.firstName}}</span>
-              <div class="moren">默认</div>
+              <div class="moren" v-if="address.defalutFlag">默认</div>
             </div>
             <div class="info">
               <p>{{address.mobile}}</p>
@@ -131,7 +131,6 @@ import {
   getMemberAmount,
   detailOrderconfirm
 } from "../../api/shoppingcart";
-import { getMemAddressList } from "../../api/address";
 import { get, post, login, getStorageOpenid } from "../../utils";
 import { createOrder, toPay, afterOrderDetail } from "../../api/order";
 import Toast from "../../../static/vant/toast/toast";
@@ -139,20 +138,29 @@ import fly from "../../api/request";
 let querystring = require("querystring");
 let deviceId = new Date().getTime();
 export default {
+  onHide() {
+    wx.setStorageSync("orderAdress", "");
+  },
+  onUnload() {
+    wx.setStorageSync("orderAdress", "");
+  },
   onShow() {
-    this.getDefaultAddress();
     getMemberAmount().then(res => {
       this.scoreAmount = res.data.result.scoreAmount;
       if (this.scoreAmount <= 0) {
         this.payObj.value = 4;
       }
     });
+
     if (wx.getStorageSync("orderFrom") && wx.getStorageSync("orderParams")) {
       this.from = wx.getStorageSync("orderFrom");
       this.params = JSON.parse(wx.getStorageSync("orderParams"));
     }
     if (wx.getStorageSync("userInfo")) {
       this.userInfo = Object.assign({}, wx.getStorageSync("userInfo"));
+    }
+    if (wx.getStorageSync("orderAdress") != "") {
+      this.address = Object.assign({}, wx.getStorageSync("orderAdress"));
     }
     // wx.getStorageSync({
     //   key: "data",
@@ -162,7 +170,7 @@ export default {
     //   }
     // });
     this.captainId = wx.getStorageSync("data").id;
-    console.log(this.captainId, "888");
+    // console.log(this.captainId, "888");
     wx.showLoading({
       title: "获取订单信息..", //提示的内容,
       mask: true //显示透明蒙层，防止触摸穿透,
@@ -173,6 +181,19 @@ export default {
       ShopCartOrderconfirm(params)
         .then(res => {
           if (res.data.code == "200") {
+            //地址信息赋值
+            if (this.address == null) {
+              let addressObj = res.data.result.shippingAddressVo;
+              if (addressObj.defaultMemberAddress) {
+                this.address = Object.assign(
+                  {},
+                  addressObj.defaultMemberAddress
+                );
+              } else if (addressObj.shippingAddress) {
+                this.address = Object.assign({}, addressObj.shippingAddress);
+              }
+            }
+
             //商品信息赋值
             this.orderLines = [];
             this.shopList = res.data.result.storeShoppingCartLineDtos;
@@ -208,10 +229,22 @@ export default {
       //321321321321321
     } else if (this.from == "goodsDetail") {
       let params = this.params;
-      //3213211111
       detailOrderconfirm(params)
         .then(res => {
           if (res.data.code == "200") {
+            //地址信息赋值
+            if (this.address == null) {
+              let addressObj = res.data.result.shippingAddressVo;
+              if (addressObj.defaultMemberAddress) {
+                this.address = Object.assign(
+                  {},
+                  addressObj.defaultMemberAddress
+                );
+              } else if (addressObj.shippingAddress) {
+                this.address = Object.assign({}, addressObj.shippingAddress);
+              }
+            }
+
             //商品信息赋值
             this.orderLines = [];
             this.shopList = res.data.result.storeShoppingCartLineDtos;
@@ -329,18 +362,6 @@ export default {
       // console.log(this.deliveryObj);
     },
 
-    //获取收货地址列表
-    getDefaultAddress() {
-      getMemAddressList().then(res => {
-        if (res.data.code == 200) {
-          res.data.result.map(v => {
-            if (v.defalutFlag) {
-              this.address = v;
-            }
-          });
-        }
-      });
-    },
     //支付方法
     pay() {
       if (this.from != "") {
@@ -441,7 +462,6 @@ export default {
                   //4是调用微信支付
                   toPay(params)
                     .then(res => {
-                     
                       //如果调用toPay方法成功 则拉起微信登录方法获取code传给后台并调用
                       if (res.data.code == "200") {
                         let params = {
@@ -521,7 +541,7 @@ export default {
                             }
                           },
                           fail: err => {
-                             wx.hideLoading();
+                            wx.hideLoading();
                             console.log(err, 222);
                           }
                         });

@@ -9,7 +9,7 @@
               <span>{{item.firstName}}</span>
               <div v-if="item.defalutFlag" class="moren">默认</div>
             </div>
-            <div @click="selAddress(item.id)" class="info">
+            <div @click="selAddress(item)" class="info">
               <p>{{item.mobile}}</p>
               <p>{{item.dizhi}}</p>
             </div>
@@ -47,8 +47,8 @@ export default {
   },
   components: {},
   methods: {
-    selAddress(id) {
-      wx.setStorageSync("addressId", id);
+    selAddress(address) {
+      wx.setStorageSync("orderAdress", address);
       // wx.redirectTo({ url: "/pages/order/main?id=" + id });
       wx.navigateBack({
         delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
@@ -56,7 +56,7 @@ export default {
     },
     toDetail(item) {
       // console.log(id);
-      wx.setStorageSync("address", item);
+      wx.setStorageSync("orderAdress", item);
       wx.navigateTo({
         url: "/pages/addaddress/main?edit=true"
       });
