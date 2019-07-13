@@ -21,7 +21,10 @@
           </van-panel>
           <van-collapse :value="activeName" @change="onChange">
             <van-collapse-item name="1">
-              <view slot="title">待发货总览</view>
+              <view slot="title">
+	              待发货总览
+              </view>
+	            <span style="font-size: 14px;margin-left: 5px;margin-bottom: 5px;">待发货总览</span>
               <van-card
                 v-for="(item, index) in overviewData"
                 :key="index"
@@ -84,11 +87,9 @@
           <van-collapse :value="activeName" @change="onChange">
             <van-collapse-item name="1">
               <view slot="title">
-	              <view slot="title">
-		              待发货总览
-	              </view>
+	              已发货总览
               </view>
-              <span style="font-size: 14px;margin-left: 5px;margin-bottom: 5px;">待发货总览</span>
+              <span style="font-size: 14px;margin-left: 5px;margin-bottom: 5px;">已发货总览</span>
               <van-card
                 v-for="(item, index) in overviewData"
                 :key="index"
