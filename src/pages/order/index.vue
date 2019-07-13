@@ -45,7 +45,7 @@
         <div>￥{{originPayAmount}}</div>
       </div>
       <div class="item" @click="paySheetShow=true">
-        <div>支付方式</div>
+        <div>选择支付方式</div>
         <div>{{payObj.name}}</div>
       </div>
       <div class="item" v-if="payObj.value==12">
@@ -53,7 +53,7 @@
         <div>余额&nbsp;{{scoreAmount}}</div>
       </div>
       <div class="item" @click="sheetShow=true">
-        <div>配送方式</div>
+        <div>选择配送方式</div>
         <div>{{deliveryObj.name}}</div>
       </div>
       <div class="item">
