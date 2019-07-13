@@ -36,13 +36,13 @@
 
 <script>
   import {
-    post,
     login,
   } from '../../utils'
   import {
     addSupplier
   } from '../../api/beTeam'
   import Toast from '../../../static/vant/toast/toast';
+  import amapFile from "../../utils/amap-wx";
   
   export default {
     mounted() {
@@ -65,13 +65,37 @@
       };
     },
     onShow() {
-      if(wx.getStorageSync('address')) {
-        this.teamForm.city = wx.getStorageSync('addressToBe');
-      }
+      this.getCityName();
     },
     components: {},
     methods: {
-
+      getCityName() {
+        // var _this = this;
+        var myAmapFun = new amapFile.AMapWX({
+          key: "e545e7f79a643f23aef187add14e4548"
+        });
+        myAmapFun.getRegeo({
+          success: (data) =>{
+            let str = data[0].regeocodeData.addressComponent.province + data[0].regeocodeData.addressComponent.city + data[0].regeocodeData.addressComponent.district;
+            wx.setStorageSync('addressToBe', str);
+            this.teamForm.city = wx.getStorageSync('addressToBe');
+          },
+          fail:  (info)=> {
+            //失败回调
+            Notify({
+              text: info.message,
+              duration: 1000,
+              selector: '#custom-selector',
+              backgroundColor: '#1989fa'
+            });
+            //如果用户拒绝授权
+            // 默认为北京
+            this.cityName = "北京市";
+            this.update({ cityName: "北京市" });
+            this.getData();
+          }
+        });
+      },
       async submitMes() {
         for(let i in this.teamForm) {
           if(this.teamForm[i] == '') {

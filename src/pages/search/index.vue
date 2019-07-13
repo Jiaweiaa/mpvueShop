@@ -205,7 +205,6 @@
 </template>
 
 <script>
-import { post, get } from "../../utils";
 import {
   searchItem,
   getKeyword,
@@ -217,8 +216,8 @@ import {
 export default {
   onLoad() {
     this.openid = wx.getStorageSync("openid") || "";
-    this.getHotData();
     this.getHistory();
+    this.getHotData();
   },
   // 上啦加载
   async onReachBottom() {
@@ -430,7 +429,6 @@ export default {
       const searchData = await setHistorySearch({
         keyword: this.words
       });
-      this.getHistory();
       if (this.listData.length > 0) {
         this.listData.map((v, index) => {
           if (this.order == "SALES-ASC") {
@@ -503,12 +501,7 @@ export default {
       this.hotData = data.data.result;
       this.historyData = [];
     },
-    async tipsearch(e) {
-      const data = await get("/search/helperaction", {
-        keyword: this.words
-      });
-      this.tipsData = data.keywords;
-    },
+
     topicDetail(id) {
       wx.navigateTo({
         url: "/pages/topicdetail/main?id=" + id
