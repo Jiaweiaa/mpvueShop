@@ -218,7 +218,7 @@ export default {
     async getData() {
       wx.showLoading({
         title: "加载中",
-        mask: true
+       
       });
       
       const data = await getIndexItem();
