@@ -10,7 +10,7 @@
         <div v-else>{{cityName}}</div>
       </div>
       <div @click="toSearch" class="search_bar">
-        <input type="text" placeholder="搜索您要的商品" placeholder-class="phcolor" />
+        <input type="text" placeholder="搜索您要的商品" disabled placeholder-class="phcolor" />
         <span class="icon"></span>
       </div>
     </div>
