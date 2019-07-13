@@ -103,34 +103,34 @@ export default {
       isCapOrSup().then(isRes => {
         wx.setStorageSync("isCap", isRes.data.result.isCap);
         wx.setStorageSync("isSup", isRes.data.result.isSup);
+	      this.moreService = [];
+	      if (isRes.data.result.isCap == false) {
+	        this.moreService.push({
+	          title: "团长招募",
+	          icon: "manager-o",
+	          url: "/pages/beTeam/main"
+	        });
+	      } else {
+	        this.moreService.push({
+	          title: "我是团长",
+	          icon: "manager-o",
+	          url: "/pages/teamView/main"
+	        });
+	      }
+	      if (isRes.data.result.isSup == false) {
+	        this.moreService.push({
+	          title: "供应商招募",
+	          icon: "user-o",
+	          url: "/pages/beGive/main"
+	        });
+	      } else {
+	        this.moreService.push({
+	          title: "我是供应商",
+	          icon: "friends-o",
+	          url: "/pages/giver/main"
+	        });
+	      }
       });
-      this.moreService = [];
-      if (wx.getStorageSync("isCap") == false) {
-        this.moreService.push({
-          title: "团长招募",
-          icon: "manager-o",
-          url: "/pages/beTeam/main"
-        });
-      } else {
-        this.moreService.push({
-          title: "我是团长",
-          icon: "manager-o",
-          url: "/pages/teamView/main"
-        });
-      }
-      if (wx.getStorageSync("isSup") == false) {
-        this.moreService.push({
-          title: "供应商招募",
-          icon: "user-o",
-          url: "/pages/beGive/main"
-        });
-      } else {
-        this.moreService.push({
-          title: "我是供应商",
-          icon: "friends-o",
-          url: "/pages/giver/main"
-        });
-      }
     } else {
       this.moreService = [
         {
@@ -145,6 +145,7 @@ export default {
         }
       ];
     }
+    
     //刷新完成后关闭
     wx.stopPullDownRefresh();
   },
