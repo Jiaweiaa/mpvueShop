@@ -948,7 +948,7 @@ export default {
 	height: 200px;
 	z-index: -999;
 	position: absolute;
-	left: 0;
+	left: -600px;
 	bottom: 0;
 }
 .goods {
