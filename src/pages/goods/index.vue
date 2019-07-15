@@ -336,12 +336,11 @@ export default {
     onShareAppMessage() {
       let that = this;
       return {
-        title: "商品转发", // 转发后 所显示的title
+        title: that.goodsInfo.title, // 转发后 所显示的title
         path: "/pages/goods/main?id=" + that.id, // 相对的路径
         success: res => {
           // 成功后要做的事情
           // console.log
-
           wx.getShareInfo({
             shareTicket: res.shareTickets[0],
             success: res => {
