@@ -141,6 +141,7 @@
       </div>
     </van-popup>
 
+	  <!-- 底部 -->
     <div class="bottom-fixed">
       <div @click="toIndex()" class="home">
         <div class="car">
@@ -163,6 +164,7 @@
         <div class="buyNow" @click="openSku('buyNow')">立即购买</div>
       </div>
     </div>
+	  <canvas canvas-id='canvas' v-if="booleanCanvas" class='canvas'></canvas>
   </div>
 </template>
 
@@ -202,6 +204,9 @@ export default {
   },
   data() {
     return {
+      booleanCanvas: true,
+      shareImgPath: '',   //用于储存canvas生成的图片
+      
       level: 1,
       allnumber: 0, //购物车商品数量
       openId: "",
@@ -255,7 +260,94 @@ export default {
       })
     })
   },
+  //商品转发
+  onShareAppMessage() {
+    let that = this;
+    return {
+      title: that.goodsInfo.title, // 转发后 所显示的title
+      path: "/pages/goods/main?id=" + that.id, // 分享回来的相对的路径
+	    imageUrl: that.shareImgPath,
+      success: res => {
+        // 成功后要做的事情
+        // console.log
+        wx.getShareInfo({
+          shareTicket: res.shareTickets[0],
+          success: res => {
+            that.setData({
+              isShow: true
+            });
+          },
+          fail: function(res) {
+            console.log(res);
+          },
+          complete: function(res) {
+            console.log(res);
+          }
+        });
+      },
+      fail: function(res) {
+        // 分享失败
+        console.log(res);
+      }
+    };
+  },
   methods: {
+    // 画分享图
+    drawImg() {
+      let that= this;
+      wx.downloadFile({
+        url: 'https://qn.gaoshanmall.cn/' + that.gallery[0].picUrl,//网络路径
+        success: function (res3) {
+          var img=  res3.tempFilePath;    //商品图片保存地址
+          // var img1=res.path  //二维码图片保存地址
+          var name= that.goodsInfo.subTitle //图片描述,描述和下面的价格都是从后台获取的内容，可以随意换成其他文本内容，这里不是重点所以就不讲内容的获取方法了
+          var price=that.goodsInfo.listPrice     //图片价格
+          let context = wx.createCanvasContext('canvas')  //这里的“share”是“canvas-id”
+          context.setFillStyle('#fff')
+          context.drawImage(img, 0, 0, 250, 200) //绘制商品图片
+
+          context.setFillStyle('#5c49ab')
+          context.fillRect(0, 150, 250, 50)  // 底部栏
+
+          context.setFontSize(12)
+          context.setFillStyle("#fff")
+          context.fillText(name, 20, 195)  //绘制描述
+
+          context.setFontSize(18)
+          context.setFillStyle("#fff")
+          context.fillText('￥'+price, 20, 175)   //绘制价格
+
+          //把画板内容绘制成图片，并回调画板图片路径
+          context.draw(false, function () {
+            wx.canvasToTempFilePath({
+              x: 0,
+              y: 0,
+              width: 250,
+              height: 200,
+              destWidth: 250,
+              destHeight: 200,
+              canvasId: 'canvas',
+              success:res => {
+                that.shareImgPath = res.tempFilePath;  //将绘制的图片地址保存在shareImgPath 中
+                that.booleanCanvas= false;
+                // wx.getFileSystemManager().readFile({
+                //   filePath: that.shareImgPath, //选择图片返回的相对路径
+                //   encoding: 'base64', //编码格式
+                //   success: res => { //成功的回调
+                //     // that.shareImgPath = 'data:image/png;base64,' + res.data;
+                //     console.log(that.shareImgPath);
+                //   },
+                //   fail: res => {
+                //     console.log(res);
+                //   }
+                // })
+              }
+            })
+          })
+        }
+      });
+    },
+    
     valueChange(e) {
       // console.log(e.mp.detail);
       if (this.selectSkuData) {
@@ -331,37 +423,6 @@ export default {
           }
         })
         .catch(err => {});
-    },
-    //商品转发
-    onShareAppMessage() {
-      let that = this;
-      return {
-        title: "商品转发", // 转发后 所显示的title
-        path: "/pages/goods/main?id=" + that.id, // 相对的路径
-        success: res => {
-          // 成功后要做的事情
-          // console.log
-
-          wx.getShareInfo({
-            shareTicket: res.shareTickets[0],
-            success: res => {
-              that.setData({
-                isShow: true
-              });
-            },
-            fail: function(res) {
-              console.log(res);
-            },
-            complete: function(res) {
-              console.log(res);
-            }
-          });
-        },
-        fail: function(res) {
-          // 分享失败
-          console.log(res);
-        }
-      };
     },
     // 加商品
     plusGoodsNum() {
@@ -536,80 +597,82 @@ export default {
         itemId: this.id
         // itemId: 503
       })
-        .then(res => {
-          if (res.data.code == "200") {
-            wx.hideLoading();
+      .then(res => {
+        if (res.data.code == "200") {
+          wx.hideLoading();
 
-            this.keys = [];
-            const data = res.data.result;
-            this.goods_desc = data.item.itemChannel.description; //详情描述富文本
-            this.goodsList = data.item.pdpPropertiesCommands;
-            this.quantityData = JSON.parse(data.skuJson); //SKU信息
-            this.quantList = JSON.parse(res.data.result.skuJson);
-            this.quantList.map(v => {
-              v.properties = JSON.parse(v.properties).toString();
-            });
-            this.gallery = data.item.itemImages;
-            this.goodsInfo = data.item;
-            // 商品数据渲染
-            this.goodsList.map(v => {
-              let data = {
+          this.keys = [];
+          const data = res.data.result;
+          this.goods_desc = data.item.itemChannel.description; //详情描述富文本
+          this.goodsList = data.item.pdpPropertiesCommands;
+          this.quantityData = JSON.parse(data.skuJson); //SKU信息
+          this.quantList = JSON.parse(res.data.result.skuJson);
+          this.quantList.map(v => {
+            v.properties = JSON.parse(v.properties).toString();
+          });
+          this.gallery = data.item.itemImages;
+          this.goodsInfo = data.item;
+          // 商品数据渲染
+          this.goodsList.map(v => {
+            let data = {
+              isActiveC: false,
+              value: []
+            };
+            data.name = v.propertyName;
+            data.id = v.propertyId;
+            for (let jsonKey in v.propertyValues) {
+              data.value.push({
+                id: jsonKey,
                 isActiveC: false,
-                value: []
-              };
-              data.name = v.propertyName;
-              data.id = v.propertyId;
-              for (let jsonKey in v.propertyValues) {
-                data.value.push({
-                  id: jsonKey,
-                  isActiveC: false,
-                  notClick: false,
-                  cname: v.propertyValues[jsonKey]
-                });
-              }
-              this.keys.push(data);
-            });
+                notClick: false,
+                cname: v.propertyValues[jsonKey]
+              });
+            }
+            this.keys.push(data);
+          });
 
-            // 库存数据
-            this.quantityData.map(v => {
-              // 处理商品号
-              let array = JSON.parse(v.properties);
-              let str = "";
-              array.map(vv => {
-                str += vv + ";";
-              });
-              if (v.quantity > 0) {
-                this.data[str.substring(0, str.length - 1)] = {
-                  price: v.salePrice,
-                  count: v.quantity
-                };
-              }
+          // 库存数据
+          this.quantityData.map(v => {
+            // 处理商品号
+            let array = JSON.parse(v.properties);
+            let str = "";
+            array.map(vv => {
+              str += vv + ";";
             });
-            this.countTime();
-            this.queryDGoodsById();
-          } else {
-            wx.showToast({
-              icon: "none",
-              title: res.data.message
-            });
-            setTimeout(() => {
-              wx.navigateBack({
-                delta: 1
-              });
-            }, 1500);
-          }
-        })
-        .catch(err => {
+            if (v.quantity > 0) {
+              this.data[str.substring(0, str.length - 1)] = {
+                price: v.salePrice,
+                count: v.quantity
+              };
+            }
+          });
+          // 画商品图
+          this.drawImg();
+          this.countTime();
+          this.queryDGoodsById();
+        } else {
           wx.showToast({
             icon: "none",
-            title: "商品状态异常"
+            title: res.data.message
           });
           setTimeout(() => {
             wx.navigateBack({
               delta: 1
             });
           }, 1500);
+        }
+      })
+      .catch(err => {
+        wx.showToast({
+          icon: "none",
+          title: "商品状态异常"
         });
+        setTimeout(() => {
+          wx.navigateBack({
+            delta: 1
+          });
+        }, 1500);
+      });
     },
     showType() {
       this.showpop = !this.showpop;
@@ -880,6 +943,14 @@ export default {
 @import "./style.scss";
 </style>
 <style lang='scss'>
+.canvas {
+	width: 250px;
+	height: 200px;
+	z-index: -999;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+}
 .goods {
   margin-bottom: 100rpx;
   padding-bottom: 1rpx;

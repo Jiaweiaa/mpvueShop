@@ -77,3 +77,14 @@ export const findOrderNum = params => {
   });
 };
 
+// 一键收货
+export const toWriteOff = params => {
+  return fly.request({
+    url: `/trade/ActOrd/toWriteOff`,
+    method: "post",
+    body: params,
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+};

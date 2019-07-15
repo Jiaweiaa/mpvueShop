@@ -37,7 +37,7 @@
             <div v-for="(value,index) in list" class="mapListView" :key="index">
               <div class="top border-bottom" style="overflow: hidden;">
                 <checkbox
-                  v-if="getActive == 2"
+                  v-if="getActive == 3 || getActive == 9"
                   @click.stop
                   class="checkBox"
                   v-bind:value="value.code"
@@ -101,8 +101,17 @@
                   type="primary"
                   class="childBtn"
                   size="small"
-                  v-if="getActive == 2"
-                >核销</van-button>
+                  v-if="getActive == 3"
+                >收货</van-button>
+	              <van-button
+			              plain
+			              round
+			              @click.stop="payHeXiao(value)"
+			              type="primary"
+			              class="childBtn"
+			              size="small"
+			              v-if="getActive == 9"
+	              >核销</van-button>
               </div>
             </div>
             <div style="width: 100%; text-align: center;margin-top: 5px;">
@@ -129,18 +138,27 @@
 	  </van-popup>
 	  
     <van-button
-      v-if="getActive == 2"
+      v-if="getActive == 3"
       style="position: fixed; right: 30px; bottom: 30px;"
       plain
       hairline
       @click="toggleClick"
       type="primary"
-    >一键核销</van-button>
+    >一键收货</van-button>
+	
+	  <van-button
+			  v-if="getActive == 9"
+			  style="position: fixed; right: 30px; bottom: 30px;"
+			  plain
+			  hairline
+			  @click="toggleHXClick"
+			  type="primary"
+	  >一键核销</van-button>
   </div>
 </template>
 
 <script>
-import { findAllCapOrders, writeOff } from "../../api/myOrder/index";
+import { findAllCapOrders, writeOff, toWriteOff } from "../../api/myOrder/index";
 import { formatTime } from "../../utils";
 import Dialog from "../../../static/vant/dialog/dialog";
 import noDataView from "../../components/noDataView/index";
@@ -168,7 +186,7 @@ export default {
       let params = {
         pageNum: this.pageNum,
         pageSize: 5,
-        orderType: Number(this.getActive) + 1
+        orderType: this.getActive
       };
       findAllCapOrders(params).then(res => {
         if (res.data.code == 200) {
@@ -177,15 +195,11 @@ export default {
             if (order.logisticsStatus == 6) {
               order.typeData = {
                 title: "商家已发货",
-                canBtn: true,
-                giveBtn: true,
                 seeBtn: true
               };
             } else if (order.logisticsStatus == 15) {
               order.typeData = {
                 title: "交易成功",
-                canBtn: false,
-                giveBtn: false,
                 seeBtn: true
               };
             } else if (
@@ -194,8 +208,6 @@ export default {
             ) {
               order.typeData = {
                 title: "待退款",
-                canBtn: false,
-                giveBtn: false,
                 seeBtn: true
               };
             } else if (
@@ -204,15 +216,11 @@ export default {
             ) {
               order.typeData = {
                 title: "交易取消",
-                canBtn: false,
-                giveBtn: false,
                 seeBtn: true
               };
             } else if (order.logisticsStatus == 11) {
               order.typeData = {
                 title: "退款成功",
-                canBtn: false,
-                giveBtn: false,
                 seeBtn: true
               };
             } else if (
@@ -222,8 +230,6 @@ export default {
             ) {
               order.typeData = {
                 title: "待支付",
-                canBtn: false,
-                giveBtn: true,
                 seeBtn: true
               };
             } else if (
@@ -234,8 +240,6 @@ export default {
             ) {
               order.typeData = {
                 title: "等待商家发货",
-                canBtn: false,
-                giveBtn: false,
                 seeBtn: true
               };
             } else if (
@@ -244,8 +248,6 @@ export default {
             ) {
               order.typeData = {
                 title: "自动取消",
-                canBtn: false,
-                giveBtn: false,
                 seeBtn: true
               };
             }
@@ -281,10 +283,10 @@ export default {
 	      endTime: ''
       },
 	    
-      getActive: "3",
+      getActive: "4",
       allCount: "",
       loading: false,
-      tabs: ["待发货", "待核销", "已核销"],
+      tabs: ["待发货", "待收货", "待核销", "已核销"],
       resultCheck: [],
       onLoadLoading: false,
 
@@ -333,11 +335,12 @@ export default {
       let params = Object.assign( {
         pageNum: this.pageNum,
         pageSize: 5,
-        orderType: Number(this.getActive) + 1
+        orderType: this.getActive
       }, this.searchParams);
       wx.showLoading({
         title: "加载中"
       });
+      this.resultCheck = [];
       this.onLoadLoading = true;
       // 1是立即支付  2是取消订单 3查看详情 4查看物流
       findAllCapOrders(params).then(res => {
@@ -411,20 +414,27 @@ export default {
               giveBtn: false,
               seeBtn: true
             };
+          } else if (order.logisticsStatus == 7) {
+            order.typeData = {
+              title: "待核销",
+              canBtn: true,
+              giveBtn: true,
+              seeBtn: true
+            };
           }
         });
+        this.onLoadLoading = false;
+        this.allCount = res.data.result.orders.total;
         setTimeout(() => {
           wx.hideLoading();
         }, this.GLOBAL.timer);
-        this.onLoadLoading = false;
-        this.allCount = res.data.result.orders.total;
       });
     },
 
     //  订单详情
     detailOrder(val) {
-      let params = Object.assign({}, val);
-      let model = JSON.stringify(params);
+      let params = Object.assign({}, val)
+      console.log(params);
       wx.navigateTo({
         url: "/pages/orderDetail/main?id=" + params.id + "&&capationFlag=111"
       });
@@ -444,8 +454,63 @@ export default {
       this.searchVal = "";
     },
 
-    // 审核
+    // 发货
     payBtn(val) {
+      let valueData = val;
+      Dialog.confirm({
+        title: "收货",
+        message: "确认收货吗?"
+      })
+      .then(() => {
+        let data = [];
+        data.push(valueData.code);
+
+        toWriteOff({
+          orderCodes: data
+        }).then(res => {
+          if (res.data.code == 200) {
+            Dialog.alert({
+              message: res.data.result
+            }).then(() => {
+              // on close
+            });
+            this.getOrderList();
+            // });
+          } else {
+            Dialog.alert({
+              message: res.data.message
+            }).then(() => {
+              // on close
+            });
+          }
+        });
+      })
+      .catch(() => {
+        // on cancel
+      });
+    },
+    // 一键审核收货
+    toggleClick() {
+      if (this.resultCheck.length > 0) {
+        Dialog.confirm({
+          title: "收货",
+          message: "确认收货选中订单吗?"
+        })
+          .then(() => {
+            toWriteOff({
+              orderCodes: this.resultCheck
+            }).then(res => {
+              this.getOrderList();
+            });
+          })
+          .catch(() => {
+            // on cancel
+          });
+      }
+    },
+
+	  // 核销
+    payHeXiao(val) {
       let valueData = val;
       Dialog.confirm({
         title: "核销",
@@ -473,33 +538,19 @@ export default {
                 // on close
               });
             }
-           
+
           });
         })
         .catch(() => {
           // on cancel
         });
     },
-    // tab数据改变
-    onChange(val) {
-      if (val.target.index == 0) {
-        this.getActive = 3;
-      } else if (val.target.index == 1) {
-        this.getActive = 2;
-      } else if (val.target.index == 2) {
-        this.getActive = 4;
-      }
-      this.currentActive = val.target.index;
-      this.pageNum = 1;
-      this.list = [];
-      this.getOrderList();
-    },
-    // 一键审核
-    toggleClick() {
+    // 一键审核发货
+    toggleHXClick() {
       if (this.resultCheck.length > 0) {
         Dialog.confirm({
-          title: "核销",
-          message: "确认核销订单吗?"
+          title: "发货",
+          message: "确认发货选中订单吗?"
         })
           .then(() => {
             writeOff({
@@ -513,6 +564,23 @@ export default {
           });
       }
     },
+    // tab数据改变
+    onChange(val) {
+      if (val.target.index == 0) {
+        this.getActive = 4;
+      } else if (val.target.index == 1) {
+        this.getActive = 3;
+      } else if (val.target.index == 2) {
+        this.getActive = 9;
+      }else if (val.target.index == 3) {
+        this.getActive = 5;
+      }
+      this.currentActive = val.target.index;
+      this.pageNum = 1;
+      this.list = [];
+      this.getOrderList();
+    },
+
     // 清除时间 默认获取两天前的
     clearTime() {
       this.startDate = "开始时间";
