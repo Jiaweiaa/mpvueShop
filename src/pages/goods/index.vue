@@ -255,6 +255,36 @@ export default {
       })
     })
   },
+  //商品转发
+  onShareAppMessage() {
+    let that = this;
+    return {
+      title: that.goodsInfo.title, // 转发后 所显示的title
+      path: "/pages/goods/main?id=" + that.id, // 相对的路径
+      success: res => {
+        // 成功后要做的事情
+        // console.log
+        wx.getShareInfo({
+          shareTicket: res.shareTickets[0],
+          success: res => {
+            that.setData({
+              isShow: true
+            });
+          },
+          fail: function(res) {
+            console.log(res);
+          },
+          complete: function(res) {
+            console.log(res);
+          }
+        });
+      },
+      fail: function(res) {
+        // 分享失败
+        console.log(res);
+      }
+    };
+  },
   methods: {
     valueChange(e) {
       // console.log(e.mp.detail);
@@ -331,36 +361,6 @@ export default {
           }
         })
         .catch(err => {});
-    },
-    //商品转发
-    onShareAppMessage() {
-      let that = this;
-      return {
-        title: that.goodsInfo.title, // 转发后 所显示的title
-        path: "/pages/goods/main?id=" + that.id, // 相对的路径
-        success: res => {
-          // 成功后要做的事情
-          // console.log
-          wx.getShareInfo({
-            shareTicket: res.shareTickets[0],
-            success: res => {
-              that.setData({
-                isShow: true
-              });
-            },
-            fail: function(res) {
-              console.log(res);
-            },
-            complete: function(res) {
-              console.log(res);
-            }
-          });
-        },
-        fail: function(res) {
-          // 分享失败
-          console.log(res);
-        }
-      };
     },
     // 加商品
     plusGoodsNum() {
