@@ -89,8 +89,8 @@
   }
 
   .swiper {
-    width: 90%;
-    height: 417rpx;
+    width: 710rpx;
+    height: 300rpx;
     margin: 0 auto;
     margin-top: 120rpx;
     border-radius: 20rpx;
@@ -123,8 +123,8 @@
       float: left;
       padding: 5px;
       img {
-        height: 58rpx;
-        width: 58rpx;
+        height: 80rpx;
+        width: 80rpx;
         display: inline-block;
       }
       p {
@@ -394,7 +394,7 @@
         position: absolute;
         top: 0;
         right: 10rpx;
-        color: #7aef89 !important;
+        color: $hot-color!important;
         font-weight: 600;
       }
       .sale {
@@ -403,15 +403,15 @@
         .sold {
           padding: 10rpx;
           color: #fff;
-          background: #7aef89;
-          border: 1rpx solid #7aef89;
+          background: $hot-color;
+          border: 1rpx solid $hot-color;
           border-radius: 3rpx 0 0 3rpx;
         }
         .remain {
           padding: 10rpx;
-          color: #7aef89;
+          color: $hot-color;
           background: #fff;
-          border: 1rpx solid #7aef89;
+          border: 1rpx solid $hot-color;
           border-radius: 0 3rpx 3rpx 0;
         }
       }

@@ -1,9 +1,18 @@
 <template>
   <div class="my">
+    <van-dialog id="van-dialog" />
     <div class="myinfo">
       <div class="avatar" style="width: 130rpx;height: 130rpx;border-radius: 50%;overflow: hidden;">
-        <img v-if="userInfo.avatar" style="width:130rpx;height:130rpx;border-raduis:50%;" :src="'https:'+userInfo.avatar"/>
-        <img v-else style="width:130rpx;height:130rpx;border-raduis:50%;" src="https://dwz.cn/N1nmqNcq"/>
+        <img
+          v-if="userInfo.avatar"
+          style="width:130rpx;height:130rpx;border-raduis:50%;"
+          :src="'https:'+userInfo.avatar"
+        />
+        <img
+          v-else
+          style="width:130rpx;height:130rpx;border-raduis:50%;"
+          src="https://dwz.cn/N1nmqNcq"
+        />
       </div>
       <div class="user">
         <div class v-if="userInfo.nickname">
@@ -12,7 +21,7 @@
           <!-- <p style="color:#fff;">
             <span ></span>省
             <span type="userCity" lang="zh_CN"></span>市
-          </p> -->  
+          </p>-->
         </div>
         <p v-else @click="goToLogin">点我登录</p>
       </div>
@@ -80,7 +89,8 @@
 import { toLogin, login } from "../../utils";
 import { shoppingcartCount } from "../../api/shoppingcart";
 import { findOrderNum } from "../../api/myOrder";
-import { isCapOrSup } from "../../api/login";
+import { isCapOrSup, checkCap, checkSup } from "../../api/login";
+import Dialog from "../../../static/vant/dialog/dialog";
 export default {
   onPullDownRefresh() {
     this.getCartGoodsNum();
@@ -103,33 +113,33 @@ export default {
       isCapOrSup().then(isRes => {
         wx.setStorageSync("isCap", isRes.data.result.isCap);
         wx.setStorageSync("isSup", isRes.data.result.isSup);
-	      this.moreService = [];
-	      if (isRes.data.result.isCap == false) {
-	        this.moreService.push({
-	          title: "团长招募",
-	          icon: "manager-o",
-	          url: "/pages/beTeam/main"
-	        });
-	      } else {
-	        this.moreService.push({
-	          title: "我是团长",
-	          icon: "manager-o",
-	          url: "/pages/teamView/main"
-	        });
-	      }
-	      if (isRes.data.result.isSup == false) {
-	        this.moreService.push({
-	          title: "供应商招募",
-	          icon: "user-o",
-	          url: "/pages/beGive/main"
-	        });
-	      } else {
-	        this.moreService.push({
-	          title: "我是供应商",
-	          icon: "friends-o",
-	          url: "/pages/giver/main"
-	        });
-	      }
+        this.moreService = [];
+        if (isRes.data.result.isCap == false) {
+          this.moreService.push({
+            title: "团长招募",
+            icon: "manager-o",
+            url: "/pages/beTeam/main"
+          });
+        } else {
+          this.moreService.push({
+            title: "我是团长",
+            icon: "manager-o",
+            url: "/pages/teamView/main"
+          });
+        }
+        if (isRes.data.result.isSup == false) {
+          this.moreService.push({
+            title: "供应商招募",
+            icon: "user-o",
+            url: "/pages/beGive/main"
+          });
+        } else {
+          this.moreService.push({
+            title: "我是供应商",
+            icon: "friends-o",
+            url: "/pages/giver/main"
+          });
+        }
       });
     } else {
       this.moreService = [
@@ -145,7 +155,7 @@ export default {
         }
       ];
     }
-    
+
     //刷新完成后关闭
     wx.stopPullDownRefresh();
   },
@@ -310,9 +320,46 @@ export default {
     },
     goTo(url) {
       if (toLogin()) {
-        wx.navigateTo({
-          url: url
-        });
+        //如果想去的路径是申请团长页校验是否申请过
+        if (url == "/pages/beTeam/main") {
+          checkCap()
+            .then(res => {
+              if (res.data.result) {
+                Dialog.alert({
+                  title: "提示",
+                  message: "您已提交过团长申请,请耐心等待"
+                }).then(() => {
+                  // on close
+                });
+              } else {
+                wx.navigateTo({
+                  url: url
+                });
+              }
+            })
+            .catch(err => {});
+        } else if (url == "/pages/beGive/main") {
+          checkSup()
+            .then(res => {
+              if (res.data.result) {
+                Dialog.alert({
+                  title: "提示",
+                  message: "您已提交过供应商申请,请耐心等待"
+                }).then(() => {
+                  // on close
+                });
+              } else {
+                wx.navigateTo({
+                  url: url
+                });
+              }
+            })
+            .catch(err => {});
+        } else {
+          wx.navigateTo({
+            url: url
+          });
+        }
       }
     },
     goToLogin() {

@@ -62,3 +62,28 @@ export const isCapOrSup = params => {
     body: params
   });
 };
+
+//是否已经申请过团长
+export const checkCap = params => {
+  return fly.request({
+    url: "/shop/froCaptain/checkCap",
+    method: "post",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: params
+  });
+};
+
+//是否已经申请过供应商
+export const checkSup = params => {
+  return fly.request({
+    url: "/shop/froCaptain/checkSup",
+    method: "post",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: params
+  });
+};
+

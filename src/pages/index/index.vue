@@ -90,6 +90,8 @@ import { getIndexItem } from "../../api/index/index";
 import { mapState, mapMutations } from "vuex";
 import { shoppingcartCount } from "../../api/shoppingcart/index";
 export default {
+  
+
   onPullDownRefresh: function() {
     this.brandList = [];
     this.newGoods = [];

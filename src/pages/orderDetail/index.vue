@@ -30,7 +30,8 @@
       </h3>
       <div class="countDown">
         <div class="title">
-          <span>您于{{detailData.orderVo.cancelTime}}以"{{detailData.orderVo.cancelReason}}"为由取消订单</span>
+          <span v-if="detailData.orderVo.cancelReason!=null">您于{{detailData.orderVo.cancelTime}}以"{{detailData.orderVo.cancelReason}}"为由取消订单</span>
+          <span v-else>超时未支付,订单已自动取消</span>
         </div>
       </div>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
@@ -49,7 +50,8 @@
           v-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type=='3'"
         >
           <div class="title">
-            <span>您于{{detailData.refundProcessing.createTime}}以"{{detailData.refundProcessing.reason}}"为由申请取消订单</span>
+            <span >您于{{detailData.refundProcessing.createTime}}以"{{detailData.refundProcessing.reason}}"为由申请取消订单</span>
+            
           </div>
         </div>
       </h3>
