@@ -92,10 +92,10 @@ export default {
       this.id = data.id;
       this.userName = data.firstName;
       this.telNumber = data.mobile;
-      this.address = data.province + " " + data.district + " " + data.city;
+      this.address = data.province + " " +data.city+ " "+ data.district  ;
       this.areaList.push(data.province);
-      this.areaList.push(data.district);
       this.areaList.push(data.city);
+      this.areaList.push(data.district);
       this.detailadress = data.address;
       this.checked = data.defalutFlag;
       t
