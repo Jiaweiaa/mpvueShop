@@ -110,7 +110,7 @@ export default {
               wx.navigateBack({
                 delta: 1
               });
-            }, 600);
+            }, this.GLOBAL.timer);
           } else {
             Notify(res.data.message);
           }

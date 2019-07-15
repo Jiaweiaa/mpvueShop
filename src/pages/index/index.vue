@@ -238,7 +238,7 @@ export default {
       }
       setTimeout(() => {
         wx.hideLoading();
-      }, 1000);
+      }, this.GLOBAL.timer);
     },
     goodsDetail(item) {
       if (item.status == 1) {
@@ -289,7 +289,7 @@ export default {
       });
     }
   },
-  created() {}
+  
 };
 </script>
 

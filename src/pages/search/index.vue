@@ -248,7 +248,7 @@ export default {
       }
       setTimeout(() => {
           wx.hideLoading();
-      }, 350);
+      }, this.GLOBAL.timer);
       // wx.hideLoading();
     }
   },

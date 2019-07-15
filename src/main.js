@@ -5,6 +5,9 @@ import "weapp-cookie"; //解决小程序不能自动保存服务端的cookie问�
 import "./assets/styles/shike.scss";
 //全局处理重复页面跳转详情初始化,和详情跳详情返回的bug
 import MyPlugin from "./minxins";
+//全局变量
+import globalVariable from "@/utils/global_variable";
+Vue.prototype.GLOBAL = globalVariable
 Vue.use(MyPlugin);
 
 //引入store

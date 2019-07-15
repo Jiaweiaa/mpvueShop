@@ -159,7 +159,7 @@ export default {
       this.loading = false;
       setTimeout(() => {
         wx.hideLoading();
-      }, 1000);
+      }, this.GLOBAL.timer);
     } else {
       wx.showLoading({
         title: "加载中"
@@ -255,7 +255,7 @@ export default {
         this.loading = false;
         setTimeout(() => {
           wx.hideLoading();
-        }, 1000);
+        }, this.GLOBAL.timer);
       });
     }
   },
@@ -415,7 +415,7 @@ export default {
         });
         setTimeout(() => {
           wx.hideLoading();
-        }, 1000);
+        }, this.GLOBAL.timer);
         this.onLoadLoading = false;
         this.allCount = res.data.result.orders.total;
       });

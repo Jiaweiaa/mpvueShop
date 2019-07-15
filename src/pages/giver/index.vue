@@ -213,7 +213,7 @@ export default {
       this.loading = false;
       setTimeout(() => {
         wx.hideLoading();
-      }, 1000);
+      }, this.GLOBAL.timer);
     } else {
       this.searchParams.pageNum++;
       findAllSupOrders(this.searchParams).then(res => {
@@ -245,7 +245,7 @@ export default {
         wx.stopPullDownRefresh(); //停止下拉刷新
         setTimeout(() => {
           wx.hideLoading();
-        }, 1000);
+        }, this.GLOBAL.timer);
         this.onLoadLoading = false;
       });
     },

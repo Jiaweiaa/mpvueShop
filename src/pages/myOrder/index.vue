@@ -157,7 +157,7 @@ export default {
       this.loading = false;
       setTimeout(() => {
         wx.hideLoading();
-      }, 1000);
+      }, this.GLOBAL.timer);
     } else {
       this.pageNum++;
       let params = {
@@ -283,7 +283,7 @@ export default {
         }
         setTimeout(() => {
           wx.hideLoading();
-        }, 1000);
+        }, this.GLOBAL.timer);
       });
     }
   },
@@ -318,7 +318,7 @@ export default {
         .catch(err => {
           setTimeout(() => {
             wx.hideLoading();
-          }, 1000);
+          }, this.GLOBAL.timer);
         });
     },
     //跳转到商城首页
@@ -475,7 +475,7 @@ export default {
           this.allCount = res.data.result.orders.total;
           setTimeout(() => {
             wx.hideLoading();
-          }, 1000);
+          }, this.GLOBAL.timer);
           wx.stopPullDownRefresh(); //停止下拉刷新
           this.onLoadLoading = false;
         })
