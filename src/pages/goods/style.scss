@@ -548,8 +548,7 @@
       padding-left: -5rpx;
       .addCart {
         width: 215rpx;
-        // border: 1rpx solid #b4282d;
-        background: #7aef89;
+        background:$buy-btn;
         float: left;
         height: 70rpx;
         line-height: 70rpx;
@@ -561,7 +560,7 @@
         height: 70rpx;
         line-height: 70rpx;
         text-align: center;
-        background: #7aefb9;
+        background: $main-color;
         color: #fff;
       }
     }

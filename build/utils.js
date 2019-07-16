@@ -70,7 +70,7 @@ exports.cssLoaders = function(options) {
     scss: generateLoaders("sass").concat({
       loader: "sass-resources-loader",
       options: {
-        resources: path.resolve(__dirname, "../src/assets/styles/shike.scss")
+        resources: path.resolve(__dirname, "../src/assets/styles/gaoshan.scss")
       }
     }),
     stylus: generateLoaders("stylus"),

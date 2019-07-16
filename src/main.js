@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App";
 import "weapp-cookie"; //解决小程序不能自动保存服务端的cookie问题
 //引入自定义scss公共样式
-import "./assets/styles/shike.scss";
+import "./assets/styles/gaoshan.scss";
 //全局处理重复页面跳转详情初始化,和详情跳详情返回的bug
 import MyPlugin from "./minxins";
 //全局变量
@@ -84,37 +84,37 @@ export default {
     tabBar: {
       backgroundColor: "#fafafa",
       borderStyle: "white",
-      selectedColor: "#4eaa68",
+      selectedColor: "#ff6c01 ",
       color: "#333",
       list: [
         {
           pagePath: "pages/index/main",
-          iconPath: "static/images/sk_home.png",
-          selectedIconPath: "static/images/sk_home_active.png",
+          iconPath: "static/images/gs_home.png",
+          selectedIconPath: "static/images/gs_home_active.png",
           text: "首页"
         },
         {
           pagePath: "pages/topic/main",
-          iconPath: "static/images/sk_zhuanti.png",
-          selectedIconPath: "static/images/sk_zhuanti_active.png",
+          iconPath: "static/images/gs_zhuanti.png",
+          selectedIconPath: "static/images/gs_zhuanti_active.png",
           text: "专题"
         },
         {
           pagePath: "pages/category/main",
-          iconPath: "static/images/sk_fenlei.png",
-          selectedIconPath: "static/images/sk_fenlei_active.png",
+          iconPath: "static/images/gs_fenlei.png",
+          selectedIconPath: "static/images/gs_fenlei_active.png",
           text: "分类"
         },
         {
           pagePath: "pages/cart/main",
-          iconPath: "static/images/sk_cart.png",
-          selectedIconPath: "static/images/sk_cart_active.png",
+          iconPath: "static/images/gs_cart.png",
+          selectedIconPath: "static/images/gs_cart_active.png",
           text: "购物车"
         },
         {
           pagePath: "pages/my/main",
-          iconPath: "static/images/sk_my.png",
-          selectedIconPath: "static/images/sk_my_active.png",
+          iconPath: "static/images/gs_my.png",
+          selectedIconPath: "static/images/gs_my_active.png",
           text: "我的"
         }
       ]
