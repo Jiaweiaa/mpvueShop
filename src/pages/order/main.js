@@ -20,6 +20,8 @@ export default {
       'van-checkbox': '/static/vant/checkbox/index',
       "van-toast": "/static/vant/toast/index",
       "van-radio": "/static/vant/radio/index",
+      "van-tabs": "/static/vant/tabs/index",
+      "van-tab": "/static/vant/tab/index",
       "van-radio-group": "/static/vant/radio-group/index",
       "van-action-sheet": "/static/vant/action-sheet/index"
     }

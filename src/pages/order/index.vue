@@ -60,7 +60,7 @@
         <div>运费</div>
         <div>免运费</div>
       </div>
-      <div class="item">
+      <div class="item" @click="couponShow=true">
         <div>优惠券</div>
         <div>暂无</div>
       </div>
@@ -122,6 +122,63 @@
       <div>实付 : ￥{{currentPayAmount}}</div>
       <div @click="pay">支付</div>
     </div>
+    <!-- 优惠券列表弹出层 -->
+    <van-popup
+      custom-class="coupon_popup"
+      :show="couponShow"
+      position="bottom"
+      :overlay="true"
+      @close="onCouponClose"
+    >
+      <van-tabs sticky custom-class="coupon_tabs">
+        <van-tab title="可使用优惠券">
+          <div class="coupon_list" v-for="item in 10" :key="item">
+            <div class="coupon_item">
+              <div class="coupon_top">
+                <div class="left">
+                  <p class="price">
+                    <span>1.5</span>元
+                  </p>
+                  <p>无使用门槛</p>
+                  <p>最多优惠12元</p>
+                </div>
+                <div class="right">
+                  <p class="title">优惠券名称</p>
+                  <p class="time">有效期:2017.03.10 至 2017.12.30</p>
+                </div>
+              </div>
+              <div class="coupon_bottom">
+                <p>描述信息:我是个优惠券 我也不知道我干啥的</p>
+              </div>
+            </div>
+            
+          </div>
+        </van-tab>
+        <van-tab title="不可使用优惠券">
+          <div class="coupon_list">
+            <div class="coupon_item">
+              <div class="coupon_top">
+                <div class="left">
+                  <p class="price">
+                    <span>1.5</span>元
+                  </p>
+                  <p>无使用门槛</p>
+                  <p>最多优惠12元</p>
+                </div>
+                <div class="right">
+                  <p class="title disable">优惠券名称</p>
+                  <p class="time">有效期:2017.03.10 至 2017.12.30</p>
+                </div>
+              </div>
+              <div class="coupon_bottom">
+                <p>我是不可用优惠券</p>
+              </div>
+            </div>
+          </div>
+        </van-tab>
+      </van-tabs>
+      <van-button @click="onCouponClose" type="default" size="large">不使用优惠券</van-button>
+    </van-popup>
   </div>
 </template>
 
@@ -282,6 +339,7 @@ export default {
 
   data() {
     return {
+      couponShow: false,
       //配送方式上拉菜单是否显示
       sheetShow: false,
       deliveryObj: {
@@ -340,6 +398,10 @@ export default {
   },
   components: {},
   methods: {
+    //关闭优惠券列表弹出层
+    onCouponClose() {
+      this.couponShow = false;
+    },
     //关闭上拉菜单
     onClose() {
       this.sheetShow = false;
@@ -427,7 +489,7 @@ export default {
                   toPay(params)
                     .then(res => {
                       wx.hideLoading();
-                      //如果调用toPay方法成功 则拉起微信登录方法获取code传给后台并调用
+                      //因为是使用积分支付,如果调用toPay方法成功 则直接成功
                       if (res.data.code == "200") {
                         wx.showToast({
                           title: "支付成功!",

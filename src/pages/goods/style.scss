@@ -85,7 +85,8 @@
       .time {
         display: flex;
         align-items: center;
-        height: 30rpx;
+        height: 50rpx;
+        line-height: 60rpx;
         color: #ffff;
         span {
           display: block;
@@ -97,6 +98,7 @@
           line-height: 30rpx;
           background: #fff;
           color: #000;
+          margin: 0 5rpx;
         }
       }
     }

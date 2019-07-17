@@ -1,6 +1,67 @@
 .order {
   overflow-x: hidden;
   margin-bottom: 120rpx;
+  //优惠券弹出层样式
+  .coupon_popup {
+    height: 100vh;
+    background: #666;
+  }
+  //优惠券tabs样式
+  .coupon_tabs {
+    height: 86.3vh;
+    overflow-y: auto;
+  }
+  //优惠券列表
+  .coupon_list {
+    .coupon_item {
+      width: 90%;
+      height: 210rpx;
+      border-radius: 15rpx;
+      background: #fff;
+      margin: 20rpx auto;
+      margin-bottom: 30rpx;
+      padding: 20rpx;
+      .coupon_top {
+        display: flex;
+        .left {
+          p {
+            color: #666;
+            font-size: 20rpx;
+          }
+          .price {
+            color: red;
+
+            span {
+              font-size: 34rpx;
+            }
+          }
+        }
+        .right {
+          margin-left: 30rpx;
+          .title {
+            font-size: 32rpx;
+          }
+          .title.disable{
+            color: #666;
+          }
+          .time {
+            font-size: 22rpx;
+            color: #666;
+          }
+        }
+      }
+      .coupon_bottom {
+        height: 80rpx;
+        margin-top: 20rpx;
+        p {
+          color: #666;
+          font-size: 22rpx;
+          height: 80rpx;
+          line-height: 80rpx;
+        }
+      }
+    }
+  }
   .seladdress {
     width: 100%;
     min-height: 166rpx;
@@ -86,7 +147,7 @@
   .goods-desc {
     min-height: 24rpx;
   }
-  .van-card__bottom{
+  .van-card__bottom {
     text-align: left;
   }
   .goods-bottom {
