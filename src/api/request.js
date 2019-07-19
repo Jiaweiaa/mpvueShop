@@ -52,10 +52,13 @@ fly.interceptors.request.use(
   config => {
     var timestamp = new Date().getTime();
     // console.log(1562739013231-1562739012291);
+    let token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTY0MjcyMDE2NiIsInNjb3BlIjpbIioiXSwibG9naW5OYW1lIjoiMTU2NDI3MjAxNjYiLCJleHAiOjE1NjQzNjY3ODgsImp0aSI6IjZjMjMxNTIxLTk3ZmQtNGJjYS1hN2JiLWIzMDJhNTZkZmQyNyIsImNsaWVudF9pZCI6ImNsb3VkbWFsbC1jbGllbnQtYmFzaWMtYXV0aCIsInRpbWVzdGFtcCI6MTU2MzUwMjc4ODI4OX0.yreQPXv-qkVqYxx85XRGpoKDPzNouL40BEsgFh_MP8Y";
+    config.headers.Authorization = "Bearer " + token;
     //根据本地缓存是否存储shopToken判断用户是否登录
     if (wx.getStorageSync("tokenInfo")) {
       let token = wx.getStorageSync("tokenInfo").access_token;
-      // console.log(token,'1133');
+      
       config.headers.Authorization = "Bearer " + token;
       //判断token是否过期
       if (
@@ -65,16 +68,16 @@ fly.interceptors.request.use(
         /*首先所有的请求来了，我们要先判断当前是否正在刷新，如果不是，将刷新的标志置为true并请求刷新token；如果是，将请求存储到数组中*/
         if (!isRefreshing) {
           isRefreshing = true;
-          refreshtoken().then(res => {
-            /*将刷新的token替代老的token*/
-            config.headers.Authorization = "Bearer " + res.data.data.token;
-            /*更新缓存中的tokenInfo对象*/
-            wx.setStorageSync("tokenInfo", res.data.result.token);
-            /*执行数组里的请求，重新发起被挂起的请求*/
-            onRrefreshed(res.data.data.token);
-          }).catch((err) => {
-            
-          });
+          refreshtoken()
+            .then(res => {
+              /*将刷新的token替代老的token*/
+              config.headers.Authorization = "Bearer " + res.data.data.token;
+              /*更新缓存中的tokenInfo对象*/
+              wx.setStorageSync("tokenInfo", res.data.result.token);
+              /*执行数组里的请求，重新发起被挂起的请求*/
+              onRrefreshed(res.data.data.token);
+            })
+            .catch(err => {});
           let retry = new Promise((resolve, reject) => {
             /*(token) => {...}这个函数就是cb*/
             subscribeTokenRefresh(token => {
