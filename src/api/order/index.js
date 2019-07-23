@@ -23,7 +23,17 @@ export const useCoupon = params => {
     },
   });
 };
-
+//取消使用优惠券
+export const cancelCoupon = params => {
+  return fly.request({
+    url: `/trade/transaction/cancelCoupon`,
+    method: "post",
+    body: params,
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+};
 // 订单详情
 export const orderDetail = params => {
   let data = querystring.encode(params);

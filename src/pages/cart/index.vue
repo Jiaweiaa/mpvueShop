@@ -114,16 +114,16 @@
           <img class="bg" src="/static/images/coupon.png" />
           <div class="content">
             <div class="left">
-              <p>
-                <span class="name">￥</span>
-                <span class="coupon_price">{{item.actionTypeValue}}</span>
-                <span class="name">店铺红包</span>
+              <p style="position:relative;">
+                <!-- <span class="name">{{item.mDescription.name}}</span> -->
+                <span class="coupon_price">{{item.mDescription.amount}}</span>
+                <span class="name">{{item.mDescription.action}}</span>
               </p>
               <p>
-                <span v-if="item.ruleAmount>0">订单金额满{{item.ruleAmount}}元可使用</span>
-                <span v-else>订单金额满0.01元可用</span>
+                <span>{{item.mDescription.name}}</span><br>
+                <span>{{item.mDescription.scope}}</span>
               </p>
-              <p>有效期:{{item.startDate[0]}}至{{item.endDate[0]}}</p>
+              <p>有效期:{{item.mDescription.date}}</p>
             </div>
             <div class="right">
               <p @click="getCoupon(item)" v-if="item.btnAble" class="btn">立即领取</p>

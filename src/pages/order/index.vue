@@ -92,7 +92,7 @@
         <div class="bottom_item">
           <div>优惠券</div>
           <div v-if="store.canBeAppliedCoupons==null">暂无</div>
-          <div else @click="getCouponList(store)">{{store.selectCouponName}}</div>
+          <div else @click=" getCouponList(store)">{{store.selectCouponName}}</div>
         </div>
       </div>
     </div>
@@ -100,6 +100,10 @@
       <div class="item">
         <div>商品合计</div>
         <div>￥{{originPayAmount}}</div>
+      </div>
+      <div class="item">
+        <div>优惠金额</div>
+        <div>￥{{discount}}</div>
       </div>
       <div class="item" @click="paySheetShow=true">
         <div>选择支付方式</div>
@@ -152,19 +156,18 @@
               <div class="coupon_top">
                 <div class="left">
                   <p class="price">
-                    <span>{{coupon.name}}</span>
+                    <span>{{coupon.mDescription.action}}</span>
                   </p>
-                  <p v-if="coupon.ruleAmount==0">无使用门槛</p>
-                  <p v-else>满{{coupon.ruleAmount}}元可使用</p>
-                  <p>最多优惠12元</p>
+                  <p>{{coupon.mDescription.name}}</p>
+                  <p>{{coupon.mDescription.scope}}</p>
                 </div>
                 <div class="right">
-                  <p class="title">{{coupon.name}}红包</p>
-                  <p class="time">有效期:2017.03.10 至 2017.12.30</p>
+                  <p class="title">{{coupon.mDescription.amount}}</p>
+                  <p class="time">有效期:{{coupon.mDescription.date}}</p>
                 </div>
               </div>
               <div class="coupon_bottom">
-                <p>描述信息:我是个优惠券 我也不知道我干啥的</p>
+                <p>描述信息:{{coupon.mDescription.scope}}{{coupon.mDescription.name}}</p>
               </div>
             </div>
           </div>
@@ -209,7 +212,8 @@ import {
   createOrder,
   toPay,
   afterOrderDetail,
-  useCoupon
+  useCoupon,
+  cancelCoupon
 } from "../../api/order";
 import Toast from "../../../static/vant/toast/toast";
 import fly from "../../api/request";
@@ -270,9 +274,11 @@ export default {
               // 如果存在优惠券 优惠券时间戳改时间
               if (v.canBeAppliedCoupons) {
                 useCouponFlag = true;
+                //初始化订单时给orderLines的每个商品设置一个coupons的空字段
+                v.shoppingCartLineDtos.map(good => {
+                  this.$set(good, "coupons", "");
+                });
                 v.canBeAppliedCoupons.map(coupon => {
-                  coupon.startDate = getDateTime(coupon.startDate);
-                  coupon.endDate = getDateTime(coupon.endDate);
                   this.$set(coupon, "active", false);
                 });
                 //初始化的时候 如果店铺含有优惠券 则默认第一个优惠券被使用
@@ -283,12 +289,6 @@ export default {
                 );
                 this.$set(v, "selectCouponName", v.canBeAppliedCoupons[0].name);
               }
-              if (v.cantBeAppliedCoupons) {
-                v.cantBeAppliedCoupons.map(coupon => {
-                  coupon.startDate = getDateTime(coupon.startDate);
-                  coupon.endDate = getDateTime(coupon.endDate);
-                });
-              }
               v.shoppingCartLineDtos.map(vv => {
                 this.$set(vv, "storeId", v.storeInfoVo.id);
                 this.$set(vv, "shoppingCartIds", vv.id);
@@ -297,6 +297,7 @@ export default {
             this.currentPayAmount = res.data.result.currentPayAmount;
             this.originPayAmount = res.data.result.originPayAmount;
             this.currentShippingFee = res.data.result.currentShippingFee;
+            this.discount = res.data.result.discount;
             //使用优惠券
             if (useCouponFlag) {
               this.toUseCoupon();
@@ -347,11 +348,12 @@ export default {
               //优惠券时间戳改时间
               if (v.canBeAppliedCoupons) {
                 useCouponFlag = true;
+                //初始化订单时给orderLines的每个商品设置一个coupons的空字段
+                v.shoppingCartLineDtos.map(good => {
+                  this.$set(good, "coupons", "");
+                });
                 v.canBeAppliedCoupons.map(coupon => {
-                  coupon.startDate = getDateTime(coupon.startDate);
-                  coupon.endDate = getDateTime(coupon.endDate);
                   this.$set(coupon, "active", false);
-                  console.log(coupon);
                 });
                 this.$set(
                   v,
@@ -359,12 +361,6 @@ export default {
                   v.canBeAppliedCoupons[0].offerCouponCodeVo[0].offerCode
                 );
                 this.$set(v, "selectCouponName", v.canBeAppliedCoupons[0].name);
-              }
-              if (v.cantBeAppliedCoupons) {
-                v.cantBeAppliedCoupons.map(coupon => {
-                  coupon.startDate = getDateTime(coupon.startDate);
-                  coupon.endDate = getDateTime(coupon.endDate);
-                });
               }
               v.shoppingCartLineDtos.map(vv => {
                 this.$set(vv, "storeId", v.storeInfoVo.id);
@@ -374,6 +370,7 @@ export default {
             this.currentPayAmount = res.data.result.currentPayAmount;
             this.originPayAmount = res.data.result.originPayAmount;
             this.currentShippingFee = res.data.result.currentShippingFee;
+            this.discount = res.data.result.discount;
             //使用优惠券
             if (useCouponFlag) {
               this.toUseCoupon();
@@ -454,6 +451,7 @@ export default {
       allprice: "",
       shopList: [], //分店铺商品列表
       originPayAmount: "", //应付金额
+      discount: "", //优惠金额
       currentPayAmount: "", //实付金额
       currentShippingFee: "", //运费
       userInfo: "", //用户信息 里面有memberID等一系列信息
@@ -527,28 +525,32 @@ export default {
           //当前点击的优惠券设为选中状态
           // coupon.active = true;
         }
-        let couponArr = [];
+        // let couponArr = [];
         //先将每个店铺已选择的优惠券扔到一个数组中
         this.shopList.map(store => {
           //循环每个店铺的优惠券列表 如果优惠券的code码等于默认优惠券code码 active状态设为true;
           store.canBeAppliedCoupons.map(coupons => {
             coupons.active = false;
-            console.log('清空active');
+            console.log("清空active");
             if (
               coupons.offerCouponCodeVo[0].offerCode == store.selectCouponCode
             ) {
               coupons.active = true;
             }
           });
-          couponArr.push(store.selectCouponCode);
+          store.shoppingCartLineDtos.map(good => {
+            good.coupons = ""; //清空优惠券信息 防止BUG
+            good.coupons = store.selectCouponCode;
+          });
+          // couponArr.push(store.selectCouponCode);
         });
 
         this.shopList.map(store => {
           store.shoppingCartLineDtos.map(good => {
             this.$set(good, "buyType", "N");
-            //每个商品信息里加上offerCode的优惠券数组信息,再转换成以逗号分割的字符串,后台要用嘻嘻
-            this.$set(good, "coupons", couponArr);
-            good.coupons = good.coupons.toString();
+            // //每个商品信息里加上offerCode的优惠券数组信息,再转换成以逗号分割的字符串,后台要用嘻嘻
+            // this.$set(good, "coupons", couponArr);
+            // good.coupons = good.coupons.toString();
             params.orderLines.push(good);
           });
         });
@@ -573,6 +575,12 @@ export default {
             wx.hideLoading();
             if (res.data.code == "200") {
               this.currentPayAmount = res.data.result.currentPayAmount;
+              this.discount = res.data.result.discount;
+            } else {
+              wx.showToast({
+                icon: "none",
+                title: res.data.result
+              });
             }
           })
           .catch(err => {
@@ -583,11 +591,95 @@ export default {
     },
     //取消使用优惠券列表
     onCouponClose(selectShop) {
-      if (selectShop) {
-        //把本地存的已选择的优惠券id数组遍历一下 跟这个店铺有关的优惠券都删除 等着调接口
+      // this.selectShop = selectShop;
+      selectShop.shoppingCartLineDtos.map(good => {
+        good.coupons = "";
+      });
+      selectShop.selectCouponCode = ""; //默认选中优惠券code等于本次选择的优惠券的code
+      selectShop.selectCouponName = "不使用优惠券"; //默认选中的优惠券对象赋值为本次选择的优惠券对象
+      if (this.from != "") {
+        let params = {
+          codPaymentType: "",
+          deliveryDescription: "",
+          deliveryTimebar: "",
+          deliveryType: this.deliveryObj.value, //配送方式
+          expectDeliveryDate: "",
+          expectDeliveryTime: "",
+          memberId: this.userInfo.memberId,
+          orderLines: [],
+          paymentType: this.payObj.value,
+          shppingAddressId: "", //地址
+          captainId: "", //团长ID
+          type: 1 //type为1是从商品详情页面进入  2是购物车中进入
+        };
+        params.captainId = this.captainId;
+
+        // this.shopList.map(store => {
+        //   //迭代店铺 如果店铺ID与被选中店铺ID一致 则将该店铺默认选中的优惠券改为本次点击的优惠券
+        //   if (store.storeInfoVo.id == this.selectShop.storeInfoVo.id) {
+        //     store.selectCouponCode = ""; //默认选中优惠券code等于本次选择的优惠券的code
+        //     store.selectCouponName = "不使用优惠券"; //默认选中的优惠券对象赋值为本次选择的优惠券对象
+        //   }
+        // });
+
+        //先将每个店铺已选择的优惠券扔到一个数组中
+        // this.shopList.map(store => {
+        //   //循环每个店铺的优惠券列表 如果优惠券的code码等于默认优惠券code码 active状态设为true;
+        //   // store.canBeAppliedCoupons.map(coupons => {
+        //   //   coupons.active = false;
+        //   //   if (
+        //   //     coupons.offerCouponCodeVo[0].offerCode == store.selectCouponCode
+        //   //   ) {
+        //   //     coupons.active = true;
+        //   //   }
+        //   // });
+        //   store.shoppingCartLineDtos.map(good => {
+        //     good.coupons = "";
+        //   });
+        // });
+        this.shopList.map(store => {
+          store.shoppingCartLineDtos.map(good => {
+            this.$set(good, "buyType", "N");
+            //每个商品信息里加上offerCode的优惠券数组信息,再转换成以逗号分割的字符串,后台要用嘻嘻
+            // this.$set(good, "coupons", couponArr);
+            // good.coupons = good.coupons.toString();
+            params.orderLines.push(good);
+          });
+        });
+        params.storeId = this.storeId;
+        if (this.from == "shoppingcart") {
+          params.type = 2;
+          params.buyType = "N";
+        }
+
+        let orderTab = params.type;
+
+        //创建订单方法 成功则调用    captainID
+        //弹起遮罩层 防止二次支付
+        wx.showLoading({
+          title: "取消优惠券中...", //提示的内容,
+          mask: true //显示透明蒙层，防止触摸穿透,
+        });
+
+        cancelCoupon(params)
+          .then(res => {
+            this.couponShow = false;
+            wx.hideLoading();
+            if (res.data.code == "200") {
+              this.currentPayAmount = res.data.result.currentPayAmount;
+              this.discount = res.data.result.discount;
+            } else {
+              wx.showToast({
+                icon: "none",
+                title: res.data.result
+              });
+            }
+          })
+          .catch(err => {
+            this.couponShow = false;
+            wx.hideLoading();
+          });
       }
-      //差接口
-      this.couponShow = false;
     },
     //关闭上拉菜单
     onClose() {
