@@ -18,7 +18,9 @@
             ></div>
             <van-icon name="shop-o" />
             <span>{{group.storeInfoVo.name}}</span>
-            <van-icon name="arrow" />
+            <div class="getCoupon" v-if="group.canRecieveCoupon==1">
+              <span @click="getCouponList(group.storeInfoVo.id)" class="coupon_btn">领券</span>
+            </div>
           </div>
         </van-cell>
         <!-- 购物车中所选的该店铺商品 -->
@@ -63,10 +65,6 @@
                         integer
                         :min="1"
                         :step="1"
-                        minus-class="minus"
-                        plus-class="plus"
-                        input-class="step-input"
-                        custom-class="cart-step"
                       />
                     </div>
                   </van-card>
@@ -101,6 +99,40 @@
         <div @click="goAccount">下单</div>
       </div>
     </div>
+    <!-- 优惠券弹出层 -->
+    <van-popup
+      :show="couponShow"
+      position="bottom"
+      :overlay="true"
+      @close="onClose"
+      class="coupon_popup"
+    >
+      <div class="coupon_group">
+        <h3 class="title">优惠</h3>
+        <p class="coupon_title" v-if="couponList.length>0">领券</p>
+        <div class="coupon_box" v-for="(item,index) in couponList" :key="index">
+          <img class="bg" src="/static/images/coupon.png" />
+          <div class="content">
+            <div class="left">
+              <p style="position:relative;">
+                <!-- <span class="name">{{item.mDescription.name}}</span> -->
+                <span class="coupon_price">{{item.mDescription.amount}}</span>
+                <span class="name">{{item.mDescription.action}}</span>
+              </p>
+              <p>
+                <span>{{item.mDescription.name}}</span><br>
+                <span>{{item.mDescription.scope}}</span>
+              </p>
+              <p>有效期:{{item.mDescription.date}}</p>
+            </div>
+            <div class="right">
+              <p @click="getCoupon(item)" v-if="item.btnAble" class="btn">立即领取</p>
+              <p class="btn" v-else>领取中</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -148,6 +180,8 @@ export default {
   created() {},
   data() {
     return {
+      couponShow: false, //是否显示优惠券弹出层
+      couponList: [], //优惠券列表
       openId: "",
       allCheck: false,
       storeId: "", //店铺ID
@@ -161,7 +195,61 @@ export default {
   },
   components: {},
   methods: {
-   
+    // 关闭弹层
+    onClose() {
+      this.couponShow = false;
+    },
+    //获取优惠券列表
+    getCouponList(id) {
+      // this.$toast("领券");
+      availableCoupon({
+        storeId: id
+      })
+        .then(res => {
+          if (res.data.code == "200") {
+            this.couponList = res.data.result;
+            if (this.couponList.length > 0) {
+              this.couponList.map(coupon => {
+                this.$set(coupon, "btnAble", true);
+                coupon.startDate = coupon.startDate.trim().split(/\s+/);
+                coupon.endDate = coupon.endDate.trim().split(/\s+/);
+                // console.log(coupon.startDate.trim().split(/\s+/));
+              });
+            }
+          }
+          this.couponShow = true;
+        })
+        .catch(err => {
+          this.couponShow = false;
+        });
+    },
+    //领取优惠券
+    getCoupon(item) {
+      let params = {
+        uniqueId: item.uniqueId,
+        storeId: item.storeId
+      };
+      item.btnAble = false;
+      getcoupon(params)
+        .then(res => {
+          if (res.data.code == "200") {
+            wx.showToast({
+              icon: "none",
+              title: res.data.result
+            });
+          } else {
+            wx.showToast({
+              icon: "none",
+              title: res.data.message
+            });
+          }
+
+          item.btnAble = true;
+        })
+        .catch(err => {
+          item.btnAble = true;
+        });
+    },
     //跳转到商城首页
     toIndex() {
       wx.switchTab({
@@ -178,9 +266,9 @@ export default {
             // this.$toast(res.data.message);
             goods.quantity -= 1;
             wx.showToast({
-              title:res.data.message,
-              icon:'none'
-            })
+              title: res.data.message,
+              icon: "none"
+            });
           }
         })
         .catch(error => {

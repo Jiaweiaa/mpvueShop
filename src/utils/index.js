@@ -134,3 +134,15 @@ export function accMul(arg1, arg2) {
     Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
   );
 }
+
+/**
+ ** 时间戳转时间函数
+ ** 说明：javascript的乘法结果会有误差，在两个浮点数相乘的时候会比较明显。这个函数返回较为精确的乘法结果。
+ ** 调用：getDateTime(timestamp)
+ ** 返回值：XXXX年-XX月-XX日
+ **/
+export function getDateTime(timestamp) {
+  var d = new Date(timestamp * 1000); //根据时间戳生成的时间对象
+  var date = d.getFullYear() + "年-" + (d.getMonth() + 1) + "月-" + d.getDate()+ "日";
+  return date;
+}

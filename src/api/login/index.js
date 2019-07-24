@@ -1,4 +1,5 @@
 import fly from "../request";
+import {noTokenFly} from '../request';
 let querystring = require("querystring");
 let deviceId = new Date().getTime();
 
@@ -6,7 +7,7 @@ let deviceId = new Date().getTime();
 // 登录接口
 export const littleAppLogin = params => {
   let data = querystring.encode(params);
-  return fly.request({
+  return noTokenFly.request({
     url: "basic/auth/wechat/littleAppLogin",
     method: "post",
     headers: {
@@ -17,7 +18,7 @@ export const littleAppLogin = params => {
 };
 //注册接口
 export const littleAppRegister = params => {
-  return fly.request({
+  return noTokenFly.request({
     url: "basic/auth/wechat/littleAppRegister",
     method: "post",
     headers: {
@@ -28,7 +29,7 @@ export const littleAppRegister = params => {
 };
 //刷新token接口
 export const refreshToken = params => {
-  return fly.request({
+  return noTokenFly.request({
     url: "basic/auth/user/refreshToken",
     method: "post",
     headers: {

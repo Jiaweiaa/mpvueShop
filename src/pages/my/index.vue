@@ -17,7 +17,9 @@
       <div class="user">
         <div class v-if="userInfo.nickname">
           <p>{{userInfo.nickname}}</p>
-          <p>欢迎您,时刻益每家会员</p>
+          <!-- <p>欢迎您,时刻益每家会员</p> -->
+          <p>欢迎您,百团联盟会员</p>
+          <!-- <p>欢迎您,高山会员</p> -->
           <!-- <p style="color:#fff;">
             <span ></span>省
             <span type="userCity" lang="zh_CN"></span>市

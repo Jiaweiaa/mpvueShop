@@ -85,7 +85,8 @@
       .time {
         display: flex;
         align-items: center;
-        height: 30rpx;
+        height: 50rpx;
+        line-height: 60rpx;
         color: #ffff;
         span {
           display: block;
@@ -97,6 +98,7 @@
           line-height: 30rpx;
           background: #fff;
           color: #000;
+          margin: 0 5rpx;
         }
       }
     }
@@ -548,7 +550,8 @@
       padding-left: -5rpx;
       .addCart {
         width: 215rpx;
-        background:$buy-btn;
+        // border: 1rpx solid #b4282d;
+        background: #7aef89;
         float: left;
         height: 70rpx;
         line-height: 70rpx;
@@ -560,7 +563,7 @@
         height: 70rpx;
         line-height: 70rpx;
         text-align: center;
-        background: $main-color;
+        background: #7aefb9;
         color: #fff;
       }
     }
