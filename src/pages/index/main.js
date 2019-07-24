@@ -15,6 +15,7 @@ export default {
       'van-card': '/static/vant/card/index',
       'van-icon': '/static/vant/icon/index',
       'van-switch-cell': '/static/vant/switch-cell/index',
+      "van-notify": "/static/vant/notify/index"
     }
   }
 }
