@@ -1,10 +1,8 @@
 let Fly = require("flyio/dist/npm/wx");
-let fly = new Fly();
-// fly.config.baseURL = " http://47.104.173.227:8003";
-// fly.config.baseURL = "http://120.27.1.42:8003" ;
-// fly.config.baseURL = " http://39.97.233.168:8003";
-// fly.config.baseURL = " https://mall.gaoshanapp.com";
-// fly.config.baseURL = " https://jf.ibaituan.cn";
+let fly = new Fly(); 
+export let noTokenFly = new Fly();
+//  noTokenFly;
+
 export const refreshToken = params => {
   return Fly.request({
     url: `${process.env.BASE_API}/auth/user/refreshToken`,
@@ -17,6 +15,7 @@ export const refreshToken = params => {
 };
 
 fly.config.baseURL = process.env.BASE_API;
+noTokenFly.config.baseURL = process.env.BASE_API;
 // fly.config.baseURL = "http://192.168.1.188:8003" ;
 // http://47.104.173.227:8003
 //http://192.168.0.10:8003
@@ -51,14 +50,11 @@ function isAccessTokenExpired() {
 fly.interceptors.request.use(
   config => {
     var timestamp = new Date().getTime();
-    // console.log(1562739013231-1562739012291);
-    let token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTY0MjcyMDE2NiIsInNjb3BlIjpbIioiXSwibG9naW5OYW1lIjoiMTU2NDI3MjAxNjYiLCJleHAiOjE1NjQzNjY3ODgsImp0aSI6IjZjMjMxNTIxLTk3ZmQtNGJjYS1hN2JiLWIzMDJhNTZkZmQyNyIsImNsaWVudF9pZCI6ImNsb3VkbWFsbC1jbGllbnQtYmFzaWMtYXV0aCIsInRpbWVzdGFtcCI6MTU2MzUwMjc4ODI4OX0.yreQPXv-qkVqYxx85XRGpoKDPzNouL40BEsgFh_MP8Y";
-    config.headers.Authorization = "Bearer " + token;
+
     //根据本地缓存是否存储shopToken判断用户是否登录
     if (wx.getStorageSync("tokenInfo")) {
       let token = wx.getStorageSync("tokenInfo").access_token;
-      
+
       config.headers.Authorization = "Bearer " + token;
       //判断token是否过期
       if (
@@ -141,6 +137,7 @@ fly.interceptors.response.use(
     // console.log(err.status);
     //如果接口错误信息是401 则代表请求时没携带token 跳转登录页去获取token
     if (err.status == "401") {
+      wx.clearStorage();
       wx.navigateTo({
         url: "/pages/login/main"
       });
@@ -153,4 +150,5 @@ fly.interceptors.response.use(
   }
 );
 
+// export default { fly, noTokenFly };
 export default fly;

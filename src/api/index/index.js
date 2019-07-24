@@ -1,10 +1,11 @@
 import fly from '../request';
+import {noTokenFly} from '../request';
 let querystring = require("querystring");
 let deviceId = new Date().getTime();
 
-// 团长排行
+// 团长列表
 export const getDistance = params => {
-  return fly.request({
+  return noTokenFly.request({
     url: `/shop/captain/getDistance`,
     method: "post",
     body: params,
@@ -18,7 +19,7 @@ export const getDistance = params => {
 
 // 获取首页数据
 export const getIndexItem = params => {
-  return fly.request({
+  return noTokenFly.request({
     url: `/product/mallIndex/getIndexItem`,
     method: "post",
     body: params,

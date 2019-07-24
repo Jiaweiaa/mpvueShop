@@ -117,7 +117,8 @@
               <p style="position:relative;">
                 <!-- <span class="name">{{item.mDescription.name}}</span> -->
                 <span class="coupon_price">{{item.mDescription.amount}}</span>
-                <span class="name">{{item.mDescription.action}}</span>
+                <span class="coupon_type">{{item.mDescription.action}}</span>
+                <span class="name">{{item.name}}</span>
               </p>
               <p>
                 <span>{{item.mDescription.name}}</span><br>

@@ -1,4 +1,5 @@
 import fly from '../request';
+import {noTokenFly} from '../request';
 let querystring = require("querystring");
 let deviceId = new Date().getTime();
 
@@ -26,7 +27,7 @@ export const addShoppingcart = params => {
 };
 //获取购物车中的商品数量
 export const shoppingcartCount = params => {
-  return fly.request({
+  return noTokenFly.request({
     url: "/trade/shoppingcart/shoppingcartCount",
     method: "post",
     headers: {

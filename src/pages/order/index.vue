@@ -91,8 +91,8 @@
         </div>
         <div class="bottom_item">
           <div>优惠券</div>
-          <div v-if="store.canBeAppliedCoupons==null">暂无</div>
-          <div else @click=" getCouponList(store)">{{store.selectCouponName}}</div>
+          <div v-show="store.canBeAppliedCoupons==null">暂无</div>
+          <div v-show="store.canBeAppliedCoupons!=null" @click=" getCouponList(store)">{{store.selectCouponName}}</div>
         </div>
       </div>
     </div>
@@ -156,12 +156,13 @@
               <div class="coupon_top">
                 <div class="left">
                   <p class="price">
-                    <span>{{coupon.mDescription.action}}</span>
+                    <span>{{coupon.name}}</span>
                   </p>
                   <p>{{coupon.mDescription.name}}</p>
                   <p>{{coupon.mDescription.scope}}</p>
                 </div>
                 <div class="right">
+                  <p class="title">{{coupon.mDescription.action}}</p>
                   <p class="title">{{coupon.mDescription.amount}}</p>
                   <p class="time">有效期:{{coupon.mDescription.date}}</p>
                 </div>
@@ -255,6 +256,20 @@ export default {
       ShopCartOrderconfirm(params)
         .then(res => {
           if (res.data.code == "200") {
+            
+            if (res.data.result.errorFlag===false) {
+              return wx.showToast({
+                title: res.data.result.errorMap.errorMsg,
+                icon: "none",
+                duration: 3000,
+                mask: true
+              });
+              setTimeout(() => {
+                wx.navigateBack({
+                  delta: 1
+                });
+              }, 3000);
+            }
             //地址信息赋值
             if (this.address == null) {
               let addressObj = res.data.result.shippingAddressVo;
@@ -327,6 +342,19 @@ export default {
       detailOrderconfirm(params)
         .then(res => {
           if (res.data.code == "200") {
+            if (res.data.result.errorFlag===false) {
+              return wx.showToast({
+                title: res.data.result.errorMap.errorMsg,
+                icon: "none",
+                duration: 3000,
+                mask: true
+              });
+              setTimeout(() => {
+                wx.navigateBack({
+                  delta: 1
+                });
+              }, 3000);
+            }
             //地址信息赋值
             if (this.address == null) {
               let addressObj = res.data.result.shippingAddressVo;

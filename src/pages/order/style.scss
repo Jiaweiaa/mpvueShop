@@ -36,7 +36,10 @@
           }
           .price {
             color: red;
-
+            max-width: 210rpx;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             span {
               font-size: 34rpx;
             }

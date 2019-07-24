@@ -22,7 +22,7 @@ module.exports = merge(prodEnv, {
   // BASE_API: '"http://192.168.0.16:8003"'
   // BASE_API: '"http://192.168.0.10:8003"'
 
-  // BASE_API: '"http://47.110.126.198"'
+  // BASE_API: '"http://47.110.126.198:8003"'
   // BASE_API: '"http://192.168.1.188:8003"'
   // BASE_API: '"http://192.168.1.188:8003"'
   //  BASE_API: '"http://192.168.3.4:8003"'
