@@ -43,6 +43,7 @@
         thumb-class="goods-image"
         title-class="goods-title"
         desc-class="goods-desc"
+        price-class="goods-price"
         v-for="(item, index) in goodsList"
         :key="index"
         @click="goodsDetail(item.id)"
@@ -91,7 +92,9 @@
             :key="grouPindex"
           >
             <div class="itemTitle" @click="showTabber(grouPindex)">
-              <div style="width: 40%; float: left;">{{group.label}}</div>
+              <div
+                style="width: 40%; float: left;color:24rpx;color:rgba(136,136,136,1);"
+              >{{group.label}}</div>
               <van-icon
                 style="float: right;margin-right: 10px;"
                 :name="group.isShowAll ? 'arrow-up' : 'arrow-down'"
@@ -110,27 +113,17 @@
                   :class="{'activeSearch': item.isChecked == true}"
                   v-for="(item, childItem) in group.facetFilterUnitList"
                   :key="childItem"
-                >{{item.label}}</div>
+                >
+                  <p>{{item.label}}</p>
+                </div>
               </div>
             </van-transition>
           </div>
         </div>
 
         <div class="footer">
-          <van-button
-            size="small"
-            style="text-align: center;width: 47%; float: left; margin-left: 1%; margin-right: 2%"
-            round
-            type="danger"
-            @click="resetFq()"
-          >重置</van-button>
-          <van-button
-            size="small"
-            style="text-align: center;width: 47%; float: left; margin-left: 2%;"
-            round
-            type="primary"
-            @click="popupShow=false"
-          >确认</van-button>
+          <van-button custom-class="resetBtn" @click="resetFq()">重置</van-button>
+          <van-button custom-class="submitBtn" @click="popupShow=false">确认</van-button>
         </div>
       </div>
     </van-popup>
@@ -403,6 +396,20 @@ export default {
 </script>
 <style lang='scss'>
 @import "./style";
+.resetBtn {
+  width: 255rpx !important;
+  height: 80rpx !important;
+  border: 2rpx solid rgba(255, 108, 0, 1) !important;
+  border-radius: 10rpx !important;
+  color: rgba(255, 108, 0, 1) !important;
+}
+.submitBtn {
+  width: 255rpx !important;
+  height: 80rpx !important;
+  background: rgba(255, 108, 0, 1) !important;
+  color: rgba(255, 255, 255, 1) !important;
+  border-radius: 10rpx !important;
+}
 .title {
   text-align: center;
   padding: 20rpx 0;
@@ -419,8 +426,13 @@ export default {
   }
 }
 .activeSearch {
-  background: #b4282d !important;
-  color: #fff !important;
+  // background: #b4282d !important;
+  // color: #fff !important;
+  background: rgba(255, 108, 0, 0.1) !important;
+  border-radius: 4rpx !important;
+  span {
+    color: rgba(255, 108, 0, 1) !important;
+  }
 }
 .goodsList {
   position: fixed;
@@ -511,17 +523,26 @@ export default {
     .content {
       padding: 10px;
       .childItem {
-        width: 30%;
-        height: 25px;
-        line-height: 25px;
+        width: 163rpx;
+        height: 80rpx;
         text-align: center;
-        border: 1px solid #ccc;
-        background: #eee;
-        font-size: 12px;
-        border-radius: 15px;
+        background: rgba(245, 245, 245, 1);
+        border-radius: 4rpx;
         float: left;
         margin-right: 10px;
         margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        p {
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+          width: 150rpx;
+          font-size: 28rpx;
+          color: rgba(51, 51, 51, 1);
+        }
       }
       .childItem:nth-child(3n) {
         margin-right: 0;
@@ -546,10 +567,12 @@ export default {
     .center {
       text-align: center;
     }
-    .footer {
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
+  }
+  .footer {
+    overflow: hidden;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
   }
 }
 </style>

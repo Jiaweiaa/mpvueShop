@@ -129,7 +129,7 @@
         .price {
           text-align: center;
           font-size: 30rpx;
-          color: #b4282d;
+          color: $price-color;
         }
       }
       .item.active:nth-last-child(1) {
@@ -189,6 +189,9 @@
 }
 .goods-desc {
   min-height: 24rpx;
+}
+.goods-price{
+  color: $price-color;
 }
 .goods-bottom {
   margin: 5rpx 0;

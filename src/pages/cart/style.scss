@@ -32,6 +32,84 @@
       width: 340rpx;
     }
   }
+  //商品cell样式
+  .store-name {
+    display: flex;
+    align-items: center;
+    height: 47rpx;
+    line-height: 47rpx;
+    van-icon {
+      height: 47rpx;
+      line-height: 51rpx;
+    }
+    span {
+      height: 47rpx;
+      font-size: 27rpx;
+      line-height: 47rpx;
+      // line-height: 50rpx;
+    }
+  }
+  // 商品步进器样式
+  .minus {
+    width: 20rpx!important;
+    height: 42rpx!important;
+  }
+  .step-input{
+    width: 120rpx!important;
+    height: 42rpx!important;
+    font-size: 28rpx!important;
+  }
+  .plus{
+    width: 20rpx!important;
+    height: 42rpx!important;
+  }
+  .cart-step {
+    display: inline-block;
+    width: 160rpx;
+    height: 42rpx;
+    border: 1rpx solid rgba(209, 209, 209, 1);
+    border-radius: 6rpx;
+  }
+  .goods {
+    .goods-item {
+      display: flex;
+      // align-items: flex-start;
+      .img-box {
+        width: 20%;
+        height: 120rpx;
+        display: flex;
+        // justify-content: center;
+        img {
+          width: 120rpx;
+          height: auto;
+        }
+      }
+      .goods-info {
+        // margin-left: 20rpx;
+        width: 50%;
+        h3 {
+        }
+        p:nth-child(1) {
+          color: #999;
+          font-size: 18rpx;
+        }
+        p:nth-child(2) {
+          color: red;
+          font-size: 26rpx;
+          del {
+            color: #999;
+          }
+        }
+      }
+      .goods-num {
+        width: 30%;
+        color: #999;
+        font-size: 20rpx;
+        text-align: right;
+      }
+    }
+  }
+
   .icon {
     height: 45rpx;
     width: 55rpx;

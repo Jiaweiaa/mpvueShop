@@ -18,6 +18,7 @@
             ></div>
             <van-icon name="shop-o" />
             <span>{{group.storeInfoVo.name}}</span>
+            <van-icon name="arrow" />
           </div>
         </van-cell>
         <!-- 购物车中所选的该店铺商品 -->
@@ -62,6 +63,10 @@
                         integer
                         :min="1"
                         :step="1"
+                        minus-class="minus"
+                        plus-class="plus"
+                        input-class="step-input"
+                        custom-class="cart-step"
                       />
                     </div>
                   </van-card>

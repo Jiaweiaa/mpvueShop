@@ -63,7 +63,7 @@
     height: 184px;
     display: flex;
     align-items: center;
-    background: $main-color;
+    background: linear-gradient(90deg,$main-color 0%,$buy-btn 100%);
     padding: 0 30rpx;
     box-sizing: border-box;
     position: relative;

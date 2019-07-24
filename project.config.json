@@ -23,7 +23,7 @@
 	"miniprogramRoot": "dist/",
 	"qcloudRoot": "server/",
 	"compileType": "miniprogram",
-	"appid": "wxe291232f2cc607b6",
+	"appid": "wxf84a0ce9d2cca3ee",
 	"projectname": "%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%95%86%E5%9F%8E",
 	"libVersion": "2.6.6",
 	"simulatorType": "wechat",
