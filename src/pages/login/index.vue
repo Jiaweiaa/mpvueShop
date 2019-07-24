@@ -2,9 +2,9 @@
   <div class="login" v-if="signFlag">
     <div class="logo">
       <!-- 百团 -->
-      <!-- <img src="/static/images/baituan_logo.jpeg" alt=""> -->
+      <img src="/static/images/baituan_logo.jpeg" alt="">
       <!-- 时刻 -->
-      <img src="/static/images/gaoshan_logo.png" alt="">
+      <!-- <img src="/static/images/gaoshan_logo.png" alt=""> -->
     </div>
     <van-cell-group>
       <!-- <van-field

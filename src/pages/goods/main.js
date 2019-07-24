@@ -6,7 +6,6 @@ app.$mount()
 export default {
   config: {
     // 页面配置，即 page.json 的内容
-    navigationBarTitleText: '时刻益每家',
     'usingComponents': {
       'van-stepper': '/static/vant/stepper/index',
       'van-popup': '/static/vant/popup/index',

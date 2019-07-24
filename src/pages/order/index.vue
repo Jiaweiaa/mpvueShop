@@ -109,7 +109,7 @@
         <div>选择支付方式</div>
         <div>{{payObj.name}}</div>
       </div>
-      <div class="item" v-if="payObj.value==12">
+      <div class="item" v-if="payObj.value=='12'">
         <div>联盟券余额</div>
         <div>余额&nbsp;{{scoreAmount}}</div>
       </div>
@@ -230,9 +230,9 @@ export default {
   onShow() {
     getMemberAmount().then(res => {
       this.scoreAmount = res.data.result.scoreAmount;
-      if (this.scoreAmount <= 0) {
-        this.payObj.value = 4;
-      }
+      // // if (this.scoreAmount <= 0) {
+      //   this.payObj.value = 4;
+      // }
     });
     if (wx.getStorageSync("orderFrom") && wx.getStorageSync("orderParams")) {
       this.from = wx.getStorageSync("orderFrom");
@@ -422,26 +422,26 @@ export default {
           value: 2
         }
       ],
-      //百团支付方式
-      // payObj: {
-      //   name: "联盟券",
-      //   value: 12
-      // },
-      // 时刻支付方式
+      // 百团支付方式
       payObj: {
-        name: "微信",
-        value: 4
+        name: "联盟券",
+        value: 12
       },
+      // 时刻支付方式
+      // payObj: {
+      //   name: "微信",
+      //   value: 4
+      // },
       paySheetShow: false,
       payOption: [
         {
           name: "微信",
           value: 4
+        },
+        {
+          name: "联盟券",
+          value: 12
         }
-        // {
-        //   name: "联盟券",
-        //   value: 12
-        // }
       ],
       //  联盟券
       scoreAmount: 0,
@@ -774,14 +774,16 @@ export default {
                           duration: 2000,
                           mask: true
                         });
-
-                        wx.redirectTo({
-                          url: "/pages/myOrder/main"
-                        });
+                        setTimeout(() => {
+                          wx.redirectTo({
+                            url: "/pages/myOrder/main"
+                          });
+                        }, 1500);
                       } else {
                         wx.showToast({
                           title: res.data.message,
                           duration: 1500,
+                          icon: "none",
                           mask: true
                         });
                         setTimeout(() => {

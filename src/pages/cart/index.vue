@@ -1,7 +1,9 @@
 <template>
   <div class="cart_main">
     <div class="top">
-      <div>时刻益每家</div>
+      <!-- <div>时刻益每家</div> -->
+      <!-- <div>高山商城</div> -->
+      <div>百团联盟</div>
       <div>轻松购</div>
       <div>乐享购</div>
     </div>

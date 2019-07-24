@@ -65,7 +65,7 @@
             :thumb="'http://qn.gaoshanmall.cn/' + good.img"
           >
             <div slot="desc" class="goods-bottom">
-              <div class="sketch">{{good.sketch}}</div>
+              <div class="sketch">{{good.sketch==null?'':good.sketch}}</div>
               <div class="hot">热销中</div>
               <div class="sale">
                 <span class="sold">已售{{good.saleCount}}份</span>

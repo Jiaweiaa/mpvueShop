@@ -145,7 +145,7 @@
     <div class="bottom-fixed">
       <div @click="toIndex()" class="home">
         <div class="car">
-          <img src="/static/images/sk_home_active.png" />
+          <img src="/static/images/gs_home_active.png" />
           <span class="text">首页</span>
         </div>
       </div>
@@ -155,7 +155,7 @@
       <div @click="toCart" class="cart">
         <div class="car">
           <span>{{allnumber}}</span>
-          <img src="/static/images/sk_cart_active.png" />
+          <img src="/static/images/gs_cart_active.png" />
           <p class="text">购物车</p>
         </div>
       </div>
