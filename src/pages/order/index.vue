@@ -113,10 +113,10 @@
         <div>联盟券余额</div>
         <div>余额&nbsp;{{scoreAmount}}</div>
       </div>
-      <div class="item" @click="sheetShow=true">
+      <!-- <div class="item" @click="sheetShow=true">
         <div>选择配送方式</div>
         <div>{{deliveryObj.name}}</div>
-      </div>
+      </div> -->
       <!-- <div class="item">
         <div>运费</div>
         <div>免运费</div>

@@ -15,7 +15,7 @@
         :thumb="'http://qn.gaoshanmall.cn/' + goodsInfo.itemImages[0].picUrl"
       >
         <div slot="bottom" class="goods-bottom">
-          <span>已有100人付款 沈阳</span>
+          <!-- <span>已有100人付款 沈阳</span> -->
         </div>
       </van-card>
   
