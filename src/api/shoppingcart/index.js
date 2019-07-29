@@ -27,7 +27,7 @@ export const addShoppingcart = params => {
 };
 //获取购物车中的商品数量
 export const shoppingcartCount = params => {
-  return noTokenFly.request({
+  return fly.request({
     url: "/trade/shoppingcart/shoppingcartCount",
     method: "post",
     headers: {

@@ -9,9 +9,10 @@ export default {
     navigationBarTitleText: '时刻益每家',
     'usingComponents': {
       'van-stepper': '/static/vant/stepper/index',
+      'van-cell': '/static/vant/cell/index',
+      "van-icon": "/static/vant/icon/index",
       'van-popup': '/static/vant/popup/index',
-      'van-button': '/static/vant/button/index',
-      "van-icon": "/static/vant/icon/index"
+      'van-button': '/static/vant/button/index'
     }
   }
 }

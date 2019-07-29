@@ -313,7 +313,10 @@ export default {
           url: "/pages/order/main"
         });
       } else {
-        console.log("请选择商品");
+        wx.showToast({
+          icon:'none',
+          title:'请至少选择一件商品'
+        })
       }
     },
     //删除购物车
