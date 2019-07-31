@@ -27,3 +27,16 @@ export const getIndexItem = params => {
     },
   });
 };
+
+// 领取优惠券
+export const getcoupon = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `/trade/front/coupon/getcoupon`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};

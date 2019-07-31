@@ -1,5 +1,5 @@
 <template>
-  <div class="goods" v-if="goodsInfo!=null">
+  <div class="record_content" v-if="goodsInfo!=null">
     <van-card
         
         :tag="goodsInfo.tag"
@@ -15,7 +15,7 @@
         :thumb="'http://qn.gaoshanmall.cn/' + goodsInfo.itemImages[0].picUrl"
       >
         <div slot="bottom" class="goods-bottom">
-          <span>已有100人付款 沈阳</span>
+          <!-- <span>已有100人付款 沈阳</span> -->
         </div>
       </van-card>
   
@@ -44,7 +44,7 @@
     </div>
 
     <!-- sku -->
-    <van-popup class="attr-pop" position="bottom" :show="showpop" @close="showType">
+   <van-popup class="attr-pop" position="bottom" :show="showpop" @close="showType">
       <div class="top">
         <div class="left">
           <img v-if="gallery.length>0" :src="'http://qn.gaoshanmall.cn/'+gallery[0].picUrl" />
@@ -57,7 +57,19 @@
         </div>
         <div @click="showType" class="close">X</div>
       </div>
-
+      <!-- <div style="display:block;min-width:50px;min-height:50px;">
+        <div style="float:left;">
+          <img
+            v-if="gallery.length>0"
+            style="width:50px;height:50px;"
+            :src="'http://qn.gaoshanmall.cn/'+gallery[0].picUrl"
+          >
+        </div>
+        <div style="float:right;">
+          <h3>{{goodsInfo.title}}</h3>
+          <span>{{nowPrice}}</span>
+        </div>
+      </div>-->
       <div id="goodsinfo">
         <div v-for="(item,index) in keys" :key="index">
           <div class="tabContent">
@@ -78,40 +90,43 @@
       </div>
       <!-- <p>请选择商品数量</p> -->
       <div style="display:flex;justify-content: space-between;align-items:center;">
-        <p style="margin-left:30px;font-size:16px;">我要买:</p>
+        <p style="margin-left:30rpx;font-size:32rpx;">我要买:</p>
         <van-stepper
-          style="margin-right:30px;"
-          @plus="plusGoodsNum()"
-          @minus="minusGoodsNum()"
+          style="margin-right:30rpx;"
           async-change
+          @change="valueChange"
           :step="1"
           :min="1"
           :value="goodsNum"
         />
       </div>
-      <!-- <div v-if="selectSkuData!=null" style="margin-left:30px;color:#ccc;font-size:14px;">商品剩余数量:{{selectSkuData.quantity}}</div> -->
+
       <div class="handle">
-        <van-button type="danger" size="large" @click="submit()">确定</van-button>
+        <van-button type="danger" size="large" custom-class="buyBtn" @click="submit()">确定</van-button>
       </div>
     </van-popup>
-
+    <!-- 底部 -->
     <div class="bottom-fixed">
-      <div>
+      <div @click="toIndex()" class="home">
         <div class="car">
-          <img src="/static/images/ic_menu_choice_nor.png" />
+          <img src="/static/images/gs_home_active.png" />
+          <span class="text">首页</span>
         </div>
       </div>
-      <div @click="collect">
+      <!-- <div @click="collect">
         <div class="collect" :class="[collectFlag ? 'active' :'']"></div>
-      </div>
-      <div @click="toCart">
+      </div>-->
+      <div @click="toCart" class="cart">
         <div class="car">
           <span>{{allnumber}}</span>
-          <img src="/static/images/ic_menu_shoping_nor.png" />
+          <img src="/static/images/gs_cart_active.png" />
+          <p class="text">购物车</p>
         </div>
       </div>
-      <div @click="openSku('buyNow')">立即购买</div>
-      <div @click="openSku('addCart')">加入购物车</div>
+      <div class="btn-group">
+        <div class="addCart" @click="openSku('addCart')">加入购物车</div>
+        <div class="buyNow" @click="openSku('buyNow')">立即购买</div>
+      </div>
     </div>
   </div>
 </template>
@@ -725,16 +740,16 @@ export default {
 };
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
 @import url("~mpvue-wxparse/src/wxParse.css");
 @import "./style.scss";
 </style>
-<style>
-.goods {
+<style lang='scss' scoped>
+.record_content {
   margin-bottom: 100rpx;
   padding-bottom: 1rpx;
 }
-.goods .sku {
+.record_content .sku {
   height: 25px;
   line-height: 25px;
   overflow: hidden;
@@ -757,7 +772,7 @@ export default {
 }
 
 #goodsinfo .tabContent .active {
-  background: red;
+  background: $main-color;
   color: white;
 }
 .goods .van-stepper {

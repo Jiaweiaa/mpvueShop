@@ -1,12 +1,11 @@
 let Fly = require("flyio/dist/npm/wx");
-let fly = new Fly();
-// fly.config.baseURL = " http://47.104.173.227:8003";
-// fly.config.baseURL = "http://120.27.1.42:8003" ;
-// fly.config.baseURL = " http://39.97.233.168:8003";
-// fly.config.baseURL = " https://mall.gaoshanapp.com";
-// fly.config.baseURL = " https://jf.ibaituan.cn";
-export const refreshToken = params => {
-  return Fly.request({
+let fly = new Fly(); 
+export let noTokenFly = new Fly();
+export let myFly = new Fly();
+//  noTokenFly;
+
+ const refreshToken = params => {
+  return myFly.request({
     url: `${process.env.BASE_API}/auth/user/refreshToken`,
     method: "post",
     headers: {
@@ -17,6 +16,7 @@ export const refreshToken = params => {
 };
 
 fly.config.baseURL = process.env.BASE_API;
+noTokenFly.config.baseURL = process.env.BASE_API;
 // fly.config.baseURL = "http://192.168.1.188:8003" ;
 // http://47.104.173.227:8003
 //http://192.168.0.10:8003
@@ -51,43 +51,43 @@ function isAccessTokenExpired() {
 fly.interceptors.request.use(
   config => {
     var timestamp = new Date().getTime();
-    // console.log(1562739013231-1562739012291);
+
     //根据本地缓存是否存储shopToken判断用户是否登录
     if (wx.getStorageSync("tokenInfo")) {
       let token = wx.getStorageSync("tokenInfo").access_token;
-      // console.log(token,'1133');
+
       config.headers.Authorization = "Bearer " + token;
-      //判断token是否过期
-      if (
-        isAccessTokenExpired() &&
-        config.url != "basic/auth/user/refreshToken"
-      ) {
-        /*首先所有的请求来了，我们要先判断当前是否正在刷新，如果不是，将刷新的标志置为true并请求刷新token；如果是，将请求存储到数组中*/
-        if (!isRefreshing) {
-          isRefreshing = true;
-          refreshtoken().then(res => {
-            /*将刷新的token替代老的token*/
-            config.headers.Authorization = "Bearer " + res.data.data.token;
-            /*更新缓存中的tokenInfo对象*/
-            wx.setStorageSync("tokenInfo", res.data.result.token);
-            /*执行数组里的请求，重新发起被挂起的请求*/
-            onRrefreshed(res.data.data.token);
-          }).catch((err) => {
-            
-          });
-          let retry = new Promise((resolve, reject) => {
-            /*(token) => {...}这个函数就是cb*/
-            subscribeTokenRefresh(token => {
-              config.headers.Authorization = "Bearer " + token;
-              /*将请求挂起*/
-              resolve(config);
-            });
-          });
-          return retry;
-        }
-      } else {
-        return config;
-      }
+      // //判断token是否过期
+      // if (
+      //   isAccessTokenExpired() &&
+      //   config.url != "basic/auth/user/refreshToken"
+      // ) {
+      //   /*首先所有的请求来了，我们要先判断当前是否正在刷新，如果不是，将刷新的标志置为true并请求刷新token；如果是，将请求存储到数组中*/
+      //   if (!isRefreshing) {
+      //     isRefreshing = true;
+      //     refreshToken()
+      //       .then(res => {
+      //         /*将刷新的token替代老的token*/
+      //         config.headers.Authorization = "Bearer " + res.data.data.token;
+      //         /*更新缓存中的tokenInfo对象*/
+      //         wx.setStorageSync("tokenInfo", res.data.result.token);
+      //         /*执行数组里的请求，重新发起被挂起的请求*/
+      //         onRrefreshed(res.data.data.token);
+      //       })
+      //       .catch(err => {});
+      //     let retry = new Promise((resolve, reject) => {
+      //       /*(token) => {...}这个函数就是cb*/
+      //       subscribeTokenRefresh(token => {
+      //         config.head  ers.Authorization = "Bearer " + token;
+      //         /*将请求挂起*/
+      //         resolve(config);
+      //       });
+      //     });
+      //     return retry;
+      //   }
+      // } else {
+      //   return config;
+      // }
     } else {
       /*如果没有登录直接返回请求*/
       return config;
@@ -138,6 +138,7 @@ fly.interceptors.response.use(
     // console.log(err.status);
     //如果接口错误信息是401 则代表请求时没携带token 跳转登录页去获取token
     if (err.status == "401") {
+      wx.clearStorage();
       wx.navigateTo({
         url: "/pages/login/main"
       });
@@ -150,4 +151,5 @@ fly.interceptors.response.use(
   }
 );
 
+// export default { fly, noTokenFly };
 export default fly;

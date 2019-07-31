@@ -78,7 +78,7 @@ export default {
     window: {
       backgroundTextStyle: "light",
       navigationBarBackgroundColor: "#fff",
-      navigationBarTitleText: "时刻益每家",
+      navigationBarTitleText: "高山商城",
       navigationBarTextStyle: "black"
     },
     tabBar: {

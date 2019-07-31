@@ -23,7 +23,7 @@
               <div
                 class="order-ok"
                 style="width: calc(30% - 20px); float: right; padding-right: 10px; margin-top: 10px; font-size: 13px; text-align: right;"
-              >{{value.typeData.title}}</div>
+              >{{value.typeData ? value.typeData.title : ''}}</div>
             </div>
             <div
               class="timer bottom border-top"
@@ -45,27 +45,27 @@
                 type="danger"
                 class="childBtn"
                 size="small"
-                v-if="value.typeData.canBtn"
+                v-if="value.typeData? value.typeData.canBtn: ''"
               >取消订单</van-button>
               <van-button
                 @click.stop="logistics(value)"
                 class="childBtn"
                 size="small"
-                v-if="value.typeData.seeBtn"
+                v-if="value.typeData?value.typeData.seeBtn: ''"
               >查看物流</van-button>
               <van-button
                 @click.stop="sureGet(value)"
                 type="danger"
                 class="childBtn"
                 size="small"
-                v-if="value.typeData.afrimBtn"
+                v-if="value.typeData?value.typeData.afrimBtn: ''"
               >确认收货</van-button>
               <van-button
                 @click.stop="detailOrder(value)"
                 type="primary"
                 class="childBtn"
                 size="small"
-                v-if="value.typeData.giveBtn"
+                v-if="value.typeData?value.typeData.giveBtn: ''"
               >立即支付</van-button>
             </view>
           </div>
@@ -109,12 +109,12 @@ import noDataView from "../../components/noDataView/index";
 export default {
   onShow() {
     if (this.$root.$mp.query.id) {
-      this.orderType = this.$root.$mp.query.id
-      this.currentActive = Number(this.$root.$mp.query.id)-1;
-      if(this.$root.$mp.query.id==4){
+      this.orderType = this.$root.$mp.query.id;
+      this.currentActive = Number(this.$root.$mp.query.id) - 1;
+      if (this.$root.$mp.query.id == 4) {
         this.currentActive = 2;
       }
-      if(this.$root.$mp.query.id==3){
+      if (this.$root.$mp.query.id == 3) {
         this.currentActive = 3;
       }
     }
@@ -304,7 +304,7 @@ export default {
     //取消订单
     cancelOrder() {
       wx.showLoading({
-        title: '加载中'
+        title: "加载中"
       });
       cancleOrder({ orderCode: this.scmCode, reason: this.reason })
         .then(res => {
@@ -354,13 +354,13 @@ export default {
 
     getOrderList() {
       wx.showLoading({
-        title: '加载中'
+        title: "加载中"
       });
       this.onLoadLoading = true;
       let params = {
         pageNum: this.pageNum,
         pageSize: 5,
-        orderType:this.orderType
+        orderType: this.orderType
       };
       this.list = [];
       // 1是立即支付  2是取消订单 3查看详情 4查看物流
@@ -496,8 +496,8 @@ export default {
     },
 
     onChange(val) {
-      console.log(val, "888");
-      switch (val.target.title) {
+      console.log(val, "888",val.mp.detail.title);
+      switch (val.mp.detail.title) {
         case "全部":
           this.orderType = 1;
           break;
@@ -516,8 +516,11 @@ export default {
         default:
           break;
       }
-
-      this.currentActive = val.target.index;
+      if (val.mp.detail.index == 0) {
+        this.currentActive = 0;
+      } else {
+        this.currentActive = val.mp.detail.index;
+      }
 
       this.pageNum = 1;
       this.list = [];

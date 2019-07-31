@@ -1,4 +1,5 @@
 import fly from '../request';
+import {noTokenFly} from '../request';
 let querystring = require("querystring");
 let deviceId = new Date().getTime();
 
