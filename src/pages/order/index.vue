@@ -91,8 +91,8 @@
         </div>
         <div class="bottom_item">
           <div>优惠券</div>
-          <div v-if="store.canBeAppliedCoupons==null">暂无</div>
-          <div else @click=" getCouponList(store)">{{store.selectCouponName}}</div>
+          <div v-show="store.canBeAppliedCoupons==null">暂无</div>
+          <div v-show="store.canBeAppliedCoupons!=null" @click=" getCouponList(store)">{{store.selectCouponName}}</div>
         </div>
       </div>
     </div>
