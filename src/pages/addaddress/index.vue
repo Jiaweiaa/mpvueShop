@@ -88,7 +88,7 @@ export default {
       this.address = value[0] + " " + value[1] + " " + value[2];
     },
     async getDetail() {
-      let data = wx.getStorageSync('address');
+      let data = wx.getStorageSync('orderAdress');
       this.id = data.id;
       this.userName = data.firstName;
       this.telNumber = data.mobile;
