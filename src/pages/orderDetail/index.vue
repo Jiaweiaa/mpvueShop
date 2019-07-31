@@ -246,7 +246,7 @@
                 <button
                   @click="applyRefund(goods)"
                   class="refundBtn"
-                  v-if="detailData.orderVo.logisticsStatus=='6'&&detailData.orderVo.financialStatus=='3'&&goods.reType==null&&goods.reStatus==null"
+                  v-if="(detailData.orderVo.logisticsStatus=='6'||detailData.orderVo.logisticsStatus=='15')&&detailData.orderVo.financialStatus=='3'&&goods.reType==null&&goods.reStatus==null"
                 >退货</button>
                 <button
                   @click="applyCancelRefund(goods)"
@@ -305,11 +305,11 @@
     </div>
     <!-- 操作区 -->
     <div class="fixed">
-      <button class="plain" @click="orderShow=true;from='cancle'" v-if="orderCancelBtn">取消订单</button>
-      <button class="plain" v-if="confrimReciveBtn">查看物流</button>
-      <button class="danger" @click="sureGet()" v-if="confrimReciveBtn">确认收货</button>
-      <button class="danger" @click="pay()" v-if="orderPayBtn">立即支付</button>
-      <button class="danger" @click="deleteOrder()" v-if="orderDeleteBtn">删除订单</button>
+      <button class="plain" @click="orderShow=true;from='cancle'" v-if="orderCancelBtn&&!orderObj.capationFlag">取消订单</button>
+      <!-- <button class="plain" v-if="confrimReciveBtn">查看物流</button> -->
+      <!-- <button class="danger" @click="sureGet()" v-if="confrimReciveBtn">确认收货</button> -->
+      <button class="danger" @click="pay()" v-if="orderPayBtn&&!orderObj.capationFlag">立即支付</button>
+      <button class="danger" @click="deleteOrder()" v-if="orderDeleteBtn&&!orderObj.capationFlag">删除订单</button>
       <button
         class="danger"
         @click="orderShow=true;from='apply'"

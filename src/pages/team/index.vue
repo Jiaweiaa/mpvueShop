@@ -470,7 +470,7 @@ export default {
         }).then(res => {
           if (res.data.code == 200) {
             Dialog.alert({
-              message: res.data.result
+              message: '收货成功!'
             }).then(() => {
               // on close
             });
@@ -478,7 +478,7 @@ export default {
             // });
           } else {
             Dialog.alert({
-              message: res.data.message
+              message: '收货失败~'
             }).then(() => {
               // on close
             });
