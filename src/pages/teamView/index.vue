@@ -95,11 +95,11 @@ export default {
         //   icon: "fire-o",
         //   url: "/pages/myOrder/main?id=2"
         // },
-        {
-          title: "团长排行",
-          icon: "medel-o",
-          url: "/pages/teamReaking/main?id=3"
-        }
+        // {
+        //   title: "团长排行",
+        //   icon: "medel-o",
+        //   url: "/pages/teamReaking/main?id=3"
+        // }
         //   {
         //     title: "添加副团长",
         //     icon: "newspaper-o",
