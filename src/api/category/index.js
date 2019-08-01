@@ -28,6 +28,18 @@ export const searchItem = params => {
   });
 };
 
+//搜索店铺  
+export const getFrontStoreList = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: "/product/storeFront/getFrontStoreList",
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: data
+  });
+};
 // 热门搜索
 export const getKeyword = params => {
   let data = querystring.encode(params);

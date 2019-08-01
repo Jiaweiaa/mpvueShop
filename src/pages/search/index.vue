@@ -216,6 +216,7 @@
 <script>
 import {
   searchItem,
+  getFrontStoreList,
   getKeyword,
   setHistorySearch,
   removeHistorySearch,
@@ -425,6 +426,8 @@ export default {
     inputFocus() {
       //商品清空
       this.listData = [];
+      //商品列表数据清空
+      this.storeListData = [];
       //展示搜索提示信息
       // this.tipsearch();
     },
@@ -471,6 +474,18 @@ export default {
       wx.hideLoading();
       this.tipsData = [];
     },
+    //获取商品列表数据
+    async getStoreListData() {
+      wx.showLoading({
+        title: "加载中"
+      });
+      const res = await getFrontStoreList({
+        k: this.words,
+        s: this.order,
+        p: this.pageNum
+      });
+      console.log(res, "777");
+    },
     // 类型切换
     changeTab(index) {
       this.nowIndex = index;
@@ -513,7 +528,7 @@ export default {
       if (this.active == 0) {
         //获取商品列表
         this.getlistData();
-      }else{
+      } else {
         this.getStoreListData();
       }
     },
