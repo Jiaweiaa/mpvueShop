@@ -27,95 +27,102 @@
         <div @click="cancel">取消</div>
       </div>
       <!-- tab切换 -->
-      <van-tabs type="card" :active="active" custom-class="tab_main" >
-        <van-tab title="商品">
-          <!--
+      <van-tabs
+        :active="active"
+        custom-class="tab_main"
+        v-if="listData.length==0&&storeListData.length==0"
+        @change="tabChange"
+      >
+        <van-tab title="商品"></van-tab>
+        <van-tab title="店铺"></van-tab>
+      </van-tabs>
+      <!--
 	           搜索结果关键词
-          -->
-          <div class="searchtips" v-if="words && listData.length == 0">
-            <div
-              @click="searchWords"
-              v-if="tipsData.length!=0"
-              :data-value="item.name"
-              v-for="(item,index) in tipsData"
-              :key="index"
-            >{{ item.name }}</div>
-            <div v-if="tipsData.length==0" class="nogoods">暂无此类商品...</div>
-          </div>
+      -->
+      <div class="searchtips" v-if="words && listData.length == 0">
+        <div
+          @click="searchWords"
+          v-if="tipsData.length!=0"
+          :data-value="item.name"
+          v-for="(item,index) in tipsData"
+          :key="index"
+        >{{ item.name }}</div>
+        <div v-if="tipsData.length==0" class="nogoods">暂无此类商品...</div>
+      </div>
 
-          <!--
+      <!--
 	    缓存搜索记录
 	    推送什么的
-          -->
-          <div v-if="listData <= 0 " class="helpSearch">
-            <div class="history" v-if="historyData.length > 0">
-              <div class="t">
-                <div>历史记录</div>
-                <div @click="clearHistory"></div>
-              </div>
-              <div class="cont">
-                <div
-                  @click="searchWords"
-                  :data-value="item.keyword"
-                  v-for="(item,index) in historyData"
-                  :key="index"
-                >{{item.keyword}}</div>
-              </div>
-            </div>
-            <div class="history hotsearch">
-              <div class="t">
-                <div>热门搜索</div>
-              </div>
-              <div class="cont">
-                <div
-                  @click="searchWords"
-                  v-for="(item,index) in hotData"
-                  :data-value="item.keyword"
-                  :class="{active:0==index}"
-                  :key="index"
-                >{{item.keyword}}</div>
-              </div>
-            </div>
+      -->
+      <div v-if="listData <= 0 " class="helpSearch">
+        <div class="history" v-if="historyData.length > 0">
+          <div class="t">
+            <div>历史记录</div>
+            <div @click="clearHistory"></div>
           </div>
+          <div class="cont">
+            <div
+              @click="searchWords"
+              :data-value="item.keyword"
+              v-for="(item,index) in historyData"
+              :key="index"
+            >{{item.keyword}}</div>
+          </div>
+        </div>
+        <div class="history hotsearch">
+          <div class="t">
+            <div>热门搜索</div>
+          </div>
+          <div class="cont">
+            <div
+              @click="searchWords"
+              v-for="(item,index) in hotData"
+              :data-value="item.keyword"
+              :class="{active:0==index}"
+              :key="index"
+            >{{item.keyword}}</div>
+          </div>
+        </div>
+      </div>
 
-          <!--商品列表  -->
-          <div v-show="listData.length!=0" class="goodsList">
-            <div class="sortnav">
-              <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">综合</div>
-              <div
-                @click="changeTab(1)"
-                class="price"
-                :class="[1==nowIndex ?'active':'', order =='SALE_PRICE-DESC'? 'desc':'asc']"
-              >价格</div>
-              <div
-                @click="changeTab(2)"
-                class="price"
-                :class="[2==nowIndex ?'active':'', order =='SALES-DESC'? 'desc':'asc']"
-              >销量</div>
-              <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
+      <!--商品列表  -->
+      <div v-show="listData.length!=0" class="goodsList">
+        <div class="sortnav">
+          <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">综合</div>
+          <div
+            @click="changeTab(1)"
+            class="price"
+            :class="[1==nowIndex ?'active':'', order =='SALE_PRICE-DESC'? 'desc':'asc']"
+          >价格</div>
+          <div
+            @click="changeTab(2)"
+            class="price"
+            :class="[2==nowIndex ?'active':'', order =='SALES-DESC'? 'desc':'asc']"
+          >销量</div>
+          <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
+        </div>
+        <div class="goodsList">
+          <van-card
+            :tag="item.tag"
+            :lazy-load="true"
+            :price="item.listPrice"
+            :origin-price="item.salePrice"
+            :desc="item.keyword"
+            :title="item.title"
+            thumb-class="goods-image"
+            title-class="goods-title"
+            desc-class="goods-desc"
+            v-for="(item, index) in listData"
+            :key="index"
+            @click="goodsDetail(item.id)"
+            :thumb="'http://qn.gaoshanmall.cn/' + item.img"
+          >
+            <div slot="desc" class="goods-bottom">
+              <div>{{item.keyword}}</div>
+              <div class="sketch">{{item.sketch}}</div>
             </div>
-            <div class="goodsList">
-              <van-card
-                :tag="item.tag"
-                :lazy-load="true"
-                :price="item.listPrice"
-                :origin-price="item.salePrice"
-                :desc="item.keyword"
-                :title="item.title"
-                thumb-class="goods-image"
-                title-class="goods-title"
-                desc-class="goods-desc"
-                v-for="(item, index) in listData"
-                :key="index"
-                @click="goodsDetail(item.id)"
-                :thumb="'http://qn.gaoshanmall.cn/' + item.img"
-              >
-                <div slot="desc" class="goods-bottom">
-                  <div>{{item.keyword}}</div>
-                  <div class="sketch">{{item.sketch}}</div>
-                </div>
-              </van-card>
-              <!-- <div
+          </van-card>
+          <!-- <div
           @click="goodsDetail(item.id)"
           v-for="(item, index) in listData"
           :key="index"
@@ -125,25 +132,24 @@
           <img :src="'http://qn.gaoshanmall.cn/' + item.img" alt />
           <p class="name">{{item.title}} - {{item.subtitle}}</p>
           <p class="price">￥{{item.salePrice}}</p>
-              </div>-->
-              <div class="title">
-                <span>—</span>
-                <span>我也是有底线的</span>
-                <span>—</span>
-              </div>
-            </div>
+          </div>-->
+          <div class="title">
+            <span>—</span>
+            <span>我也是有底线的</span>
+            <span>—</span>
           </div>
-          <!-- 商品分类 -->
-          <van-popup
-            @click-overlay="aaa()"
-            :show="searchPopupShow"
-            position="right"
-            class="filterlayer"
-            @close="searchPopupClose"
-            :duration="600"
-          >
-            <div class="filterInner" style="overflow-y: scroll;height: 100vh; width: 85vw; ">
-              <!-- <div class="item">
+        </div>
+      </div>
+      <!-- 商品分类 -->
+      <van-popup
+        :show="searchPopupShow"
+        position="right"
+        class="filterlayer"
+        @close="searchPopupClose"
+        :duration="600"
+      >
+        <div class="filterInner" style="overflow-y: scroll;height: 100vh; width: 85vw; ">
+          <!-- <div class="item">
           <div class="itemTitle">
             <div>价格区间</div>
           </div>
@@ -154,58 +160,55 @@
             >-</div>
             <input placeholder-class="center" placeholder="最高价  ">
           </div>
-              </div>-->
-              <div
-                class="item"
-                v-show="filterList.length>0"
-                v-for="(group, grouPindex) in filterList"
-                :key="grouPindex"
-              >
-                <div class="itemTitle" @click="showTabber(grouPindex)">
-                  <div style="width: 40%; float: left;">{{group.label}}</div>
-                  <van-icon
-                    style="float: right;margin-right: 10px;"
-                    :name="group.isShowAll ? 'arrow-up' : 'arrow-down'"
-                  />
-                </div>
-                <van-transition
-                  style="overflow: hidden;"
-                  :show="group.isShowAll"
-                  custom-class="block"
-                  name="slide-down"
-                >
-                  <div class="content">
-                    <div
-                      class="childItem active"
-                      @click="isClickChild(item, group)"
-                      :class="{'activeSearch': item.isChecked == true}"
-                      v-for="(item, childItem) in group.facetFilterUnitList"
-                      :key="childItem"
-                    >{{item.label}}</div>
-                  </div>
-                </van-transition>
-              </div>
-              <div class="footer">
-                <van-button
-                  size="small"
-                  style="text-align: center;width: 47%; float: left; margin-left: 1%; margin-right: 2%"
-                  round
-                  type="danger"
-                  @click="resetFq()"
-                >重置</van-button>
-                <van-button
-                  size="small"
-                  style="text-align: center;width: 47%; float: left; margin-left: 2%;"
-                  round
-                  type="primary"
-                  @click="popupShow=false"
-                >确认</van-button>
-              </div>
+          </div>-->
+          <div
+            class="item"
+            v-show="filterList.length>0"
+            v-for="(group, grouPindex) in filterList"
+            :key="grouPindex"
+          >
+            <div class="itemTitle" @click="showTabber(grouPindex)">
+              <div style="width: 40%; float: left;">{{group.label}}</div>
+              <van-icon
+                style="float: right;margin-right: 10px;"
+                :name="group.isShowAll ? 'arrow-up' : 'arrow-down'"
+              />
             </div>
-          </van-popup>
-        </van-tab>
-        <van-tab title="店铺">内容 2</van-tab>
-      </van-tabs>
+            <van-transition
+              style="overflow: hidden;"
+              :show="group.isShowAll"
+              custom-class="block"
+              name="slide-down"
+            >
+              <div class="content">
+                <div
+                  class="childItem active"
+                  @click="isClickChild(item, group)"
+                  :class="{'activeSearch': item.isChecked == true}"
+                  v-for="(item, childItem) in group.facetFilterUnitList"
+                  :key="childItem"
+                >{{item.label}}</div>
+              </div>
+            </van-transition>
+          </div>
+          <div class="footer">
+            <van-button
+              size="small"
+              style="text-align: center;width: 47%; float: left; margin-left: 1%; margin-right: 2%"
+              round
+              type="danger"
+              @click="resetFq()"
+            >重置</van-button>
+            <van-button
+              size="small"
+              style="text-align: center;width: 47%; float: left; margin-left: 2%;"
+              round
+              type="primary"
+              @click="popupShow=false"
+            >确认</van-button>
+          </div>
+        </div>
+      </van-popup>
     </div>
   </div>
 </template>
@@ -232,6 +235,7 @@ export default {
       title: "加载中"
     });
     this.loading = true;
+
     if (this.listData.length >= this.allCount) {
       this.loading = false;
       wx.hideLoading();
@@ -292,7 +296,8 @@ export default {
       historyData: [],
       hotData: [],
       tipsData: [],
-      listData: [],  //商品列表数据
+      listData: [], //商品列表数据
+      storeListData: [], //店铺列表数据
       aeo: "", //筛选项拼接字符串
       selectArr: [], //本地已选择的节点数组
       filterList: [],
@@ -308,6 +313,11 @@ export default {
     };
   },
   methods: {
+    //tab栏切换
+    tabChange(e) {
+      // console.log(e);
+      this.active = e.mp.detail.index;
+    },
     // 获取历史记录
     async getHistory() {
       let data = await findHistorySearch();
@@ -500,8 +510,12 @@ export default {
       // });
       //获取人们数据
       this.getHotData();
-      //获取商品列表
-      this.getlistData();
+      if (this.active == 0) {
+        //获取商品列表
+        this.getlistData();
+      }else{
+        this.getStoreListData();
+      }
     },
     async getHotData() {
       const data = await getKeyword();
