@@ -388,7 +388,7 @@ export default {
             //   }
             // })
             // giveBtn是支付   canBtn是取消订单  seeBtn是查看物流 afrimBtn是确认收货
-            if (order.logisticsStatus == 6) {
+            if (order.logisticsStatus == 6 || order.logisticsStatus == 7) {
               this.$set(order, "typeData", {
                 title: "商家已发货",
                 canBtn: false,
