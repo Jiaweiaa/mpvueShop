@@ -47,7 +47,7 @@
                 size="small"
                 v-if="value.typeData? value.typeData.canBtn: ''"
               >取消订单</van-button>
-              <van-button
+              <!-- <van-button
                 @click.stop="logistics(value)"
                 class="childBtn"
                 size="small"
@@ -59,7 +59,7 @@
                 class="childBtn"
                 size="small"
                 v-if="value.typeData?value.typeData.afrimBtn: ''"
-              >确认收货</van-button>
+              >确认收货</van-button> -->
               <van-button
                 @click.stop="detailOrder(value)"
                 type="primary"
