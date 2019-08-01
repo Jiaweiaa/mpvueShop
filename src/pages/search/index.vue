@@ -39,7 +39,7 @@
       <!--
 	           搜索结果关键词
       -->
-      <div class="searchtips" v-if="words && listData.length == 0">
+      <div class="searchtips" v-if="words && listData.length == 0 && storeListData.length == 0">
         <div
           @click="searchWords"
           v-if="tipsData.length!=0"
@@ -54,7 +54,7 @@
 	    缓存搜索记录
 	    推送什么的
       -->
-      <div v-if="listData <= 0 " class="helpSearch">
+      <div v-if="listData.leng == 0 &&storeListData.length==0" class="helpSearch">
         <div class="history" v-if="historyData.length > 0">
           <div class="t">
             <div>历史记录</div>
@@ -209,6 +209,51 @@
           </div>
         </div>
       </van-popup>
+      <!-- 店铺列表 -->
+      <div v-show="storeListData.length!=0" class="goodsList">
+        <div class="sortnav">
+          <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">综合</div>
+          <div
+            @click="changeTab(1)"
+            class="price"
+            :class="[1==nowIndex ?'active':'', order =='SALE_PRICE-DESC'? 'desc':'asc']"
+          >价格</div>
+          <div
+            @click="changeTab(2)"
+            class="price"
+            :class="[2==nowIndex ?'active':'', order =='SALES-DESC'? 'desc':'asc']"
+          >销量</div>
+          <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
+        </div>
+        <div class="goodsList">
+          <div class="store-item" v-for="(store,storeIndex) in storeListData" :key="storeIndex">
+            <div class="top">
+              <div class="logo">
+                  <img :src="'http://qn.gaoshanmall.cn/'+store.logo" alt="">
+              </div>
+              <div class="title">
+                  {{store.name}}
+              </div>
+              <div class="btn">
+                <span>进店</span>
+                  
+              </div>
+            </div>
+            <div class="bottom">
+                <div class="good-item" v-for="(good,goodIndex) in store.itemAndImgDtos" :key="goodIndex" @click="goodsDetail(good.id)" >
+                    <img :src="'http://qn.gaoshanmall.cn/'+good.picUrl" alt="">
+                    <span>{{good.title}}</span>
+                </div>
+            </div>
+          </div>
+          <div class="title">
+            <span>—</span>
+            <span>我也是有底线的</span>
+            <span>—</span>
+          </div>
+        </div>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -484,7 +529,10 @@ export default {
         s: this.order,
         p: this.pageNum
       });
-      console.log(res, "777");
+      if(res.data.code == "200"){
+        wx.hideLoading();
+        this.storeListData = res.data.result.records
+      }
     },
     // 类型切换
     changeTab(index) {

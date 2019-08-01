@@ -32,12 +32,12 @@ export const searchItem = params => {
 export const getFrontStoreList = params => {
   let data = querystring.encode(params);
   return fly.request({
-    url: "/product/storeFront/getFrontStoreList",
+    url: "/store/storeFront/getFrontStoreList",
     method: "post",
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
+      "Content-Type": "application/json"
     },
-    body: data
+    body: params
   });
 };
 // 热门搜索
