@@ -1,41 +1,46 @@
 <template>
   <div class="search_main">
     <div class="search">
-      <div class="head">
-        <div>
-          <img
-            src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/search2-2fb94833aa.png"
-            alt
-          />
-          <input
-            type="text"
-            confirm-type="search"
-            focus="true"
-            v-model="words"
-            @click="inputFocus"
-            @confirm="searchWords"
-            :placeholder="active==0?'商品搜索':'店铺搜索'"
-          />
-          <!-- <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword.keyword}}" /> -->
-          <img
-            @click="clearInput"
-            class="del"
-            src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/clearIpt-f71b83e3c2.png"
-            alt
-          />
+      <div>
+        <div class="head">
+          <div>
+            <img
+              src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/search2-2fb94833aa.png"
+              alt
+            />
+            <input
+              type="text"
+              confirm-type="search"
+              focus="true"
+              v-model="words"
+              @click="inputFocus"
+              @confirm="searchWords"
+              :placeholder="active==0?'商品搜索':'店铺搜索'"
+            />
+            <!-- <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword.keyword}}" /> -->
+            <img
+              @click="clearInput"
+              class="del"
+              src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/clearIpt-f71b83e3c2.png"
+              alt
+            />
+          </div>
+          <div @click="cancel">取消</div>
         </div>
-        <div @click="cancel">取消</div>
+        <!-- tab切换 -->
+        <div class="tabs-group">
+          <van-tabs
+            :active="active"
+            custom-class="tab_main"
+            v-if="listData.length==0&&storeListData.length==0"
+            @change="tabChange"
+          >
+            <van-tab title="商品"></van-tab>
+            <van-tab title="店铺"></van-tab>
+          </van-tabs>
+        </div>
       </div>
-      <!-- tab切换 -->
-      <van-tabs
-        :active="active"
-        custom-class="tab_main"
-        v-if="listData.length==0&&storeListData.length==0"
-        @change="tabChange"
-      >
-        <van-tab title="商品"></van-tab>
-        <van-tab title="店铺"></van-tab>
-      </van-tabs>
+
       <!--
 	           搜索结果关键词
       -->
@@ -101,7 +106,8 @@
           >销量</div>
           <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
         </div>
-        <div class="goodsList">
+
+        <div class="goods-group">
           <van-card
             :tag="item.tag"
             :lazy-load="true"
@@ -211,7 +217,7 @@
       </van-popup>
       <!-- 店铺列表 -->
       <div v-show="storeListData.length!=0" class="goodsList">
-        <div class="sortnav">
+        <!-- <div class="sortnav">
           <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">综合</div>
           <div
             @click="changeTab(1)"
@@ -224,26 +230,28 @@
             :class="[2==nowIndex ?'active':'', order =='SALES-DESC'? 'desc':'asc']"
           >销量</div>
           <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
-        </div>
-        <div class="goodsList">
+        </div>-->
+        <div class="goods-group">
           <div class="store-item" v-for="(store,storeIndex) in storeListData" :key="storeIndex">
             <div class="top">
               <div class="logo">
-                  <img :src="'http://qn.gaoshanmall.cn/'+store.logo" alt="">
+                <img :src="'http://qn.gaoshanmall.cn/'+store.logo" alt />
               </div>
-              <div class="title">
-                  {{store.name}}
-              </div>
+              <div class="title">{{store.name}}</div>
               <div class="btn">
                 <span>进店</span>
-                  
               </div>
             </div>
             <div class="bottom">
-                <div class="good-item" v-for="(good,goodIndex) in store.itemAndImgDtos" :key="goodIndex" @click="goodsDetail(good.id)" >
-                    <img :src="'http://qn.gaoshanmall.cn/'+good.picUrl" alt="">
-                    <span>{{good.title}}</span>
-                </div>
+              <div
+                class="good-item"
+                v-for="(good,goodIndex) in store.itemAndImgDtos"
+                :key="goodIndex"
+                @click="goodsDetail(good.id)"
+              >
+                <img :src="'http://qn.gaoshanmall.cn/'+good.picUrl" alt />
+                <span>{{good.title}}</span>
+              </div>
             </div>
           </div>
           <div class="title">
@@ -253,7 +261,6 @@
           </div>
         </div>
       </div>
-      
     </div>
   </div>
 </template>
@@ -281,57 +288,87 @@ export default {
       title: "加载中"
     });
     this.loading = true;
-
-    if (this.listData.length >= this.allCount) {
-      this.loading = false;
-      wx.hideLoading();
-    } else {
-      this.pageNum++;
-      const res = await searchItem({
-        k: this.words,
-        s: this.order,
-        p: this.pageNum
-      });
-      if (res.data.code == 200) {
+    if (this.active == 0) {
+      if (this.listData.length >= this.allCount) {
         this.loading = false;
-        this.listData = this.listData.concat(res.data.result.itemDocs);
-        this.listData.map(v => {
-          v.img = JSON.parse(v.image)[0].images[0];
-        });
-        this.allCount = res.data.result.totalElements;
-      } else {
-        this.loading = false;
-      }
-      setTimeout(() => {
         wx.hideLoading();
-      }, this.GLOBAL.timer);
-      // wx.hideLoading();
+      } else {
+        this.pageNum++;
+        const res = await searchItem({
+          k: this.words,
+          s: this.order,
+          p: this.pageNum
+        });
+        if (res.data.code == 200) {
+          this.loading = false;
+          this.listData = this.listData.concat(res.data.result.itemDocs);
+          this.listData.map(v => {
+            v.img = JSON.parse(v.image)[0].images[0];
+          });
+          this.allCount = res.data.result.totalElements;
+        } else {
+          this.loading = false;
+        }
+        setTimeout(() => {
+          wx.hideLoading();
+        }, this.GLOBAL.timer);
+      }
+    } else if (this.active == 1) {
+      if (this.storeListData.length >= this.storeAllCount) {
+        this.loading = false;
+        wx.hideLoading();
+      } else {
+        this.pageNum++;
+        const res = await findHistorySearch({ k: this.words });
+        if (res.data.code == 200) {
+          this.loading = false;
+          this.storeListData = this.storeListData.concat(
+            res.data.result.records
+          );
+
+          this.storeAllCount = res.data.result.storeAllCount;
+        } else {
+          this.loading = false;
+        }
+        setTimeout(() => {
+          wx.hideLoading();
+        }, this.GLOBAL.timer);
+      }
     }
   },
 
   // 下啦刷新
   async onPullDownRefresh() {
     this.pageNum = 1;
-    const res = await searchItem({
-      k: this.words,
-      s: this.order,
-      p: this.pageNum
-    });
-    if (res.data.code == 200) {
-      this.listData = res.data.result.itemDocs;
-      this.tipsData = this.listData;
-      this.allCount = res.data.result.totalElements;
-      this.listData.map(v => {
-        if (this.order == "SALES-ASC") {
-          if (index < 5) {
-            this.$set(v, "tag", "热销");
-          }
-        }
-        v.img = JSON.parse(v.image)[0].images[0];
-        this.$set(v, "keyword", v.keywords.join("||"));
+    if (this.active == 0) {
+      const res = await searchItem({
+        k: this.words,
+        s: this.order,
+        p: this.pageNum
       });
-      this.tipsData = [];
+      if (res.data.code == 200) {
+        this.listData = res.data.result.itemDocs;
+        this.tipsData = this.listData;
+        this.allCount = res.data.result.totalElements;
+        this.listData.map(v => {
+          if (this.order == "SALES-ASC") {
+            if (index < 5) {
+              this.$set(v, "tag", "热销");
+            }
+          }
+          v.img = JSON.parse(v.image)[0].images[0];
+          this.$set(v, "keyword", v.keywords.join("||"));
+        });
+        this.tipsData = [];
+      }
+    } else if (this.active == 1) {
+      const res = await findHistorySearch({ k: this.words });
+      if (res.data.code == 200) {
+        this.storeListData = res.data.result.records;
+        this.storeAllCount = res.data.result.total;
+      }
     }
+
     wx.stopPullDownRefresh(); //停止下拉刷新
   },
   data() {
@@ -343,7 +380,9 @@ export default {
       hotData: [],
       tipsData: [],
       listData: [], //商品列表数据
+      allCount: "", //商品总数
       storeListData: [], //店铺列表数据
+      storeAllCount: "", //店铺总数
       aeo: "", //筛选项拼接字符串
       selectArr: [], //本地已选择的节点数组
       filterList: [],
@@ -354,7 +393,7 @@ export default {
       navData: [],
       pageNum: 1,
       loading: false,
-      allCount: "",
+
       searchPopupShow: false
     };
   },
@@ -529,9 +568,10 @@ export default {
         s: this.order,
         p: this.pageNum
       });
-      if(res.data.code == "200"){
+      if (res.data.code == "200") {
         wx.hideLoading();
-        this.storeListData = res.data.result.records
+        this.storeListData = res.data.result.records;
+        this.storeAllCount = res.data.result.total;
       }
     },
     // 类型切换
@@ -596,9 +636,18 @@ export default {
 <style lang='scss'>
 @import "./style";
 .search_main {
-  .tab_main {
-    margin-top: 90rpx;
+  // position: relative;
+  .tabs-group {
+    // position: absolute;
+    // top: 90rpx;
+    .tab_main {
+      margin-top: 90rpx;
+      // position: absolute;
+      // top: 90rpx;
+      // z-index: 1100;
+    }
   }
+
   .title {
     text-align: center;
     padding: 20rpx 0;
@@ -649,46 +698,7 @@ export default {
       background-size: 15rpx 21rpx;
     }
   }
-  .sortlist {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    .item {
-      box-sizing: border-box;
-      width: 50%;
-      text-align: center;
-      background: #fff;
-      padding: 15rpx 0;
-      border-bottom: 1rpx solid #d9d9d9;
-      border-right: 1rpx solid #d9d9d9;
-      img {
-        display: block;
-        width: 302rpx;
-        height: 302rpx;
-        margin: 0 auto;
-      }
-      .name {
-        margin: 15rpx 0 22rpx 0;
-        text-align: center;
-        padding: 0 20rpx;
-        font-size: 24rpx;
-      }
-      .price {
-        text-align: center;
-        font-size: 30rpx;
-        color: #b4282d;
-      }
-    }
-    .item.active:nth-last-child(1) {
-      border-bottom: none;
-    }
-    .item.active:nth-last-child(2) {
-      border-bottom: none;
-    }
-    .item.none:last-child {
-      border-bottom: none;
-    }
-  }
+
   .filterlayer {
     width: 85vw;
     height: 100%;
