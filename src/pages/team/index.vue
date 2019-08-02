@@ -84,6 +84,9 @@
                 {{value.shippingAddress.district}}
                 {{value.shippingAddress.address}}
               </div>
+              <div class="commission" v-if="value.logisticsStatus==15">
+                已得佣金: <span class="symbol">￥</span><span class="money">{{value.commission}}</span>
+              </div>
               <div class="btn-group">
                 <van-button
                   plain

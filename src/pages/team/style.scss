@@ -96,6 +96,19 @@
     color: $bottom-color;
     width: 460rpx;
   }
+  .commission{
+    margin-left: 20rpx;
+    font-size: $bottom-sketch;
+    color: $bottom-color;
+    .symbol{
+      font-size: 26rpx;
+      color: $price-color;
+    }
+    .money{
+      font-size: 36rpx;
+      color: $price-color;
+    }
+  }
   .btn-group{
     display: flex;
     justify-content: flex-end;

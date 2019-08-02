@@ -137,9 +137,9 @@
       </div>
       <!-- <p>请选择商品数量</p> -->
       <div style="display:flex;justify-content: space-between;align-items:center;">
-        <p style="margin-left:30px;font-size:16px;">我要买:</p>
+        <p style="margin-left:30rpx;font-size:32rpx;">我要买:</p>
         <van-stepper
-          style="margin-right:30px;"
+          style="margin-right:30rpx;"
           async-change
           @change="valueChange"
           :step="1"
