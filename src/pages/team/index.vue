@@ -37,7 +37,7 @@
             <div v-for="(value,index) in list" class="mapListView" :key="index">
               <div class="top border-bottom" style="overflow: hidden;">
                 <checkbox
-                  v-if="getActive == 3 || getActive == 9"
+                  v-if="getActive == 11 || getActive == 9"
                   @click.stop
                   class="checkBox"
                   v-bind:value="value.code"
@@ -104,7 +104,7 @@
                   type="primary"
                   class="childBtn"
                   size="small"
-                  v-if="getActive == 3"
+                  v-if="getActive == 11"
                 >收货</van-button>
 	              <van-button
 			              plain
@@ -141,7 +141,7 @@
 	  </van-popup>
 	  
     <van-button
-      v-if="getActive == 3"
+      v-if="getActive == 11"
       style="position: fixed; right: 30px; bottom: 30px;"
       plain
       hairline
@@ -572,7 +572,7 @@ export default {
       if (val.target.index == 0) {
         this.getActive = 4;
       } else if (val.target.index == 1) {
-        this.getActive = 3;
+        this.getActive = 11;
       } else if (val.target.index == 2) {
         this.getActive = 9;
       }else if (val.target.index == 3) {
