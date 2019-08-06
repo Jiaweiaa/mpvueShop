@@ -59,7 +59,7 @@
 	    缓存搜索记录
 	    推送什么的
       -->
-      <div v-if="listData.leng == 0 &&storeListData.length==0" class="helpSearch">
+      <div v-if="listData.length == 0 &&storeListData.length==0" class="helpSearch">
         <div class="history" v-if="historyData.length > 0">
           <div class="t">
             <div>历史记录</div>
@@ -239,7 +239,7 @@
               </div>
               <div class="title">{{store.name}}</div>
               <div class="btn">
-                <span>进店</span>
+                <span @click="toStore(store.id)">进店</span>
               </div>
             </div>
             <div class="bottom">
@@ -629,6 +629,11 @@ export default {
     topicDetail(id) {
       wx.navigateTo({
         url: "/pages/topicdetail/main?id=" + id
+      });
+    },
+    toStore(id) {
+      wx.navigateTo({
+        url: "/pages/storeIndex/main?id=" + id
       });
     }
   }

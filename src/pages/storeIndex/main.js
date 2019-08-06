@@ -7,7 +7,8 @@ export default {
   config: {
     backgroundTextStyle: "dark",
     backgroundColor: "#fff",
-    navigationBarTitleText: "商品列表",
+    navigationBarTitleText: "店铺首页",
+    enablePullDownRefresh: true,
     usingComponents: {
       "van-popup": "/static/vant/popup/index",
       "van-transition": "/static/vant/transition/index",
@@ -16,7 +17,9 @@ export default {
       "van-icon": "/static/vant/icon/index",
       "van-card": "/static/vant/card/index",
       "van-tab": "/static/vant/tab/index",
-      "van-tabs": "/static/vant/tabs/index"
+      "van-tabs": "/static/vant/tabs/index",
+      "van-tabbar": "/static/vant/tabbar/index",
+      "van-tabbar-item": "/static/vant/tabbar-item/index"
     }
   }
 };

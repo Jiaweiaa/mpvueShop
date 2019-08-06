@@ -32,6 +32,7 @@ export default {
     },
     pages: [
       "^pages/index/main",
+      "pages/storeIndex/main",
       "pages/logisticsDetail/main", //物流详情页
       "pages/feedback/main",
       "pages/order/main",

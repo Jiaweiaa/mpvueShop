@@ -15,7 +15,7 @@
               v-model="words"
               @click="inputFocus"
               @confirm="searchWords"
-              :placeholder="active==0?'商品搜索':'店铺搜索'"
+              placeholder="搜索店铺内商品"
             />
             <!-- <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword.keyword}}" /> -->
             <img
@@ -27,24 +27,12 @@
           </div>
           <div @click="cancel">取消</div>
         </div>
-        <!-- tab切换 -->
-        <div class="tabs-group">
-          <van-tabs
-            :active="active"
-            custom-class="tab_main"
-            v-if="listData.length==0&&storeListData.length==0"
-            @change="tabChange"
-          >
-            <van-tab title="商品"></van-tab>
-            <van-tab title="店铺"></van-tab>
-          </van-tabs>
-        </div>
       </div>
 
       <!--
 	           搜索结果关键词
       -->
-      <div class="searchtips" v-if="words && listData.length == 0 && storeListData.length == 0">
+      <div class="searchtips" v-if="words && listData.length == 0">
         <div
           @click="searchWords"
           v-if="tipsData.length!=0"
@@ -59,7 +47,7 @@
 	    缓存搜索记录
 	    推送什么的
       -->
-      <div v-if="listData.leng == 0 &&storeListData.length==0" class="helpSearch">
+      <div v-if="listData.length == 0" class="helpSearch">
         <div class="history" v-if="historyData.length > 0">
           <div class="t">
             <div>历史记录</div>
@@ -86,6 +74,22 @@
               :class="{active:0==index}"
               :key="index"
             >{{item.keyword}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="store-group" v-if="storeInfo!=null">
+        <div class="storeInfo" v-if="listData.length!=0&&storeInfoShow==true">
+          <div class="logo">
+            <img :src="'http://qn.gaoshanmall.cn/'+storeInfo.logo" alt />
+          </div>
+          <div class="storeName">
+            <p>{{storeInfo.name}}</p>
+          </div>
+          <div class="btn-group">
+            <span class="btn" @click="toggleAttention">{{storeInfo.isFavorite?'已关注':'未关注'}}</span>
+          </div>
+          <div class="num">
+            <span>{{storeInfo.followers}}人已关注</span>
           </div>
         </div>
       </div>
@@ -215,53 +219,17 @@
           </div>
         </div>
       </van-popup>
-      <!-- 店铺列表 -->
-      <div v-show="storeListData.length!=0" class="goodsList">
-        <!-- <div class="sortnav">
-          <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">综合</div>
-          <div
-            @click="changeTab(1)"
-            class="price"
-            :class="[1==nowIndex ?'active':'', order =='SALE_PRICE-DESC'? 'desc':'asc']"
-          >价格</div>
-          <div
-            @click="changeTab(2)"
-            class="price"
-            :class="[2==nowIndex ?'active':'', order =='SALES-DESC'? 'desc':'asc']"
-          >销量</div>
-          <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
-        </div>-->
-        <div class="goods-group">
-          <div class="store-item" v-for="(store,storeIndex) in storeListData" :key="storeIndex">
-            <div class="top">
-              <div class="logo">
-                <img :src="'http://qn.gaoshanmall.cn/'+store.logo" alt />
-              </div>
-              <div class="title">{{store.name}}</div>
-              <div class="btn">
-                <span>进店</span>
-              </div>
-            </div>
-            <div class="bottom">
-              <div
-                class="good-item"
-                v-for="(good,goodIndex) in store.itemAndImgDtos"
-                :key="goodIndex"
-                @click="goodsDetail(good.id)"
-              >
-                <img :src="'http://qn.gaoshanmall.cn/'+good.picUrl" alt />
-                <span>{{good.title}}</span>
-              </div>
-            </div>
-          </div>
-          <div class="title">
-            <span>—</span>
-            <span>我也是有底线的</span>
-            <span>—</span>
-          </div>
-        </div>
-      </div>
     </div>
+    <van-tabbar :active="active" @change="tabbarChange">
+      <van-tabbar-item name="goods">
+        <image slot="icon" src="/static/images/gs_home.png" mode="aspectFit" />
+        <image slot="icon-active" src="/static/images/gs_home_active.png" mode="aspectFit" />商品
+      </van-tabbar-item>
+      <van-tabbar-item name="category">
+        <image slot="icon" src="/static/images/gs_fenlei.png" mode="aspectFit" />
+        <image slot="icon-active" src="/static/images/gs_fenlei_active.png" mode="aspectFit" />分类
+      </van-tabbar-item>
+    </van-tabbar>
   </div>
 </template>
 
@@ -274,12 +242,31 @@ import {
   removeHistorySearch,
   findHistorySearch
 } from "../../api/category/index";
-
+import {
+  getStoreInfo,
+  collectionStoreOrItem,
+  cancelFavoriteByStoreId,
+  getStoreNavigationTree
+} from "../../api/storeIndex/index";
 export default {
-  onLoad() {
-    this.openid = wx.getStorageSync("openid") || "";
+  onLoad:function(options) {
+    
+    this.storeId = options.id;
+  },
+  onPageScroll(e) {
+    // console.log(e.scrollTop,160);
+    if (e.scrollTop >= 160) {
+      this.storeInfoShow = false;
+    } else {
+      this.storeInfoShow = true;
+    }
+    console.log(this.storeInfoShow);
+  },
+  onShow() {
     this.getHistory();
     this.getHotData();
+    this.getlistData();
+    this.getStoreInfoData();
   },
   // 上啦加载
   async onReachBottom() {
@@ -288,92 +275,60 @@ export default {
       title: "加载中"
     });
     this.loading = true;
-    if (this.active == 0) {
-      if (this.listData.length >= this.allCount) {
-        this.loading = false;
-        wx.hideLoading();
-      } else {
-        this.pageNum++;
-        const res = await searchItem({
-          k: this.words,
-          s: this.order,
-          p: this.pageNum
-        });
-        if (res.data.code == 200) {
-          this.loading = false;
-          this.listData = this.listData.concat(res.data.result.itemDocs);
-          this.listData.map(v => {
-            v.img = JSON.parse(v.image)[0].images[0];
-          });
-          this.allCount = res.data.result.totalElements;
-        } else {
-          this.loading = false;
-        }
-        setTimeout(() => {
-          wx.hideLoading();
-        }, this.GLOBAL.timer);
-      }
-    } else if (this.active == 1) {
-      if (this.storeListData.length >= this.storeAllCount) {
-        this.loading = false;
-        wx.hideLoading();
-      } else {
-        this.pageNum++;
-        const res = await findHistorySearch({ k: this.words });
-        if (res.data.code == 200) {
-          this.loading = false;
-          this.storeListData = this.storeListData.concat(
-            res.data.result.records
-          );
-
-          this.storeAllCount = res.data.result.storeAllCount;
-        } else {
-          this.loading = false;
-        }
-        setTimeout(() => {
-          wx.hideLoading();
-        }, this.GLOBAL.timer);
-      }
-    }
-  },
-
-  // 下啦刷新
-  async onPullDownRefresh() {
-    this.pageNum = 1;
-    if (this.active == 0) {
+    if (this.listData.length >= this.allCount) {
+      this.loading = false;
+      wx.hideLoading();
+    } else {
+      this.pageNum++;
       const res = await searchItem({
         k: this.words,
         s: this.order,
         p: this.pageNum
       });
       if (res.data.code == 200) {
-        this.listData = res.data.result.itemDocs;
-        this.tipsData = this.listData;
-        this.allCount = res.data.result.totalElements;
+        this.loading = false;
+        this.listData = this.listData.concat(res.data.result.itemDocs);
         this.listData.map(v => {
-          if (this.order == "SALES-ASC") {
-            if (index < 5) {
-              this.$set(v, "tag", "热销");
-            }
-          }
           v.img = JSON.parse(v.image)[0].images[0];
-          this.$set(v, "keyword", v.keywords.join("||"));
         });
-        this.tipsData = [];
+        this.allCount = res.data.result.totalElements;
+      } else {
+        this.loading = false;
       }
-    } else if (this.active == 1) {
-      const res = await findHistorySearch({ k: this.words });
-      if (res.data.code == 200) {
-        this.storeListData = res.data.result.records;
-        this.storeAllCount = res.data.result.total;
-      }
+      setTimeout(() => {
+        wx.hideLoading();
+      }, this.GLOBAL.timer);
+    }
+  },
+
+  // 下啦刷新
+  async onPullDownRefresh() {
+    this.pageNum = 1;
+    const res = await searchItem({
+      k: this.words,
+      s: this.order,
+      p: this.pageNum
+    });
+    if (res.data.code == 200) {
+      this.listData = res.data.result.itemDocs;
+      this.tipsData = this.listData;
+      this.allCount = res.data.result.totalElements;
+      this.listData.map(v => {
+        if (this.order == "SALES-ASC") {
+          if (index < 5) {
+            this.$set(v, "tag", "热销");
+          }
+        }
+        v.img = JSON.parse(v.image)[0].images[0];
+        this.$set(v, "keyword", v.keywords.join("||"));
+      });
+      this.tipsData = [];
     }
 
     wx.stopPullDownRefresh(); //停止下拉刷新
   },
   data() {
     return {
-      active: 0,
       nowIndex: 0,
       words: "",
       historyData: [],
@@ -381,8 +336,6 @@ export default {
       tipsData: [],
       listData: [], //商品列表数据
       allCount: "", //商品总数
-      storeListData: [], //店铺列表数据
-      storeAllCount: "", //店铺总数
       aeo: "", //筛选项拼接字符串
       selectArr: [], //本地已选择的节点数组
       filterList: [],
@@ -393,16 +346,15 @@ export default {
       navData: [],
       pageNum: 1,
       loading: false,
-
-      searchPopupShow: false
+      storeId: "",
+      storeInfo: null, //店铺信息
+      storeInfoShow: true,
+      searchPopupShow: false,
+      //导航
+      active: "goods"
     };
   },
   methods: {
-    //tab栏切换
-    tabChange(e) {
-      // console.log(e);
-      this.active = e.mp.detail.index;
-    },
     // 获取历史记录
     async getHistory() {
       let data = await findHistorySearch();
@@ -510,10 +462,39 @@ export default {
     inputFocus() {
       //商品清空
       this.listData = [];
-      //商品列表数据清空
-      this.storeListData = [];
       //展示搜索提示信息
-      // this.tipsearch();
+      this.tipsearch();
+    },
+    //获取店铺信息
+    async getStoreInfoData() {
+      const res = await getStoreInfo({ storeId: this.storeId });
+      this.storeInfo = Object.assign({}, res.data.result);
+    },
+    //关注/取消关注店铺
+    toggleAttention() {
+      if (this.storeInfo.isFavorite) {
+        cancelFavoriteByStoreId({ storeId: this.storeId })
+          .then(res => {
+            if (res.data.code == "200") {
+              wx.showToast({
+                title: "已取消关注"
+              });
+              this.getStoreInfoData();
+            }
+          })
+          .catch(err => {});
+      } else {
+        collectionStoreOrItem({ storeId: this.storeId })
+          .then(res => {
+            if (res.data.code == "200") {
+              wx.showToast({
+                title: res.data.result
+              });
+              this.getStoreInfoData();
+            }
+          })
+          .catch(err => {});
+      }
     },
     async getlistData() {
       wx.showLoading({
@@ -524,7 +505,8 @@ export default {
         k: this.words,
         s: this.order,
         p: this.pageNum,
-        fq: this.aeo
+        fq: this.aeo,
+        storeId: this.storeId
       });
       this.navData = res.data.result;
       this.listData = res.data.result.itemDocs;
@@ -558,22 +540,7 @@ export default {
       wx.hideLoading();
       this.tipsData = [];
     },
-    //获取商品列表数据
-    async getStoreListData() {
-      wx.showLoading({
-        title: "加载中"
-      });
-      const res = await getFrontStoreList({
-        k: this.words,
-        s: this.order,
-        p: this.pageNum
-      });
-      if (res.data.code == "200") {
-        wx.hideLoading();
-        this.storeListData = res.data.result.records;
-        this.storeAllCount = res.data.result.total;
-      }
-    },
+
     // 类型切换
     changeTab(index) {
       this.nowIndex = index;
@@ -612,14 +579,9 @@ export default {
       //   keyword: value || this.words
       // });
       //获取热门数据
-      console.log(this.active);
       this.getHotData();
-      if (this.active == 0) {
-        //获取商品列表
-        this.getlistData();
-      } else {
-        this.getStoreListData();
-      }
+      //获取商品列表
+      this.getlistData();
     },
     async getHotData() {
       const data = await getKeyword();
@@ -630,6 +592,10 @@ export default {
       wx.navigateTo({
         url: "/pages/topicdetail/main?id=" + id
       });
+    },
+    //点击导航
+    tabbarChange(e) {
+      console.log(e);
     }
   }
 };
