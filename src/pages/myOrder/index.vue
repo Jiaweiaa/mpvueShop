@@ -52,14 +52,14 @@
                 class="childBtn"
                 size="small"
                 v-if="value.typeData?value.typeData.seeBtn: ''"
-              >查看物流</van-button>
+              >查看物流</van-button> -->
               <van-button
                 @click.stop="sureGet(value)"
                 type="danger"
                 class="childBtn"
                 size="small"
                 v-if="value.typeData?value.typeData.afrimBtn: ''"
-              >确认收货</van-button> -->
+              >确认收货</van-button>
               <van-button
                 @click.stop="detailOrder(value)"
                 type="primary"
@@ -103,19 +103,23 @@
 
 <script>
 import { findAllOrders } from "../../api/myOrder";
-import { orderDetail, confirmReceive, cancleOrder } from "../../api/order";
+import { orderDetail, confirmReceive, cancleOrder,orderCode } from "../../api/order";
 import noDataView from "../../components/noDataView/index";
 
 export default {
   onShow() {
     if (this.$root.$mp.query.id) {
+      
       this.orderType = this.$root.$mp.query.id;
       this.currentActive = Number(this.$root.$mp.query.id) - 1;
       if (this.$root.$mp.query.id == 4) {
         this.currentActive = 2;
       }
-      if (this.$root.$mp.query.id == 3) {
+      if (this.$root.$mp.query.id == 10) {
         this.currentActive = 3;
+      }
+      if (this.$root.$mp.query.id == 9) {
+        this.currentActive = 4;
       }
     }
     this.getOrderList();
@@ -130,7 +134,7 @@ export default {
       allCount: "",
       loading: false,
       onLoadLoading: false,
-      tabs: ["全部", "待支付", "待发货", "待收货", "已完成"],
+      tabs: ["全部", "待支付", "待发货", "待收货","待核销", "已完成"],
       reason: "我不想买了",
       reasonShow: false, //弹出层是否显示
       //取消订单理由
@@ -337,7 +341,7 @@ export default {
         content: "确认收到货物了吗?",
         success: res => {
           if (res.confirm) {
-            confirmReceive({ orderCode: val.code })
+            orderCode({ orderCode: val.code })
               .then(res => {
                 wx.showToast({
                   title: res.data.message
@@ -510,6 +514,9 @@ export default {
         case "待收货":
           this.orderType = 3;
           break;
+        case "待核销":
+          this.orderType = 9;
+          break;  
         case "已完成":
           this.orderType = 5;
           break;

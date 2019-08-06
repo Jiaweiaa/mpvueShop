@@ -70,7 +70,7 @@
       <div class="title">
         <div class="navTitle">更多服务</div>
       </div>
-      <div class="content">
+      <scroll-view scroll-x class="content">
         <div
           class="childContent"
           @click="goTo(item.url)"
@@ -80,7 +80,7 @@
           <van-icon size="30px" :name="item.icon" />
           <div class="childText">{{item.title}}</div>
         </div>
-      </div>
+      </scroll-view>
     </div>
   </div>
 </template>
@@ -241,12 +241,17 @@ export default {
         {
           title: "待收货",
           icon: "tosend",
-          url: "/pages/myOrder/main?id=3"
+          url: "/pages/myOrder/main?id=10"
         },
         {
           title: "已完成",
           icon: "cash-on-deliver",
           url: "/pages/myOrder/main?id=5"
+        },
+        {
+          title: "待核销",
+          icon: "balance-list-o",
+          url: "/pages/myOrder/main?id=9"
         },
         {
           title: "退/换货",

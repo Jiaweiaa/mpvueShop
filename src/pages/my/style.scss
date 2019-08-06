@@ -44,13 +44,17 @@
       }
     }
     .content {
-      overflow: hidden;
-      height: 160rpx;
+      width: 720rpx;
+      overflow-x: scroll;
+      white-space: nowrap; 
+      // height: 160rpx;
+      // display: flex;
       .childContent {
-        height: 100%;
+        display: inline-block;
+        height: 100rpx;
         padding: 10px;
-        float: left;
-        width: calc(19% - 38rpx);
+        // float: left;
+        width: 110rpx;
         text-align: center;
         .childText {
           font-size: 24rpx;
