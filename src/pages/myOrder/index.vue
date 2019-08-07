@@ -52,7 +52,7 @@
                 class="childBtn"
                 size="small"
                 v-if="value.typeData?value.typeData.seeBtn: ''"
-              >查看物流</van-button> -->
+              >查看物流</van-button>-->
               <van-button
                 @click.stop="sureGet(value)"
                 type="danger"
@@ -103,23 +103,30 @@
 
 <script>
 import { findAllOrders } from "../../api/myOrder";
-import { orderDetail, confirmReceive, cancleOrder,orderCode } from "../../api/order";
+import {
+  orderDetail,
+  confirmReceive,
+  cancleOrder,
+  capConfirmReceived
+} from "../../api/order";
 import noDataView from "../../components/noDataView/index";
 
 export default {
-  onShow() {
+  onLoad() {
     if (this.$root.$mp.query.id) {
-      
       this.orderType = this.$root.$mp.query.id;
       this.currentActive = Number(this.$root.$mp.query.id) - 1;
       if (this.$root.$mp.query.id == 4) {
         this.currentActive = 2;
       }
-      if (this.$root.$mp.query.id == 10) {
+      if (this.$root.$mp.query.id == 3) {
         this.currentActive = 3;
       }
       if (this.$root.$mp.query.id == 9) {
         this.currentActive = 4;
+      }
+      if (this.$root.$mp.query.id == 5) {
+        this.currentActive = 5;
       }
     }
     this.getOrderList();
@@ -134,7 +141,7 @@ export default {
       allCount: "",
       loading: false,
       onLoadLoading: false,
-      tabs: ["全部", "待支付", "待发货", "待收货","待核销", "已完成"],
+      tabs: ["全部", "待支付", "待发货", "待收货", "待核销", "已完成"],
       reason: "我不想买了",
       reasonShow: false, //弹出层是否显示
       //取消订单理由
@@ -175,26 +182,6 @@ export default {
           this.loading = false;
           this.list = this.list.concat(res.data.result.orders.records);
           this.list.map(order => {
-            // this.$set(order.orderReVo,'orderSts','');
-            // if(order.orderReVo.reType==3){
-            //   if(order.orderReVo.reStatus==0){
-            //     order.orderReVo.orderSts='取消订单中'
-            //   }else if(order.orderReVo.reStatus==8){
-            //     order.orderReVo.orderSts='订单已取消'
-            //   }
-            // }
-            // // console.log(111);
-            // order.map((goods) => {
-            //   this.$set(goods,'tag','');
-            //   if(goods.reStatus!=8&&goods.reStatus!=10&&goods.reType==1){
-            //     goods.tag = '退货中'
-            //   }
-            //   else if(goods.reStatus==8&&goods.reType==1){
-            //     goods.tag = '退货成功'
-            //   }else{
-            //     goods.tag = '';
-            //   }
-            // })
             // giveBtn是支付   canBtn是取消订单  seeBtn是查看物流 afrimBtn是确认收货
             if (order.logisticsStatus == 6) {
               this.$set(order, "typeData", {
@@ -202,7 +189,23 @@ export default {
                 canBtn: false, //取消订单
                 giveBtn: false, //立即支付
                 seeBtn: true, //查看物流
+                afrimBtn: false //确认收货
+              });
+            } else if (order.logisticsStatus == 7) {
+              this.$set(order, "typeData", {
+                title: "团长已收货",
+                canBtn: false, //取消订单
+                giveBtn: false, //立即支付
+                seeBtn: true, //查看物流
                 afrimBtn: true //确认收货
+              });
+            } else if (order.logisticsStatus == 8) {
+              this.$set(order, "typeData", {
+                title: "待团长核销",
+                canBtn: false,
+                giveBtn: false,
+                seeBtn: false,
+                afrimBtn: false
               });
             } else if (order.logisticsStatus == 15) {
               this.$set(order, "typeData", {
@@ -341,12 +344,15 @@ export default {
         content: "确认收到货物了吗?",
         success: res => {
           if (res.confirm) {
-            orderCode({ orderCode: val.code })
+            capConfirmReceived({ orderCode: val.code })
               .then(res => {
-                wx.showToast({
-                  title: res.data.message
-                });
-                this.getOrderList();
+                if (res.data.code == "200") {
+                  this.getOrderList();
+                } else {
+                  wx.showToast({
+                    title: res.data.message
+                  });
+                }
               })
               .catch(err => {});
           } else if (res.cancel) {
@@ -372,33 +378,30 @@ export default {
         .then(res => {
           this.list = res.data.result.orders.records;
           this.list.map(order => {
-            // this.$set(order.orderReVo,'orderSts','');
-            // if(order.orderReVo.reType==3){
-            //   if(order.orderReVo.reStatus==0){
-            //     order.orderReVo.orderSts='取消订单中'
-            //   }else if(order.orderReVo.reStatus==8){
-            //     order.orderReVo.orderSts='订单已取消'
-            //   }
-            // }
-            // order.map((goods) => {
-            //   this.$set(goods,'tag','');
-            //   if(goods.reStatus!=8&&goods.reStatus!=10&&goods.reType==1){
-            //     goods.tag = '退货中'
-            //   }
-            //   else if(goods.reStatus==8&&goods.reType==1){
-            //     goods.tag = '退货成功'
-            //   }else{
-            //     goods.tag = '';
-            //   }
-            // })
             // giveBtn是支付   canBtn是取消订单  seeBtn是查看物流 afrimBtn是确认收货
-            if (order.logisticsStatus == 6 || order.logisticsStatus == 7) {
+            if (order.logisticsStatus == 6) {
               this.$set(order, "typeData", {
                 title: "商家已发货",
                 canBtn: false,
                 giveBtn: false,
                 seeBtn: true,
+                afrimBtn: false
+              });
+            } else if (order.logisticsStatus == 7) {
+              this.$set(order, "typeData", {
+                title: "团长已收货",
+                canBtn: false,
+                giveBtn: false,
+                seeBtn: true,
                 afrimBtn: true
+              });
+            } else if (order.logisticsStatus == 8) {
+              this.$set(order, "typeData", {
+                title: "待团长核销",
+                canBtn: false,
+                giveBtn: false,
+                seeBtn: false,
+                afrimBtn: false
               });
             } else if (order.logisticsStatus == 15) {
               this.$set(order, "typeData", {
@@ -500,7 +503,7 @@ export default {
     },
 
     onChange(val) {
-      console.log(val, "888",val.mp.detail.title);
+      console.log(val, "888", val.mp.detail.title);
       switch (val.mp.detail.title) {
         case "全部":
           this.orderType = 1;
@@ -516,7 +519,7 @@ export default {
           break;
         case "待核销":
           this.orderType = 9;
-          break;  
+          break;
         case "已完成":
           this.orderType = 5;
           break;

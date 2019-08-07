@@ -271,14 +271,15 @@ export default {
           })
         }
         this.newCategoryList.push({
+          name: "新品上市",
+          goodsList: data.data.result.recommended
+        });
+        this.newCategoryList.push({
           name: "热销爆品",
           goodsList: data.data.result.hotSale
         });
 
-        this.newCategoryList.push({
-          name: "新品上市",
-          goodsList: data.data.result.recommended
-        });
+        
 
         console.log(data.data.result);
       }

@@ -7,6 +7,7 @@
           v-for="(value,index) in list"
           v-show="list!=null&&list.length>0"
           :key="index"
+          class="listViewBox"
           @click="detailOrder(value)"
         >
           <div class="top border-bottom" style="overflow: hidden;">
@@ -40,7 +41,6 @@
               :title="val.itemName"
               :thumb="'http://qn.gaoshanmall.cn/'+val.itemImg"
             ></van-card>
-            
           </div>
         </div>
         <div style="width: 100%; text-align: center;margin-top: 5px;">
@@ -268,4 +268,21 @@ export default {
 </script>
 <style lang='scss'>
 @import "./style";
+.myOrder {
+  .section {
+    background: #fff;
+    .listViewBox {
+      padding: 10px;
+      margin: 10px;
+      border-radius: 10px;
+      border: 1px solid #eee;
+      .van-card {
+        background: #fff;
+        view {
+          background: #fff;
+        }
+      }
+    }
+  }
+}
 </style>

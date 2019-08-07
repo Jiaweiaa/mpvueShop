@@ -36,6 +36,7 @@
       <div class="c">
         <button class="share" hover-class="none" open-type="share" value>分 享</button>
         <p class="title">{{goodsInfo.title}}</p>
+        <p class="sketch" v-if="arrivalTime!=''">现在下单,预计{{arrivalTime}}送到</p>
         <div class="tags" v-if="goodsInfo!=null">
           <span class="item" v-for="(tag,tagIndex) in goodsInfo.itemTags" :key="tagIndex">{{tag}}</span>
         </div>
@@ -200,7 +201,8 @@
                 <span class="name">{{item.name}}</span>
               </p>
               <p>
-                <span>{{item.mDescription.name}}</span><br>
+                <span>{{item.mDescription.name}}</span>
+                <br />
                 <span>{{item.mDescription.scope}}</span>
               </p>
               <p>有效期:{{item.mDescription.date}}</p>
@@ -252,9 +254,9 @@ export default {
   },
   data() {
     return {
-      couponList:[],//优惠券列表
-      couponShowFlag:false,//是否显示领取优惠券单元格
-      couponShow:false,//领取优惠券弹出层是否展示 
+      couponList: [], //优惠券列表
+      couponShowFlag: false, //是否显示领取优惠券单元格
+      couponShow: false, //领取优惠券弹出层是否展示
       booleanCanvas: true,
       shareImgPath: "", //用于储存canvas生成的图片
       level: 1,
@@ -265,6 +267,7 @@ export default {
       showpop: false,
       gallery: [],
       goodsInfo: {}, //商品数据
+      arrivalTime: "", //到货时间
       brand: {},
       attribute: [],
       issueList: [],
@@ -343,8 +346,8 @@ export default {
   },
   methods: {
     //优惠券列表弹出层是否展示
-    showCoupon(){
-      this.couponShow = true
+    showCoupon() {
+      this.couponShow = true;
     },
     //领取优惠券
     getCoupon(item) {
@@ -466,6 +469,7 @@ export default {
         var end = endDate.getTime();
         //时间差
         var leftTime = end - now;
+        console.log(leftTime, "000");
         //定义变量 d,h,m,s保存倒计时的时间
         if (leftTime >= 0) {
           this.havaTimeFlag = true;
@@ -696,6 +700,38 @@ export default {
             });
             this.gallery = data.item.itemImages;
             this.goodsInfo = data.item;
+            if (this.goodsInfo.activeEndTime) {
+              //获取当前时间
+              var date = new Date();
+              var now = date.getTime();
+              //设置截止时间
+              var endDate = new Date(this.goodsInfo.activeEndTime);
+              var end = endDate.getTime();
+              //时间差
+              var leftTime = end - now;
+              if (leftTime > 0) {
+                //货到时间
+                var finalEnd = new Date(end + 86400000);
+                var weekday = [
+                  "周日",
+                  "周一",
+                  "周二",
+                  "周三",
+                  "周四",
+                  "周五",
+                  "周六"
+                ];
+                this.arrivalTime =
+                  finalEnd.getFullYear() +
+                  "-" +
+                  finalEnd.getMonth() +
+                  "-" +
+                  finalEnd.getDate() +
+                  "(" +
+                  weekday[finalEnd.getDay()] +
+                  ")";
+              }
+            }
             // 商品数据渲染
             this.goodsList.map(v => {
               let data = {
@@ -739,7 +775,7 @@ export default {
               storeId: data.item.storeId
             })
               .then(res => {
-                if (res.data.code == "200" && res.data.result.length>0) {
+                if (res.data.code == "200" && res.data.result.length > 0) {
                   this.couponList = res.data.result;
                   this.couponShowFlag = true;
                   if (this.couponList.length > 0) {

@@ -68,6 +68,17 @@
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
+    <!-- 待核销 -->
+    <div
+      class="bg"
+      v-else-if=" detailData.orderVo.financialStatus == 3 && detailData.orderVo.logisticsStatus == 8"
+    >
+      <h3>
+        <van-icon custom-class="colorW" name="underway" />
+        <span>等待团长核销</span>
+      </h3>
+      <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
+    </div>
     <!-- 团长已收货 -->
      <div
       class="bg"
@@ -195,7 +206,7 @@
             {{detailData.orderVo.shippingAddress.address}}
           </div>
         </div>
-        <div class="item" v-if="detailData.orCode!=null&&detailData.newestRefund==null">
+        <div class="item" v-if="detailData.orCode!=null&&detailData.newestRefund==null&&detailData.orderVo.logisticsStatus==8">
           <div class="left">核销码</div>
           <div class="right">
             <img class="code" :src="detailData.orCode" alt />

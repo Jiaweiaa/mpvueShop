@@ -259,6 +259,16 @@ export default {
                 title: "自动取消",
                 seeBtn: true
               };
+            } else if (order.logisticsStatus == 7) {
+              order.typeData = {
+                title: "待用户收货",
+                seeBtn: false
+              };
+            } else if (order.logisticsStatus == 8) {
+              order.typeData = {
+                title: "待团长核销",
+                seeBtn: false
+              };
             }
           });
           this.allCount = res.data.result.orders.total;
@@ -427,10 +437,13 @@ export default {
             };
           } else if (order.logisticsStatus == 7) {
             order.typeData = {
-              title: "待核销",
-              canBtn: true,
-              giveBtn: true,
-              seeBtn: true
+              title: "待用户收货",
+              seeBtn: false
+            };
+          } else if (order.logisticsStatus == 8) {
+            order.typeData = {
+              title: "待团长核销",
+              seeBtn: false
             };
           }
         });
@@ -465,7 +478,7 @@ export default {
       this.searchVal = "";
     },
 
-    // 发货
+    // 收货
     payBtn(val) {
       let valueData = val;
       Dialog.confirm({
@@ -479,14 +492,12 @@ export default {
           toWriteOff({
             orderCodes: data
           }).then(res => {
-            if (res.data.code == 200) {
+            if (res.data.code == "200") {
               Dialog.alert({
-                message: "收货成功!"
+                message: res.data.message
               }).then(() => {
-                // on close
+                this.getOrderList();
               });
-              this.getOrderList();
-              // });
             } else {
               Dialog.alert({
                 message: "收货失败~"
@@ -511,7 +522,19 @@ export default {
             toWriteOff({
               orderCodes: this.resultCheck
             }).then(res => {
-              this.getOrderList();
+              if (res.data.code == "200") {
+                Dialog.alert({
+                  message: res.data.message
+                }).then(() => {
+                  this.getOrderList();
+                });
+              } else {
+                Dialog.alert({
+                  message: "收货失败~"
+                }).then(() => {
+                  // on close
+                });
+              }
             });
           })
           .catch(() => {

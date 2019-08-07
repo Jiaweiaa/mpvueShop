@@ -241,7 +241,7 @@ export default {
         {
           title: "待收货",
           icon: "tosend",
-          url: "/pages/myOrder/main?id=10"
+          url: "/pages/myOrder/main?id=3"
         },
         {
           title: "已完成",

@@ -816,7 +816,7 @@ export default {
                         });
 
                         wx.redirectTo({
-                          url: "/pages/myOrder/main"
+                          url: "/pages/myOrder/main?id=4"
                         });
                       } else {
                         wx.showToast({
@@ -826,7 +826,7 @@ export default {
                         });
                         setTimeout(() => {
                           wx.redirectTo({
-                            url: "/pages/myOrder/main"
+                            url: "/pages/myOrder/main?id=2"
                           });
                         }, 1500);
                       }
@@ -834,7 +834,7 @@ export default {
                     .catch(err => {
                       wx.hideLoading();
                       wx.redirectTo({
-                        url: "/pages/myOrder/main"
+                        url: "/pages/myOrder/main?id=2"
                       });
                     });
                 } else if (params.paymentType == 4) {
@@ -898,12 +898,12 @@ export default {
                                         });
 
                                         wx.redirectTo({
-                                          url: "/pages/myOrder/main"
+                                          url: "/pages/myOrder/main?id=4"
                                         });
                                       },
                                       fail: res => {
                                         wx.redirectTo({
-                                          url: "/pages/myOrder/main"
+                                          url: "/pages/myOrder/main?id=2"
                                         });
                                       }
                                     });
@@ -912,7 +912,7 @@ export default {
                                 .catch(err => {
                                   wx.hideLoading();
                                   wx.redirectTo({
-                                    url: "/pages/myOrder/main"
+                                    url: "/pages/myOrder/main?id=2"
                                   });
                                 });
                             } else {
@@ -932,7 +932,7 @@ export default {
                         });
                         setTimeout(() => {
                           wx.redirectTo({
-                            url: "/pages/myOrder/main"
+                            url: "/pages/myOrder/main?id=2"
                           });
                         }, 1500);
                       }
@@ -940,7 +940,7 @@ export default {
                     .catch(err => {
                       wx.hideLoading();
                       wx.redirectTo({
-                        url: "/pages/myOrder/main"
+                        url: "/pages/myOrder/main?id=2"
                       });
                     });
                 }

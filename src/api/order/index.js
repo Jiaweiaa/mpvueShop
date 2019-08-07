@@ -71,10 +71,10 @@ export const confirmReceive = params => {
   });
 };
 // 用户确认收货
-export const orderCode = params => {
+export const capConfirmReceived = params => {
   let data = querystring.encode(params);
   return fly.request({
-    url: `/trade/ActOrd/orderCode`,
+    url: `/trade/ActOrd/capConfirmReceived`,
     method: "post",
     body: data,
     headers: {
