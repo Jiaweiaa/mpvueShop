@@ -578,12 +578,12 @@ export default {
           // on cancel
         });
     },
-    // 一键审核发货
+    // 一键审核核销
     toggleHXClick() {
       if (this.resultCheck.length > 0) {
         Dialog.confirm({
-          title: "发货",
-          message: "确认发货选中订单吗?"
+          title: "核销",
+          message: "确认核销选中订单吗?"
         })
           .then(() => {
             writeOff({

@@ -11,27 +11,35 @@
     background: #fff;
     display: flex;
     align-items: center;
+    justify-content: center;
     border-bottom: 1rpx solid #ededed;
+    // border-radius: 32rpx;
 
     .ser {
-      width: 690rpx;
-      height: 56rpx;
+      width: 580rpx;
+      height: 64rpx;
       background: #ededed;
-      border-radius: 8rpx;
+      border-radius: 32rpx;
       display: flex;
       align-items: center;
-      justify-content: center;
+      // justify-content: center;
 
       span {
         display: inline-block;
       }
 
       .icon {
-        background: url('http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/search2-2fb94833aa.png') center no-repeat;
+        background: url("http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/search2-2fb94833aa.png")
+          center no-repeat;
         background-size: 100%;
-        width: 28rpx;
-        height: 28rpx;
-        margin-right: 10rpx;
+        width: 34rpx;
+        height: 34rpx;
+        margin-right: 21rpx;
+        margin-left: 40rpx;
+      }
+      .text {
+        color: rgba(198, 198, 198, 1);
+        font-size: 30rpx;
       }
     }
   }
@@ -51,15 +59,16 @@
         line-height: 90rpx;
         width: 162rpx;
         height: 90rpx;
-        color: #333;
-        font-size: 22rpx;
+        color: rgba(48, 48, 48, 1);
+        font-size: 30rpx;
         border-left: 6rpx solid #fff;
       }
 
       .active {
-        color: #ab2b2b;
-        font-size: 24rpx;
-        border-left: 6rpx solid #ab2b2b;
+        color: #fff;
+        font-size: 30rpx;
+        background: $main-color;
+        border-left: 6rpx solid $buy-btn;
       }
     }
 

@@ -298,13 +298,15 @@ export default {
       day: "",
       timeFlag: false, //倒计时是否显示
       havaTimeFlag: false,
-      textFlag: false
+      textFlag: false,
+      timeOut:null
     };
   },
   components: {
     wxParse
   },
   onHide() {
+    clearTimeout(this.timeOut);
     this.selectSkuData = null;
     this.keys.map(v => {
       v.isActiveC = false;
@@ -469,7 +471,7 @@ export default {
         var end = endDate.getTime();
         //时间差
         var leftTime = end - now;
-        console.log(leftTime, "000");
+        // console.log(leftTime, "000");
         //定义变量 d,h,m,s保存倒计时的时间
         if (leftTime >= 0) {
           this.havaTimeFlag = true;
@@ -487,7 +489,7 @@ export default {
         }
         // console.log(this.s);
         //递归每秒调用countTime方法，显示动态时间效果
-        setTimeout(this.countTime, 1000);
+       this.timeOut =  setTimeout(this.countTime, 1000);
       }
     },
 
