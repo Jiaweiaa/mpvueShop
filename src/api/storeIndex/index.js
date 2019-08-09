@@ -41,12 +41,13 @@ export const cancelFavoriteByStoreId = params => {
 
 //获取店铺内的商品分类树
 export const getStoreNavigationTree = params => {
+  let data = querystring.encode(params);
   return fly.request({
     url: "/store/storeFront/getStoreNavigationTree",
     method: "post",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/x-www-form-urlencoded"
     },
-    body: params
+    body: data
   });
 };

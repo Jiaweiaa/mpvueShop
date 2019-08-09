@@ -77,62 +77,63 @@
           </div>
         </div>
       </div>
-      <div class="store-group" v-if="storeInfo!=null">
-        <div class="storeInfo" v-if="listData.length!=0&&storeInfoShow==true">
-          <div class="logo">
-            <img :src="'http://qn.gaoshanmall.cn/'+storeInfo.logo" alt />
-          </div>
-          <div class="storeName">
-            <p>{{storeInfo.name}}</p>
-          </div>
-          <div class="btn-group">
-            <span class="btn" @click="toggleAttention">{{storeInfo.isFavorite?'已关注':'未关注'}}</span>
-          </div>
-          <div class="num">
-            <span>{{storeInfo.followers}}人已关注</span>
-          </div>
-        </div>
-      </div>
-
-      <!--商品列表  -->
-      <div v-show="listData.length!=0" class="goodsList">
-        <div class="sortnav">
-          <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">综合</div>
-          <div
-            @click="changeTab(1)"
-            class="price"
-            :class="[1==nowIndex ?'active':'', order =='SALE_PRICE-DESC'? 'desc':'asc']"
-          >价格</div>
-          <div
-            @click="changeTab(2)"
-            class="price"
-            :class="[2==nowIndex ?'active':'', order =='SALES-DESC'? 'desc':'asc']"
-          >销量</div>
-          <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
-        </div>
-
-        <div class="goods-group">
-          <van-card
-            :tag="item.tag"
-            :lazy-load="true"
-            :price="item.listPrice"
-            :origin-price="item.salePrice"
-            :desc="item.keyword"
-            :title="item.title"
-            thumb-class="goods-image"
-            title-class="goods-title"
-            desc-class="goods-desc"
-            v-for="(item, index) in listData"
-            :key="index"
-            @click="goodsDetail(item.id)"
-            :thumb="'http://qn.gaoshanmall.cn/' + item.img"
-          >
-            <div slot="desc" class="goods-bottom">
-              <div>{{item.keyword}}</div>
-              <div class="sketch">{{item.sketch}}</div>
+      <div v-if="nowIndex==0">
+        <div class="store-group" v-if="storeInfo!=null">
+          <div class="storeInfo" v-if="listData.length!=0&&storeInfoShow==true">
+            <div class="logo">
+              <img :src="'http://qn.gaoshanmall.cn/'+storeInfo.logo" alt />
             </div>
-          </van-card>
-          <!-- <div
+            <div class="storeName">
+              <p>{{storeInfo.name}}</p>
+            </div>
+            <div class="btn-group">
+              <span class="btn" @click="toggleAttention">{{storeInfo.isFavorite?'已关注':'未关注'}}</span>
+            </div>
+            <div class="num">
+              <span>{{storeInfo.followers}}人已关注</span>
+            </div>
+          </div>
+        </div>
+
+        <!--商品列表  -->
+        <div v-show="listData.length!=0" class="goodsList">
+          <div class="sortnav">
+            <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">综合</div>
+            <div
+              @click="changeTab(1)"
+              class="price"
+              :class="[1==nowIndex ?'active':'', order =='SALE_PRICE-DESC'? 'desc':'asc']"
+            >价格</div>
+            <div
+              @click="changeTab(2)"
+              class="price"
+              :class="[2==nowIndex ?'active':'', order =='SALES-DESC'? 'desc':'asc']"
+            >销量</div>
+            <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
+          </div>
+
+          <div class="goods-group">
+            <van-card
+              :tag="item.tag"
+              :lazy-load="true"
+              :price="item.listPrice"
+              :origin-price="item.salePrice"
+              :desc="item.keyword"
+              :title="item.title"
+              thumb-class="goods-image"
+              title-class="goods-title"
+              desc-class="goods-desc"
+              v-for="(item, index) in listData"
+              :key="index"
+              @click="goodsDetail(item.id)"
+              :thumb="'http://qn.gaoshanmall.cn/' + item.img"
+            >
+              <div slot="desc" class="goods-bottom">
+                <div>{{item.keyword}}</div>
+                <div class="sketch">{{item.sketch}}</div>
+              </div>
+            </van-card>
+            <!-- <div
           @click="goodsDetail(item.id)"
           v-for="(item, index) in listData"
           :key="index"
@@ -142,24 +143,24 @@
           <img :src="'http://qn.gaoshanmall.cn/' + item.img" alt />
           <p class="name">{{item.title}} - {{item.subtitle}}</p>
           <p class="price">￥{{item.salePrice}}</p>
-          </div>-->
-          <div class="title">
-            <span>—</span>
-            <span>我也是有底线的</span>
-            <span>—</span>
+            </div>-->
+            <div class="title">
+              <span>—</span>
+              <span>我也是有底线的</span>
+              <span>—</span>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- 商品分类 -->
-      <van-popup
-        :show="searchPopupShow"
-        position="right"
-        class="filterlayer"
-        @close="searchPopupClose"
-        :duration="600"
-      >
-        <div class="filterInner" style="overflow-y: scroll;height: 100vh; width: 85vw; ">
-          <!-- <div class="item">
+        <!-- 商品分类 -->
+        <van-popup
+          :show="searchPopupShow"
+          position="right"
+          class="filterlayer"
+          @close="searchPopupClose"
+          :duration="600"
+        >
+          <div class="filterInner" style="overflow-y: scroll;height: 100vh; width: 85vw; ">
+            <!-- <div class="item">
           <div class="itemTitle">
             <div>价格区间</div>
           </div>
@@ -170,55 +171,98 @@
             >-</div>
             <input placeholder-class="center" placeholder="最高价  ">
           </div>
-          </div>-->
-          <div
-            class="item"
-            v-show="filterList.length>0"
-            v-for="(group, grouPindex) in filterList"
-            :key="grouPindex"
-          >
-            <div class="itemTitle" @click="showTabber(grouPindex)">
-              <div style="width: 40%; float: left;">{{group.label}}</div>
-              <van-icon
-                style="float: right;margin-right: 10px;"
-                :name="group.isShowAll ? 'arrow-up' : 'arrow-down'"
-              />
-            </div>
-            <van-transition
-              style="overflow: hidden;"
-              :show="group.isShowAll"
-              custom-class="block"
-              name="slide-down"
+            </div>-->
+            <div
+              class="item"
+              v-show="filterList.length>0"
+              v-for="(group, grouPindex) in filterList"
+              :key="grouPindex"
             >
-              <div class="content">
-                <div
-                  class="childItem active"
-                  @click="isClickChild(item, group)"
-                  :class="{'activeSearch': item.isChecked == true}"
-                  v-for="(item, childItem) in group.facetFilterUnitList"
-                  :key="childItem"
-                >{{item.label}}</div>
+              <div class="itemTitle" @click="showTabber(grouPindex)">
+                <div style="width: 40%; float: left;">{{group.label}}</div>
+                <van-icon
+                  style="float: right;margin-right: 10px;"
+                  :name="group.isShowAll ? 'arrow-up' : 'arrow-down'"
+                />
               </div>
-            </van-transition>
+              <van-transition
+                style="overflow: hidden;"
+                :show="group.isShowAll"
+                custom-class="block"
+                name="slide-down"
+              >
+                <div class="content">
+                  <div
+                    class="childItem active"
+                    @click="isClickChild(item, group)"
+                    :class="{'activeSearch': item.isChecked == true}"
+                    v-for="(item, childItem) in group.facetFilterUnitList"
+                    :key="childItem"
+                  >{{item.label}}</div>
+                </div>
+              </van-transition>
+            </div>
+            <div class="footer">
+              <van-button
+                size="small"
+                style="text-align: center;width: 47%; float: left; margin-left: 1%; margin-right: 2%"
+                round
+                type="danger"
+                @click="resetFq()"
+              >重置</van-button>
+              <van-button
+                size="small"
+                style="text-align: center;width: 47%; float: left; margin-left: 2%;"
+                round
+                type="primary"
+                @click="popupShow=false"
+              >确认</van-button>
+            </div>
           </div>
-          <div class="footer">
-            <van-button
-              size="small"
-              style="text-align: center;width: 47%; float: left; margin-left: 1%; margin-right: 2%"
-              round
-              type="danger"
-              @click="resetFq()"
-            >重置</van-button>
-            <van-button
-              size="small"
-              style="text-align: center;width: 47%; float: left; margin-left: 2%;"
-              round
-              type="primary"
-              @click="popupShow=false"
-            >确认</van-button>
-          </div>
+        </van-popup>
+      </div>
+      <!-- 店铺筛选 -->
+      <div v-else class="category_group">
+        <div class="content">
+          <scroll-view class="left" scroll-y="true">
+            <div
+              class="iconText"
+              @click="selectitem(item, index)"
+              v-for="(item, index) in categoryData.nodes"
+              :class="[index==nowCategoryIndex?'active':'']"
+              :key="index"
+            >{{item.name}}</div>
+          </scroll-view>
+          <scroll-view class="right" scroll-y="true">
+            <div class="banner" v-if="detailData.icon!=''">
+              <img :src="'http://qn.gaoshanmall.cn/'+detailData.icon" alt />
+            </div>
+            <div class="bottom">
+              <div v-for="(item,index) in detailData.nodes" :key="index" style="width: 100%;">
+                <div class="title">
+                  <span>—</span>
+                  <span>{{item.name}}分类</span>
+                  <span>—</span>
+                </div>
+                <div
+                  @click="categoryList(childItem.id, childItem.name)"
+                  v-for="(childItem, childIndex) in item.nodes"
+                  :key="childIndex"
+                  class="item"
+                  style="float: left;font-size:24rpx;color:rgba(102,102,102,1);"
+                >
+                  <img
+                    style="width: 35px; height: 30px; margin-bottom: 5px;"
+                    :src="childItem.icon ? 'http://qn.gaoshanmall.cn/' + childItem.icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1560861771007&di=3d96c78920a6e873229c09bba2d637d3&imgtype=jpg&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170428%2F74b6a76d39694e03beba6089c9f262de_th.png'"
+                    alt
+                  />
+                  {{childItem.name}}
+                </div>
+              </div>
+            </div>
+          </scroll-view>
         </div>
-      </van-popup>
+      </div>
     </div>
     <van-tabbar :active="active" @change="tabbarChange">
       <van-tabbar-item name="goods">
@@ -249,8 +293,7 @@ import {
   getStoreNavigationTree
 } from "../../api/storeIndex/index";
 export default {
-  onLoad:function(options) {
-    
+  onLoad: function(options) {
     this.storeId = options.id;
   },
   onPageScroll(e) {
@@ -267,6 +310,7 @@ export default {
     this.getHotData();
     this.getlistData();
     this.getStoreInfoData();
+    this.getCategoryData();
   },
   // 上啦加载
   async onReachBottom() {
@@ -351,10 +395,31 @@ export default {
       storeInfoShow: true,
       searchPopupShow: false,
       //导航
-      active: "goods"
+      active: "goods",
+      categoryData: [], //分类列表
+      nowCategoryIndex: 0,
+      detailData: {
+        url: ""
+      }
     };
   },
   methods: {
+    //获取店铺导航
+    async getCategoryData() {
+      let res = await getStoreNavigationTree({ storeId: this.storeId });
+      this.categoryData = res.data.result;
+      this.selectitem(this.categoryData.nodes[0]);
+      // const data = await get("/category/indexaction");
+      // this.listData = data.categoryList;
+    },
+    selectitem(data, index) {
+      if (index == 0 || index) {
+        this.nowCategoryIndex = Number(index);
+        this.detailData = data;
+      } else {
+        this.detailData = data;
+      }
+    },
     // 获取历史记录
     async getHistory() {
       let data = await findHistorySearch();
@@ -595,7 +660,14 @@ export default {
     },
     //点击导航
     tabbarChange(e) {
-      console.log(e);
+      this.nowIndex = e.mp.detail;
+      if(e.mp.detail==1&&this.categoryData.length==0){
+        wx.showToast({
+          icon:'none',
+          title:'暂时没有筛选项数据'
+        })
+        this.nowIndex = 0;
+      }
     }
   }
 };
