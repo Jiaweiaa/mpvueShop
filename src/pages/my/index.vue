@@ -17,7 +17,9 @@
       <div class="user">
         <div class v-if="userInfo.nickname">
           <p>{{userInfo.nickname}}</p>
-          <p>欢迎您,时刻益每家会员</p>
+          <!-- <p>欢迎您,时刻益每家会员</p> -->
+          <p>欢迎您,百团联盟会员</p>
+          <!-- <p>欢迎您,高山会员</p> -->
           <!-- <p style="color:#fff;">
             <span ></span>省
             <span type="userCity" lang="zh_CN"></span>市
@@ -70,7 +72,7 @@
       <div class="title">
         <div class="navTitle">更多服务</div>
       </div>
-      <scroll-view scroll-x class="content">
+      <div class="content">
         <div
           class="childContent"
           @click="goTo(item.url)"
@@ -80,7 +82,7 @@
           <van-icon size="30px" :name="item.icon" />
           <div class="childText">{{item.title}}</div>
         </div>
-      </scroll-view>
+      </div>
     </div>
   </div>
 </template>
@@ -196,17 +198,31 @@ export default {
         });
       }
       if (wx.getStorageSync("isSup") == false) {
-        this.moreService.push({
-          title: "供应商招募",
-          icon: "user-o",
-          url: "/pages/beGive/main"
-        });
+        this.moreService.push(
+          {
+            title: "供应商招募",
+            icon: "user-o",
+            url: "/pages/beGive/main"
+          },
+          {
+            title: "分销",
+            icon: "friends-o",
+            url: "/pages/giver/main"
+          }
+        );
       } else {
-        this.moreService.push({
-          title: "我是供应商",
-          icon: "friends-o",
-          url: "/pages/giver/main"
-        });
+        this.moreService.push(
+          {
+            title: "我是供应商",
+            icon: "friends-o",
+            url: "/pages/giver/main"
+          },
+          {
+            title: "分销",
+            icon: "friends-o",
+            url: "/pages/giver/main"
+          }
+        );
       }
       console.log(this.moreService);
     } else {
@@ -219,6 +235,11 @@ export default {
         {
           title: "供应商招募",
           icon: "user-o",
+          url: "/pages/beGive/main"
+        },
+        {
+          title: "分销",
+          icon: "gold-coin-o",
           url: "/pages/beGive/main"
         }
       ];
@@ -249,11 +270,6 @@ export default {
           url: "/pages/myOrder/main?id=5"
         },
         {
-          title: "待核销",
-          icon: "balance-list-o",
-          url: "/pages/myOrder/main?id=9"
-        },
-        {
           title: "退/换货",
           icon: "more-o",
           url: "/pages/refundList/main"
@@ -269,12 +285,12 @@ export default {
           title: "地址管理",
           icon: "home-o",
           url: "/pages/address/main"
+        },
+        {
+          title: "百团联盟券",
+          icon: "after-sale",
+          url: "/pages/integral/main"
         }
-        // {
-        //   title: "百团联盟券",
-        //   icon: "after-sale",
-        //   url: "/pages/integral/main"
-        // }
       ],
       moreService: [
         {
@@ -294,6 +310,11 @@ export default {
         },
         {
           title: "我是供应商",
+          icon: "friends-o",
+          url: "/pages/giver/main"
+        },
+        {
+          title: "分销",
           icon: "friends-o",
           url: "/pages/giver/main"
         }

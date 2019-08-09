@@ -31,7 +31,8 @@ export default {
       }
     },
     pages: [
-      "^pages/index/main",
+      "pages/index/main",
+      "^pages/distribution/main",
       "pages/logisticsDetail/main", //物流详情页
       "pages/feedback/main",
       "pages/order/main",
@@ -78,43 +79,43 @@ export default {
     window: {
       backgroundTextStyle: "light",
       navigationBarBackgroundColor: "#fff",
-      navigationBarTitleText: "时刻益每家",
+      navigationBarTitleText: "百团联盟商城",
       navigationBarTextStyle: "black"
     },
     tabBar: {
       backgroundColor: "#fafafa",
       borderStyle: "white",
-      selectedColor: "#4eaa68",
+      selectedColor: "#ff6c01 ",
       color: "#333",
       list: [
         {
           pagePath: "pages/index/main",
-          iconPath: "static/images/sk_home.png",
-          selectedIconPath: "static/images/sk_home_active.png",
+          iconPath: "static/images/gs_home.png",
+          selectedIconPath: "static/images/gs_home_active.png",
           text: "首页"
         },
         {
           pagePath: "pages/topic/main",
-          iconPath: "static/images/sk_zhuanti.png",
-          selectedIconPath: "static/images/sk_zhuanti_active.png",
+          iconPath: "static/images/gs_zhuanti.png",
+          selectedIconPath: "static/images/gs_zhuanti_active.png",
           text: "专题"
         },
         {
           pagePath: "pages/category/main",
-          iconPath: "static/images/sk_fenlei.png",
-          selectedIconPath: "static/images/sk_fenlei_active.png",
+          iconPath: "static/images/gs_fenlei.png",
+          selectedIconPath: "static/images/gs_fenlei_active.png",
           text: "分类"
         },
         {
           pagePath: "pages/cart/main",
-          iconPath: "static/images/sk_cart.png",
-          selectedIconPath: "static/images/sk_cart_active.png",
+          iconPath: "static/images/gs_cart.png",
+          selectedIconPath: "static/images/gs_cart_active.png",
           text: "购物车"
         },
         {
           pagePath: "pages/my/main",
-          iconPath: "static/images/sk_my.png",
-          selectedIconPath: "static/images/sk_my_active.png",
+          iconPath: "static/images/gs_my.png",
+          selectedIconPath: "static/images/gs_my_active.png",
           text: "我的"
         }
       ]
