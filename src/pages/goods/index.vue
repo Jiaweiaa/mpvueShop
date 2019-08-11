@@ -36,7 +36,10 @@
       <div class="c">
         <button class="share" hover-class="none" open-type="share" value>分 享</button>
         <p class="title">{{goodsInfo.title}}</p>
-        <p class="sketch" v-if="arrivalTime!=''">现在下单,预计{{arrivalTime}}送到</p>
+        <div v-if="goodsInfo.arrivalTimeAA">
+          <p class="sketch" v-if="goodsInfo.arrivalTimeAA!=''">现在下单,预计{{goodsInfo.arrivalTimeAA}}送到</p>
+        </div>
+
         <div class="tags" v-if="goodsInfo!=null">
           <span class="item" v-for="(tag,tagIndex) in goodsInfo.itemTags" :key="tagIndex">{{tag}}</span>
         </div>
@@ -299,7 +302,7 @@ export default {
       timeFlag: false, //倒计时是否显示
       havaTimeFlag: false,
       textFlag: false,
-      timeOut:null
+      timeOut: null
     };
   },
   components: {
@@ -467,7 +470,7 @@ export default {
         var date = new Date();
         var now = date.getTime();
         //设置截止时间
-        var endDate = new Date(this.goodsInfo.activeEndTime);
+        var endDate = new Date(this.goodsInfo.activeEndTime.replace(/-/g, "/"));
         var end = endDate.getTime();
         //时间差
         var leftTime = end - now;
@@ -489,7 +492,7 @@ export default {
         }
         // console.log(this.s);
         //递归每秒调用countTime方法，显示动态时间效果
-       this.timeOut =  setTimeout(this.countTime, 1000);
+        this.timeOut = setTimeout(this.countTime, 1000);
       }
     },
 
@@ -701,20 +704,27 @@ export default {
               v.properties = JSON.parse(v.properties).toString();
             });
             this.gallery = data.item.itemImages;
-            this.goodsInfo = data.item;
+            this.goodsInfo = Object.assign({}, data.item);
+            console.log("oooaaa");
             if (this.goodsInfo.activeEndTime) {
+              console.log("2222");
               //获取当前时间
-              var date = new Date();
-              var now = date.getTime();
+              let date = new Date();
+              console.log(date.getTime(), "shijian");
+              let now = date.getTime();
               //设置截止时间
-              var endDate = new Date(this.goodsInfo.activeEndTime);
-              var end = endDate.getTime();
+              let endDateTime = this.goodsInfo.activeEndTime;
+              let endDate = new Date(endDateTime.replace(/-/g, "/"));
+              let end = endDate.getTime();
+              console.log(endDate.getTime(), "shijian1111");
               //时间差
-              var leftTime = end - now;
+              let leftTime = end - now;
+              console.log(leftTime, "789");
               if (leftTime > 0) {
+                console.log("进入这个短点");
                 //货到时间
-                var finalEnd = new Date(end + 86400000);
-                var weekday = [
+                let finalEnd = new Date(end + 86400000);
+                let weekday = [
                   "周日",
                   "周一",
                   "周二",
@@ -723,15 +733,17 @@ export default {
                   "周五",
                   "周六"
                 ];
-                this.arrivalTime =
+                console.log("3333");
+                this.goodsInfo.arrivalTimeAA =
                   finalEnd.getFullYear() +
                   "-" +
-                  finalEnd.getMonth() +
+                  (finalEnd.getMonth() + 1) +
                   "-" +
                   finalEnd.getDate() +
                   "(" +
                   weekday[finalEnd.getDay()] +
                   ")";
+                console.log("444");
               }
             }
             // 商品数据渲染
