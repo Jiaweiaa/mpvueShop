@@ -9,7 +9,7 @@
       <div class="left">
         <button @click="saveImage">
           <p>我的二维码</p>
-          <img  class="code" :src="qrCode" alt />
+          <img class="code" :src="qrCode" alt />
         </button>
       </div>
     </div>
@@ -22,12 +22,19 @@
       </div>
     </div>-->
     <div class="connect">
-      <label>昵称:</label>
-      <input type="text" v-model="memberInfo.nickname" disabled />
+      <label>姓名:</label>
+      <input type="text" v-model="memRelationship.realName" disabled />
     </div>
     <div class="connect">
-      <label>国家:</label>
-      <input type="text" v-model="memberInfo.country" disabled />
+      <label>级别:</label>
+      <span>
+        {{memRelationship.level==1?'省代理':memRelationship.level==2?'市代理':memRelationship.level==3?'区代理':'团代理'}}
+      </span>
+      
+    </div>
+    <div class="connect">
+      <label>工号:</label>
+      <input type="text" v-model="memRelationship.code" disabled />
     </div>
     <div class="connect">
       <label>省份:</label>
@@ -37,15 +44,23 @@
       <label>城市:</label>
       <input type="text" v-model="memberInfo.city" disabled />
     </div>
+    <div class="connect">
+      <label>区县:</label>
+      <input type="text" v-model="memberInfo.district" disabled />
+    </div>
     <!-- <div class="connect" v-if="parentMemberInfo!=null"> -->
     <div class="connect">
       <label>我的上级:</label>
-      <!-- <span>{{parentMemberInfo.nickname}}</span> -->
-      <span>我是上级</span>
+      <span v-if="parentMemberInfo!=null">{{parentMemberInfo.lastName}}</span>
+      <span v-else>暂无上级</span>
       <div class="btn-group">
-        <button class="btn bound" @click="scanFun">扫码绑定</button>
-        <!-- <button class="btn relieve">解除绑定</button> -->
+        <button class="btn bound" v-if="parentMemberInfo==null" @click="scanFun">扫码绑定</button>
+        <!-- <button class="btn relieve" v-else>解除绑定</button> -->
       </div>
+    </div>
+    <div class="connect" v-if="parentMemberInfo!=null">
+      <label>上级电话:</label>
+      <span >{{parentMemberInfo.mobile}}</span>
     </div>
   </div>
 </template>
@@ -61,6 +76,7 @@ export default {
     return {
       memberInfo: {},
       parentMemberInfo: null,
+      memRelationship:null,//级别关系对象
       qrCode: "",
 
       btnLoading: false
@@ -68,24 +84,23 @@ export default {
   },
   components: {},
   onShow() {
-    
-    this.aa();
+    this.getData();
   },
   methods: {
     //保存图片
     saveImage() {
-      console.log(1111);
       wx.previewImage({
         current: this.qrCode, // 当前显示图片的http链接
         urls: [this.qrCode] // 需要预览的图片http链接列表
       });
     },
-    aa() {
+    getData() {
       let params = {};
       showQRCodeToScan(params)
         .then(res => {
           if (res.data.code == "200") {
             this.memberInfo = res.data.result.memberInfo;
+            this.memRelationship = res.data.result.memRelationship;
             this.parentMemberInfo = res.data.result.parentMemberInfo;
             this.qrCode = res.data.result.qrCode;
           }
@@ -112,10 +127,24 @@ export default {
             })
               .then(() => {
                 let params = {
-                  parentMemberId: '1150014441393565711'
+                  parentMemberId: "1150014441385177102"
                 };
                 scanQrCode(params)
-                  .then(res => {})
+                  .then(res => {
+                    if (res.data.code == 200) {
+                      Dialog.alert({
+                        message: res.data.message
+                      }).then(() => {
+                        this.getData();
+                      });
+                    }else{
+                      Dialog.alert({
+                        message: res.data.message
+                      }).then(() => {
+                        
+                      });
+                    }
+                  })
                   .catch(err => {});
                 // let data = [];
                 // // data.push(res.result);

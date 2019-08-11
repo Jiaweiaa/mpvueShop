@@ -1,7 +1,6 @@
 <template>
   <div class="feedback team">
     <van-toast id="van-toast" />
-
     <div class="title">请填写您的真实信息</div>
     <div class="connect">
       <label>所在地区:</label>
