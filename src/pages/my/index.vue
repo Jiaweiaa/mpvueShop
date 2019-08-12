@@ -207,7 +207,7 @@ export default {
           {
             title: "分销",
             icon: "friends-o",
-            url: "/pages/giver/main"
+            url: "/pages/distribution/main"
           }
         );
       } else {

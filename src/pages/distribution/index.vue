@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-12 16:55:19
+ * @LastEditTime: 2019-08-12 17:03:52
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="feedback team">
     <van-toast id="van-toast" />
@@ -21,35 +28,35 @@
         </button>
       </div>
     </div>-->
-    <div class="connect">
+    <div class="connect" v-if="memRelationship!=null">
       <label>姓名:</label>
       <input type="text" v-model="memRelationship.realName" disabled />
     </div>
-    <div class="connect">
+    <div class="connect" v-if="memRelationship!=null">
       <label>级别:</label>
       <span>
         {{memRelationship.level==1?'省代理':memRelationship.level==2?'市代理':memRelationship.level==3?'区代理':'团代理'}}
       </span>
       
     </div>
-    <div class="connect">
+    <div class="connect" v-if="memRelationship!=null">
       <label>工号:</label>
       <input type="text" v-model="memRelationship.code" disabled />
     </div>
-    <div class="connect">
+    <div class="connect" v-if="memberInfo!=null">
       <label>省份:</label>
       <input type="text" v-model="memberInfo.province" disabled />
     </div>
-    <div class="connect">
+    <div class="connect" v-if="memberInfo!=null">
       <label>城市:</label>
       <input type="text" v-model="memberInfo.city" disabled />
     </div>
-    <div class="connect">
+    <div class="connect" v-if="memberInfo!=null">
       <label>区县:</label>
       <input type="text" v-model="memberInfo.district" disabled />
     </div>
     <!-- <div class="connect" v-if="parentMemberInfo!=null"> -->
-    <div class="connect">
+    <div class="connect" >
       <label>我的上级:</label>
       <span v-if="parentMemberInfo!=null">{{parentMemberInfo.lastName}}</span>
       <span v-else>暂无上级</span>
