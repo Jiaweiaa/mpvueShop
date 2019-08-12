@@ -30,7 +30,9 @@
       </h3>
       <div class="countDown">
         <div class="title">
-          <span v-if="detailData.orderVo.cancelReason!=null">您于{{detailData.orderVo.cancelTime}}以"{{detailData.orderVo.cancelReason}}"为由取消订单</span>
+          <span
+            v-if="detailData.orderVo.cancelReason!=null"
+          >您于{{detailData.orderVo.cancelTime}}以"{{detailData.orderVo.cancelReason}}"为由取消订单</span>
           <span v-else>超时未支付,订单已自动取消</span>
         </div>
       </div>
@@ -50,8 +52,7 @@
           v-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type=='3'"
         >
           <div class="title">
-            <span >您于{{detailData.refundProcessing.createTime}}以"{{detailData.refundProcessing.reason}}"为由申请取消订单</span>
-            
+            <span>您于{{detailData.refundProcessing.createTime}}以"{{detailData.refundProcessing.reason}}"为由申请取消订单</span>
           </div>
         </div>
       </h3>
@@ -80,7 +81,7 @@
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
     <!-- 团长已收货 -->
-     <div
+    <div
       class="bg"
       v-else-if=" detailData.orderVo.financialStatus == 3 && detailData.orderVo.logisticsStatus == 7"
     >
@@ -206,7 +207,10 @@
             {{detailData.orderVo.shippingAddress.address}}
           </div>
         </div>
-        <div class="item" v-if="detailData.orCode!=null&&detailData.newestRefund==null&&detailData.orderVo.logisticsStatus==8">
+        <div
+          class="item"
+          v-if="detailData.orCode!=null&&detailData.newestRefund==null&&detailData.orderVo.logisticsStatus==8"
+        >
           <div class="left">核销码</div>
           <div class="right">
             <img class="code" :src="detailData.orCode" alt />
@@ -237,7 +241,7 @@
             <van-icon name="shop-o" />
             <span>{{}}}</span>
             <van-icon name="arrow" />
-          </div> -->
+          </div>-->
           <div class="goods">
             <div
               class="goods-item"
@@ -327,11 +331,19 @@
     </div>
     <!-- 操作区 -->
     <div class="fixed">
-      <button class="plain" @click="orderShow=true;from='cancle'" v-if="orderCancelBtn&&!orderObj.capationFlag">取消订单</button>
+      <button
+        class="plain"
+        @click="orderShow=true;from='cancle'"
+        v-if="orderCancelBtn&&!orderObj.capationFlag"
+      >取消订单</button>
       <!-- <button class="plain" v-if="confrimReciveBtn">查看物流</button> -->
       <button class="danger" @click="sureGet()" v-if="confrimReciveBtn">确认收货</button>
       <button class="danger" @click="pay()" v-if="orderPayBtn&&!orderObj.capationFlag">立即支付</button>
-      <button class="danger" @click="deleteOrder()" v-if="orderDeleteBtn&&!orderObj.capationFlag">删除订单</button>
+      <button
+        class="danger"
+        @click="deleteOrder()"
+        v-if="orderDeleteBtn&&!orderObj.capationFlag"
+      >删除订单</button>
       <button
         class="danger"
         @click="orderShow=true;from='apply'"
@@ -634,95 +646,143 @@ export default {
       //创建订单方法 成功则调用    captainID
 
       let params = {
-        orderCode: this.detailData.orderVo.scmCode,
+        orderCode: this.detailData.orderVo.code,
         paymentType: this.detailData.orderVo.paymentType,
         orderTab: 2,
         deviceType: 2
       };
       // 调用后台支付
-      toPay(params)
-        .then(res => {
-          //如果调用toPay方法成功 则拉起微信登录方法获取code传给后台并调用
-          if (res.data.code == "200") {
-            let params = {
-              subOrdinate: res.data.result.subOrdinate,
-              deviceType: 2
-            };
-            let url = `/trade${res.data.result.redirectUrl}`;
-            let querystring = require("querystring");
-            wx.login({
-              success: res => {
-                console.log(res, 111);
-                if (res.code) {
-                  params.code = res.code;
+      //如果调用toPay方法成功 判断支付类型并做相应处理//
+      //如果类型是12 则在成功返回中直接处理
+      // 如果类型是4或者13拉起微信登录方法获取code传给后台并调用
+      if (params.paymentType == 4 || 13) {
+        toPay(params)
+          .then(res => {
+            if (res.data.code == "200") {
+              let params = {
+                subOrdinate: res.data.result.subOrdinate,
+                deviceType: 2,
+                orderTab:2,
+              };
+              let url = `/trade${res.data.result.redirectUrl}`;
+              let querystring = require("querystring");
+              wx.login({
+                success: res => {
+                  console.log(res, 111);
+                  if (res.code) {
+                    params.code = res.code;
 
-                  //成功的话  拉起wxPay方法  获取支付所需要的一切参数
-                  const wxPay = params => {
-                    let data = querystring.encode(params);
-                    return fly.request({
-                      url: url,
-                      method: "post",
-                      body: data,
-                      headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                      }
-                    });
-                  };
-                  wxPay(params)
-                    .then(res => {
-                      wx.hideLoading();
-                      //如果成功 拉起微信支付API进行支付
-                      if (res.data.code == "200") {
-                        wx.requestPayment({
-                          timeStamp:
-                            res.data.result.wechatJsApiPayCommand.timeStamp,
-                          nonceStr:
-                            res.data.result.wechatJsApiPayCommand.nonceStr,
-                          package:
-                            res.data.result.wechatJsApiPayCommand.packAge,
-                          signType:
-                            res.data.result.wechatJsApiPayCommand.signType,
-                          paySign:
-                            res.data.result.wechatJsApiPayCommand.paySign,
-                          success: res => {
-                            wx.showToast({
-                              title: "支付成功!",
-                              icon: "success",
-                              duration: 2000,
-                              mask: true
-                            });
-
-                            setTimeout(() => {
-                              wx.redirectTo({
-                                url: "/pages/myOrder/main"
+                    //成功的话  拉起wxPay方法  获取支付所需要的一切参数
+                    const wxPay = params => {
+                      let data = querystring.encode(params);
+                      return fly.request({
+                        url: url,
+                        method: "post",
+                        body: data,
+                        headers: {
+                          "Content-Type": "application/x-www-form-urlencoded"
+                        }
+                      });
+                    };
+                    wxPay(params)
+                      .then(res => {
+                        wx.hideLoading();
+                        //如果成功 拉起微信支付API进行支付
+                        if (res.data.code == "200") {
+                          wx.requestPayment({
+                            timeStamp:
+                              res.data.result.wechatJsApiPayCommand.timeStamp,
+                            nonceStr:
+                              res.data.result.wechatJsApiPayCommand.nonceStr,
+                            package:
+                              res.data.result.wechatJsApiPayCommand.packAge,
+                            signType:
+                              res.data.result.wechatJsApiPayCommand.signType,
+                            paySign:
+                              res.data.result.wechatJsApiPayCommand.paySign,
+                            success: res => {
+                              wx.showToast({
+                                title: "支付成功!",
+                                icon: "success",
+                                duration: 2000,
+                                mask: true
                               });
-                            }, 1000);
-                          },
-                          fail: res => {
-                            //调用失败弹到待支付订单页
 
-                            wx.hideLoading();
-                            wx.redirectTo({
-                              url: "/pages/myOrder/main"
-                            });
-                          }
-                        });
-                      }
-                    })
-                    .catch(err => {
-                      wx.hideLoading();
-                    });
-                } else {
-                  console.log("登录失败！" + res.errMsg);
+                              setTimeout(() => {
+                                wx.navigateBack({
+                                  delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                                });
+                              }, 1000);
+                            },
+                            fail: res => {
+                              //调用失败弹到待支付订单页
+
+                              wx.hideLoading();
+                              wx.navigateBack({
+                                delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                              });
+                            }
+                          });
+                        }
+                      })
+                      .catch(err => {
+                        wx.hideLoading();
+                      });
+                  } else {
+                    console.log("登录失败！" + res.errMsg);
+                  }
+                },
+                fail: err => {
+                  console.log(err, 222);
                 }
-              },
-              fail: err => {
-                console.log(err, 222);
-              }
+              });
+            }
+          })
+          .catch(err => {
+            wx.showToast({
+              icon: "none",
+              title: "状态异常"
             });
-          }
-        })
-        .catch(err => {});
+            wx.navigateBack({
+              delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+            });
+          });
+      } else {
+        toPay(params)
+          .then(res => {
+            wx.hideLoading();
+            //因为是使用积分支付,如果调用toPay方法成功 则直接成功
+            if (res.data.code == "200") {
+              wx.showToast({
+                title: "支付成功!",
+                icon: "success",
+                duration: 2000,
+                mask: true
+              });
+
+              wx.navigateBack({
+                delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+              });
+            } else {
+              wx.showToast({
+                title: res.data.message,
+                duration: 1500,
+                mask: true
+              });
+              setTimeout(() => {
+                wx.navigateBack({
+                  delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+                });
+              }, 1500);
+            }
+          })
+          .catch(err => {
+            wx.hideLoading();
+            wx.navigateBack({
+              delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+            });
+          });
+      }
     },
     //取消订单
     cancelOrder() {
@@ -741,8 +801,8 @@ export default {
             });
             if (res.data.code == "200") {
               if (res.data.result.isSuccess == true) {
-                wx.redirectTo({
-                  url: "/pages/myOrder/main"
+                wx.navigateBack({
+                  delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
                 });
               }
             }

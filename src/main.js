@@ -97,7 +97,7 @@ export default {
           pagePath: "pages/topic/main",
           iconPath: "static/images/sk_zhuanti.png",
           selectedIconPath: "static/images/sk_zhuanti_active.png",
-          text: "专题"
+          text: "社区服务"
         },
         {
           pagePath: "pages/category/main",

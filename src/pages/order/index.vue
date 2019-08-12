@@ -94,7 +94,6 @@
           <div v-show="store.canBeAppliedCoupons==null">暂无可用</div>
           <div v-show="store.canBeAppliedCoupons!=null">
             <div
-              
               @click=" getCouponList(store)"
             >{{store.selectCouponName}}</div>
           </div>
@@ -114,7 +113,7 @@
         <div>选择支付方式</div>
         <div>{{payObj.name}}</div>
       </div>
-      <div class="item" v-if="payObj.value==12">
+      <div class="item" v-if="payObj.value==12 ||payObj.value==13">
         <div>联盟券余额</div>
         <div>余额&nbsp;{{scoreAmount}}</div>
       </div>
@@ -471,11 +470,15 @@ export default {
         {
           name: "微信",
           value: 4
+        },
+        {
+          name: "混合支付",
+          value: 13
+        },
+        {
+          name: "联盟券",
+          value: 12
         }
-        // {
-        //   name: "联盟券",
-        //   value: 12
-        // }
       ],
       //  联盟券
       scoreAmount: 0,
@@ -774,7 +777,7 @@ export default {
           params.buyType = "N";
         }
 
-        let orderTab = params.type;
+        let orderTab = 1;  //正常下单 orderTab为1
 
         //创建订单方法 成功则调用    captainID
         //如果存在收货地址 则可以下单 否则让用户选择收货地址
@@ -837,7 +840,7 @@ export default {
                         url: "/pages/myOrder/main?id=2"
                       });
                     });
-                } else if (params.paymentType == 4) {
+                } else if (params.paymentType == 4 || params.paymentType == 13) {
                   //4是调用微信支付
                   toPay(params)
                     .then(res => {
@@ -845,7 +848,8 @@ export default {
                       if (res.data.code == "200") {
                         let params = {
                           subOrdinate: res.data.result.subOrdinate,
-                          deviceType: 2
+                          deviceType: 2,
+                          orderTab:1,
                         };
                         let url = `/trade${res.data.result.redirectUrl}`;
                         let querystring = require("querystring");

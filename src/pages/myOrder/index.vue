@@ -112,7 +112,7 @@ import {
 import noDataView from "../../components/noDataView/index";
 
 export default {
-  onLoad() {
+  onShow() {
     if (this.$root.$mp.query.id) {
       this.orderType = this.$root.$mp.query.id;
       this.currentActive = Number(this.$root.$mp.query.id) - 1;
