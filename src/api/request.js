@@ -1,10 +1,18 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-14 09:01:37
+ * @LastEditTime: 2019-08-14 09:05:28
+ * @LastEditors: Please set LastEditors
+ */
 let Fly = require("flyio/dist/npm/wx");
 let fly = new Fly(); 
 export let noTokenFly = new Fly();
+export let myFly = new Fly();
 //  noTokenFly;
 
-export const refreshToken = params => {
-  return Fly.request({
+ const refreshToken = params => {
+  return myFly.request({
     url: `${process.env.BASE_API}/auth/user/refreshToken`,
     method: "post",
     headers: {
@@ -56,37 +64,37 @@ fly.interceptors.request.use(
       let token = wx.getStorageSync("tokenInfo").access_token;
 
       config.headers.Authorization = "Bearer " + token;
-      //判断token是否过期
-      if (
-        isAccessTokenExpired() &&
-        config.url != "basic/auth/user/refreshToken"
-      ) {
-        /*首先所有的请求来了，我们要先判断当前是否正在刷新，如果不是，将刷新的标志置为true并请求刷新token；如果是，将请求存储到数组中*/
-        if (!isRefreshing) {
-          isRefreshing = true;
-          refreshtoken()
-            .then(res => {
-              /*将刷新的token替代老的token*/
-              config.headers.Authorization = "Bearer " + res.data.data.token;
-              /*更新缓存中的tokenInfo对象*/
-              wx.setStorageSync("tokenInfo", res.data.result.token);
-              /*执行数组里的请求，重新发起被挂起的请求*/
-              onRrefreshed(res.data.data.token);
-            })
-            .catch(err => {});
-          let retry = new Promise((resolve, reject) => {
-            /*(token) => {...}这个函数就是cb*/
-            subscribeTokenRefresh(token => {
-              config.headers.Authorization = "Bearer " + token;
-              /*将请求挂起*/
-              resolve(config);
-            });
-          });
-          return retry;
-        }
-      } else {
-        return config;
-      }
+      // //判断token是否过期
+      // if (
+      //   isAccessTokenExpired() &&
+      //   config.url != "basic/auth/user/refreshToken"
+      // ) {
+      //   /*首先所有的请求来了，我们要先判断当前是否正在刷新，如果不是，将刷新的标志置为true并请求刷新token；如果是，将请求存储到数组中*/
+      //   if (!isRefreshing) {
+      //     isRefreshing = true;
+      //     refreshToken()
+      //       .then(res => {
+      //         /*将刷新的token替代老的token*/
+      //         config.headers.Authorization = "Bearer " + res.data.data.token;
+      //         /*更新缓存中的tokenInfo对象*/
+      //         wx.setStorageSync("tokenInfo", res.data.result.token);
+      //         /*执行数组里的请求，重新发起被挂起的请求*/
+      //         onRrefreshed(res.data.data.token);
+      //       })
+      //       .catch(err => {});
+      //     let retry = new Promise((resolve, reject) => {
+      //       /*(token) => {...}这个函数就是cb*/
+      //       subscribeTokenRefresh(token => {
+      //         config.head  ers.Authorization = "Bearer " + token;
+      //         /*将请求挂起*/
+      //         resolve(config);
+      //       });
+      //     });
+      //     return retry;
+      //   }
+      // } else {
+      //   return config;
+      // }
     } else {
       /*如果没有登录直接返回请求*/
       return config;

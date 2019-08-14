@@ -68,6 +68,28 @@
       </h3>
       <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
     </div>
+    <!-- 待核销 -->
+    <div
+      class="bg"
+      v-else-if=" detailData.orderVo.financialStatus == 3 && detailData.orderVo.logisticsStatus == 8"
+    >
+      <h3>
+        <van-icon custom-class="colorW" name="underway" />
+        <span>等待团长核销</span>
+      </h3>
+      <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
+    </div>
+    <!-- 团长已收货 -->
+     <div
+      class="bg"
+      v-else-if=" detailData.orderVo.financialStatus == 3 && detailData.orderVo.logisticsStatus == 7"
+    >
+      <h3>
+        <van-icon custom-class="colorW" name="underway" />
+        <span>团长已收货</span>
+      </h3>
+      <!-- <h3>需付款:￥{{detailData.orderVo.totalActure}} 剩余时间:{{detailData.orderVo.willCancelTime}}</h3> -->
+    </div>
     <!--付款之后或COD  发货之前 取消订单 -->
     <div class="bg" v-else-if="detailData.newestRefund!=null&&detailData.orderVo.type=='3'">
       <h3>
@@ -184,7 +206,7 @@
             {{detailData.orderVo.shippingAddress.address}}
           </div>
         </div>
-        <div class="item" v-if="detailData.orCode!=null">
+        <div class="item" v-if="detailData.orCode!=null&&detailData.newestRefund==null&&detailData.orderVo.logisticsStatus==8">
           <div class="left">核销码</div>
           <div class="right">
             <img class="code" :src="detailData.orCode" alt />
@@ -211,11 +233,11 @@
       <div class="body">
         <div class="borderT"></div>
         <div class="store-info">
-          <div class="store-name">
+          <!-- <div class="store-name">
             <van-icon name="shop-o" />
-            <span>我的店铺</span>
+            <span>{{}}}</span>
             <van-icon name="arrow" />
-          </div>
+          </div> -->
           <div class="goods">
             <div
               class="goods-item"
@@ -246,7 +268,7 @@
                 <button
                   @click="applyRefund(goods)"
                   class="refundBtn"
-                  v-if="detailData.orderVo.logisticsStatus=='6'&&detailData.orderVo.financialStatus=='3'&&goods.reType==null&&goods.reStatus==null"
+                  v-if="(detailData.orderVo.logisticsStatus=='6'||detailData.orderVo.logisticsStatus=='15')&&detailData.orderVo.financialStatus=='3'&&goods.reType==null&&goods.reStatus==null"
                 >退货</button>
                 <button
                   @click="applyCancelRefund(goods)"
@@ -305,11 +327,11 @@
     </div>
     <!-- 操作区 -->
     <div class="fixed">
-      <button class="plain" @click="orderShow=true;from='cancle'" v-if="orderCancelBtn">取消订单</button>
-      <button class="plain" v-if="confrimReciveBtn">查看物流</button>
+      <button class="plain" @click="orderShow=true;from='cancle'" v-if="orderCancelBtn&&!orderObj.capationFlag">取消订单</button>
+      <!-- <button class="plain" v-if="confrimReciveBtn">查看物流</button> -->
       <button class="danger" @click="sureGet()" v-if="confrimReciveBtn">确认收货</button>
-      <button class="danger" @click="pay()" v-if="orderPayBtn">立即支付</button>
-      <button class="danger" @click="deleteOrder()" v-if="orderDeleteBtn">删除订单</button>
+      <button class="danger" @click="pay()" v-if="orderPayBtn&&!orderObj.capationFlag">立即支付</button>
+      <button class="danger" @click="deleteOrder()" v-if="orderDeleteBtn&&!orderObj.capationFlag">删除订单</button>
       <button
         class="danger"
         @click="orderShow=true;from='apply'"

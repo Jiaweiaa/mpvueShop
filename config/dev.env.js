@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-14 09:01:37
+ * @LastEditTime: 2019-08-14 09:08:56
+ * @LastEditors: Please set LastEditors
+ */
 'use strict'
 const merge = require('webpack-merge')
 const prodEnv = require('./prod.env')

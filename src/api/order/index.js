@@ -70,6 +70,18 @@ export const confirmReceive = params => {
     },
   });
 };
+// 用户确认收货
+export const capConfirmReceived = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `/trade/ActOrd/capConfirmReceived`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};
 //申请取消订单(付款后发货前)
 export const applyCancelOrder = params => {
   let data = querystring.encode(params);

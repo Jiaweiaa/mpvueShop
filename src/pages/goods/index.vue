@@ -36,12 +36,26 @@
       <div class="c">
         <button class="share" hover-class="none" open-type="share" value>分 享</button>
         <p class="title">{{goodsInfo.title}}</p>
+        <p class="sketch" v-if="arrivalTime!=''">现在下单,预计{{arrivalTime}}送到</p>
         <div class="tags" v-if="goodsInfo!=null">
           <span class="item" v-for="(tag,tagIndex) in goodsInfo.itemTags" :key="tagIndex">{{tag}}</span>
         </div>
         <p class="sketch">{{goodsInfo.sketch}}</p>
       </div>
     </div>
+    <van-cell
+      title="店铺优惠"
+      icon="shop-collect-o"
+      is-link
+      arrow-direction="right"
+      @click="showCoupon"
+      v-if="couponShowFlag"
+    >
+      <span style="height:48rpx;line-height:48rpx;">
+        领券
+        <van-icon name="arrow-down" />
+      </span>
+    </van-cell>
     <div v-if="recordList.length>0">
       <div class="record" @click="toRecord">
         <div class="header">
@@ -124,10 +138,9 @@
       </div>
       <!-- <p>请选择商品数量</p> -->
       <div style="display:flex;justify-content: space-between;align-items:center;">
-        <p style="margin-left:30px;font-size:16px;">我要买:</p>
+        <p style="margin-left:30rpx;font-size:32rpx;">我要买:</p>
         <van-stepper
-          style="margin-right:30px;"
-         
+          style="margin-right:30rpx;"
           async-change
           @change="valueChange"
           :step="1"
@@ -135,13 +148,13 @@
           :value="goodsNum"
         />
       </div>
-      
+
       <div class="handle">
         <van-button type="danger" size="large" custom-class="buyBtn" @click="submit()">确定</van-button>
       </div>
     </van-popup>
 
-	  <!-- 底部 -->
+    <!-- 底部 -->
     <div class="bottom-fixed">
       <div @click="toIndex()" class="home">
         <div class="car">
@@ -164,7 +177,44 @@
         <div class="buyNow" @click="openSku('buyNow')">立即购买</div>
       </div>
     </div>
-	  <canvas canvas-id='canvas' v-if="booleanCanvas" class='canvas'></canvas>
+    <canvas canvas-id="canvas" v-if="booleanCanvas" class="canvas"></canvas>
+    <!-- 优惠券弹出层 -->
+    <!-- 优惠券弹出层 -->
+    <van-popup
+      :show="couponShow"
+      position="bottom"
+      :overlay="true"
+      @close="onClose"
+      class="coupon_popup"
+    >
+      <div class="coupon_group">
+        <h3 class="title">优惠</h3>
+        <p class="coupon_title" v-if="couponList.length>0">领券</p>
+        <div class="coupon_box" v-for="(item,index) in couponList" :key="index">
+          <img class="bg" src="/static/images/coupon.png" />
+          <div class="content">
+            <div class="left">
+              <p style="position:relative;">
+                <!-- <span class="name">{{item.mDescription.name}}</span> -->
+                <span class="coupon_price">{{item.mDescription.amount}}</span>
+                <span class="coupon_type">{{item.mDescription.action}}</span>
+                <span class="name">{{item.name}}</span>
+              </p>
+              <p>
+                <span>{{item.mDescription.name}}</span>
+                <br />
+                <span>{{item.mDescription.scope}}</span>
+              </p>
+              <p>有效期:{{item.mDescription.date}}</p>
+            </div>
+            <div class="right">
+              <p @click="getCoupon(item)" v-if="item.btnAble" class="btn">立即领取</p>
+              <p class="btn" v-else>领取中</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -204,9 +254,11 @@ export default {
   },
   data() {
     return {
+      couponList: [], //优惠券列表
+      couponShowFlag: false, //是否显示领取优惠券单元格
+      couponShow: false, //领取优惠券弹出层是否展示
       booleanCanvas: true,
-      shareImgPath: '',   //用于储存canvas生成的图片
-      
+      shareImgPath: "", //用于储存canvas生成的图片
       level: 1,
       allnumber: 0, //购物车商品数量
       openId: "",
@@ -215,6 +267,7 @@ export default {
       showpop: false,
       gallery: [],
       goodsInfo: {}, //商品数据
+      arrivalTime: "", //到货时间
       brand: {},
       attribute: [],
       issueList: [],
@@ -245,20 +298,22 @@ export default {
       day: "",
       timeFlag: false, //倒计时是否显示
       havaTimeFlag: false,
-      textFlag: false
+      textFlag: false,
+      timeOut:null
     };
   },
   components: {
     wxParse
   },
-  onHide(){
+  onHide() {
+    clearTimeout(this.timeOut);
     this.selectSkuData = null;
     this.keys.map(v => {
       v.isActiveC = false;
       v.value.map(vv => {
         vv.isActiveC = false;
-      })
-    })
+      });
+    });
   },
   //商品转发
   onShareAppMessage() {
@@ -266,7 +321,7 @@ export default {
     return {
       title: that.goodsInfo.title, // 转发后 所显示的title
       path: "/pages/goods/main?id=" + that.id, // 分享回来的相对的路径
-	    imageUrl: that.shareImgPath,
+      imageUrl: that.shareImgPath,
       success: res => {
         // 成功后要做的事情
         // console.log
@@ -292,33 +347,68 @@ export default {
     };
   },
   methods: {
+    //优惠券列表弹出层是否展示
+    showCoupon() {
+      this.couponShow = true;
+    },
+    //领取优惠券
+    getCoupon(item) {
+      let params = {
+        uniqueId: item.uniqueId,
+        storeId: item.storeId
+      };
+      item.btnAble = false;
+      getcoupon(params)
+        .then(res => {
+          if (res.data.code == "200") {
+            wx.showToast({
+              icon: "none",
+              title: res.data.result
+            });
+          } else {
+            wx.showToast({
+              icon: "none",
+              title: res.data.message
+            });
+          }
+
+          item.btnAble = true;
+        })
+        .catch(err => {
+          item.btnAble = true;
+        });
+    },
+    // 关闭弹层
+    onClose() {
+      this.couponShow = false;
+    },
     // 画分享图
     drawImg() {
-      let that= this;
+      let that = this;
       wx.downloadFile({
-        url: 'https://qn.gaoshanmall.cn/' + that.gallery[0].picUrl,//网络路径
-        success: function (res3) {
-          var img=  res3.tempFilePath;    //商品图片保存地址
+        url: "https://qn.gaoshanmall.cn/" + that.gallery[0].picUrl, //网络路径
+        success: function(res3) {
+          var img = res3.tempFilePath; //商品图片保存地址
           // var img1=res.path  //二维码图片保存地址
-          var name= that.goodsInfo.subTitle //图片描述,描述和下面的价格都是从后台获取的内容，可以随意换成其他文本内容，这里不是重点所以就不讲内容的获取方法了
-          var price=that.goodsInfo.listPrice     //图片价格
-          let context = wx.createCanvasContext('canvas')  //这里的“share”是“canvas-id”
-          context.setFillStyle('#fff')
-          context.drawImage(img, 0, 0, 250, 200) //绘制商品图片
+          var name = that.goodsInfo.subTitle; //图片描述,描述和下面的价格都是从后台获取的内容，可以随意换成其他文本内容，这里不是重点所以就不讲内容的获取方法了
+          var price = that.goodsInfo.listPrice; //图片价格
+          let context = wx.createCanvasContext("canvas"); //这里的“share”是“canvas-id”
+          context.setFillStyle("#fff");
+          context.drawImage(img, 0, 0, 250, 200); //绘制商品图片
 
-          context.setFillStyle('#5c49ab')
-          context.fillRect(0, 150, 250, 50)  // 底部栏
+          context.setFillStyle("#5c49ab");
+          context.fillRect(0, 150, 250, 50); // 底部栏
 
-          context.setFontSize(12)
-          context.setFillStyle("#fff")
-          context.fillText(name, 20, 195)  //绘制描述
+          context.setFontSize(12);
+          context.setFillStyle("#fff");
+          context.fillText(name, 20, 195); //绘制描述
 
-          context.setFontSize(18)
-          context.setFillStyle("#fff")
-          context.fillText('￥'+price, 20, 175)   //绘制价格
+          context.setFontSize(18);
+          context.setFillStyle("#fff");
+          context.fillText("￥" + price, 20, 175); //绘制价格
 
           //把画板内容绘制成图片，并回调画板图片路径
-          context.draw(false, function () {
+          context.draw(false, function() {
             wx.canvasToTempFilePath({
               x: 0,
               y: 0,
@@ -326,10 +416,10 @@ export default {
               height: 200,
               destWidth: 250,
               destHeight: 200,
-              canvasId: 'canvas',
-              success:res => {
-                that.shareImgPath = res.tempFilePath;  //将绘制的图片地址保存在shareImgPath 中
-                that.booleanCanvas= false;
+              canvasId: "canvas",
+              success: res => {
+                that.shareImgPath = res.tempFilePath; //将绘制的图片地址保存在shareImgPath 中
+                that.booleanCanvas = false;
                 // wx.getFileSystemManager().readFile({
                 //   filePath: that.shareImgPath, //选择图片返回的相对路径
                 //   encoding: 'base64', //编码格式
@@ -342,12 +432,12 @@ export default {
                 //   }
                 // })
               }
-            })
-          })
+            });
+          });
         }
       });
     },
-    
+
     valueChange(e) {
       // console.log(e.mp.detail);
       if (this.selectSkuData) {
@@ -381,6 +471,7 @@ export default {
         var end = endDate.getTime();
         //时间差
         var leftTime = end - now;
+        // console.log(leftTime, "000");
         //定义变量 d,h,m,s保存倒计时的时间
         if (leftTime >= 0) {
           this.havaTimeFlag = true;
@@ -398,7 +489,7 @@ export default {
         }
         // console.log(this.s);
         //递归每秒调用countTime方法，显示动态时间效果
-        setTimeout(this.countTime, 1000);
+       this.timeOut =  setTimeout(this.countTime, 1000);
       }
     },
 
@@ -471,12 +562,12 @@ export default {
               let num = 0;
               this.keys.map(v => {
                 v.value.map(vv => {
-                  if(vv.isActiveC) {
+                  if (vv.isActiveC) {
                     num += 1;
                   }
-                })
+                });
               });
-              if(num < this.keys.length) {
+              if (num < this.keys.length) {
                 wx.showToast({
                   title: "请选择商品规格",
                   icon: "none",
@@ -517,12 +608,12 @@ export default {
               let num = 0;
               this.keys.map(v => {
                 v.value.map(vv => {
-                  if(vv.isActiveC) {
+                  if (vv.isActiveC) {
                     num += 1;
                   }
-                })
+                });
               });
-              if(num < this.keys.length) {
+              if (num < this.keys.length) {
                 wx.showToast({
                   title: "请选择商品规格",
                   icon: "none",
@@ -597,82 +688,132 @@ export default {
         itemId: this.id
         // itemId: 503
       })
-      .then(res => {
-        if (res.data.code == "200") {
-          wx.hideLoading();
-
-          this.keys = [];
-          const data = res.data.result;
-          this.goods_desc = data.item.itemChannel.description; //详情描述富文本
-          this.goodsList = data.item.pdpPropertiesCommands;
-          this.quantityData = JSON.parse(data.skuJson); //SKU信息
-          this.quantList = JSON.parse(res.data.result.skuJson);
-          this.quantList.map(v => {
-            v.properties = JSON.parse(v.properties).toString();
-          });
-          this.gallery = data.item.itemImages;
-          this.goodsInfo = data.item;
-          // 商品数据渲染
-          this.goodsList.map(v => {
-            let data = {
-              isActiveC: false,
-              value: []
-            };
-            data.name = v.propertyName;
-            data.id = v.propertyId;
-            for (let jsonKey in v.propertyValues) {
-              data.value.push({
-                id: jsonKey,
-                isActiveC: false,
-                notClick: false,
-                cname: v.propertyValues[jsonKey]
-              });
-            }
-            this.keys.push(data);
-          });
-
-          // 库存数据
-          this.quantityData.map(v => {
-            // 处理商品号
-            let array = JSON.parse(v.properties);
-            let str = "";
-            array.map(vv => {
-              str += vv + ";";
+        .then(res => {
+          if (res.data.code == "200") {
+            wx.hideLoading();
+            this.keys = [];
+            const data = res.data.result;
+            this.goods_desc = data.item.itemChannel.description; //详情描述富文本
+            this.goodsList = data.item.pdpPropertiesCommands;
+            this.quantityData = JSON.parse(data.skuJson); //SKU信息
+            this.quantList = JSON.parse(res.data.result.skuJson);
+            this.quantList.map(v => {
+              v.properties = JSON.parse(v.properties).toString();
             });
-            if (v.quantity > 0) {
-              this.data[str.substring(0, str.length - 1)] = {
-                price: v.salePrice,
-                count: v.quantity
-              };
+            this.gallery = data.item.itemImages;
+            this.goodsInfo = data.item;
+            if (this.goodsInfo.activeEndTime) {
+              //获取当前时间
+              var date = new Date();
+              var now = date.getTime();
+              //设置截止时间
+              var endDate = new Date(this.goodsInfo.activeEndTime);
+              var end = endDate.getTime();
+              //时间差
+              var leftTime = end - now;
+              if (leftTime > 0) {
+                //货到时间
+                var finalEnd = new Date(end + 86400000);
+                var weekday = [
+                  "周日",
+                  "周一",
+                  "周二",
+                  "周三",
+                  "周四",
+                  "周五",
+                  "周六"
+                ];
+                this.arrivalTime =
+                  finalEnd.getFullYear() +
+                  "-" +
+                  finalEnd.getMonth() +
+                  "-" +
+                  finalEnd.getDate() +
+                  "(" +
+                  weekday[finalEnd.getDay()] +
+                  ")";
+              }
             }
-          });
-          // 画商品图
-          this.drawImg();
-          this.countTime();
-          this.queryDGoodsById();
-        } else {
+            // 商品数据渲染
+            this.goodsList.map(v => {
+              let data = {
+                isActiveC: false,
+                value: []
+              };
+              data.name = v.propertyName;
+              data.id = v.propertyId;
+              for (let jsonKey in v.propertyValues) {
+                data.value.push({
+                  id: jsonKey,
+                  isActiveC: false,
+                  notClick: false,
+                  cname: v.propertyValues[jsonKey]
+                });
+              }
+              this.keys.push(data);
+            });
+
+            // 库存数据
+            this.quantityData.map(v => {
+              // 处理商品号
+              let array = JSON.parse(v.properties);
+              let str = "";
+              array.map(vv => {
+                str += vv + ";";
+              });
+              if (v.quantity > 0) {
+                this.data[str.substring(0, str.length - 1)] = {
+                  price: v.salePrice,
+                  count: v.quantity
+                };
+              }
+            });
+            // 画商品图
+            this.drawImg();
+            this.countTime();
+            this.queryDGoodsById();
+            //查询是否存在优惠券
+            availableCoupon({
+              storeId: data.item.storeId
+            })
+              .then(res => {
+                if (res.data.code == "200" && res.data.result.length > 0) {
+                  this.couponList = res.data.result;
+                  this.couponShowFlag = true;
+                  if (this.couponList.length > 0) {
+                    this.couponList.map(coupon => {
+                      this.$set(coupon, "btnAble", true);
+                    });
+                  }
+                }
+                // this.couponShow = true;
+              })
+              .catch(err => {
+                this.couponShow = false;
+              });
+          } else {
+            wx.showToast({
+              icon: "none",
+              title: res.data.message
+            });
+            setTimeout(() => {
+              wx.navigateBack({
+                delta: 1
+              });
+            }, 1500);
+          }
+        })
+        .catch(err => {
           wx.showToast({
             icon: "none",
-            title: res.data.message
+            title: "商品状态异常"
           });
           setTimeout(() => {
             wx.navigateBack({
               delta: 1
             });
           }, 1500);
-        }
-      })
-      .catch(err => {
-        wx.showToast({
-          icon: "none",
-          title: "商品状态异常"
         });
-        setTimeout(() => {
-          wx.navigateBack({
-            delta: 1
-          });
-        }, 1500);
-      });
     },
     showType() {
       this.showpop = !this.showpop;
@@ -944,12 +1085,12 @@ export default {
 </style>
 <style lang='scss'>
 .canvas {
-	width: 250px;
-	height: 200px;
-	z-index: -999;
-	position: absolute;
-	left: -600px;
-	bottom: 0;
+  width: 250px;
+  height: 200px;
+  z-index: -999;
+  position: absolute;
+  left: -600px;
+  bottom: 0;
 }
 .goods {
   margin-bottom: 100rpx;

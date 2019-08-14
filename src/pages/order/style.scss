@@ -2,17 +2,30 @@
   overflow-x: hidden;
   margin-bottom: 120rpx;
   //优惠券弹出层样式
+  .van-tabs__wrap {
+    position: absolute!important;
+    top: 0!important;
+    right: 0!important;
+    left: 0!important;
+    display: -webkit-flex!important;
+    display: flex!important;
+    background-color: #fff!important;
+    
+    }
+    
   .coupon_popup {
-    height: 100vh;
+    height: 80vh;
     background: #666;
   }
   //优惠券tabs样式
   .coupon_tabs {
-    height: 86.3vh;
+    height: 66.3vh;
     overflow-y: auto;
   }
   //优惠券列表
   .coupon_list {
+    height: 64.3vh;
+    overflow-y: auto;
     .coupon_item {
       position: relative;
       width: 90%;
@@ -36,7 +49,10 @@
           }
           .price {
             color: red;
-
+            max-width: 210rpx;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             span {
               font-size: 34rpx;
             }

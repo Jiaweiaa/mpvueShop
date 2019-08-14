@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-14 09:01:37
+ * @LastEditTime: 2019-08-14 09:07:40
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="cart_main">
     <div class="top">
@@ -119,7 +126,8 @@
               <p style="position:relative;">
                 <!-- <span class="name">{{item.mDescription.name}}</span> -->
                 <span class="coupon_price">{{item.mDescription.amount}}</span>
-                <span class="name">{{item.mDescription.action}}</span>
+                <span class="coupon_type">{{item.mDescription.action}}</span>
+                <span class="name">{{item.name}}</span>
               </p>
               <p>
                 <span>{{item.mDescription.name}}</span><br>
@@ -314,7 +322,10 @@ export default {
           url: "/pages/order/main"
         });
       } else {
-        console.log("请选择商品");
+        wx.showToast({
+          icon:'none',
+          title:'请至少选择一件商品'
+        })
       }
     },
     //删除购物车

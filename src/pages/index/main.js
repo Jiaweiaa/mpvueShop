@@ -7,7 +7,7 @@ app.$mount()
 export default {
   config: {
     // 页面配置，即 page.json 的内容
-    navigationBarTitleText: '首页',
+    navigationBarTitleText: '时刻益每家',
     enablePullDownRefresh: true,
     'usingComponents': {
       'van-search': '/static/vant/search/index',
@@ -15,6 +15,7 @@ export default {
       'van-card': '/static/vant/card/index',
       'van-icon': '/static/vant/icon/index',
       'van-switch-cell': '/static/vant/switch-cell/index',
+      "van-notify": "/static/vant/notify/index"
     }
   }
 }

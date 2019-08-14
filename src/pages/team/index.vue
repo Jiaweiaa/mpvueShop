@@ -10,21 +10,21 @@
         @search="onSearch"
         @cancel="onCancel"
       />
-	    <van-panel custom-class="panelStyle">
-		    <view class="btnStyle" plain>
-			    <!--<van-icon size="13px"   custom-class="iconStyle" name="arrow-down" />-->
-			    <span @click.stop="showPopup(1)">{{startDate}}</span>
-			    &nbsp;一&nbsp;
-			    <span @click.stop="showPopup(2)">{{endDate}}</span>
-			    <van-icon
-					    v-if="startDate !== '开始时间' || endDate !== '结束时间'"
-					    @click.stop="clearTime"
-					    name="cross"
-					    color="#999"
-					    custom-class="iconStyle"
-			    />
-		    </view>
-	    </van-panel>
+      <van-panel custom-class="panelStyle">
+        <view class="btnStyle" plain>
+          <!--<van-icon size="13px"   custom-class="iconStyle" name="arrow-down" />-->
+          <span @click.stop="showPopup(1)">{{startDate}}</span>
+          &nbsp;一&nbsp;
+          <span @click.stop="showPopup(2)">{{endDate}}</span>
+          <van-icon
+            v-if="startDate !== '开始时间' || endDate !== '结束时间'"
+            @click.stop="clearTime"
+            name="cross"
+            color="#999"
+            custom-class="iconStyle"
+          />
+        </view>
+      </van-panel>
       <noDataView v-if="(list.length <=0  && onLoadLoading == false)"></noDataView>
       <checkbox-group @change="onSelectChange">
         <van-tab
@@ -37,7 +37,7 @@
             <div v-for="(value,index) in list" class="mapListView" :key="index">
               <div class="top border-bottom" style="overflow: hidden;">
                 <checkbox
-                  v-if="getActive == 3 || getActive == 9"
+                  v-if="getActive == 11 || getActive == 9"
                   @click.stop
                   class="checkBox"
                   v-bind:value="value.code"
@@ -84,6 +84,11 @@
                 {{value.shippingAddress.district}}
                 {{value.shippingAddress.address}}
               </div>
+              <div class="commission" v-if="value.logisticsStatus==15">
+                已得佣金:
+                <span class="symbol">￥</span>
+                <span class="money">{{value.commission}}</span>
+              </div>
               <div class="btn-group">
                 <van-button
                   plain
@@ -101,17 +106,17 @@
                   type="primary"
                   class="childBtn"
                   size="small"
-                  v-if="getActive == 3"
+                  v-if="getActive == 11"
                 >收货</van-button>
-	              <van-button
-			              plain
-			              round
-			              @click.stop="payHeXiao(value)"
-			              type="primary"
-			              class="childBtn"
-			              size="small"
-			              v-if="getActive == 9"
-	              >核销</van-button>
+                <van-button
+                  plain
+                  round
+                  @click.stop="payHeXiao(value)"
+                  type="primary"
+                  class="childBtn"
+                  size="small"
+                  v-if="getActive == 9"
+                >核销</van-button>
               </div>
             </div>
             <div style="width: 100%; text-align: center;margin-top: 5px;">
@@ -125,40 +130,44 @@
         </van-tab>
       </checkbox-group>
     </van-tabs>
-	
-	  <van-popup :show="popupShow" position="bottom" @close="onClose">
-		  <van-datetime-picker
-			  type="date"
-			  :value="currentDate"
-			  :min-date="minDate"
-			  :max-date="maxDate"
-			  @confirm="dateConfirm"
-			  @cancel="dateCancel"
-		  />
-	  </van-popup>
-	  
+
+    <van-popup :show="popupShow" position="bottom" @close="onClose">
+      <van-datetime-picker
+        type="date"
+        :value="currentDate"
+        :min-date="minDate"
+        :max-date="maxDate"
+        @confirm="dateConfirm"
+        @cancel="dateCancel"
+      />
+    </van-popup>
+
     <van-button
-      v-if="getActive == 3"
+      v-if="getActive == 11"
       style="position: fixed; right: 30px; bottom: 30px;"
       plain
       hairline
       @click="toggleClick"
       type="primary"
     >一键收货</van-button>
-	
-	  <van-button
-			  v-if="getActive == 9"
-			  style="position: fixed; right: 30px; bottom: 30px;"
-			  plain
-			  hairline
-			  @click="toggleHXClick"
-			  type="primary"
-	  >一键核销</van-button>
+
+    <van-button
+      v-if="getActive == 9"
+      style="position: fixed; right: 30px; bottom: 30px;"
+      plain
+      hairline
+      @click="toggleHXClick"
+      type="primary"
+    >一键核销</van-button>
   </div>
 </template>
 
 <script>
-import { findAllCapOrders, writeOff, toWriteOff } from "../../api/myOrder/index";
+import {
+  findAllCapOrders,
+  writeOff,
+  toWriteOff
+} from "../../api/myOrder/index";
 import { formatTime } from "../../utils";
 import Dialog from "../../../static/vant/dialog/dialog";
 import noDataView from "../../components/noDataView/index";
@@ -250,6 +259,16 @@ export default {
                 title: "自动取消",
                 seeBtn: true
               };
+            } else if (order.logisticsStatus == 7) {
+              order.typeData = {
+                title: "待用户收货",
+                seeBtn: false
+              };
+            } else if (order.logisticsStatus == 8) {
+              order.typeData = {
+                title: "待团长核销",
+                seeBtn: false
+              };
             }
           });
           this.allCount = res.data.result.orders.total;
@@ -273,20 +292,20 @@ export default {
       minDate: "",
       maxDate: new Date().getTime(),
       currentDate: new Date().getTime(),
-      
+
       currentActive: 0,
       pageNum: 1,
       list: [],
       searchParams: {
         buyerMobile: "",
-        startTime: '',
-	      endTime: ''
+        startTime: "",
+        endTime: ""
       },
-	    
+
       getActive: "4",
       allCount: "",
       loading: false,
-      tabs: ["待发货", "待收货", "待核销", "已核销"],
+      tabs: ["待发货", "待收货", "待确认", "待核销", "已核销"],
       resultCheck: [],
       onLoadLoading: false,
 
@@ -322,7 +341,6 @@ export default {
       this.onClose();
     },
 
-
     //拨打电话
     call(mobile) {
       wx.makePhoneCall({
@@ -332,11 +350,14 @@ export default {
     // 获取数据列表
     getOrderList() {
       this.pageNum = 1;
-      let params = Object.assign( {
-        pageNum: this.pageNum,
-        pageSize: 5,
-        orderType: this.getActive
-      }, this.searchParams);
+      let params = Object.assign(
+        {
+          pageNum: this.pageNum,
+          pageSize: 5,
+          orderType: this.getActive
+        },
+        this.searchParams
+      );
       wx.showLoading({
         title: "加载中"
       });
@@ -416,10 +437,13 @@ export default {
             };
           } else if (order.logisticsStatus == 7) {
             order.typeData = {
-              title: "待核销",
-              canBtn: true,
-              giveBtn: true,
-              seeBtn: true
+              title: "待用户收货",
+              seeBtn: false
+            };
+          } else if (order.logisticsStatus == 8) {
+            order.typeData = {
+              title: "待团长核销",
+              seeBtn: false
             };
           }
         });
@@ -433,7 +457,7 @@ export default {
 
     //  订单详情
     detailOrder(val) {
-      let params = Object.assign({}, val)
+      let params = Object.assign({}, val);
       console.log(params);
       wx.navigateTo({
         url: "/pages/orderDetail/main?id=" + params.id + "&&capationFlag=111"
@@ -454,40 +478,38 @@ export default {
       this.searchVal = "";
     },
 
-    // 发货
+    // 收货
     payBtn(val) {
       let valueData = val;
       Dialog.confirm({
         title: "收货",
         message: "确认收货吗?"
       })
-      .then(() => {
-        let data = [];
-        data.push(valueData.code);
+        .then(() => {
+          let data = [];
+          data.push(valueData.code);
 
-        toWriteOff({
-          orderCodes: data
-        }).then(res => {
-          if (res.data.code == 200) {
-            Dialog.alert({
-              message: res.data.result
-            }).then(() => {
-              // on close
-            });
-            this.getOrderList();
-            // });
-          } else {
-            Dialog.alert({
-              message: res.data.message
-            }).then(() => {
-              // on close
-            });
-          }
+          toWriteOff({
+            orderCodes: data
+          }).then(res => {
+            if (res.data.code == "200") {
+              Dialog.alert({
+                message: res.data.message
+              }).then(() => {
+                this.getOrderList();
+              });
+            } else {
+              Dialog.alert({
+                message: "收货失败~"
+              }).then(() => {
+                // on close
+              });
+            }
+          });
+        })
+        .catch(() => {
+          // on cancel
         });
-      })
-      .catch(() => {
-        // on cancel
-      });
     },
     // 一键审核收货
     toggleClick() {
@@ -500,7 +522,19 @@ export default {
             toWriteOff({
               orderCodes: this.resultCheck
             }).then(res => {
-              this.getOrderList();
+              if (res.data.code == "200") {
+                Dialog.alert({
+                  message: res.data.message
+                }).then(() => {
+                  this.getOrderList();
+                });
+              } else {
+                Dialog.alert({
+                  message: "收货失败~"
+                }).then(() => {
+                  // on close
+                });
+              }
             });
           })
           .catch(() => {
@@ -509,7 +543,7 @@ export default {
       }
     },
 
-	  // 核销
+    // 核销
     payHeXiao(val) {
       let valueData = val;
       Dialog.confirm({
@@ -538,19 +572,18 @@ export default {
                 // on close
               });
             }
-
           });
         })
         .catch(() => {
           // on cancel
         });
     },
-    // 一键审核发货
+    // 一键审核核销
     toggleHXClick() {
       if (this.resultCheck.length > 0) {
         Dialog.confirm({
-          title: "发货",
-          message: "确认发货选中订单吗?"
+          title: "核销",
+          message: "确认核销选中订单吗?"
         })
           .then(() => {
             writeOff({
@@ -569,10 +602,12 @@ export default {
       if (val.target.index == 0) {
         this.getActive = 4;
       } else if (val.target.index == 1) {
-        this.getActive = 3;
+        this.getActive = 11;
       } else if (val.target.index == 2) {
+        this.getActive = 10;
+      } else if (val.target.index == 3) {
         this.getActive = 9;
-      }else if (val.target.index == 3) {
+      } else if (val.target.index == 4) {
         this.getActive = 5;
       }
       this.currentActive = val.target.index;
@@ -598,15 +633,15 @@ export default {
 <style lang='scss'>
 @import "./style.scss";
 .btnStyle {
-	border: none;
-	color: #ab2b2b;
-	padding: 0 5px;
-	width: 80%;
-	.iconStyle {
-		margin-left: 10px;
-	}
+  border: none;
+  color: #ab2b2b;
+  padding: 0 5px;
+  width: 80%;
+  .iconStyle {
+    margin-left: 10px;
+  }
 }
 .panelStyle {
-	padding: 10px 10px;
+  padding: 10px 10px;
 }
 </style>

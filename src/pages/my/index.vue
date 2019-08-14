@@ -198,17 +198,31 @@ export default {
         });
       }
       if (wx.getStorageSync("isSup") == false) {
-        this.moreService.push({
-          title: "供应商招募",
-          icon: "user-o",
-          url: "/pages/beGive/main"
-        });
+        this.moreService.push(
+          {
+            title: "供应商招募",
+            icon: "user-o",
+            url: "/pages/beGive/main"
+          },
+          {
+            title: "分销",
+            icon: "friends-o",
+            url: "/pages/distribution/main"
+          }
+        );
       } else {
-        this.moreService.push({
-          title: "我是供应商",
-          icon: "friends-o",
-          url: "/pages/giver/main"
-        });
+        this.moreService.push(
+          {
+            title: "我是供应商",
+            icon: "friends-o",
+            url: "/pages/giver/main"
+          },
+          {
+            title: "分销",
+            icon: "friends-o",
+            url: "/pages/giver/main"
+          }
+        );
       }
       console.log(this.moreService);
     } else {
@@ -221,6 +235,11 @@ export default {
         {
           title: "供应商招募",
           icon: "user-o",
+          url: "/pages/beGive/main"
+        },
+        {
+          title: "分销",
+          icon: "gold-coin-o",
           url: "/pages/beGive/main"
         }
       ];
@@ -291,6 +310,11 @@ export default {
         },
         {
           title: "我是供应商",
+          icon: "friends-o",
+          url: "/pages/giver/main"
+        },
+        {
+          title: "分销",
           icon: "friends-o",
           url: "/pages/giver/main"
         }

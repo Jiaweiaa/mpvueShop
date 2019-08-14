@@ -113,7 +113,7 @@
 .bg {
   width: 100%;
   height: 75px;
-  background: rgb(214, 70, 30);
+  background: $hot-color;
   text-align: center;
   line-height: 75px;
   padding-left: 10px;

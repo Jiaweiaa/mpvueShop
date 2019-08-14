@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-14 09:01:37
+ * @LastEditTime: 2019-08-14 09:03:33
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="order">
     <!-- 轻提醒 -->
@@ -91,8 +98,13 @@
         </div>
         <div class="bottom_item">
           <div>优惠券</div>
-          <div v-show="store.canBeAppliedCoupons==null">暂无</div>
-          <div v-show="store.canBeAppliedCoupons!=null" @click=" getCouponList(store)">{{store.selectCouponName}}</div>
+          <div v-show="store.canBeAppliedCoupons==null">暂无可用</div>
+          <div v-show="store.canBeAppliedCoupons!=null">
+            <div
+              
+              @click=" getCouponList(store)"
+            >{{store.selectCouponName}}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -109,14 +121,14 @@
         <div>选择支付方式</div>
         <div>{{payObj.name}}</div>
       </div>
-      <div class="item" v-if="payObj.value=='12'">
+      <div class="item" v-if="payObj.value==12">
         <div>联盟券余额</div>
         <div>余额&nbsp;{{scoreAmount}}</div>
       </div>
-      <!-- <div class="item" @click="sheetShow=true">
+      <div class="item" @click="sheetShow=true">
         <div>选择配送方式</div>
         <div>{{deliveryObj.name}}</div>
-      </div> -->
+      </div>
       <!-- <div class="item">
         <div>运费</div>
         <div>免运费</div>
@@ -135,7 +147,8 @@
       custom-class="coupon_popup"
       :show="couponShow"
       position="bottom"
-      @close="onCouponClose"
+      @close="closeCoupon"
+      nav-class="nav-top"
     >
       <van-tabs sticky custom-class="coupon_tabs">
         <!-- 可用优惠券列表 -->
@@ -156,12 +169,13 @@
               <div class="coupon_top">
                 <div class="left">
                   <p class="price">
-                    <span>{{coupon.mDescription.action}}</span>
+                    <span>{{coupon.name}}</span>
                   </p>
                   <p>{{coupon.mDescription.name}}</p>
                   <p>{{coupon.mDescription.scope}}</p>
                 </div>
                 <div class="right">
+                  <p class="title">{{coupon.mDescription.action}}</p>
                   <p class="title">{{coupon.mDescription.amount}}</p>
                   <p class="time">有效期:{{coupon.mDescription.date}}</p>
                 </div>
@@ -179,18 +193,19 @@
               <div class="coupon_top">
                 <div class="left">
                   <p class="price">
-                    <span>1.5</span>元
+                    <span>{{coupon.name}}</span>
                   </p>
-                  <p>无使用门槛</p>
-                  <p>最多优惠12元</p>
+                  <p>{{coupon.mDescription.name}}</p>
+                  <p>{{coupon.mDescription.scope}}</p>
                 </div>
                 <div class="right">
-                  <p class="title disable">优惠券名称</p>
-                  <p class="time">有效期:2017.03.10 至 2017.12.30</p>
+                  <p class="title">{{coupon.mDescription.action}}</p>
+                  <p class="title">{{coupon.mDescription.amount}}</p>
+                  <p class="time">有效期:{{coupon.mDescription.date}}</p>
                 </div>
               </div>
               <div class="coupon_bottom">
-                <p>我是不可用优惠券</p>
+                <p>描述信息:{{coupon.mDescription.scope}}{{coupon.mDescription.name}}</p>
               </div>
             </div>
           </div>
@@ -255,6 +270,19 @@ export default {
       ShopCartOrderconfirm(params)
         .then(res => {
           if (res.data.code == "200") {
+            if (res.data.result.errorFlag === false) {
+              return wx.showToast({
+                title: res.data.result.errorMap.errorMsg,
+                icon: "none",
+                duration: 3000,
+                mask: true
+              });
+              setTimeout(() => {
+                wx.navigateBack({
+                  delta: 1
+                });
+              }, 3000);
+            }
             //地址信息赋值
             if (this.address == null) {
               let addressObj = res.data.result.shippingAddressVo;
@@ -327,6 +355,19 @@ export default {
       detailOrderconfirm(params)
         .then(res => {
           if (res.data.code == "200") {
+            if (res.data.result.errorFlag === false) {
+              return wx.showToast({
+                title: res.data.result.errorMap.errorMsg,
+                icon: "none",
+                duration: 3000,
+                mask: true
+              });
+              setTimeout(() => {
+                wx.navigateBack({
+                  delta: 1
+                });
+              }, 3000);
+            }
             //地址信息赋值
             if (this.address == null) {
               let addressObj = res.data.result.shippingAddressVo;
@@ -589,96 +630,102 @@ export default {
           });
       }
     },
+    closeCoupon(){
+      console.log(888);
+        this.couponShow = false;
+    },
     //取消使用优惠券列表
     onCouponClose(selectShop) {
-      // this.selectShop = selectShop;
-      selectShop.shoppingCartLineDtos.map(good => {
-        good.coupons = "";
-      });
-      selectShop.selectCouponCode = ""; //默认选中优惠券code等于本次选择的优惠券的code
-      selectShop.selectCouponName = "不使用优惠券"; //默认选中的优惠券对象赋值为本次选择的优惠券对象
-      if (this.from != "") {
-        let params = {
-          codPaymentType: "",
-          deliveryDescription: "",
-          deliveryTimebar: "",
-          deliveryType: this.deliveryObj.value, //配送方式
-          expectDeliveryDate: "",
-          expectDeliveryTime: "",
-          memberId: this.userInfo.memberId,
-          orderLines: [],
-          paymentType: this.payObj.value,
-          shppingAddressId: "", //地址
-          captainId: "", //团长ID
-          type: 1 //type为1是从商品详情页面进入  2是购物车中进入
-        };
-        params.captainId = this.captainId;
-
-        // this.shopList.map(store => {
-        //   //迭代店铺 如果店铺ID与被选中店铺ID一致 则将该店铺默认选中的优惠券改为本次点击的优惠券
-        //   if (store.storeInfoVo.id == this.selectShop.storeInfoVo.id) {
-        //     store.selectCouponCode = ""; //默认选中优惠券code等于本次选择的优惠券的code
-        //     store.selectCouponName = "不使用优惠券"; //默认选中的优惠券对象赋值为本次选择的优惠券对象
-        //   }
-        // });
-
-        //先将每个店铺已选择的优惠券扔到一个数组中
-        // this.shopList.map(store => {
-        //   //循环每个店铺的优惠券列表 如果优惠券的code码等于默认优惠券code码 active状态设为true;
-        //   // store.canBeAppliedCoupons.map(coupons => {
-        //   //   coupons.active = false;
-        //   //   if (
-        //   //     coupons.offerCouponCodeVo[0].offerCode == store.selectCouponCode
-        //   //   ) {
-        //   //     coupons.active = true;
-        //   //   }
-        //   // });
-        //   store.shoppingCartLineDtos.map(good => {
-        //     good.coupons = "";
-        //   });
-        // });
+      if (selectShop) {
         this.shopList.map(store => {
-          store.shoppingCartLineDtos.map(good => {
-            this.$set(good, "buyType", "N");
-            //每个商品信息里加上offerCode的优惠券数组信息,再转换成以逗号分割的字符串,后台要用嘻嘻
-            // this.$set(good, "coupons", couponArr);
-            // good.coupons = good.coupons.toString();
-            params.orderLines.push(good);
-          });
+          //迭代店铺 如果店铺ID与被选中店铺ID一致 则将该店铺默认选中的优惠券改为本次点击的优惠券
+          if (store.storeInfoVo.id == selectShop.storeInfoVo.id) {
+            store.selectCouponCode = ""; //默认选中优惠券code等于本次选择的优惠券的code
+            let couponNum = store.canBeAppliedCoupons.length;
+            store.selectCouponName = `可用优惠券${couponNum}张`; //默认选中的优惠券对象赋值为本次选择的优惠券对象
+            store.shoppingCartLineDtos.map(good => {
+              good.coupons = "";
+            });
+          }
         });
-        params.storeId = this.storeId;
-        if (this.from == "shoppingcart") {
-          params.type = 2;
-          params.buyType = "N";
+        if (this.from != "") {
+          let params = {
+            codPaymentType: "",
+            deliveryDescription: "",
+            deliveryTimebar: "",
+            deliveryType: this.deliveryObj.value, //配送方式
+            expectDeliveryDate: "",
+            expectDeliveryTime: "",
+            memberId: this.userInfo.memberId,
+            orderLines: [],
+            paymentType: this.payObj.value,
+            shppingAddressId: "", //地址
+            captainId: "", //团长ID
+            type: 1 //type为1是从商品详情页面进入  2是购物车中进入
+          };
+          params.captainId = this.captainId;
+          this.shopList.map(store => {
+            //循环每个店铺的优惠券列表 如果优惠券的code码等于默认优惠券code码 active状态设为true;
+            store.canBeAppliedCoupons.map(coupons => {
+              coupons.active = false;
+              // if (
+              //   coupons.offerCouponCodeVo[0].offerCode == store.selectCouponCode
+              // ) {
+              //   coupons.active = true;
+              // }
+            });
+            store.shoppingCartLineDtos.map(good => {
+              good.coupons = ""; //清空优惠券信息 防止BUG
+              good.coupons = store.selectCouponCode;
+            });
+            // couponArr.push(store.selectCouponCode);
+          });
+
+          this.shopList.map(store => {
+            store.shoppingCartLineDtos.map(good => {
+              this.$set(good, "buyType", "N");
+              //每个商品信息里加上offerCode的优惠券数组信息,再转换成以逗号分割的字符串,后台要用嘻嘻
+              // this.$set(good, "coupons", couponArr);
+              // good.coupons = good.coupons.toString();
+              params.orderLines.push(good);
+            });
+          });
+          params.storeId = this.storeId;
+          if (this.from == "shoppingcart") {
+            params.type = 2;
+            params.buyType = "N";
+          }
+
+          let orderTab = params.type;
+
+          //创建订单方法 成功则调用    captainID
+          //弹起遮罩层 防止二次支付
+          wx.showLoading({
+            title: "取消优惠券中...", //提示的内容,
+            mask: true //显示透明蒙层，防止触摸穿透,
+          });
+
+          cancelCoupon(params)
+            .then(res => {
+              this.couponShow = false;
+              wx.hideLoading();
+              if (res.data.code == "200") {
+                this.currentPayAmount = res.data.result.currentPayAmount;
+                this.discount = res.data.result.discount;
+              } else {
+                wx.showToast({
+                  icon: "none",
+                  title: res.data.result
+                });
+              }
+            })
+            .catch(err => {
+              this.couponShow = false;
+              wx.hideLoading();
+            });
         }
-
-        let orderTab = params.type;
-
-        //创建订单方法 成功则调用    captainID
-        //弹起遮罩层 防止二次支付
-        wx.showLoading({
-          title: "取消优惠券中...", //提示的内容,
-          mask: true //显示透明蒙层，防止触摸穿透,
-        });
-
-        cancelCoupon(params)
-          .then(res => {
-            this.couponShow = false;
-            wx.hideLoading();
-            if (res.data.code == "200") {
-              this.currentPayAmount = res.data.result.currentPayAmount;
-              this.discount = res.data.result.discount;
-            } else {
-              wx.showToast({
-                icon: "none",
-                title: res.data.result
-              });
-            }
-          })
-          .catch(err => {
-            this.couponShow = false;
-            wx.hideLoading();
-          });
+      } else {
+        this.couponShow = false;
       }
     },
     //关闭上拉菜单
@@ -774,11 +821,10 @@ export default {
                           duration: 2000,
                           mask: true
                         });
-                        setTimeout(() => {
-                          wx.redirectTo({
-                            url: "/pages/myOrder/main"
-                          });
-                        }, 1500);
+
+                        wx.redirectTo({
+                          url: "/pages/myOrder/main?id=4"
+                        });
                       } else {
                         wx.showToast({
                           title: res.data.message,
@@ -788,7 +834,7 @@ export default {
                         });
                         setTimeout(() => {
                           wx.redirectTo({
-                            url: "/pages/myOrder/main"
+                            url: "/pages/myOrder/main?id=2"
                           });
                         }, 1500);
                       }
@@ -796,7 +842,7 @@ export default {
                     .catch(err => {
                       wx.hideLoading();
                       wx.redirectTo({
-                        url: "/pages/myOrder/main"
+                        url: "/pages/myOrder/main?id=2"
                       });
                     });
                 } else if (params.paymentType == 4) {
@@ -860,12 +906,12 @@ export default {
                                         });
 
                                         wx.redirectTo({
-                                          url: "/pages/myOrder/main"
+                                          url: "/pages/myOrder/main?id=4"
                                         });
                                       },
                                       fail: res => {
                                         wx.redirectTo({
-                                          url: "/pages/myOrder/main"
+                                          url: "/pages/myOrder/main?id=2"
                                         });
                                       }
                                     });
@@ -874,7 +920,7 @@ export default {
                                 .catch(err => {
                                   wx.hideLoading();
                                   wx.redirectTo({
-                                    url: "/pages/myOrder/main"
+                                    url: "/pages/myOrder/main?id=2"
                                   });
                                 });
                             } else {
@@ -894,7 +940,7 @@ export default {
                         });
                         setTimeout(() => {
                           wx.redirectTo({
-                            url: "/pages/myOrder/main"
+                            url: "/pages/myOrder/main?id=2"
                           });
                         }, 1500);
                       }
@@ -902,7 +948,7 @@ export default {
                     .catch(err => {
                       wx.hideLoading();
                       wx.redirectTo({
-                        url: "/pages/myOrder/main"
+                        url: "/pages/myOrder/main?id=2"
                       });
                     });
                 }
