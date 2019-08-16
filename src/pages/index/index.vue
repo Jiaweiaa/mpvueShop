@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-14 09:01:37
+ * @LastEditTime: 2019-08-14 11:46:39
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="index_home">
     <div class="search">
@@ -14,26 +21,29 @@
         <span class="icon"></span>
       </div>
     </div>
-    <div class="swiper">
-      <swiper
-        class="swiper-container"
-        indicator-dots="true"
-        autoplay="true"
-        interval="3000"
-        circular="true"
-        duration="500"
-      >
-        <block v-for="(item, index) in banner " :key="index">
-          <swiper-item class="swiper-item">
-            <img
-              @click="goodsDetail(item)"
-              :src="'http://qn.gaoshanmall.cn/' + item.banner"
-              class="slide-image"
-            />
-          </swiper-item>
-        </block>
-      </swiper>
+    <div class="swiper-group">
+      <div class="swiper">
+        <swiper
+          class="swiper-container"
+          indicator-dots="true"
+          autoplay="true"
+          interval="3000"
+          circular="true"
+          duration="500"
+        >
+          <block v-for="(item, index) in banner " :key="index">
+            <swiper-item class="swiper-item">
+              <img
+                @click="goodsDetail(item)"
+                :src="'http://qn.gaoshanmall.cn/' + item.banner"
+                class="slide-image"
+              />
+            </swiper-item>
+          </block>
+        </swiper>
+      </div>
     </div>
+
     <div class="channel">
       <div
         @click="toCategoryList(item.categoryId, item.name)"
@@ -75,7 +85,6 @@
           </van-card>
         </div>
         <div v-else class="coupon-item">
-         
           <div
             class="coupon_box"
             v-for="(couponData, couponIndex) in item.goodsList"
@@ -104,8 +113,6 @@
             </div>
           </div>
         </div>
-
-        
       </div>
     </div>
     <div v-if="newCategoryList.length > 0" class="no_more_data">
@@ -265,10 +272,10 @@ export default {
           name: "优惠券",
           goodsList: data.data.result.indexCouponVos
         });
-        if(this.newCategoryList[0].goodsList!=null){
-          this.newCategoryList[0].goodsList.map((coupon) => {
-            this.$set(coupon,'btnAble',true)
-          })
+        if (this.newCategoryList[0].goodsList != null) {
+          this.newCategoryList[0].goodsList.map(coupon => {
+            this.$set(coupon, "btnAble", true);
+          });
         }
         this.newCategoryList.push({
           name: "新品上市",
@@ -278,8 +285,6 @@ export default {
           name: "热销爆品",
           goodsList: data.data.result.hotSale
         });
-
-        
 
         console.log(data.data.result);
       }
@@ -347,16 +352,16 @@ export default {
         val.btnAble = true;
         if (res.data.code == 200) {
           wx.showToast({
-            icon:'none',
-            title:res.data.result
-          })
+            icon: "none",
+            title: res.data.result
+          });
         } else {
           val.btnAble = true;
           // Notify(res.data.message);
           wx.showToast({
-            icon:'none',
-            title:res.data.message
-          })
+            icon: "none",
+            title: res.data.message
+          });
         }
       });
     }

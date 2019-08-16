@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-14 09:01:37
+ * @LastEditTime: 2019-08-14 09:22:48
+ * @LastEditors: Please set LastEditors
+ */
 import Vue from 'vue'
 import App from './index'
 
@@ -7,7 +14,7 @@ app.$mount()
 export default {
   config: {
     // 页面配置，即 page.json 的内容
-    navigationBarTitleText: '时刻益每家',
+    navigationBarTitleText: '百团联盟',
     enablePullDownRefresh: true,
     'usingComponents': {
       'van-search': '/static/vant/search/index',

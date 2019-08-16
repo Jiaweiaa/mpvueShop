@@ -1,9 +1,20 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-07 16:25:00
+ * @LastEditTime: 2019-08-14 16:42:36
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="category">
     <div class="search" @click="tosearch">
       <div class="ser">
-        <span class="icon"></span>
-        <span class="text">商品搜索</span>
+        <span class="text">请输入搜索的商品</span>
+        <div class="icon_group">
+          <span class="icon"></span>
+        </div>
+        
+        
       </div>
     </div>
     <div class="content">
@@ -23,19 +34,18 @@
         <div class="bottom">
           <div v-for="(item,index) in detailData.nodes" :key="index" style="width: 100%;">
             <div class="title">
-              <span>—</span>
-              <span>{{item.name}}分类</span>
-              <span>—</span>
+              <span>{{item.name}}</span>
+              <span>查看全部 ></span>
             </div>
             <div
               @click="categoryList(childItem.id, childItem.name)"
               v-for="(childItem, childIndex) in item.nodes"
               :key="childIndex"
               class="item"
-              style="float: left;font-size:24rpx;color:rgba(102,102,102,1);"
+              style="float: left;font-size:26rpx;color:rgba(102,102,102,1);"
             >
               <img
-                style="width: 35px; height: 30px; margin-bottom: 5px;"
+                style="width: 182rpx; height: 182rpx; margin-bottom: 5rpx;"
                 :src="childItem.icon ? 'http://qn.gaoshanmall.cn/' + childItem.icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1560861771007&di=3d96c78920a6e873229c09bba2d637d3&imgtype=jpg&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170428%2F74b6a76d39694e03beba6089c9f262de_th.png'"
                 alt
               />

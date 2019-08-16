@@ -13,13 +13,14 @@
     align-items: center;
     justify-content: center;
     border-bottom: 1rpx solid #ededed;
+    padding-bottom: 20rpx;
     // border-radius: 32rpx;
 
     .ser {
-      width: 580rpx;
-      height: 64rpx;
+      width: 696rpx;
+      height: 79rpx;
       background: #ededed;
-      border-radius: 32rpx;
+      // border-radius: 32rpx;
       display: flex;
       align-items: center;
       // justify-content: center;
@@ -27,20 +28,28 @@
       span {
         display: inline-block;
       }
-
-      .icon {
-        background: url("http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/search2-2fb94833aa.png")
-          center no-repeat;
-        background-size: 100%;
-        width: 34rpx;
-        height: 34rpx;
-        margin-right: 21rpx;
-        margin-left: 40rpx;
-      }
       .text {
         color: rgba(198, 198, 198, 1);
         font-size: 30rpx;
+        margin-left: 15rpx;
       }
+      .icon_group {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 5rpx;
+        .icon {
+          background: url("http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/search2-2fb94833aa.png")
+            center no-repeat;
+          background-size: 100%;
+          width: 34rpx;
+          height: 34rpx;
+          margin-right: 21rpx;
+          margin-left: 40rpx;
+        }
+      }
+
+      
     }
   }
 
@@ -50,25 +59,27 @@
     display: flex;
 
     .left {
-      width: 162rpx;
+      width: 186rpx;
       height: 100%;
       text-align: center;
+      background: #f0f0f0;
 
       .iconText {
         text-align: center;
-        line-height: 90rpx;
-        width: 162rpx;
-        height: 90rpx;
+        line-height: 120rpx;
+        width: 186rpx;
+        height: 120rpx;
         color: rgba(48, 48, 48, 1);
+        background: #f0f0f0;
         font-size: 30rpx;
-        border-left: 6rpx solid #fff;
+        border-bottom: 1rpx solid #eaeaea;
       }
 
       .active {
-        color: #fff;
+        color: #e13c54;
         font-size: 30rpx;
-        background: $main-color;
-        border-left: 6rpx solid $buy-btn;
+        background: #fff;
+        // border-left: 6rpx solid $buy-btn;
       }
     }
 
@@ -77,7 +88,7 @@
       border-left: 1rpx solid #fafafa;
       flex: 1;
       height: 100%;
-      padding: 0 30rpx 0 30rpx;
+      // padding: 0 30rpx 0 30rpx;
 
       .banner {
         width: 100%;
@@ -93,15 +104,22 @@
       .title {
         text-align: center;
         padding: 50rpx 0;
-
-        span:nth-child(2) {
-          font-size: 24rpx;
-          color: #333;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        span:nth-child(1) {
+          font-size: 40rpx;
+          font-weight: bold;
+          color: rgb(224, 65, 83);
           padding: 0 10rpx;
+          margin-left: 15rpx;
+          
         }
 
-        span:nth-child(2n + 1) {
-          color: #999;
+        span:nth-child(2) {
+          font-size: 28rpx;
+          color: rgb(189, 189, 189);
+          margin-right: 30rpx;
         }
       }
 
@@ -110,7 +128,7 @@
         flex-wrap: wrap;
 
         .item {
-          width: 33.33%;
+          // width: 33.33%;
           text-align: center;
           margin-bottom: 20rpx;
 

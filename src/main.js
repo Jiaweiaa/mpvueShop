@@ -1,8 +1,15 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-14 09:01:37
+ * @LastEditTime: 2019-08-14 16:09:25
+ * @LastEditors: Please set LastEditors
+ */
 import Vue from "vue";
 import App from "./App";
 import "weapp-cookie"; //解决小程序不能自动保存服务端的cookie问题
 //引入自定义scss公共样式
-import "./assets/styles/gaoshan.scss";
+import "./assets/styles/baituan.scss";
 //全局处理重复页面跳转详情初始化,和详情跳详情返回的bug
 import MyPlugin from "./minxins";
 //全局变量
@@ -86,37 +93,37 @@ export default {
     tabBar: {
       backgroundColor: "#fafafa",
       borderStyle: "white",
-      selectedColor: "#ff6c01 ",
-      color: "#333",
+      selectedColor: "#e13c54",
+      color: "#666",
       list: [
         {
           pagePath: "pages/index/main",
-          iconPath: "static/images/gs_home.png",
-          selectedIconPath: "static/images/gs_home_active.png",
+          iconPath: "static/images/bt_home.png",
+          selectedIconPath: "static/images/bt_home_active.png",
           text: "首页"
         },
         {
           pagePath: "pages/topic/main",
-          iconPath: "static/images/gs_zhuanti.png",
-          selectedIconPath: "static/images/gs_zhuanti_active.png",
+          iconPath: "static/images/bt_zhuanti.png",
+          selectedIconPath: "static/images/bt_zhuanti_active.png",
           text: "专题"
         },
         {
           pagePath: "pages/category/main",
-          iconPath: "static/images/gs_fenlei.png",
-          selectedIconPath: "static/images/gs_fenlei_active.png",
+          iconPath: "static/images/bt_fenlei.png",
+          selectedIconPath: "static/images/bt_fenlei_active.png",
           text: "分类"
         },
         {
           pagePath: "pages/cart/main",
-          iconPath: "static/images/gs_cart.png",
-          selectedIconPath: "static/images/gs_cart_active.png",
+          iconPath: "static/images/bt_cart.png",
+          selectedIconPath: "static/images/bt_cart_active.png",
           text: "购物车"
         },
         {
           pagePath: "pages/my/main",
-          iconPath: "static/images/gs_my.png",
-          selectedIconPath: "static/images/gs_my_active.png",
+          iconPath: "static/images/bt_my.png",
+          selectedIconPath: "static/images/bt_my_active.png",
           text: "我的"
         }
       ]

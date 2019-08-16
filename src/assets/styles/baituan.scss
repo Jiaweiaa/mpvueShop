@@ -1,0 +1,38 @@
+//高山商城公共样式
+//主体色
+$main-color:rgb(255,108,1);
+//购买按钮颜色
+$buy-btn:#ffa730;
+
+
+//热销商品tag颜色
+$hot-color:#ff6c01;
+/*  商品卡片公共样式 */
+
+$border-radius: 20rpx; //圆角
+/* 商品卡片标题 */
+$card-margin: 15rpx 0; //卡片外边距
+
+$card-padding: 20rpx; //卡片内边距
+/* 商品卡片图片 */
+$image-width: 200rpx;
+$image-height: 200rpx;
+/* 商品卡片价格 */
+$price-fontSize: 40rpx;
+$price-color: #ff6400;
+$price-width: 150rpx;
+/* 商品卡片划线价格 */
+$originPrice-fontSize: 26rpx;
+$originPrice-color: #999;
+/* 商品卡片标题 */
+$title-fontSize: 28rpx;
+$title-color: #1b100f;
+$title-width: 300rpx;
+/* 商品卡片底部区域自定义内容 */
+$bottom-fontSize: 24rpx;
+$bottom-color: #7f8699;
+$bottom-sketch: 27rpx;
+
+/* 商品详情页 */
+
+$tag-color:#e0a354; //tag颜色
