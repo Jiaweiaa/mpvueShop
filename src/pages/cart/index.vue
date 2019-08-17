@@ -365,6 +365,7 @@ export default {
         title: "加载中",
         mask: true
       });
+      
       shoppingCartList()
         .then(res => {
           if (res.data.code == "200") {
@@ -384,6 +385,7 @@ export default {
           wx.hideLoading();
         })
         .catch(err => {
+          this.shopList = [];
           wx.hideLoading();
           this.cartShow = true;
         });

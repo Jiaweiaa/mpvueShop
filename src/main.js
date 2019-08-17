@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-14 16:09:25
+ * @LastEditTime: 2019-08-16 08:48:19
  * @LastEditors: Please set LastEditors
  */
 import Vue from "vue";
@@ -41,6 +41,7 @@ export default {
       "^pages/index/main",
       "pages/distribution/main",
       "pages/editUserInfo/main",
+      "pages/storeIndex/main",
       "pages/logisticsDetail/main", //物流详情页
       "pages/feedback/main",
       "pages/order/main",

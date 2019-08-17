@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-14 09:01:37
+ * @LastEditTime: 2019-08-17 14:01:51
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="goods">
     <div class="swiper">
@@ -158,7 +165,7 @@
     <div class="bottom-fixed">
       <div @click="toIndex()" class="home">
         <div class="car">
-          <img src="/static/images/gs_home_active.png" />
+          <img src="/static/images/bt_home_active.png" />
           <span class="text">首页</span>
         </div>
       </div>
@@ -168,7 +175,7 @@
       <div @click="toCart" class="cart">
         <div class="car">
           <span>{{allnumber}}</span>
-          <img src="/static/images/gs_cart_active.png" />
+          <img src="/static/images/bt_cart_active.png" />
           <p class="text">购物车</p>
         </div>
       </div>

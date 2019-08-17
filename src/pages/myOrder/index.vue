@@ -1,10 +1,3 @@
-<!--
- * @Description: In User Settings Edit
- * @Author: your name
- * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-14 10:53:41
- * @LastEditors: Please set LastEditors
- -->
 <template>
   <div class="myOrder">
     <van-tabs tab-class="tabClass" :active="currentActive" @change="onChange">
@@ -39,19 +32,11 @@
             <div v-for="(val,childIndex) in value.orderLines" :key="childIndex">
               <van-card
                 :num="val.quantity"
+                :desc="val.propertiesValue"
+                :price="val.salePrice"
+                :title="val.itemName"
                 :thumb="'http://qn.gaoshanmall.cn/'+val.itemImg"
-              >
-              <div slot="title">
-                  商品名称: <span>{{val.itemName}}</span>
-              </div>
-              <div slot="desc">
-                <div>商品规格: <span>{{val.propertiesValue}}</span></div>
-                <div>商品价格: <span>{{val.salePrice}}</span></div>
-                  
-              </div>
-      
-              
-              </van-card>
+              ></van-card>
             </div>
             <!-- <div v-if="val.orderReVo.orderSts!=''">{{val.orderReVo.orderSts}}</div> -->
             <view slot="footer" style="display:flex;justify-content: flex-end;">
@@ -127,7 +112,7 @@ import {
 import noDataView from "../../components/noDataView/index";
 
 export default {
-  onLoad() {
+  onShow() {
     if (this.$root.$mp.query.id) {
       this.orderType = this.$root.$mp.query.id;
       this.currentActive = Number(this.$root.$mp.query.id) - 1;
