@@ -64,7 +64,7 @@
             <van-card
               :tag="item.tag"
               :lazy-load="true"
-              :price="item.listPrice"
+              :price="item.discountPrice"
               :title="item.itemTitle"
               :num="item.quantity"
               thumb-class="goods-image"
@@ -212,6 +212,7 @@
 import {
   ShopCartOrderconfirm,
   getMemberAmount,
+  flashOrderconfirm,
   detailOrderconfirm
 } from "../../api/shoppingcart";
 import { get, post, login, getStorageOpenid } from "../../utils";
@@ -235,6 +236,7 @@ export default {
     wx.setStorageSync("orderAdress", "");
   },
   onShow() {
+    console.log( )
     getMemberAmount().then(res => {
       this.scoreAmount = res.data.result.scoreAmount;
       if (this.scoreAmount <= 0) {
@@ -344,7 +346,13 @@ export default {
         });
     } else if (this.from == "goodsDetail") {
       let params = this.params;
-      detailOrderconfirm(params)
+      let requireName = '';
+      if(this.$root.$mp.query.type) {
+         requireName = flashOrderconfirm;
+      }else {
+         requireName = detailOrderconfirm;
+      }
+      requireName(params)
         .then(res => {
           if (res.data.code == "200") {
             if (res.data.result.errorFlag === false) {
@@ -767,6 +775,10 @@ export default {
         this.shopList.map(store => {
           store.shoppingCartLineDtos.map(good => {
             this.$set(good, "buyType", "N");
+            if(this.$root.$mp.query.type) {
+              this.$set(good, "offerType", "1000");
+              console.log(good)
+            }
             params.orderLines.push(good);
           });
         });

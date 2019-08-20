@@ -73,7 +73,8 @@ export default {
       "pages/withdraw/main", //  提现
       "pages/integral/main", // 积分管理
       "pages/integralList/main", // 积分明细列表
-      "pages/giver/main"
+      "pages/giver/main", // 供应商
+      "pages/goodsFlash/main" // 热销详情
     ],
     window: {
       backgroundTextStyle: "light",

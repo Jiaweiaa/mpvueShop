@@ -44,6 +44,7 @@
         <p>{{item.name}}</p>
       </div>
     </div>
+    <div @click="goodsDetail('xqgcx', 2)">123444444</div>
     <div class="newcategory">
       <div class="list" v-for="(item, index) in newCategoryList" :key="item.id">
         <div class="head" v-if="item.goodsList&&item.goodsList.length>0">{{item.name}}</div>
@@ -61,7 +62,7 @@
             desc-class="goods-desc"
             v-for="(good, goodIndex) in item.goodsList"
             :key="goodIndex"
-            @click="goodsDetail(good)"
+            @click="goodsDetail(good, 1)"
             :thumb="'http://qn.gaoshanmall.cn/' + good.img"
           >
             <div slot="desc" class="goods-bottom">
@@ -75,7 +76,6 @@
           </van-card>
         </div>
         <div v-else class="coupon-item">
-         
           <div
             class="coupon_box"
             v-for="(couponData, couponIndex) in item.goodsList"
@@ -104,8 +104,6 @@
             </div>
           </div>
         </div>
-
-        
       </div>
     </div>
     <div v-if="newCategoryList.length > 0" class="no_more_data">
@@ -287,16 +285,22 @@ export default {
         wx.hideLoading();
       }, this.GLOBAL.timer);
     },
-    goodsDetail(item) {
-      if (item.status == 1) {
-        wx.navigateTo({
-          url: "/pages/topicdetail/main?id=" + item.itemId
-        });
-      } else {
-        wx.navigateTo({
-          url: "/pages/goods/main?id=" + item.itemId
-        });
-      }
+    goodsDetail(item, type) {
+     if(type == 1) {
+       if (item.status == 1) {
+         wx.navigateTo({
+           url: "/pages/topicdetail/main?id=" + item.itemId
+         });
+       } else {
+         wx.navigateTo({
+           url: "/pages/goods/main?id=" + item.itemId
+         });
+       }
+     }else {
+       wx.navigateTo({
+         url: "/pages/goodsFlash/main?itemCode=" + item
+       });
+     }
     },
     // 更多分类
     categoryList(item) {

@@ -118,6 +118,18 @@ export const detailOrderconfirm = params => {
   });
 };
 
+// 限时抢购商品详情跳转下单页面
+export const flashOrderconfirm = params => {
+  return fly.request({
+    url: "/trade/transaction/buyNow/flashsale/orderconfirm",
+    method: "post",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: params
+  });
+};
+
 // 获取积分
 export const getMemberAmount = params => {
   return fly.request({
