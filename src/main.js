@@ -74,7 +74,8 @@ export default {
       "pages/integral/main", // 积分管理
       "pages/integralList/main", // 积分明细列表
       "pages/giver/main", // 供应商
-      "pages/goodsFlash/main" // 热销详情
+      "pages/goodsFlash/main", // 热销详情
+      "pages/flashList/main"  // 限时抢购列表
     ],
     window: {
       backgroundTextStyle: "light",

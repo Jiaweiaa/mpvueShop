@@ -34,6 +34,11 @@
         </block>
       </swiper>
     </div>
+    <div style=" text-align: center;  width: 100%; margin: 10px 0;" @click="goToFlash">
+      <img
+        style="margin: 0 auto; width: 90%;"
+        src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566308727272&di=2747da985eb081d51999629d00ee0e11&imgtype=0&src=http%3A%2F%2Fpic.90sjimg.com%2Fdesign%2F00%2F04%2F19%2F78%2F593218afe43a8.png">
+    </div>
     <div class="channel">
       <div
         @click="toCategoryList(item.categoryId, item.name)"
@@ -44,7 +49,6 @@
         <p>{{item.name}}</p>
       </div>
     </div>
-    <div @click="goodsDetail('xqgcx', 2)">123444444</div>
     <div class="newcategory">
       <div class="list" v-for="(item, index) in newCategoryList" :key="item.id">
         <div class="head" v-if="item.goodsList&&item.goodsList.length>0">{{item.name}}</div>
@@ -183,7 +187,13 @@ export default {
         url: "../categorylist/main?id=" + id + "&name=" + name
       });
     },
-
+  
+    goToFlash() {
+      wx.navigateTo({
+        url: "../flashList/main"
+      });
+    },
+    
     //获取购物车中的商品数量
     getCartGoodsNum() {
       shoppingcartCount()

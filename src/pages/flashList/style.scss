@@ -1,0 +1,107 @@
+
+.goodsList {
+    padding-top: 1rpx;
+    position: relative;
+    .sortnav {
+      position: fixed;
+      top: 0;
+      display: flex;
+      width: 100%;
+      height: 78rpx;
+      line-height: 78rpx;
+      background: #fff;
+      border-bottom: 1rpx solid #d9d9d9;
+      div {
+        width: 250rpx;
+        height: 100%;
+        text-align: center;
+      }
+      .active {
+        color: #b4282d;
+      }
+      .price {
+        background: url(//yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/no-3127092a69.png)
+          165rpx center no-repeat;
+        background-size: 15rpx 21rpx;
+      }
+      .active.desc {
+        background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/down-95e035f3e5.png)
+          165rpx center no-repeat;
+        background-size: 15rpx 21rpx;
+      }
+      .active.asc {
+        background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/up-636b92c0a5.png)
+          165rpx center no-repeat;
+        background-size: 15rpx 21rpx;
+      }
+    }
+    .sortlist {
+      margin-top: 5rpx;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      .item {
+        box-sizing: border-box;
+        width: 50%;
+        text-align: center;
+        background: #fff;
+        padding: 15rpx 0;
+        border-bottom: 1rpx solid #d9d9d9;
+        border-right: 1rpx solid #d9d9d9;
+        img {
+          display: block;
+          width: 302rpx;
+          height: 302rpx;
+          margin: 0 auto;
+        }
+        .name {
+          margin: 15rpx 0 22rpx 0;
+          text-align: center;
+          padding: 0 20rpx;
+          font-size: 24rpx;
+        }
+        .price {
+          text-align: center;
+          font-size: 30rpx;
+          color: #b4282d;
+        }
+      }
+      .item.active:nth-last-child(1) {
+        border-bottom: none;
+      }
+      .item.active:nth-last-child(2) {
+        border-bottom: none;
+      }
+      .item.none:last-child {
+        border-bottom: none;
+      }
+    }
+}
+
+.goods-image {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 20rpx;
+}
+.goods-title {
+  margin-top: 15rpx;
+  min-height: 40rpx;
+}
+.goods-desc {
+  min-height: 24rpx;
+}
+.goods-bottom {
+  margin: 5rpx 0;
+  div {
+    font-size: 24rpx;
+    color: #999;
+  }
+  .sketch {
+    font-size: 20rpx;
+  }
+}
+.van-card__thumb {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 20rpx;
+}
