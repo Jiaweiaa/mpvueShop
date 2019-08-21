@@ -5,7 +5,7 @@ const app = new Vue(App)
 app.$mount()
 export default {
   config: {
-    navigationBarTitleText: '分销',
+    navigationBarTitleText: '我的二维码',
     "usingComponents": {
       'van-toast': '/static/vant/toast/index',
       "van-button": "/static/vant/button/index",

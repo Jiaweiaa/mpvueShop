@@ -1,10 +1,11 @@
 import fly from '../request';
 let querystring = require("querystring");
+let deviceId = new Date().getTime();
 
-// 我的二维码
-export const showQRCodeToScan = params => {
+// 上级详情
+export const myParentInfo = params => {
   return fly.request({
-    url: `/basic/memRelationShip/myQrCode`,
+    url: `/basic/memRelationShip/myParentInfo`,
     method: "post",
     body: params,
     headers: {
@@ -13,12 +14,11 @@ export const showQRCodeToScan = params => {
   });
 };
 
-
-// 绑定上级
-export const scanQrCode = params => {
+// 下级列表
+export const myChildrenInfo = params => {
   let data = querystring.encode(params);
   return fly.request({
-    url: `/basic/memRelationShip/scanQrCode`,
+    url: `/basic/memRelationShip/myChildrenInfo`,
     method: "post",
     body: data,
     headers: {
