@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 16:55:19
- * @LastEditTime: 2019-08-12 17:03:52
+ * @LastEditTime: 2019-08-19 14:06:54
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -134,7 +134,7 @@ export default {
             })
               .then(() => {
                 let params = {
-                  parentMemberId: "1150014441385177102"
+                  parentMemberId: res.result
                 };
                 scanQrCode(params)
                   .then(res => {

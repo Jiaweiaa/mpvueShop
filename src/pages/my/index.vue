@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 17:12:49
- * @LastEditTime: 2019-08-13 16:22:37
+ * @LastEditTime: 2019-08-18 16:34:51
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -297,6 +297,11 @@ export default {
           title: "百团联盟券",
           icon: "after-sale",
           url: "/pages/integral/main"
+        },
+        {
+          title: "完善信息",
+          icon: "label-o",
+          url: "/pages/editUserInfo/main"
         }
       ],
       moreService: [

@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-17 14:00:02
+ * @LastEditTime: 2019-08-20 18:29:16
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="myOrder">
     <van-tabs tab-class="tabClass" :active="currentActive" @change="onChange">
@@ -31,14 +38,25 @@
             >创建时间: {{value.createTime}}</div>
             <div v-for="(val,childIndex) in value.orderLines" :key="childIndex">
               <van-card
-                :num="val.quantity"
-                :desc="val.propertiesValue"
-                :price="val.salePrice"
-                :title="val.itemName"
+                :num="val.quantity"        
                 :thumb="'http://qn.gaoshanmall.cn/'+val.itemImg"
-              ></van-card>
+              >
+              <div slot="title">
+                  <div>商品名称:{{val.itemName}}</div>
+                  <div>商品规格:{{val.propertiesValue}}</div>
+                  <div>商品价格:￥{{val.discountPrice}}</div>
+              </div>
+              </van-card>
             </div>
-            <!-- <div v-if="val.orderReVo.orderSts!=''">{{val.orderReVo.orderSts}}</div> -->
+            <div v-if="value.paymentType==13" style="text-align:right;">
+                实付金额:￥{{value.totalActure}}+补贴金{{value.totalScoreActure}}
+            </div>
+            <div v-else-if="value.paymentType==4" style="text-align:right;">
+                实付金额:￥{{value.totalActure}}
+            </div>
+            <div v-else style="text-align:right;">
+                实付金额:补贴金{{value.totalScoreActure}}
+            </div>
             <view slot="footer" style="display:flex;justify-content: flex-end;">
               <van-button
                 @click.stop="detailOrder(value)"

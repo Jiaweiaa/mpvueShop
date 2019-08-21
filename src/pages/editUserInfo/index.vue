@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-14 09:01:37
+ * @LastEditTime: 2019-08-18 16:46:23
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="feedback team">
     <van-toast id="van-toast" />
@@ -40,12 +47,12 @@
     <div class="connect">
       <label>手机号:</label>
       <input type="number" v-model="userInfoForm.mobile" placeholder="请输入您的手机号" />
-      <div>
-        <button class="btn" @click="sendMsg" :disabled="msgFlag" v-if="userInfoForm.mobile.length==11">
+      <!-- <div>
+        <button class="btn" @click="sendMsg" :disabled="msgFlag" >
           <span v-if="msgFlag==false">发送短信</span>
           <span v-else>{{msgTime}}s后重发</span>
         </button>
-      </div>
+      </div> -->
     </div>
     <div class="connect" v-if="msgFlag">
       <label>短信验证码:</label>
@@ -188,34 +195,13 @@ export default {
           code: e.mp.detail.code[index]
         });
       });
+      console.log(this.region);
     },
     //时间选择器改变值方法
     bindDateChange: function(e) {
       this.date = e.mp.detail.value;
     },
 
-    getMap() {
-      wx.getLocation({
-        type: "gcj02", //返回可以用于wx.openLocation的经纬度
-        success: res => {
-          let latitude = res.latitude;
-          let longitude = res.longitude;
-          wx.chooseLocation({
-            latitude: latitude,
-            longitude: longitude,
-            scale: 28,
-            success: res => {
-              this.teamForm.address = res.name;
-              this.teamForm.latitude = res.latitude;
-              this.teamForm.longitude = res.longitude;
-            },
-            fail: error => {
-              console.log(error);
-            }
-          });
-        }
-      });
-    },
 
     async submitMes() {
       //省份数据赋值

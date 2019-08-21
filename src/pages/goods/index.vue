@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-17 14:01:51
+ * @LastEditTime: 2019-08-20 14:54:51
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -11,7 +11,7 @@
       <swiper
         class="swiper-container"
         indicator-dots="true"
-        autoplay="tru/e"
+        autoplay="true"
         interval="3000"
         duration="1000"
       >
@@ -106,7 +106,8 @@
         </div>
         <div class="right">
           <div>
-            <p>￥{{nowPrice}}</p>
+            <p>商品价格:￥{{nowPrice}}</p>
+            <p v-if="vipPrice!=''&&integral!=''">会员价:￥{{vipPrice}}+{{integral}}补贴金</p>
             <p>库存:{{quantity}}</p>
           </div>
         </div>
@@ -289,6 +290,8 @@ export default {
       selectSkuData: null, //已选中的sku对象
       goodsNum: 1,
       quantity: "-",
+      vipPrice: "", //会员价格
+      integral: "", //所需积分
       keys: [],
       pageNum: 1,
       pageSize: 19,
@@ -996,6 +999,7 @@ export default {
         });
         var len = haveChangedId.length;
         var prices = this.SKUResult[haveChangedId.join(";")].prices;
+        console.log(this.SKUResult[haveChangedId.join(";")],'777');
         var maxPrice = Math.max.apply(Math, prices);
         var minPrice = Math.min.apply(Math, prices);
         this.nowPrice =
@@ -1077,7 +1081,10 @@ export default {
       this.quantList.map(v => {
         if (v.properties == haveChangedId) {
           this.selectSkuData = v;
+          console.log(this.selectSkuData,'666');
           this.quantity = this.selectSkuData.quantity;
+          this.vipPrice = this.selectSkuData.mixCashPrice;//会员价格
+          this.integral = this.selectSkuData.mixScorePrice; //所需积分
         }
       });
     }

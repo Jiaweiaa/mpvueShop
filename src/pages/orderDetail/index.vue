@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-17 14:00:29
+ * @LastEditTime: 2019-08-20 17:58:47
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="page" v-if="detailData!=null">
     <!-- 待付款 -->
@@ -222,9 +229,17 @@
           class="p1"
           v-if="detailData.orderVo.totalSalesPrice!=null"
         >总价:￥{{detailData.orderVo.totalSalesPrice}} 优惠:￥{{detailData.orderVo.discount}}</p>
-        <p class="p2">
+        <p class="p2" v-if="detailData.orderVo.paymentType==4">
           共1件商品,合计
           <span>￥{{detailData.orderVo.totalActure}}</span>
+        </p>
+        <p class="p2" v-else-if="detailData.orderVo.paymentType==12">
+          共1件商品,合计
+          <span>{{detailData.orderVo.totalScoreActure}}补贴金</span>
+        </p>
+        <p class="p2" v-else>
+          共1件商品,合计
+          <span>￥{{detailData.orderVo.totalActure}}+补贴金{{detailData.orderVo.totalScoreActure}}</span>
         </p>
       </div>
     </div>
