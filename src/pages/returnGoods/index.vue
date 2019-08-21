@@ -396,7 +396,7 @@ export default {
       ); //实际退款金额
       if (this.pageData.reType == 1) {
         if (this.pageData.reStatus == 0) {
-          this.pageData.reName = "已提交退申请";
+          this.pageData.reName = "已提交退款申请";
           this.pageData.reContent = "您的退货申请已提交,请等待商家审核!";
         } else if (this.pageData.reStatus == 1 || this.pageData.reStatus == 3) {
           this.pageData.reName = "商家已同意";

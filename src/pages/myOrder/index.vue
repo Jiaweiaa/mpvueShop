@@ -33,7 +33,7 @@
               <van-card
                 :num="val.quantity"
                 :desc="val.propertiesValue"
-                :price="val.salePrice"
+                :price="val.discountPrice"
                 :title="val.itemName"
                 :thumb="'http://qn.gaoshanmall.cn/'+val.itemImg"
               ></van-card>
