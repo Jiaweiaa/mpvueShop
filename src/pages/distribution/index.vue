@@ -9,75 +9,19 @@
   <div class="feedback team">
     <van-toast id="van-toast" />
     <van-dialog id="van-dialog" />
-    <!-- <div class="title">
-      操作区  扫码
-    </div>-->
     <div class="myMenu boxMenu">
       <div class="left">
-        <button @click="saveImage">
+        <button class="qroCodeBox" @click="saveImage">
           <p>我的二维码</p>
           <img class="code" :src="qrCode" alt />
         </button>
       </div>
     </div>
-    <!-- <div class="myMenu boxMenu">
-      <div class="left">
-        <button @tap="scanFun">
-          <p>扫码绑定</p>
-          <van-icon custom-class="code_icon" color="#fff;" size="35px" name="scan" />
-        </button>
-      </div>
-    </div>-->
-    <div class="connect" v-if="memRelationship!=null">
-      <label>姓名:</label>
-      <input type="text" v-model="memRelationship.realName" disabled />
-    </div>
-    <div class="connect" v-if="memRelationship!=null">
-      <label>级别:</label>
-      <span>
-        {{memRelationship.level==1?'省代理':memRelationship.level==2?'市代理':memRelationship.level==3?'区代理':'团代理'}}
-      </span>
-      
-    </div>
-    <div class="connect" v-if="memRelationship!=null">
-      <label>工号:</label>
-      <input type="text" v-model="memRelationship.code" disabled />
-    </div>
-    <div class="connect" v-if="memberInfo!=null">
-      <label>省份:</label>
-      <input type="text" v-model="memberInfo.province" disabled />
-    </div>
-    <div class="connect" v-if="memberInfo!=null">
-      <label>城市:</label>
-      <input type="text" v-model="memberInfo.city" disabled />
-    </div>
-    <div class="connect" v-if="memberInfo!=null">
-      <label>区县:</label>
-      <input type="text" v-model="memberInfo.district" disabled />
-    </div>
-    <!-- <div class="connect" v-if="parentMemberInfo!=null"> -->
-    <div class="connect" >
-      <label>我的上级:</label>
-      <span v-if="parentMemberInfo!=null">{{parentMemberInfo.lastName}}</span>
-      <span v-else>暂无上级</span>
-      <div class="btn-group">
-        <button class="btn bound" v-if="parentMemberInfo==null" @click="scanFun">扫码绑定</button>
-        <!-- <button class="btn relieve" v-else>解除绑定</button> -->
-      </div>
-    </div>
-    <div class="connect" v-if="parentMemberInfo!=null">
-      <label>上级电话:</label>
-      <span >{{parentMemberInfo.mobile}}</span>
-    </div>
   </div>
 </template>
 
 <script>
-import { showQRCodeToScan, scanQrCode } from "../../api/distribution/index";
-import Toast from "../../../static/vant/toast/toast";
-import Dialog from "../../../static/vant/dialog/dialog";
-import amapFile from "../../utils/amap-wx";
-
+import { showQRCodeToScan } from "../../api/distribution/index";
 export default {
   data() {
     return {
@@ -106,85 +50,13 @@ export default {
       showQRCodeToScan(params)
         .then(res => {
           if (res.data.code == "200") {
-            this.memberInfo = res.data.result.memberInfo;
-            this.memRelationship = res.data.result.memRelationship;
-            this.parentMemberInfo = res.data.result.parentMemberInfo;
             this.qrCode = res.data.result.qrCode;
+            console.log(res);
           }
         })
         .catch(err => {
           console.log(err);
         });
-    },
-    /*
-      * 扫码核销  扫码之后相当于调取接口 返回json 通过返回json的result值判断是否获取到商品唯一标识 未获取到提示不是商城商品
-      * 拿唯一标识调取后台核销端口改变商品状态
-      * */
-    scanFun() {
-      wx.scanCode({
-        scanType: ["qrCode"],
-        onlyFromCamera: true,
-        complete: res => {
-          if (res.result) {
-            console.log(res.result);
-
-            Dialog.confirm({
-              title: "绑定上级",
-              message: "确认绑定这位用户为上级吗?"
-            })
-              .then(() => {
-                let params = {
-                  parentMemberId: res.result
-                };
-                scanQrCode(params)
-                  .then(res => {
-                    if (res.data.code == 200) {
-                      Dialog.alert({
-                        message: res.data.message
-                      }).then(() => {
-                        this.getData();
-                      });
-                    }else{
-                      Dialog.alert({
-                        message: res.data.message
-                      }).then(() => {
-                        
-                      });
-                    }
-                  })
-                  .catch(err => {});
-                // let data = [];
-                // // data.push(res.result);
-                // writeOffByQRcode({
-                //   orderCode: res.result
-                // }).then(res => {
-                //   //   console.log(res.data, "456");
-                //   if (res.data.code == 200) {
-                //     Dialog.alert({
-                //       message: res.data.result
-                //     }).then(() => {
-                //       // on close
-                //     });
-
-                //     // });
-                //   } else {
-                //     Dialog.alert({
-                //       message: res.data.message
-                //     }).then(() => {
-                //       // on close
-                //     });
-                //   }
-                // });
-              })
-              .catch(() => {
-                Notify("网络错误,请检查网络");
-                // on cancel
-              });
-          } else {
-            // Notify("该二维码已失效");
-          }
-        }
-      });
     }
   },
   computed: {}
@@ -221,7 +93,7 @@ export default {
   overflow: hidden;
   padding: 10px;
   width: 100% !important;
-  height: 560rpx !important;
+  height: 100vh !important;
   background: #1989fa;
   .left {
     width: calc(100% - 1px);
@@ -240,5 +112,12 @@ export default {
     }
     color: #fff;
   }
+}
+.qroCodeBox {
+  position: absolute;
+  top: 20%;
+  width: 500px;
+  left: 50%;
+  margin-left: -250px;
 }
 </style>

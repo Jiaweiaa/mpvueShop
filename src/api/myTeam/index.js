@@ -5,7 +5,7 @@ let deviceId = new Date().getTime();
 // 我的信息
 export const myDetile = params => {
   return fly.request({
-    url: `/shop/froCaptain/myDetile`,
+    url: `/basic/memRelationShip/myRelationInfo`,
     method: "post",
     body: params,
     headers: {

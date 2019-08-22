@@ -2,39 +2,47 @@
   <div class="my">
     <van-notify id="custom-selector" />
     <div class="myinfo">
-      <div class="myMoney">
-        <p>我的佣金</p>
-        <p>¥&nbsp;{{teamData.commission}}</p>
+      <div v-if="isFlag">
+        <div class="myMoney">
+          <p>我的佣金</p>
+          <p>¥&nbsp;{{teamData.commission}}</p>
+        </div>
+        <div class="noMoney">
+          <p>未到账佣金</p>
+          <p>¥&nbsp;{{teamData.undrawnCommission}}</p>
+        </div>
+        <van-button
+            style="position: absolute; right: 20px; bottom: 50px;"
+            @click="goToDetail"
+            size="small"
+            custom-class="btnClass"
+            round
+            plain
+            type="default"
+        >查看详情</van-button>
       </div>
-      <div class="noMoney">
-        <p>未到账佣金</p>
-        <p>¥&nbsp;{{teamData.undrawnCommission}}</p>
+      <div class="textView" v-else>
+        <p>您还不是代理用户,</p>
+        <p>请扫码绑定上级！</p>
+        <p>绑定前请完善个人信息。</p>
       </div>
-      <van-button
-        style="position: absolute; right: 20px; bottom: 50px;"
-        @click="goToDetail"
-        size="small"
-        custom-class="btnClass"
-        round
-        plain
-        type="default"
-      >查看详情</van-button>
     </div>
+   
     <div class="myMenu boxMenu">
       <div class="left">
         <button @tap="scanFun">
           <van-icon size="35px" name="scan" />
-          <p>扫码核销</p>
+          <p>扫码绑定</p>
         </button>
       </div>
-      <div class="right" @click="toMyOrder">
+      <div class="right" @click="toCode">
         <van-icon size="35px" name="description" />
-        <p>我的订单</p>
+        <p>我的二维码</p>
       </div>
     </div>
     <div class="mySecond boxMenu">
       <div class="title">
-        <div class="navTitle">团长服务</div>
+        <div class="navTitle">代理服务</div>
       </div>
       <div class="content">
         <div
@@ -68,6 +76,7 @@
 
     <van-notify id="van-notify" />
     <van-dialog id="van-dialog" />
+    <van-toast id="van-toast" />
   </div>
 </template>
 
@@ -75,21 +84,34 @@
 import { myDetile } from "../../api/myTeam/index";
 import Notify from "../../../static/vant/notify/notify";
 import Dialog from "../../../static/vant/dialog/dialog";
-import { writeOff } from "../../api/myOrder/index";
-import { writeOffByQRcode } from "../../api/myTeam/index";
-
+import Toast from '../../../static/vant/toast/toast';
+import { scanQrCode, showQRCodeToScan } from "../../api/distribution/index";
 export default {
   onShow() {
     this.getTeamData();
   },
+  onHide() {
+    this.orderMenu = [
+      {
+        title: "完善信息",
+        icon: "label-o",
+        url: "/pages/editUserInfo/main"
+      }
+    ];
+  },
   data() {
     return {
       orderMenu: [
+        // {
+        //   title: "我的信息",
+        //   icon: "shop-collect-o",
+        //   url: "/pages/myCommunity/main"
+        // },
         {
-          title: "我的社区",
-          icon: "shop-collect-o",
-          url: "/pages/myCommunity/main"
-        },
+          title: "完善信息",
+          icon: "label-o",
+          url: "/pages/editUserInfo/main"
+        }
         // {
         //   title: "商品销量",
         //   icon: "fire-o",
@@ -121,7 +143,9 @@ export default {
       Listids: [],
       userInfo: {},
 
-      teamData: []
+      isFlag: false,
+      
+      teamData: {}
     };
   },
   methods: {
@@ -136,39 +160,59 @@ export default {
         complete: res => {
           if (res.result) {
             console.log(res.result);
+          
             Dialog.confirm({
-              title: "商品核销",
-              message: "确认核销该商品吗?"
+              title: "绑定上级",
+              message: "确认绑定这位用户为上级吗?"
             })
-              .then(() => {
-                let data = [];
-                // data.push(res.result);
-                writeOffByQRcode({
-                  
-                  orderCode: res.result
-                }).then(res => {
-                  //   console.log(res.data, "456");
-                  if (res.data.code == 200) {
-                    Dialog.alert({
-                      message: res.data.result
-                    }).then(() => {
-                      // on close
-                    });
-
-                    // });
-                  } else {
-                    Dialog.alert({
-                      message: res.data.message
-                    }).then(() => {
-                      // on close
-                    });
-                  }
+                .then(() => {
+                  let params = {
+                    parentMemberId: res.result
+                  };
+                  scanQrCode(params)
+                      .then(res => {
+                        if (res.data.code == 200) {
+                          Dialog.alert({
+                            message: res.data.message
+                          }).then(() => {
+                            this.getData();
+                          });
+                        }else{
+                          Dialog.alert({
+                            message: res.data.message
+                          }).then(() => {
+                          
+                          });
+                        }
+                      })
+                      .catch(err => {});
+                  // let data = [];
+                  // // data.push(res.result);
+                  // writeOffByQRcode({
+                  //   orderCode: res.result
+                  // }).then(res => {
+                  //   //   console.log(res.data, "456");
+                  //   if (res.data.code == 200) {
+                  //     Dialog.alert({
+                  //       message: res.data.result
+                  //     }).then(() => {
+                  //       // on close
+                  //     });
+                
+                  //     // });
+                  //   } else {
+                  //     Dialog.alert({
+                  //       message: res.data.message
+                  //     }).then(() => {
+                  //       // on close
+                  //     });
+                  //   }
+                  // });
+                })
+                .catch(() => {
+                  Notify("网络错误,请检查网络");
+                  // on cancel
                 });
-              })
-              .catch(() => {
-                Notify("网络错误,请检查网络");
-                // on cancel
-              });
           } else {
             // Notify("该二维码已失效");
           }
@@ -199,19 +243,56 @@ export default {
     async getTeamData() {
       let data = await myDetile();
       this.teamData = data.data.result;
+      if(this.teamData) {
+        this.isFlag = true;
+        this.orderMenu.push({
+          title: "我的上级",
+          icon: "user-o",
+          url: "/pages/superior/main"
+        },
+        {
+          title: "我的下级",
+          icon: "friends-o",
+          url: "/pages/subordinate/main"
+        })
+      }else {
+        this.isFlag = false;
+      }
     },
 
     // 团长订单
-    toMyOrder() {
-      wx.navigateTo({
-        url: "/pages/team/main"
+    toCode() {
+      showQRCodeToScan()
+      .then(res => {
+        if (res.data.code == "200") {
+          wx.navigateTo({
+            url: "/pages/distribution/main"
+          });
+        }else {
+          Toast(res.data.message);
+          }
+      })
+      .catch(err => {
+        console.log(err);
       });
+    
     }
   },
   computed: {}
 };
 </script>
-<style>
+<style lang='scss'>
+.textView {
+  color: #fff;
+  font-size: 16px;
+  margin-top: 50px;
+  padding-left: 20px;
+}
+.van-toast {
+  view, text {
+    color: #fff;
+  }
+}
 page {
   background: #eee;
 }

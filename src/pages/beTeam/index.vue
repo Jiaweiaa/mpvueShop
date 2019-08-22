@@ -3,7 +3,7 @@
 	  <van-toast id="van-toast" />
 	  
     <div class="title">
-      申请团长请填写您的真实信息
+      申请代理请填写您的真实信息
     </div>
     <div class="connect">
       <label>
@@ -13,21 +13,9 @@
     </div>
 	  <div class="connect">
 		  <label>
-			  社区名称:
-		  </label>
-		  <input type="text" v-model="teamForm.community" placeholder="请输入所在社区">
-	  </div>
-	  <div class="connect">
-		  <label>
-			  定位社区:
+			  定位地址:
 		  </label>
 		  <button style="font-size: 13px; color: #666; left: 14px; width: 100%; text-align: left;  vertical-align: middle; line-height: 50px;" @tap="getMap">{{teamForm.address ? teamForm.address: '点击获取定位信息'}}</button>
-	  </div>
-	  <div class="connect">
-		  <label>
-			  提货地址:
-		  </label>
-		  <input type="text" v-model="teamForm.deliveryAddress" placeholder="例如：xxx栋xx单元xx楼xx号">
 	  </div>
 	  <div class="connect">
 		  <label>
@@ -61,8 +49,6 @@
         teamForm: {
           city: '',
 	        address: '',
-          community: '',
-          deliveryAddress: '',
           name: '',
           mobile: '',
           latitude: '',

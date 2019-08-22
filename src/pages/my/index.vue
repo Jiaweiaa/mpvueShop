@@ -122,20 +122,6 @@ export default {
       isCapOrSup().then(isRes => {
         wx.setStorageSync("isCap", isRes.data.result.isCap);
         wx.setStorageSync("isSup", isRes.data.result.isSup);
-        this.moreService = [];
-        if (isRes.data.result.isCap == false) {
-          this.moreService.push({
-            title: "团长招募",
-            icon: "manager-o",
-            url: "/pages/beTeam/main"
-          });
-        } else {
-          this.moreService.push({
-            title: "我是团长",
-            icon: "manager-o",
-            url: "/pages/teamView/main"
-          });
-        }
         if (isRes.data.result.isSup == false) {
           this.moreService.push({
             title: "供应商招募",
@@ -152,11 +138,6 @@ export default {
       });
     } else {
       this.moreService = [
-        {
-          title: "团长招募",
-          icon: "manager-o",
-          url: "/pages/beTeam/main"
-        },
         {
           title: "供应商招募",
           icon: "user-o",
@@ -191,19 +172,6 @@ export default {
         wx.setStorageSync("isSup", isRes.data.result.isSup);
       });
       this.moreService = [];
-      if (wx.getStorageSync("isCap") == false) {
-        this.moreService.push({
-          title: "团长招募",
-          icon: "manager-o",
-          url: "/pages/beTeam/main"
-        });
-      } else {
-        this.moreService.push({
-          title: "我是团长",
-          icon: "manager-o",
-          url: "/pages/teamView/main"
-        });
-      }
       if (wx.getStorageSync("isSup") == false) {
         this.moreService.push(
           {
@@ -212,9 +180,9 @@ export default {
             url: "/pages/beGive/main"
           },
           {
-            title: "分销",
+            title: "我的代理",
             icon: "friends-o",
-            url: "/pages/distribution/main"
+            url: "/pages/teamView/main"
           }
         );
       } else {
@@ -225,9 +193,9 @@ export default {
             url: "/pages/giver/main"
           },
           {
-            title: "分销",
+            title: "我的代理",
             icon: "friends-o",
-            url: "/pages/giver/main"
+            url: "/pages/teamView/main"
           }
         );
       }
@@ -235,19 +203,14 @@ export default {
     } else {
       this.moreService = [
         {
-          title: "团长招募",
-          icon: "manager-o",
-          url: "/pages/beTeam/main"
-        },
-        {
           title: "供应商招募",
           icon: "user-o",
           url: "/pages/beGive/main"
         },
         {
-          title: "分销",
+          title: "我的代理",
           icon: "gold-coin-o",
-          url: "/pages/beGive/main"
+          url: "/pages/teamView/main"
         }
       ];
     }
@@ -297,24 +260,9 @@ export default {
           title: "补贴金",
           icon: "after-sale",
           url: "/pages/integral/main"
-        },
-        {
-          title: "完善信息",
-          icon: "label-o",
-          url: "/pages/editUserInfo/main"
         }
       ],
       moreService: [
-        {
-          title: "团长招募",
-          icon: "manager-o",
-          url: "/pages/beTeam/main"
-        },
-        {
-          title: "我是团长",
-          icon: "manager-o",
-          url: "/pages/teamView/main"
-        },
         {
           title: "供应商招募",
           icon: "user-o",
@@ -326,9 +274,9 @@ export default {
           url: "/pages/giver/main"
         },
         {
-          title: "分销",
+          title: "我的代理",
           icon: "friends-o",
-          url: "/pages/giver/main"
+          url: "/pages/teamView/main"
         }
       ],
 
@@ -358,25 +306,8 @@ export default {
     },
     goTo(url) {
       if (toLogin()) {
-        //如果想去的路径是申请团长页校验是否申请过
-        if (url == "/pages/beTeam/main") {
-          checkCap()
-            .then(res => {
-              if (res.data.result) {
-                Dialog.alert({
-                  title: "提示",
-                  message: "您已提交过团长申请,请耐心等待"
-                }).then(() => {
-                  // on close
-                });
-              } else {
-                wx.navigateTo({
-                  url: url
-                });
-              }
-            })
-            .catch(err => {});
-        } else if (url == "/pages/beGive/main") {
+        //如果想去的路径是申请代理页校验是否申请过
+        if (url == "/pages/beGive/main") {
           checkSup()
             .then(res => {
               if (res.data.result) {
