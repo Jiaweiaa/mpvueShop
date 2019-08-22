@@ -1,0 +1,10 @@
+.categrory-wrap{
+  position: relative;
+  .list{
+    position: fixed;
+    right: 0;
+    top: 50rpx;
+    width: 100rpx;
+    z-index: 99;
+  }
+}

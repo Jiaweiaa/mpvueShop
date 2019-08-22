@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-22 10:07:51
+ * @LastEditTime: 2019-08-22 16:04:26
  * @LastEditors: Please set LastEditors
  */
 import Vue from "vue";
@@ -39,6 +39,7 @@ export default {
     },
     pages: [
       "^pages/index/main",
+      "pages/citys/main",
       "pages/distribution/main",
       "pages/editUserInfo/main",
       "pages/storeIndex/main",
