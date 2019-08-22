@@ -2,20 +2,20 @@
  * @Description: 首页模块
  * @Author: 董
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-20 17:35:47
+ * @LastEditTime: 2019-08-22 09:29:03
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="index_home">
     <div class="search">
-      <div @click="toMappage" class="captain">
-        <!-- <div v-if="captainInfo!=null">
+      <!-- <div @click="toMappage" class="captain">
+        <div v-if="captainInfo!=null">
           <div class="title">{{captainInfo.address}}</div>
           <span class="toggle_btn">切 换</span>
           <div class="address">提货位置:{{captainInfo.deliveryAddress}}</div>
-        </div> -->
+        </div>
         <div class="title">{{cityName}}</div>
-      </div>
+      </div> -->
       <div @click="toSearch" class="search_bar">
         <input type="text" placeholder="搜索您要的商品" disabled placeholder-class="phcolor" />
         <span class="icon"></span>
@@ -184,13 +184,13 @@ export default {
   onShow() {
     console.log(cityArr);
     this.getCartGoodsNum();
-    if (wx.getStorageSync("data")) {
-      this.captainInfo = Object.assign({}, wx.getStorageSync("data"));
-    } else {
-      wx.navigateTo({
-        url: "/pages/mappage/main"
-      });
-    }
+    // if (wx.getStorageSync("data")) {
+    //   this.captainInfo = Object.assign({}, wx.getStorageSync("data"));
+    // } else {
+    //   wx.navigateTo({
+    //     url: "/pages/mappage/main"
+    //   });
+    // }
   },
   onShareAppMessage(res) {
     console.log(res);

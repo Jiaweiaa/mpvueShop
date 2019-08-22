@@ -1,8 +1,15 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-24 14:25:58
+ * @LastEditTime: 2019-08-21 15:22:18
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="my">
 	  <van-icon class="icon" custom-class="iconBorder" name="gold-coin" size="60px" color="orange"/>
 	  <div class="title">
-		  我的联盟券
+		  我的补贴金
 	  </div>
 	  <div class="myMoney">
 		  <span style="display: inline-block; vertical-align: middle;">
@@ -10,8 +17,8 @@
 		  </span>{{score}}
 	  </div>
 	  <div class="btnRow">
-		  <van-button custom-class="btnStyle" @click="getIntegral" type="primary">充值联盟券</van-button>
-		  <van-button custom-class="btnStyle" @click="integralList" type="default">联盟券明细</van-button>
+		  <van-button custom-class="btnStyle" @click="getIntegral" type="primary">充值补贴金</van-button>
+		  <van-button custom-class="btnStyle" @click="integralList" type="default">补贴金明细</van-button>
 	  </div>
 	 
 	  
@@ -23,15 +30,15 @@
 		  position="bottom"
 		  @close="onClose">
 		 <div class="popupBox">
-			 <div class="title">联盟券充值</div>
+			 <div class="title">补贴金充值</div>
 			 <div class="content">
 				 <van-cell-group>
 					 <van-field
 						 :value="code"
 						 required
 						 clearable
-						 label="联盟券码"
-						 placeholder="请输入联盟券码"
+						 label="补贴金券码"
+						 placeholder="请输入补贴金券码"
 						 @change="fieldChange"
 					 />
 				 </van-cell-group>

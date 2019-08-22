@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-17 14:00:02
- * @LastEditTime: 2019-08-20 18:29:16
+ * @LastEditTime: 2019-08-21 18:13:39
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -159,7 +159,7 @@ export default {
       allCount: "",
       loading: false,
       onLoadLoading: false,
-      tabs: ["全部", "待支付", "待发货", "待收货", "待核销", "已完成"],
+      tabs: ["全部", "待支付", "待发货", "待收货",  "已完成"],
       reason: "我不想买了",
       reasonShow: false, //弹出层是否显示
       //取消订单理由
@@ -207,23 +207,7 @@ export default {
                 canBtn: false, //取消订单
                 giveBtn: false, //立即支付
                 seeBtn: true, //查看物流
-                afrimBtn: false //确认收货
-              });
-            } else if (order.logisticsStatus == 7) {
-              this.$set(order, "typeData", {
-                title: "团长已收货",
-                canBtn: false, //取消订单
-                giveBtn: false, //立即支付
-                seeBtn: true, //查看物流
                 afrimBtn: true //确认收货
-              });
-            } else if (order.logisticsStatus == 8) {
-              this.$set(order, "typeData", {
-                title: "待团长核销",
-                canBtn: false,
-                giveBtn: false,
-                seeBtn: false,
-                afrimBtn: false
               });
             } else if (order.logisticsStatus == 15) {
               this.$set(order, "typeData", {
@@ -362,7 +346,7 @@ export default {
         content: "确认收到货物了吗?",
         success: res => {
           if (res.confirm) {
-            capConfirmReceived({ orderCode: val.code })
+            confirmReceive({ orderCode: val.code })
               .then(res => {
                 if (res.data.code == "200") {
                   this.getOrderList();
@@ -403,23 +387,7 @@ export default {
                 canBtn: false,
                 giveBtn: false,
                 seeBtn: true,
-                afrimBtn: false
-              });
-            } else if (order.logisticsStatus == 7) {
-              this.$set(order, "typeData", {
-                title: "团长已收货",
-                canBtn: false,
-                giveBtn: false,
-                seeBtn: true,
                 afrimBtn: true
-              });
-            } else if (order.logisticsStatus == 8) {
-              this.$set(order, "typeData", {
-                title: "待团长核销",
-                canBtn: false,
-                giveBtn: false,
-                seeBtn: false,
-                afrimBtn: false
               });
             } else if (order.logisticsStatus == 15) {
               this.$set(order, "typeData", {
@@ -534,9 +502,6 @@ export default {
           break;
         case "待收货":
           this.orderType = 3;
-          break;
-        case "待核销":
-          this.orderType = 9;
           break;
         case "已完成":
           this.orderType = 5;

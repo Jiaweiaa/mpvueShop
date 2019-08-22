@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-24 14:25:58
+ * @LastEditTime: 2019-08-21 15:22:30
+ * @LastEditors: Please set LastEditors
+ */
 import Vue from 'vue'
 import App from './index'
 
@@ -5,7 +12,7 @@ const app = new Vue(App)
 app.$mount()
 export default {
   config: {
-    navigationBarTitleText: '联盟券明细',
+    navigationBarTitleText: '补贴金明细',
     enablePullDownRefresh: true,
     "usingComponents": {
       "van-icon": "/static/vant/icon/index",

@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-21 09:17:36
+ * @LastEditTime: 2019-08-21 15:23:20
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="order">
     <!-- 轻提醒 -->
@@ -114,7 +121,7 @@
         <div>{{payObj.name}}</div>
       </div>
       <div class="item" v-if="payObj.value==12 ||payObj.value==13">
-        <div>联盟券余额</div>
+        <div>补贴金余额</div>
         <div>余额&nbsp;{{scoreAmount}}</div>
       </div>
       <div class="item" @click="sheetShow=true">
@@ -251,7 +258,7 @@ export default {
     if (wx.getStorageSync("orderAdress") != "") {
       this.address = Object.assign({}, wx.getStorageSync("orderAdress"));
     }
-    this.captainId = wx.getStorageSync("data").id;
+    // this.captainId = wx.getStorageSync("data").id;
     wx.showLoading({
       title: "获取订单信息..", //提示的内容,
       mask: true //显示透明蒙层，防止触摸穿透,
@@ -471,14 +478,15 @@ export default {
           name: "微信",
           value: 4
         },
+        
         {
-          name: "混合支付",
-          value: 13
+          name: "补贴金",
+          value: 12
         },
         {
-          name: "联盟券",
-          value: 12
-        }
+          name: "微信+补贴金",
+          value: 13
+        },
       ],
       //  联盟券
       scoreAmount: 0,
@@ -497,7 +505,7 @@ export default {
       from: "", //从哪个入口进入的下单页面
       params: null, //获取下单所需要的参数
       storeId: "", //店铺ID 从购物车进入此页面时需要用到
-      captainId: "" //团长ID
+      // captainId: "" //团长ID
     };
   },
   components: {},
@@ -547,10 +555,10 @@ export default {
           orderLines: [],
           paymentType: this.payObj.value,
           shppingAddressId: "", //地址
-          captainId: "", //团长ID
+          // captainId: "", //团长ID
           type: 1 //type为1是从商品详情页面进入  2是购物车中进入
         };
-        params.captainId = this.captainId;
+        // params.captainId = this.captainId;
         if (coupon) {
           this.shopList.map(store => {
             //迭代店铺 如果店铺ID与被选中店铺ID一致 则将该店铺默认选中的优惠券改为本次点击的优惠券
@@ -656,10 +664,10 @@ export default {
             orderLines: [],
             paymentType: this.payObj.value,
             shppingAddressId: "", //地址
-            captainId: "", //团长ID
+            // captainId: "", //团长ID
             type: 1 //type为1是从商品详情页面进入  2是购物车中进入
           };
-          params.captainId = this.captainId;
+          // params.captainId = this.captainId;
           this.shopList.map(store => {
             //循环每个店铺的优惠券列表 如果优惠券的code码等于默认优惠券code码 active状态设为true;
             store.canBeAppliedCoupons.map(coupons => {
@@ -760,10 +768,10 @@ export default {
           orderLines: [],
           paymentType: this.payObj.value,
           shppingAddressId: "", //地址
-          captainId: "", //团长ID
+          // captainId: "", //团长ID
           type: 1 //type为1是从商品详情页面进入  2是购物车中进入
         };
-        params.captainId = this.captainId;
+        // params.captainId = this.captainId;
         this.shopList.map(store => {
           store.shoppingCartLineDtos.map(good => {
             this.$set(good, "buyType", "N");

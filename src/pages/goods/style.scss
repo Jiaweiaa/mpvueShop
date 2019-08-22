@@ -50,6 +50,11 @@
     height: 120rpx;
     background: #5c49ab;
     position: relative;
+    .mixPrice{
+      padding-left: 32rpx;
+      font-size: 48rpx;
+      color: #fff;
+    }
     .listPrice {
       padding-left: 34rpx;
       font-size: 28rpx;
@@ -58,7 +63,7 @@
     }
     .salePrice {
       padding-left: 32rpx;
-      font-size: 48rpx;
+      font-size: 39rpx;
       color: #fff;
       .tag {
         padding: 5rpx;

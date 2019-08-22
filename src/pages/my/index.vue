@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 17:12:49
- * @LastEditTime: 2019-08-18 16:34:51
+ * @LastEditTime: 2019-08-21 15:21:17
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -25,7 +25,7 @@
         <div class v-if="userInfo.nickname">
           <p>{{userInfo.nickname}}</p>
           <!-- <p>欢迎您,时刻益每家会员</p> -->
-          <p>欢迎您,百团联盟会员</p>
+          <p>欢迎您,易起省会员</p>
           <!-- <p>欢迎您,高山会员</p> -->
           <!-- <p style="color:#fff;">
             <span ></span>省
@@ -294,7 +294,7 @@ export default {
           url: "/pages/address/main"
         },
         {
-          title: "百团联盟券",
+          title: "补贴金",
           icon: "after-sale",
           url: "/pages/integral/main"
         },

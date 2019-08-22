@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-14 09:07:40
+ * @LastEditTime: 2019-08-21 15:19:35
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -10,7 +10,7 @@
     <div class="top">
       <!-- <div>时刻益每家</div> -->
       <!-- <div>高山商城</div> -->
-      <div>百团联盟</div>
+      <div>易起省</div>
       <div>轻松购</div>
       <div>乐享购</div>
     </div>

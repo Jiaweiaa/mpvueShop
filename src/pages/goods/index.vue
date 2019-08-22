@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-20 14:54:51
+ * @LastEditTime: 2019-08-22 09:03:03
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -12,6 +12,7 @@
         class="swiper-container"
         indicator-dots="true"
         autoplay="true"
+        circular="true"
         interval="3000"
         duration="1000"
       >
@@ -22,12 +23,14 @@
         </block>
       </swiper>
     </div>
-    <div class="price-bg">
-      <p class="listPrice">￥{{goodsInfo.salePrice}}</p>
+    <div class="price-bg" v-if="goodsInfo!=null">
+      <!-- <p class="mixPrice">组合支付价格:￥{{mixCashPrice}}+补贴金{{mixScorePrice}}</p> -->
       <p class="salePrice">
-        ￥{{goodsInfo.listPrice}}
-        <span class="tag">优惠价</span>
+        <!-- 补贴金价:{{scorePrice}} -->
+        组合价格:￥{{mixCashPrice}}+补贴金{{mixScorePrice}}
+        <!-- <span class="tag">优惠促销</span> -->
       </p>
+      <p class="listPrice">价格￥{{listPrice}}</p>
       <div class="countDown" v-if="timeFlag">
         <p v-if="havaTimeFlag&&!textFlag" class="title">距结束仅剩</p>
         <div class="time" v-if="havaTimeFlag&&!textFlag">
@@ -275,6 +278,11 @@ export default {
       showpop: false,
       gallery: [],
       goodsInfo: {}, //商品数据
+      salePrice:"",//销售价
+      listPrice:"",//挂牌价
+      scorePrice:"",//补贴金价
+      mixCashPrice:"",//混合支付现金
+      mixScorePrice:"",//混合支付补贴金
       arrivalTime: "", //到货时间
       brand: {},
       attribute: [],
@@ -706,7 +714,14 @@ export default {
             this.goods_desc = data.item.itemChannel.description; //详情描述富文本
             this.goodsList = data.item.pdpPropertiesCommands;
             this.quantityData = JSON.parse(data.skuJson); //SKU信息
+            console.log(this.quantityData,'567');
             this.quantList = JSON.parse(res.data.result.skuJson);
+            console.log(this.quantList,'333');
+            this.salePrice = this.quantList[0].salePrice;
+            this.listPrice = this.quantList[0].listPrice;
+            this.scorePrice = this.quantList[0].scorePrice;
+            this.mixCashPrice = this.quantList[0].mixCashPrice;
+            this.mixScorePrice = this.quantList[0].mixScorePrice;
             this.quantList.map(v => {
               v.properties = JSON.parse(v.properties).toString();
             });
@@ -762,7 +777,7 @@ export default {
               }
               this.keys.push(data);
             });
-
+            console.log(this.keys,'456');
             // 库存数据
             this.quantityData.map(v => {
               // 处理商品号
