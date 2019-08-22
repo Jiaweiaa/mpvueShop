@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-20 14:27:05
+ * @LastEditTime: 2019-08-22 10:07:51
  * @LastEditors: Please set LastEditors
  */
 import Vue from "vue";
@@ -88,7 +88,7 @@ export default {
     window: {
       backgroundTextStyle: "light",
       navigationBarBackgroundColor: "#fff",
-      navigationBarTitleText: "百团联盟商城",
+      navigationBarTitleText: "易起省",
       navigationBarTextStyle: "black"
     },
     tabBar: {
