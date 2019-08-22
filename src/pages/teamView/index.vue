@@ -165,27 +165,27 @@ export default {
               title: "绑定上级",
               message: "确认绑定这位用户为上级吗?"
             })
-                .then(() => {
-                  let params = {
-                    parentMemberId: res.result
-                  };
-                  scanQrCode(params)
-                      .then(res => {
-                        if (res.data.code == 200) {
-                          Dialog.alert({
-                            message: res.data.message
-                          }).then(() => {
-                            this.getData();
-                          });
-                        }else{
-                          Dialog.alert({
-                            message: res.data.message
-                          }).then(() => {
-                          
-                          });
-                        }
-                      })
-                      .catch(err => {});
+            .then(() => {
+              let params = {
+                parentMemberId: res.result
+              };
+              scanQrCode(params)
+                  .then(res => {
+                    if (res.data.code == 200) {
+                      Dialog.alert({
+                        message: res.data.message
+                      }).then(() => {
+                        this.getTeamData();
+                      });
+                    }else{
+                      Dialog.alert({
+                        message: res.data.message
+                      }).then(() => {
+                      
+                      });
+                    }
+                  })
+                  .catch(err => {});
                   // let data = [];
                   // // data.push(res.result);
                   // writeOffByQRcode({
@@ -254,7 +254,7 @@ export default {
           title: "我的下级",
           icon: "friends-o",
           url: "/pages/subordinate/main"
-        })
+        });
       }else {
         this.isFlag = false;
       }
