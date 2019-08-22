@@ -8,35 +8,34 @@
       <div class="contentBox">
         <van-cell-group>
           <van-field
-            :value="teamData.withdraw"
+            :value="teamData.amount"
             :clearable="true"
-			
             label="提现金额"
             placeholder="请输入提现额"
             @input="withdrawChange"
           />
-          <van-field
-            :value="teamData.name"
-            :clearable="true"
-            label="姓名"
-            placeholder="请输入姓名"
-            @input="nameChange"
-          />
-          <van-field
-            :value="teamData.mobile"
-            :clearable="true"
-			type="number"
-            label="手机"
-            placeholder="请输入手机"
-            @input="mobileChange"
-          />
-          <van-field
-            :value="teamData.wechatAccount"
-            :clearable="true"
-            label="微信号"
-            placeholder="请输入微信号"
-            @input="wechatAccountChange"
-          />
+          <!--<van-field-->
+            <!--:value="teamData.name"-->
+            <!--:clearable="true"-->
+            <!--label="姓名"-->
+            <!--placeholder="请输入姓名"-->
+            <!--@input="nameChange"-->
+          <!--/>-->
+          <!--<van-field-->
+            <!--:value="teamData.mobile"-->
+            <!--:clearable="true"-->
+			<!--type="number"-->
+            <!--label="手机"-->
+            <!--placeholder="请输入手机"-->
+            <!--@input="mobileChange"-->
+          <!--/>-->
+          <!--<van-field-->
+            <!--:value="teamData.wechatAccount"-->
+            <!--:clearable="true"-->
+            <!--label="微信号"-->
+            <!--placeholder="请输入微信号"-->
+            <!--@input="wechatAccountChange"-->
+          <!--/>-->
           <!--error-message="手机号格式错误"-->
         </van-cell-group>
         <van-button
@@ -54,7 +53,7 @@
 </template>
 
 <script>
-import { toWithdrawal } from "../../api/myTeam/index";
+import { applyForCommission } from "../../api/myTeam/index";
 import Notify from "../../../static/vant/notify/notify";
 
 export default {
@@ -72,34 +71,25 @@ export default {
   components: {},
   methods: {
     withdrawChange(val) {
-      this.teamData.withdraw = val.mp.detail;
+      this.teamData.amount = val.mp.detail;
     },
-    nameChange(val) {
-      this.teamData.name = val.mp.detail;
-    },
-    mobileChange(val) {
-      this.teamData.mobile = val.mp.detail;
-    },
-    wechatAccountChange(val) {
-      this.teamData.wechatAccount = val.mp.detail;
-    },
+    // nameChange(val) {
+    //   this.teamData.name = val.mp.detail;
+    // },
+    // mobileChange(val) {
+    //   this.teamData.mobile = val.mp.detail;
+    // },
+    // wechatAccountChange(val) {
+    //   this.teamData.wechatAccount = val.mp.detail;
+    // },
 
     submitData() {
-      if (
-        this.teamData.withdraw &&
-        this.teamData.name &&
-        this.teamData.mobile &&
-        this.teamData.wechatAccount &&
-        this.teamData.withdraw >= 0 &&
-		this.teamData.mobile.length==11
-      ) {
+      let patrn = /^\d+(\.\d+)?$/;
+      if (patrn.test(this.teamData.amount)) {
         let params = {
-          withdraw: this.teamData.withdraw,
-          name: this.teamData.name,
-          mobile: this.teamData.mobile,
-          wechatAccount: this.teamData.wechatAccount
+          amount: this.teamData.amount
         };
-        toWithdrawal(params).then(res => {
+        applyForCommission(params).then(res => {
           if (res.data.code == 200) {
             wx.showToast({
               title: "申请成功",
@@ -116,7 +106,7 @@ export default {
           }
         });
       } else {
-        Notify("请填写完整信息且微信号不能为汉字及特殊字符,手机号为11位");
+        Notify("请填写正确金额!");
       }
     }
   },

@@ -66,10 +66,23 @@ export const udpateCaptain = params => {
 };
 
 // 佣金记录列表
-export const getCommissonRecordPage = params => {
+export const getMemRelationshipRecordingByMemberId = params => {
   let data = querystring.encode(params);
   return fly.request({
-    url: `/shop/froCaptain/getCommissonRecordPage`,
+    url: `/basic/memRelationshipRecording/getMemRelationshipRecordingByMemberId`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};
+
+// 用户提现记录
+export const getMemWithdrawRecordingByMemberId = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `/basic/memRelationshipRecording/getMemWithdrawRecordingByMemberId`,
     method: "post",
     body: data,
     headers: {
@@ -79,13 +92,14 @@ export const getCommissonRecordPage = params => {
 };
 
 // 提现
-export const toWithdrawal = params => {
+export const applyForCommission = params => {
+  let data = querystring.encode(params);
   return fly.request({
-    url: `/shop/withdraw/toWithdrawal`,
+    url: `/basic/memRelationshipRecording/applyForCommission`,
     method: "post",
-    body: params,
+    body: data,
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/x-www-form-urlencoded"
     },
   });
 };

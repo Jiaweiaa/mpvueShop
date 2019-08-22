@@ -6,7 +6,7 @@
 		   <p>¥&nbsp;{{teamData.commission}}</p>
 	     </div>
 	    <div class="noMoney">
-		    <p>未到账佣金</p>
+		    <p>到账佣金</p>
 		    <p>¥&nbsp;{{teamData.undrawnCommission}}</p>
 	    </div>
 	    <van-button style="position: absolute; right: 20px; bottom: 50px;" size="small" @click="getWithdraw" custom-class="btnClass" round plain type="default">申请提现</van-button>
@@ -21,7 +21,7 @@
 					  <div>
 						  <div class="item" v-for="(item, index) in listData" :key="index">
 							  <div class="box">
-								  <div class="title">{{item.commissionType == 3 ? '提现佣金' : '到账佣金'}}</div>
+								  <div class="title">{{item.type == 1 ? '到账佣金' : '未到账佣金'}}</div>
 								  <div class="money">￥{{item.commission}}</div>
 								  <div class="date">{{item.createTime}}</div>
 							  </div>
@@ -36,7 +36,7 @@
 					  </div>
 				  </div>
 			  </van-tab>
-			  <van-tab title="未到账佣金">
+			  <van-tab title="提现记录">
 				  <div class="noData" v-if="listData <= 0">
 					  没有数据啦～
 				  </div>
@@ -44,8 +44,8 @@
 					  <div>
 						  <div class="item" v-for="(item, index) in listData" :key="index">
 							  <div class="box">
-								  <div class="title">未到账佣金</div>
-								  <div class="money">￥{{item.commission}}</div>
+								  <div class="title">提现佣金<span style="font-size: 12px; margin-left: 5px; color: #ab5b5b;">{{item.status== 1 ? '提现中': '提现已到账'}}</span></div>
+								  <div class="money">￥{{item.amount}}</div>
 								  <div class="date">{{item.createTime}}</div>
 							  </div>
 						  </div>
@@ -67,7 +67,8 @@
 <script>
   import {
     myDetile,
-    getCommissonRecordPage
+    getMemRelationshipRecordingByMemberId,
+    getMemWithdrawRecordingByMemberId
   } from "../../api/myTeam/index";
   export default {
     onShow() {
@@ -78,7 +79,8 @@
       return {
         teamData: {},
 	      listData: [],
-        commissionType: 1,
+	      first: true,
+        commissionType: '',
         allCount: 0,
         pageNum: 1,
         loading: false
@@ -96,9 +98,9 @@
         wx.hideLoading();
       } else {
         this.pageNum++;
-        const res = await getCommissonRecordPage({
+        const res = await this.commissionType({
           pageNum: this.pageNum,
-          commissionType: this.commissionType
+	        pageSize: 10
         });
         if (res.data.code == 200) {
           this.loading = false;
@@ -126,11 +128,14 @@
       },
       // 获取数据
       async getData() {
+        if(this.first)   this.commissionType = getMemRelationshipRecordingByMemberId;
+        this.first = false;
         wx.showLoading({
           title: "加载中"
         });
-        let data = await getCommissonRecordPage({
-          commissionType: this.commissionType
+        let data = await this.commissionType({
+	        pageNum: 1,
+	        pageSize: 10
         });
         this.listData = data.data.result.records;
         this.allCount = data.data.result.total;
@@ -146,9 +151,9 @@
 	    // tab 切换
       tabChange(val) {
 	      if(val.mp.detail.index == 0) {
-	        this.commissionType = 1;
+	        this.commissionType = getMemRelationshipRecordingByMemberId;
 	      }else {
-	        this.commissionType = 0;
+	        this.commissionType = getMemWithdrawRecordingByMemberId;
 	      }
 	      this.pageNum = 1;
 	      this.getData();
