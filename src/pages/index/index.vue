@@ -2,7 +2,7 @@
  * @Description: 首页模块
  * @Author: 董
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-22 09:29:03
+ * @LastEditTime: 2019-08-26 14:51:21
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -15,7 +15,7 @@
           <div class="address">提货位置:{{captainInfo.deliveryAddress}}</div>
         </div>
         <div class="title">{{cityName}}</div>
-      </div> -->
+      </div>-->
       <div @click="toSearch" class="search_bar">
         <input type="text" placeholder="搜索您要的商品" disabled placeholder-class="phcolor" />
         <span class="icon"></span>
@@ -82,29 +82,30 @@
                 <span class="remain">仅剩{{good.totalStock}}份</span>
               </div>
             </div>
-          </van-card> -->
-          <div class="good-card" 
-          v-for="(good, goodIndex) in item.goodsList"
-          :key="goodIndex"
-          @click="goodsDetail(good)">
+          </van-card>-->
+          <div
+            class="good-card"
+            v-for="(good, goodIndex) in item.goodsList"
+            :key="goodIndex"
+            @click="goodsDetail(good)"
+          >
             <div class="thumb">
-              <img :src="'http://qn.gaoshanmall.cn/' + good.img" alt="">
+              <img :src="'http://qn.gaoshanmall.cn/' + good.img" alt />
             </div>
             <div class="desc">
-              <div class="title">
-                {{good.name}}
-              </div>
+              <div class="title">{{good.name}}</div>
               <div class="origin-price">
-                
-                市场价:￥<span>{{good.salePrice}}</span>
+                市场价:￥
+                <span>{{good.salePrice}}</span>
               </div>
               <div class="price">
-                <img src="/static/images/list_price.png" alt="">
+                <img src="/static/images/list_price.png" alt />
                 ￥ {{good.listPrice}}
               </div>
               <div class="vip" v-if="good.mixCashPrice &&good.mixScorePrice">
-                <img src="/static/images/vip_price.png" alt="">
-                <span v-if="good.mixCashPrice">￥ {{good.mixCashPrice}}</span>  <span v-if="good.mixScorePrice">+{{good.mixScorePrice}}补贴金</span>
+                <img src="/static/images/vip_price.png" alt />
+                <span v-if="good.mixCashPrice">￥ {{good.mixCashPrice}}</span>
+                <span v-if="good.mixScorePrice">+{{good.mixScorePrice}}补贴金</span>
               </div>
             </div>
           </div>
@@ -156,8 +157,7 @@ import { getIndexItem, getcoupon } from "../../api/index/index";
 import { mapState, mapMutations } from "vuex";
 import { shoppingcartCount } from "../../api/shoppingcart/index";
 import Notify from "../../../static/vant/notify/notify";
-import cityArr from "../../assets/data/city"
-
+import cityArr from "../../assets/data/city";
 export default {
   onPullDownRefresh: function() {
     this.brandList = [];
@@ -182,7 +182,8 @@ export default {
     this.getCartGoodsNum();
   },
   onShow() {
-    console.log(cityArr);
+    
+  
     this.getCartGoodsNum();
     // if (wx.getStorageSync("data")) {
     //   this.captainInfo = Object.assign({}, wx.getStorageSync("data"));

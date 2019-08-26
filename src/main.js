@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-22 16:04:26
+ * @LastEditTime: 2019-08-26 15:08:19
  * @LastEditors: Please set LastEditors
  */
 import Vue from "vue";
@@ -25,6 +25,9 @@ Vue.prototype.$store = store;
 Vue.config.productionTip = false;
 App.mpType = "app";
 
+wx.cloud.init({
+  traceUser: true
+})
 const app = new Vue(App);
 app.$mount();
 
