@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-23 15:30:03
+ * @LastEditTime: 2019-08-26 11:44:11
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="my">
     <van-notify id="custom-selector" />
@@ -262,19 +269,19 @@ export default {
 
     // 团长订单
     toCode() {
-      showQRCodeToScan()
-      .then(res => {
-        if (res.data.code == "200") {
+      // showQRCodeToScan()
+      // .then(res => {
+      //   if (res.data.code == "200") {
           wx.navigateTo({
             url: "/pages/distribution/main"
           });
-        }else {
-          Toast(res.data.message);
-          }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+      //   }else {
+      //     Toast(res.data.message);
+      //     }
+      // })
+      // .catch(err => {
+      //   console.log(err);
+      // });
     
     }
   },

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 16:55:19
- * @LastEditTime: 2019-08-19 14:06:54
+ * @LastEditTime: 2019-08-26 11:46:22
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -27,7 +27,7 @@ export default {
     return {
       memberInfo: {},
       parentMemberInfo: null,
-      memRelationship:null,//级别关系对象
+      memRelationship: null, //级别关系对象
       qrCode: "",
 
       btnLoading: false
@@ -46,17 +46,28 @@ export default {
       });
     },
     getData() {
-      let params = {};
-      showQRCodeToScan(params)
-        .then(res => {
-          if (res.data.code == "200") {
-            this.qrCode = res.data.result.qrCode;
-            console.log(res);
+      wx.login({
+        success: res => {
+          // console.log(111);
+          if (res.code) {
+            console.log(res,'456');
+            let params = {
+              code: res.code
+            };
+            showQRCodeToScan(params)
+              .then(res => {
+                if (res.data.code == "200") {
+                  this.qrCode = res.data.result;
+                  console.log(res);
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          } else {
           }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        }
+      });
     }
   },
   computed: {}
