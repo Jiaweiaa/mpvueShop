@@ -2,7 +2,7 @@
  * @Description: 首页模块
  * @Author: 董
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-26 14:51:21
+ * @LastEditTime: 2019-08-26 17:40:26
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -43,7 +43,9 @@
         </swiper>
       </div>
     </div>
-
+    <!-- <div>
+      <img :src="qrCode" style="width:200rpx;height:200rpx;" alt="">
+    </div> -->
     <div class="channel">
       <div
         @click="toCategoryList(item.categoryId, item.name)"
@@ -182,8 +184,17 @@ export default {
     this.getCartGoodsNum();
   },
   onShow() {
+    wx.cloud
+      .callFunction({ name: "getQrCode" })
+      .then(res => {
+        // console.log(res,'888');
+      this.qrCode= 'data:image/png;base64,'+wx.arrayBufferToBase64(res.result.buffer.data);
+        
     
-  
+      })
+     
+      .catch(err => console.error(err,'567'));
+
     this.getCartGoodsNum();
     // if (wx.getStorageSync("data")) {
     //   this.captainInfo = Object.assign({}, wx.getStorageSync("data"));
@@ -210,7 +221,8 @@ export default {
       topicList: [],
       newCategoryList: [],
       channelList: [],
-      captainInfo: null
+      captainInfo: null,
+      qrCode:""
     };
   },
   methods: {
