@@ -100,10 +100,10 @@
     // background-position-y: -100rpx;
     background-size: contain;
     padding-top: 103rpx;
-    height: 300rpx;
+    height: 248rpx;
     .swiper {
-      width: 710rpx;
-      height: 310rpx;
+      width: 660rpx;
+      height: 248rpx;
 
       border-radius: 20rpx;
 
@@ -125,24 +125,25 @@
 
   .channel {
     width: 100%;
-    padding: 20rpx 0;
+    // padding: 20rpx 0;
     background: #ffffff;
     overflow: hidden;
-    margin-top: 30rpx;
+    // margin-top: 30rpx;
     div {
       width: calc(20%);
       text-align: center;
       float: left;
+      margin-top:30rpx;
       // padding: 5px;
       img {
         height: 120rpx;
-        width: 150rpx;
+        width: 100%;
         display: inline-block;
-        padding-bottom: 3rpx;
+        padding-bottom: 4rpx;
       }
       p {
-        font-size: 25rpx;
-        color: #999;
+        font-size: 24rpx;
+        color: rgb(102, 102, 102);
         border-left: none;
       }
     }
@@ -154,10 +155,11 @@
     background: #ffffff;
 
     .head {
-      text-align: center;
-      padding: 40rpx 0;
-      font-size: 35rpx;
-      font-weight: 600;
+      text-align: left;
+      padding: 24rpx;
+      font-size: 36rpx;
+      // font-weight: 600;
+      color: rgb(51, 51, 51);
     }
 
     .content {
@@ -390,8 +392,10 @@
     padding: 0 10rpx 25rpx 10rpx;
 
     .head {
-      padding: 25rpx 0;
-      text-align: center;
+      padding:24rpx;
+      text-align: left;
+      font-size: 36rpx;
+      color: rgb(51, 51, 51);
     }
 
     .sublist {
