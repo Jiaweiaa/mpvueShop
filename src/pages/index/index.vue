@@ -2,8 +2,8 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-26 15:32:51
- * @LastEditTime: 2019-08-26 15:32:51
- * @LastEditors: your name
+ * @LastEditTime: 2019-08-26 18:00:24
+ * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="index_home">
@@ -162,9 +162,9 @@ export default {
     if (wx.getStorageSync("data")) {
       this.captainInfo = Object.assign({}, wx.getStorageSync("data"));
     } else {
-      wx.navigateTo({
-        url: "/pages/mappage/main"
-      });
+      // wx.navigateTo({
+      //   url: "/pages/mappage/main"
+      // });
     }
   },
   onShareAppMessage(res) {
