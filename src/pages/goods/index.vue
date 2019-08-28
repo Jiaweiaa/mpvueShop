@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-22 09:03:03
+ * @LastEditTime: 2019-08-27 18:07:01
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -26,11 +26,9 @@
     <div class="price-bg" v-if="goodsInfo!=null">
       <!-- <p class="mixPrice">组合支付价格:￥{{mixCashPrice}}+补贴金{{mixScorePrice}}</p> -->
       <p class="salePrice">
-        <!-- 补贴金价:{{scorePrice}} -->
         组合价格:￥{{mixCashPrice}}+补贴金{{mixScorePrice}}
-        <!-- <span class="tag">优惠促销</span> -->
       </p>
-      <p class="listPrice">价格￥{{listPrice}}</p>
+      <p class="listPrice">商城价 ￥{{listPrice}}</p>
       <div class="countDown" v-if="timeFlag">
         <p v-if="havaTimeFlag&&!textFlag" class="title">距结束仅剩</p>
         <div class="time" v-if="havaTimeFlag&&!textFlag">
@@ -44,7 +42,7 @@
     </div>
     <div class="goods-info">
       <div class="c">
-        <button class="share" hover-class="none" open-type="share" value>分 享</button>
+        <button class="share" hover-class="none" open-type="share" value></button>
         <p class="title">{{goodsInfo.title}}</p>
         <p class="sketch" v-if="arrivalTime!=''">现在下单,预计{{arrivalTime}}送到</p>
         <div class="tags" v-if="goodsInfo!=null">
@@ -169,8 +167,8 @@
     <div class="bottom-fixed">
       <div @click="toIndex()" class="home">
         <div class="car">
-          <img src="/static/images/bt_home_active.png" />
-          <span class="text">首页</span>
+          <img src="/static/images/good_home.png" />
+          <span class="text" style="color:rgb(102,102,102);margin-left:-4rpx;">首页</span>
         </div>
       </div>
       <!-- <div @click="collect">
@@ -179,8 +177,8 @@
       <div @click="toCart" class="cart">
         <div class="car">
           <span>{{allnumber}}</span>
-          <img src="/static/images/bt_cart_active.png" />
-          <p class="text">购物车</p>
+          <img src="/static/images/good_cart.png" />
+          <p class="text" style="color:rgb(102,102,102);">购物车</p>
         </div>
       </div>
       <div class="btn-group">
@@ -704,7 +702,7 @@ export default {
     async goodsDetail() {
       getGoodsDetail({
         itemId: this.id
-        // itemId: 503
+        // itemId: 979
       })
         .then(res => {
           if (res.data.code == "200") {

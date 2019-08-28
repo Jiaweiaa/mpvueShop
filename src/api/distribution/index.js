@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-23 15:30:03
- * @LastEditTime: 2019-08-26 11:45:32
+ * @LastEditTime: 2019-08-27 16:57:36
  * @LastEditors: Please set LastEditors
  */
 import fly from '../request';
@@ -20,7 +20,18 @@ export const showQRCodeToScan = params => {
     },
   });
 };
-
+//更新用户小程序码
+export const updateQrCode = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `/basic/memRelationShip/updateQrCode`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};
 
 // 绑定上级
 export const scanQrCode = params => {

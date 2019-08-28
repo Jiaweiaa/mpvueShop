@@ -2,19 +2,17 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-07 16:25:00
- * @LastEditTime: 2019-08-14 16:42:36
+ * @LastEditTime: 2019-08-27 14:00:50
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="category">
     <div class="search" @click="tosearch">
       <div class="ser">
-        <span class="text">请输入搜索的商品</span>
         <div class="icon_group">
           <span class="icon"></span>
         </div>
-        
-        
+        <span class="text">搜索你想要的商品</span>
       </div>
     </div>
     <div class="content">
@@ -35,7 +33,6 @@
           <div v-for="(item,index) in detailData.nodes" :key="index" style="width: 100%;">
             <div class="title">
               <span>{{item.name}}</span>
-              <span>查看全部 ></span>
             </div>
             <div
               @click="categoryList(childItem.id, childItem.name)"

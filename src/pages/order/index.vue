@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-21 09:17:36
- * @LastEditTime: 2019-08-21 15:23:20
+ * @LastEditTime: 2019-08-28 09:42:19
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -100,9 +100,7 @@
           <div>优惠券</div>
           <div v-show="store.canBeAppliedCoupons==null">暂无可用</div>
           <div v-show="store.canBeAppliedCoupons!=null">
-            <div
-              @click=" getCouponList(store)"
-            >{{store.selectCouponName}}</div>
+            <div @click=" getCouponList(store)">{{store.selectCouponName}}</div>
           </div>
         </div>
       </div>
@@ -269,6 +267,18 @@ export default {
       ShopCartOrderconfirm(params)
         .then(res => {
           if (res.data.code == "200") {
+            if (!res.data.result.canScorePayFlag) {
+              this.payOption = [
+                {
+                  name: "微信",
+                  value: 4
+                },
+                {
+                  name: "微信+补贴金",
+                  value: 13
+                }
+              ];
+            }
             if (res.data.result.errorFlag === false) {
               return wx.showToast({
                 title: res.data.result.errorMap.errorMsg,
@@ -354,6 +364,19 @@ export default {
       detailOrderconfirm(params)
         .then(res => {
           if (res.data.code == "200") {
+            if (!res.data.result.canScorePayFlag) {
+              this.payOption = [
+                {
+                  name: "微信+补贴金",
+                  value: 13
+                },
+                {
+                  name: "微信",
+                  value: 4
+                }
+                
+              ];
+            }
             if (res.data.result.errorFlag === false) {
               return wx.showToast({
                 title: res.data.result.errorMap.errorMsg,
@@ -475,18 +498,19 @@ export default {
       paySheetShow: false,
       payOption: [
         {
-          name: "微信",
-          value: 4
-        },
-        
-        {
-          name: "补贴金",
-          value: 12
-        },
-        {
           name: "微信+补贴金",
           value: 13
         },
+        {
+          name: "微信",
+          value: 4
+        },
+
+        {
+          name: "补贴金",
+          value: 12
+        }
+        
       ],
       //  联盟券
       scoreAmount: 0,
@@ -504,7 +528,7 @@ export default {
       orderLines: null,
       from: "", //从哪个入口进入的下单页面
       params: null, //获取下单所需要的参数
-      storeId: "", //店铺ID 从购物车进入此页面时需要用到
+      storeId: "" //店铺ID 从购物车进入此页面时需要用到
       // captainId: "" //团长ID
     };
   },
@@ -634,9 +658,9 @@ export default {
           });
       }
     },
-    closeCoupon(){
+    closeCoupon() {
       console.log(888);
-        this.couponShow = false;
+      this.couponShow = false;
     },
     //取消使用优惠券列表
     onCouponClose(selectShop) {
@@ -785,7 +809,7 @@ export default {
           params.buyType = "N";
         }
 
-        let orderTab = 1;  //正常下单 orderTab为1
+        let orderTab = 1; //正常下单 orderTab为1
 
         //创建订单方法 成功则调用    captainID
         //如果存在收货地址 则可以下单 否则让用户选择收货地址
@@ -848,7 +872,10 @@ export default {
                         url: "/pages/myOrder/main?id=2"
                       });
                     });
-                } else if (params.paymentType == 4 || params.paymentType == 13) {
+                } else if (
+                  params.paymentType == 4 ||
+                  params.paymentType == 13
+                ) {
                   //4是调用微信支付
                   toPay(params)
                     .then(res => {
@@ -857,7 +884,7 @@ export default {
                         let params = {
                           subOrdinate: res.data.result.subOrdinate,
                           deviceType: 2,
-                          orderTab:1,
+                          orderTab: 1
                         };
                         let url = `/trade${res.data.result.redirectUrl}`;
                         let querystring = require("querystring");

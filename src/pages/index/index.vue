@@ -2,7 +2,7 @@
  * @Description: 首页模块
  * @Author: 董
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-26 17:40:26
+ * @LastEditTime: 2019-08-28 09:37:11
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -45,7 +45,7 @@
     </div>
     <!-- <div>
       <img :src="qrCode" style="width:200rpx;height:200rpx;" alt="">
-    </div> -->
+    </div>-->
     <div class="channel">
       <div
         @click="toCategoryList(item.categoryId, item.name)"
@@ -60,31 +60,6 @@
       <div class="list" v-for="(item, index) in newCategoryList" :key="item.id">
         <div class="head" v-if="item.goodsList&&item.goodsList.length>0">{{item.name}}</div>
         <div v-if="item.name !== '优惠券'" class="sublist">
-          <!-- <van-card
-            :lazy-load="true"
-            :price="good.listPrice"
-            :origin-price="good.salePrice"
-            :title="good.name"
-            custom-class="goods-card"
-            thumb-class="goods-image"
-            origin-price-class="goods-origin-price"
-            price-class="goods-price"
-            title-class="goods-title"
-            desc-class="goods-desc"
-            v-for="(good, goodIndex) in item.goodsList"
-            :key="goodIndex"
-            @click="goodsDetail(good)"
-            :thumb="'http://qn.gaoshanmall.cn/' + good.img"
-          >
-            <div slot="desc" class="goods-bottom">
-              <div class="sketch">{{good.sketch==null?'':good.sketch}}</div>
-              <div class="hot">热销中</div>
-              <div class="sale">
-                <span class="sold">已售{{good.saleCount}}份</span>
-                <span class="remain">仅剩{{good.totalStock}}份</span>
-              </div>
-            </div>
-          </van-card>-->
           <div
             class="good-card"
             v-for="(good, goodIndex) in item.goodsList"
@@ -96,18 +71,18 @@
             </div>
             <div class="desc">
               <div class="title">{{good.name}}</div>
-              <div class="origin-price">
-                市场价:￥
-                <span>{{good.salePrice}}</span>
+              <div class="vip" v-if="good.mixCashPrice &&good.mixScorePrice">
+                <img src="/static/images/vip_price.png" alt />
+                <span v-if="good.mixCashPrice" class="span1">￥{{good.mixCashPrice}}</span>
+                <span v-if="good.mixScorePrice" class="span2">+{{good.mixScorePrice}}补贴金</span>
               </div>
               <div class="price">
                 <img src="/static/images/list_price.png" alt />
-                ￥ {{good.listPrice}}
+                ￥{{good.listPrice}}
               </div>
-              <div class="vip" v-if="good.mixCashPrice &&good.mixScorePrice">
-                <img src="/static/images/vip_price.png" alt />
-                <span v-if="good.mixCashPrice">￥ {{good.mixCashPrice}}</span>
-                <span v-if="good.mixScorePrice">+{{good.mixScorePrice}}补贴金</span>
+              <div class="origin-price">
+                市场价:￥
+                <span>{{good.salePrice}}</span>
               </div>
             </div>
           </div>
@@ -158,6 +133,7 @@ import amapFile from "../../utils/amap-wx";
 import { getIndexItem, getcoupon } from "../../api/index/index";
 import { mapState, mapMutations } from "vuex";
 import { shoppingcartCount } from "../../api/shoppingcart/index";
+import { scanQrCode, showQRCodeToScan } from "../../api/distribution/index";
 import Notify from "../../../static/vant/notify/notify";
 import cityArr from "../../assets/data/city";
 export default {
@@ -167,13 +143,6 @@ export default {
     this.hotGoods = [];
     this.newCategoryList = [];
     this.getCartGoodsNum();
-    if (wx.getStorageSync("data")) {
-      this.captainInfo = Object.assign({}, wx.getStorageSync("data"));
-    } else {
-      wx.navigateTo({
-        url: "/pages/mappage/main"
-      });
-    }
     this.getData();
     //刷新完成后关闭
     wx.stopPullDownRefresh();
@@ -183,17 +152,30 @@ export default {
     this.getData();
     this.getCartGoodsNum();
   },
-  onShow() {
-    wx.cloud
-      .callFunction({ name: "getQrCode" })
-      .then(res => {
-        // console.log(res,'888');
-      this.qrCode= 'data:image/png;base64,'+wx.arrayBufferToBase64(res.result.buffer.data);
-        
+  onLoad:function(options){
+    console.log(options,'看这里看这里');
+    //如果是通过工作人员分享的小程序码进入,则有推荐人id 
+    if(options.memberId){
+      wx.setStorageSync("parentMemberId", decodeURIComponent(options.memberId));
+    }
     
-      })
-     
-      .catch(err => console.error(err,'567'));
+  },
+  onShow() {
+    if (wx.getStorageSync("haveLogin") && wx.getStorageSync("parentMemberId")) {
+      let flag = wx.getStorageSync("haveLogin");
+      if (flag) {
+        let params = {
+          parentMemberId: wx.getStorageSync("parentMemberId")
+        };
+        scanQrCode(params)
+          .then(res => {
+            if (res.data.code == 200) {
+              wx.setStorageSync("haveLogin", false);
+            }
+          })
+          .catch(err => {});
+      }
+    }
 
     this.getCartGoodsNum();
     // if (wx.getStorageSync("data")) {
@@ -222,7 +204,7 @@ export default {
       newCategoryList: [],
       channelList: [],
       captainInfo: null,
-      qrCode:""
+      qrCode: ""
     };
   },
   methods: {

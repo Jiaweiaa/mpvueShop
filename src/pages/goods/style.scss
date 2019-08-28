@@ -3,7 +3,7 @@
     background: linear-gradient(70deg, $buy-btn, $main-color);
     border: none;
   }
-  
+
   overflow: hidden;
   margin-bottom: 120rpx;
   padding-bottom: 120rpx;
@@ -47,31 +47,29 @@
   //价格
   .price-bg {
     width: 100%;
-    height: 120rpx;
-    background: #5c49ab;
+    height: 98rpx;
+    background: url("../../../static/images/good_price_bg.png");
+    background-size: cover;
     position: relative;
-    .mixPrice{
+    .mixPrice {
       padding-left: 32rpx;
       font-size: 48rpx;
       color: #fff;
     }
-    .listPrice {
-      padding-left: 34rpx;
-      font-size: 28rpx;
-      color: #fff;
-      text-decoration: line-through;
-    }
+
     .salePrice {
-      padding-left: 32rpx;
-      font-size: 39rpx;
+      // margin-top: 10rpx;
+      padding-top: 13rpx;
+      padding-left: 30rpx;
+      font-size: 30rpx;
+      color: rgb(217, 192, 126);
+    }
+    .listPrice {
+      padding-left: 30rpx;
+      font-size: 22rpx;
       color: #fff;
-      .tag {
-        padding: 5rpx;
-        background: #fff;
-        color: #5c49ab;
-        font-size: 20rpx;
-        border-radius: 10rpx;
-      }
+      margin-top: 6rpx;
+      // text-decoration: line-through;
     }
     .countDown {
       position: absolute;
@@ -110,31 +108,31 @@
   //商品信息
   .goods-info {
     width: 100%;
-    min-height: 156rpx;
+    min-height: 142rpx;
     background: #fff;
     margin: 0 auto;
     border-bottom: 1rpx solid #f4f4f4;
-    margin-bottom: 20rpx;
+    margin-bottom: 24rpx;
     .c {
       position: relative;
       height: 100%;
       .share {
+        width: 30rpx;
+        height: 30rpx;
+        // padding: 5rpx;
+        background: url("../../../static/images/share.png") no-repeat;
+        background-size:contain;
+        padding: 0 14rpx!important;
         position: absolute;
-        border-radius: 50%;
-        width: 80rpx;
-        height: 80rpx;
-        line-height: 80rpx;
-        text-align: center;
-        right: 10rpx;
-        top: 5rpx;
-        background: #e0a354;
-        color: #fff;
-        font-size: 24rpx;
+        right: 8rpx;
+        top: 35rpx;
       }
       .title {
         font-size: 36rpx;
-        padding: 5rpx 40rpx;
-        font-weight: 600;
+        // padding: 5rpx 40rpx;
+        padding-top: 30rpx;
+        padding-left: 24rpx;
+        // font-weight: 600;
         color: #000;
         width: 500rpx;
         // min-height: 75rpx;
@@ -143,10 +141,12 @@
         white-space: nowrap;
       }
       .tags {
-        padding: 5rpx 40rpx;
+        padding-top: 14rpx;
+        padding-bottom: 30rpx;
+        padding-left: 24rpx;
         .item {
           color: $tag-color;
-          padding: 5rpx;
+          padding: 10rpx;
           margin-right: 5rpx;
           font-size: 22rpx;
           border: 1px solid $tag-color;
@@ -547,14 +547,14 @@
     left: 0;
     right: 0;
     width: 750rpx;
-    height: 100rpx;
+    height: 112rpx;
     display: flex;
     background: #fff;
     z-index: 10;
     .home {
       margin-top: -10rpx;
       height: 100rpx;
-      width: 138rpx;
+      width: 158rpx;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -584,7 +584,7 @@
     .cart {
       margin-top: -10rpx;
       height: 100rpx;
-      width: 138rpx;
+      width: 158rpx;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -612,8 +612,8 @@
 
         img {
           display: block;
-          height: 40rpx;
-          width: 40rpx;
+          height: 46rpx;
+          width: 46rpx;
           position: absolute;
           top: 10rpx;
           left: 10rpx;
@@ -621,7 +621,7 @@
         .text {
           position: absolute;
           bottom: -28rpx;
-
+          
           right: 14rpx;
 
           font-size: 24rpx;
@@ -629,30 +629,27 @@
       }
     }
     .btn-group {
-      border-radius: 40rpx;
       overflow: hidden;
-      width: 430rpx;
-      height: 70rpx;
-      margin: auto;
-      margin-right: 17rpx;
+      width: 468rpx;
+      height: 100%;
+      // margin: auto;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding-left: -5rpx;
+      // padding-left: -5rpx;
       .addCart {
-        width: 215rpx;
-
+        width: 234rpx;
         background: $main-color;
         float: left;
-        height: 70rpx;
-        line-height: 70rpx;
+        height: 100%;
+        line-height: 112rpx;
         text-align: center;
         color: #fff;
       }
       .buyNow {
-        width: 215rpx;
-        height: 70rpx;
-        line-height: 70rpx;
+        width: 234rpx;
+        height: 100%;
+        line-height: 112rpx;
         text-align: center;
         background: $buy-btn;
         color: #fff;

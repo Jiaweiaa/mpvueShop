@@ -60,10 +60,6 @@ export default {
     })
     this.LetterCity=LetterCity;
     console.log(LetterCity,'666');
- 
-    
- 
- 
   },
   methods: {
     scrolltolower(){

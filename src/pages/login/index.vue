@@ -1,8 +1,15 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-27 09:42:56
+ * @LastEditTime: 2019-08-27 18:00:45
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="login" v-if="signFlag">
     <div class="logo">
       <!-- 百团 -->
-      <img src="/static/images/baituan_logo.jpeg" alt="">
+      <img src="/static/images/baituan_logo.jpeg" alt />
       <!-- 时刻 -->
       <!-- <img src="/static/images/gaoshan_logo.png" alt=""> -->
     </div>
@@ -18,7 +25,7 @@
         @change="mobileChange"
       >
         <van-button slot="button" size="small" type="primary" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取本机号码</van-button>
-      </van-field> -->
+      </van-field>-->
     </van-cell-group>
     <!-- <p class="join">欢迎加入时刻益每家!轻松购!乐享购!</p> -->
     <button class="login-btn" open-type="getUserInfo" lang="zh_CN" @getuserinfo="signIn">点击授权</button>
@@ -47,26 +54,24 @@ export default {
   },
   components: {},
   methods: {
-    getPhoneNumber (e) {
-      let params = Object.assign({},e.mp.detail);
+    getPhoneNumber(e) {
+      let params = Object.assign({}, e.mp.detail);
       // console.log(e);
       wx.login({
         success: res => {
-          console.log(res,777);
           params.session_key = res.session_key;
-          getPhoneNumber(params).then((res) => {
-          console.log(res.data);
-            }).catch((err) => {
-            
-          });
+          getPhoneNumber(params)
+            .then(res => {
+              console.log(res.data);
+            })
+            .catch(err => {});
         }
-      })
-      
-      
-    // console.log(e.detail.errMsg)
-    // console.log(e.detail.iv)
-    // console.log(e.detail.encryptedData)
-  },
+      });
+
+      // console.log(e.detail.errMsg)
+      // console.log(e.detail.iv)
+      // console.log(e.detail.encryptedData)
+    },
     //手机号改变 赋值给本地变量
     mobileChange(mp) {
       this.mobile = mp.mp.detail;
@@ -74,7 +79,7 @@ export default {
     //根据code调取登录接口获取openid 如果用户已注册 则同时返回用户信息
     doLogin() {
       wx.showLoading({
-        title: '加载中'
+        title: "加载中"
       });
       wx.login({
         success: res => {
@@ -90,11 +95,24 @@ export default {
                   this.openId = res.data.result;
                   this.signFlag = true;
                 } else if (res.data.code == "200") {
+                  wx.setStorageSync("haveLogin", true); //用户已登录标识
+                  if (
+                    wx.getStorageSync("parentMemberId") &&
+                    wx.getStorageSync("parentMemberId") != ""
+                  ) {
+                    let params = {
+                      parentMemberId: wx.getStorageSync("parentMemberId")
+                    };
+                    scanQrCode(params)
+                      .then(res => {
+                        if (res.data.code == 200) {
+                          wx.setStorageSync("haveLogin", false);
+                        }
+                      })
+                      .catch(err => {});
+                  }
                   wx.setStorageSync("userInfo", res.data.result.memberLoginVo);
-                  wx.setStorageSync(
-                    "tokenInfo",
-                    res.data.result.token
-                  );
+                  wx.setStorageSync("tokenInfo", res.data.result.token);
                   wx.navigateBack({
                     delta: 1
                   });
@@ -102,10 +120,7 @@ export default {
               })
               .catch(err => {
                 wx.hideLoading();
-                
               });
-            
-            
           } else {
             console.log("登录失败！" + res.errMsg);
           }
@@ -115,7 +130,7 @@ export default {
     //注册接口
     signIn(params) {
       wx.showLoading({
-        title: '加载中'
+        title: "加载中"
       });
       wx.getUserInfo({
         success: res => {
@@ -128,6 +143,22 @@ export default {
             .then(res => {
               wx.hideLoading();
               if (res.data.code == "200") {
+                wx.setStorageSync("haveLogin", true); //用户已登录标识
+                if (
+                    wx.getStorageSync("parentMemberId") &&
+                    wx.getStorageSync("parentMemberId") != ""
+                  ) {
+                    let params = {
+                      parentMemberId: wx.getStorageSync("parentMemberId")
+                    };
+                    scanQrCode(params)
+                      .then(res => {
+                        if (res.data.code == 200) {
+                          wx.setStorageSync("haveLogin", false);
+                        }
+                      })
+                      .catch(err => {});
+                  }
                 wx.setStorageSync("userInfo", res.data.result.memberLoginVo);
                 wx.setStorageSync("tokenInfo", res.data.result.token);
                 wx.navigateBack({

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 17:12:49
- * @LastEditTime: 2019-08-21 15:21:17
+ * @LastEditTime: 2019-08-27 14:48:36
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -18,14 +18,14 @@
         <img
           v-else
           style="width:130rpx;height:130rpx;border-raduis:50%;"
-          src="https://dwz.cn/N1nmqNcq"
+          src="http://webimg.gaoshanapp.com/my_avatar.png"
         />
       </div>
       <div class="user">
         <div class v-if="userInfo.nickname">
           <p>{{userInfo.nickname}}</p>
           <!-- <p>欢迎您,时刻益每家会员</p> -->
-          <p>欢迎您,易起省会员</p>
+          <p class="">欢迎您,易起省会员</p>
           <!-- <p>欢迎您,高山会员</p> -->
           <!-- <p style="color:#fff;">
             <span ></span>省
@@ -43,7 +43,7 @@
     <div class="myMenu boxMenu">
       <div class="title">
         <div class="navTitle">我的订单</div>
-        <div class="navBody" @click="goTo('/pages/myOrder/main')">查看全部订单></div>
+        <div class="navBody" @click="goTo('/pages/myOrder/main')">全部订单 ></div>
       </div>
       <div class="content">
         <div
@@ -125,13 +125,13 @@ export default {
         if (isRes.data.result.isSup == false) {
           this.moreService.push({
             title: "供应商招募",
-            icon: "user-o",
+            icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
             url: "/pages/beGive/main"
           });
         } else {
           this.moreService.push({
             title: "我是供应商",
-            icon: "friends-o",
+            icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
             url: "/pages/giver/main"
           });
         }
@@ -140,7 +140,7 @@ export default {
       this.moreService = [
         {
           title: "供应商招募",
-          icon: "user-o",
+          icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
           url: "/pages/beGive/main"
         }
       ];
@@ -176,12 +176,12 @@ export default {
         this.moreService.push(
           {
             title: "供应商招募",
-            icon: "user-o",
+            icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
             url: "/pages/beGive/main"
           },
           {
             title: "我的代理",
-            icon: "friends-o",
+            icon: "http://webimg.gaoshanapp.com/my_daili.png",
             url: "/pages/teamView/main"
           }
         );
@@ -189,12 +189,12 @@ export default {
         this.moreService.push(
           {
             title: "我是供应商",
-            icon: "friends-o",
+            icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
             url: "/pages/giver/main"
           },
           {
             title: "我的代理",
-            icon: "friends-o",
+            icon: "http://webimg.gaoshanapp.com/my_daili.png",
             url: "/pages/teamView/main"
           }
         );
@@ -204,12 +204,12 @@ export default {
       this.moreService = [
         {
           title: "供应商招募",
-          icon: "user-o",
+          icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
           url: "/pages/beGive/main"
         },
         {
           title: "我的代理",
-          icon: "gold-coin-o",
+          icon: "http://webimg.gaoshanapp.com/my_daili.png",
           url: "/pages/teamView/main"
         }
       ];
@@ -220,68 +220,68 @@ export default {
       orderMenu: [
         {
           title: "待支付",
-          icon: "pending-payment",
+          icon: "http://webimg.gaoshanapp.com/my_daizhifu.png",
           url: "/pages/myOrder/main?id=2"
         },
 
         {
           title: "待发货",
-          icon: "paid",
+          icon: "http://webimg.gaoshanapp.com/my_daifahuo.png",
           url: "/pages/myOrder/main?id=4"
         },
         {
           title: "待收货",
-          icon: "tosend",
+          icon: "http://webimg.gaoshanapp.com/my_daishouhuo.png",
           url: "/pages/myOrder/main?id=3"
         },
         {
           title: "已完成",
-          icon: "cash-on-deliver",
+          icon: "http://webimg.gaoshanapp.com/my_yiwancheng.png",
           url: "/pages/myOrder/main?id=5"
         },
         {
           title: "退/换货",
-          icon: "more-o",
+          icon: "http://webimg.gaoshanapp.com/my_tuihuan.png",
           url: "/pages/refundList/main"
         }
       ],
       myService: [
         {
           title: "优惠券",
-          icon: "balance-pay",
+          icon: "http://webimg.gaoshanapp.com/my_youhui.png",
           url: "/pages/coupon/main"
         },
         {
           title: "地址管理",
-          icon: "home-o",
+          icon: "http://webimg.gaoshanapp.com/my_address.png",
           url: "/pages/address/main"
         },
         {
           title: "补贴金",
-          icon: "after-sale",
+          icon: "http://webimg.gaoshanapp.com/my_butiejin.png",
           url: "/pages/integral/main"
         }
       ],
       moreService: [
         {
           title: "供应商招募",
-          icon: "user-o",
+          icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
           url: "/pages/beGive/main"
         },
         {
           title: "我是供应商",
-          icon: "friends-o",
+          icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
           url: "/pages/giver/main"
         },
         {
           title: "我的代理",
-          icon: "friends-o",
+          icon: "http://webimg.gaoshanapp.com/my_daili.png",
           url: "/pages/teamView/main"
         }
       ],
 
       avator:
-        "http://yanxuan.nosdn.127.net/8945ae63d940cc42406c3f67019c5cb6.png",
+        "http://webimg.gaoshanapp.com/my_avator.png",
       allcheck: false,
       Listids: [],
       userInfo: {}

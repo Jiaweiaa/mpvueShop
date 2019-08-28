@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 16:55:19
- * @LastEditTime: 2019-08-26 11:46:22
+ * @LastEditTime: 2019-08-27 18:13:33
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { showQRCodeToScan } from "../../api/distribution/index";
+import { showQRCodeToScan, updateQrCode } from "../../api/distribution/index";
 export default {
   data() {
     return {
@@ -46,28 +46,40 @@ export default {
       });
     },
     getData() {
-      wx.login({
-        success: res => {
-          // console.log(111);
-          if (res.code) {
-            console.log(res,'456');
-            let params = {
-              code: res.code
-            };
-            showQRCodeToScan(params)
-              .then(res => {
-                if (res.data.code == "200") {
-                  this.qrCode = res.data.result;
-                  console.log(res);
+      showQRCodeToScan()
+        .then(res => {
+          if (res.data.code == "200") {
+            this.qrCode = res.data.result;
+          } else if (res.data.code == "500") {
+            wx.cloud
+              .callFunction({
+                name: "getQrCode",
+                data: {
+                  memberId: wx.getStorageSync("userInfo").memberId,
+                  // memberId: 1146359099936837633
                 }
               })
-              .catch(err => {
-                console.log(err);
-              });
-          } else {
+              .then(res => {
+                if (res.result.buffer) {
+                  this.qrCode =
+                    "data:image/png;base64," +
+                    wx.arrayBufferToBase64(res.result.buffer.data);
+                  updateQrCode({
+                    qrCode:
+                      "data:image/png;base64," +
+                      wx.arrayBufferToBase64(res.result.buffer.data)
+                  })
+                    .then(res => {})
+                    .catch(err => {});
+                }
+              })
+
+              .catch(err => console.log(err, "567"));
           }
-        }
-      });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   computed: {}

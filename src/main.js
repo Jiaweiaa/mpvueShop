@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-26 15:08:19
+ * @LastEditTime: 2019-08-27 17:40:46
  * @LastEditors: Please set LastEditors
  */
 import Vue from "vue";
@@ -42,6 +42,9 @@ export default {
     },
     pages: [
       "^pages/index/main",
+      "pages/category/main",
+      "pages/my/main", // 我的
+      "pages/goods/main",
       "pages/citys/main",
       "pages/distribution/main",
       "pages/editUserInfo/main",
@@ -62,17 +65,17 @@ export default {
       "pages/returnGoodsMoney/main",
       "pages/teamView/main", //团长 我的主页
       "pages/search/main",
-      "pages/my/main", // 我的
+      
       "pages/login/main",
       "pages/refund/main",
       "pages/refundOrder/main",
       "pages/refundList/main", //退换货列表
-      "pages/category/main",
+      
       "pages/beTeam/main", // 成为团长
       "pages/beGive/main", // 成为供应商
       "pages/categorylist/main",
       "pages/topic/main",
-      "pages/goods/main",
+      
       "pages/record/main", //购买记录详情
       "pages/branddetail/main",
       "pages/brandlist/main", // 商品详情
@@ -110,22 +113,23 @@ export default {
           text: "首页"
         },
         {
-          pagePath: "pages/topic/main",
-          iconPath: "static/images/bt_zhuanti.png",
-          selectedIconPath: "static/images/bt_zhuanti_active.png",
-          text: "专题"
-        },
-        {
           pagePath: "pages/category/main",
           iconPath: "static/images/bt_fenlei.png",
           selectedIconPath: "static/images/bt_fenlei_active.png",
           text: "分类"
         },
         {
+          pagePath: "pages/topic/main",
+          iconPath: "static/images/bt_zhuanti.png",
+          selectedIconPath: "static/images/bt_zhuanti_active.png",
+          text: "发现"
+        },
+        
+        {
           pagePath: "pages/cart/main",
           iconPath: "static/images/bt_cart.png",
           selectedIconPath: "static/images/bt_cart_active.png",
-          text: "购物车"
+          text: " 购物车"
         },
         {
           pagePath: "pages/my/main",
