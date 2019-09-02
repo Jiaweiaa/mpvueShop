@@ -104,13 +104,7 @@ export default {
       userInfoForm: {
         gender: "",
         city: "",
-        address: "",
-        community: "",
-        deliveryAddress: "",
-        name: "",
-        mobile: "",
-        latitude: "",
-        longitude: ""
+        mobile: ""
       },
       btnLoading: false
     };
@@ -221,7 +215,7 @@ export default {
         this.userInfoForm.birthMonth = dateArr[1];
         this.userInfoForm.birthDay = dateArr[2];
       }
-
+      console.log(this.userInfoForm);
       for (let i in this.userInfoForm) {
         if (this.userInfoForm[i] == "") {
           Toast("请将信息填写完整不要有遗漏");
