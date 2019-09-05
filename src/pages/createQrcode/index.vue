@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 16:55:19
- * @LastEditTime: 2019-09-05 10:09:09
+ * @LastEditTime: 2019-09-05 11:13:58
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -12,7 +12,10 @@
     <div class="myMenu boxMenu">
       <div class="left">
         <div class="input-box">
-          <div>积分数:</div>
+          <div>我的积分:{{myScore}}</div>
+        </div>
+        <div class="input-box">
+          <div>分出积分数:</div>
           <div>
             <input type="number" v-model="score" name placeholder="输入积分码" />
           </div>
@@ -33,14 +36,17 @@
 import {
   showQRCodeToScan,
   updateQrCode,
-  genSendScoreQrCode
+  genSendScoreQrCode,
+  getBPortCurrentScore
 } from "../../api/distribution/index";
+import Dialog from "../../../static/vant/dialog/dialog";
 export default {
   data() {
     return {
       memberInfo: {},
       parentMemberInfo: null,
       memRelationship: null, //级别关系对象
+      myScore: "",
       score: "",
       qrCode: "",
       btnLoading: false
@@ -48,10 +54,20 @@ export default {
   },
   components: {},
   onShow() {
+    this.searchMyScore();
     // this.getData();
     this.score = "";
   },
   methods: {
+    // 查询我的积分
+    async searchMyScore() {
+      const res = await getBPortCurrentScore();
+      if (res.data.code == 200) {
+        this.myScore = res.data.result;
+      }
+
+      // console.log(res,'098');
+    },
     //生成带积分的二维码
     createQrcode() {
       let params = {
@@ -60,7 +76,18 @@ export default {
       genSendScoreQrCode(params)
         .then(res => {
           if (res.data.code == 200) {
+            Dialog.alert({
+              message: res.data.message
+            }).then(() => {
+              // on close
+            });
             this.qrCode = res.data.result;
+          } else {
+            Dialog.alert({
+              message: res.data.message
+            }).then(() => {
+              // on close
+            });
           }
         })
         .catch(err => {});

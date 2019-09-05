@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-23 15:30:03
- * @LastEditTime: 2019-09-05 09:10:40
+ * @LastEditTime: 2019-09-05 11:07:57
  * @LastEditors: Please set LastEditors
  */
 import fly from '../request';
@@ -25,6 +25,18 @@ export const genSendScoreQrCode = params => {
   let data = querystring.encode(params);
   return fly.request({
     url: `/basic/memRelationShip/genSendScoreQrCode`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};
+//查询我的积分
+export const getBPortCurrentScore = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `/basic/memRelationShip/getBPortCurrentScore`,
     method: "post",
     body: data,
     headers: {
