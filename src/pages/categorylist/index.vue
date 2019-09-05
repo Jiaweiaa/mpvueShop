@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-27 09:42:56
+ * @LastEditTime: 2019-08-29 15:42:22
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="categoryList">
     <div class="search" @click="tosearch">
@@ -34,7 +41,7 @@
       <p>性价比超高.</p>
     </div>
     <div class="list" v-if="goodsList.length!=0">
-      <van-card
+      <!-- <van-card
         :tag="item.tag"
         :lazy-load="true"
         :price="item.listPrice"
@@ -51,11 +58,41 @@
       >
         <div slot="desc" class="goods-bottom">
           <div>{{item.keyword}}</div>
-          <div class="sketch">{{item.sketch}}</div>
+          <div class="sketch" v-if="item.sketch!=null">{{item.sketch}}</div>
         </div>
-      </van-card>
+      </van-card> -->
+      <div class="newcategory">
+        <div class="sublist">
+          <div
+            class="good-card"
+            v-for="(good, goodIndex) in goodsList"
+            :key="goodIndex"
+            @click="goodsDetail(good.id)"
+          >
+            <div class="thumb">
+              <img :src="'http://qn.gaoshanmall.cn/' + good.img" alt />
+            </div>
+            <div class="desc">
+              <div class="title">{{good.title}}</div>
+              <div class="vip" v-if="good.mixCashPrice &&good.mixScorePrice">
+                <img src="/static/images/vip_price.png" alt />
+                <span v-if="good.mixCashPrice" class="span1">￥{{good.mixCashPrice}}</span>
+                <span v-if="good.mixScorePrice" class="span2">+{{good.mixScorePrice}}补贴金</span>
+              </div>
+              <div class="price">
+                <img src="/static/images/list_price.png" alt />
+                ￥{{good.listPrice}}
+              </div>
+              <div class="origin-price">
+                市场价:￥
+                <span>{{good.salePrice}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <div class="title">
+      <div class="nodata">
         <span>—</span>
         <span>我也是有底线的</span>
         <span>—</span>
@@ -410,7 +447,7 @@ export default {
   color: rgba(255, 255, 255, 1) !important;
   border-radius: 10rpx !important;
 }
-.title {
+.nodata {
   text-align: center;
   padding: 20rpx 0;
   width: 100%;

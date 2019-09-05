@@ -1,6 +1,156 @@
 .search {
   height: 100%;
   position: relative;
+  .sublist {
+    // width: 100%;
+    // margin: 0 auto;
+    padding: 0 24rpx;
+    display: flex;
+    flex-wrap: wrap;
+    .good-card {
+      width: 344rpx;
+      // height:650rpx;
+      margin-bottom: 14rpx;
+      overflow: hidden;
+      position: relative;
+      background: #fff;
+      border-radius: 10rpx;
+      .thumb {
+        width: 344rpx;
+        height: 390rpx;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .desc {
+        margin: 0 20rpx;
+        // width: 100%;
+        .title {
+          font-size: 24rpx;
+          // margin: 18rpx 0;
+          margin-top: 18rpx;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          height: 70rpx;
+          overflow: hidden;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+        }
+        .vip {
+          margin-top: 20rpx;
+          font-size: 22rpx;
+          display: flex;
+          align-items: center;
+          border: 1rpx solid rgb(51, 51, 60);
+          border-radius: 9rpx;
+          .span1{
+            font-size: 22rpx;
+            color:rgb(226, 61, 55);
+          }
+          .span2{
+            font-size: 22rpx;
+            color: rgb(51, 51, 60);
+          }
+          img {
+            width: 100rpx;
+            height: 40rpx;
+          }
+        }
+        .price {
+          img {
+            width: 73rpx;
+            height: 30rpx;
+            margin-right: 8rpx;
+          }
+          font-size: 25rpx;
+          display: flex;
+          align-items: center;
+          margin-top: 12rpx;
+        }
+        
+        .origin-price {
+          color: rgb(153, 153, 153);
+          font-size: 24rpx;
+          // margin: 8rpx 12rpx;
+          margin-top: 10rpx;
+          margin-bottom: 20rpx;
+          span {
+            text-decoration: line-through;
+          }
+        }
+      }
+    }
+    .good-card:nth-child(odd){
+      margin-right: 14rpx;
+    }
+    .hot {
+      position: absolute;
+      top: 0;
+      right: 10rpx;
+      color: $hot-color !important;
+      font-weight: 600;
+    }
+    .sale {
+      margin: 15rpx 0;
+      display: flex;
+      .sold {
+        padding: 10rpx;
+        color: #fff;
+        background: $hot-color;
+        border: 1rpx solid $hot-color;
+        border-radius: 3rpx 0 0 3rpx;
+      }
+      .remain {
+        padding: 10rpx;
+        color: $hot-color;
+        background: #fff;
+        border: 1rpx solid $hot-color;
+        border-radius: 0 3rpx 3rpx 0;
+      }
+    }
+    .goods-image {
+      width: $image-width;
+      height: $image-height;
+      border-radius: $border-radius;
+    }
+    .goods-price {
+      font-size: $price-fontSize;
+      color: $price-color;
+      min-width: $price-width;
+    }
+    .goods-origin-price {
+      font-size: $originPrice-fontSize;
+      color: $originPrice-color;
+    }
+    .goods-title {
+      font-size: $title-fontSize;
+      color: $title-color;
+      width: $title-width;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-top: 15rpx;
+      min-height: 40rpx;
+    }
+    .goods-desc {
+      min-height: 24rpx;
+    }
+    .goods-bottom {
+      margin: 5rpx 0;
+      div {
+        font-size: $bottom-fontSize;
+        color: $bottom-color;
+      }
+      .sketch {
+        font-size: $bottom-sketch;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 340rpx;
+      }
+    }
+  }
   .head {
     height: 91rpx;
     padding-top: 1rpx;

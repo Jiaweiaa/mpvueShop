@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-17 14:00:02
- * @LastEditTime: 2019-08-21 18:13:39
+ * @LastEditTime: 2019-08-30 11:07:26
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -24,54 +24,60 @@
             @click="detailOrder(value)"
           >
             <div class="top border-bottom" style="overflow: hidden;">
-              <div
-                style="height: 30px; line-height: 30px; font-size: 12px; width: 70%; float: left; margin-left: 10px; margin-top: 10px;"
-              >订单编号: {{value.code}}</div>
-              <div
-                class="order-ok"
-                style="width: calc(30% - 20px); float: right; padding-right: 10px; margin-top: 10px; font-size: 13px; text-align: right;"
-              >{{value.typeData ? value.typeData.title : ''}}</div>
+              <div class="order_title">
+                <img src="/static/images/order_icon.png" />
+                易起省商城
+              </div>
+              <div class="order-ok">{{value.typeData ? value.typeData.title : ''}}</div>
             </div>
-            <div
-              class="timer bottom border-top"
-              style="height: 30px; line-height: 30px; font-size: 13px; margin-left: 10px; margin-bottom: 10px;"
-            >创建时间: {{value.createTime}}</div>
             <div v-for="(val,childIndex) in value.orderLines" :key="childIndex">
               <van-card
-                :num="val.quantity"        
+                custom-class="order-card"
+                :num="val.quantity"
+                thumb-class="order-image"
                 :thumb="'http://qn.gaoshanmall.cn/'+val.itemImg"
               >
-              <div slot="title">
-                  <div>商品名称:{{val.itemName}}</div>
-                  <div>商品规格:{{val.propertiesValue}}</div>
-                  <div>商品价格:￥{{val.discountPrice}}</div>
-              </div>
+                <div slot="title">
+                  <div class="good_title">商品名称:{{val.itemName}}</div>
+                  <div class="good_sku">商品规格:{{val.propertiesValue}}</div>
+                  <div class="good_price">
+                    <span
+                      class="list_price"
+                      v-if="value.paymentType==13"
+                    >￥{{val.mixCashPrice}}+补贴金{{val.mixScorePrice}}</span>
+                    <span
+                      class="list_price"
+                      v-else-if="value.paymentType==12"
+                    >补贴金{{val.mixScorePrice}}</span>
+                    <span class="vip_price" v-else-if="value.paymentType==4">￥{{val.listPrice}}</span>
+                  </div>
+                </div>
               </van-card>
             </div>
-            <div v-if="value.paymentType==13" style="text-align:right;">
-                实付金额:￥{{value.totalActure}}+补贴金{{value.totalScoreActure}}
-            </div>
-            <div v-else-if="value.paymentType==4" style="text-align:right;">
-                实付金额:￥{{value.totalActure}}
-            </div>
-            <div v-else style="text-align:right;">
-                实付金额:补贴金{{value.totalScoreActure}}
-            </div>
-            <view slot="footer" style="display:flex;justify-content: flex-end;">
-              <van-button
+            <div
+              v-if="value.paymentType==13"
+              style="text-align:right;"
+            >合计:￥{{value.totalActure}}+补贴金{{value.totalScoreActure}}</div>
+            <div
+              v-else-if="value.paymentType==4"
+              style="text-align:right;"
+            >合计:￥{{value.totalActure}}</div>
+            <div v-else style="text-align:right;">合计:补贴金{{value.totalScoreActure}}</div>
+            <view slot="footer" class="btn_group" >
+              <!-- <van-button
                 @click.stop="detailOrder(value)"
                 type="danger"
                 class="childBtn"
                 size="small"
                 v-if="value.typeData? value.typeData.canBtn: ''"
-              >取消订单</van-button>
+              >取消订单</van-button> -->
               <!-- <van-button
                 @click.stop="logistics(value)"
                 class="childBtn"
                 size="small"
                 v-if="value.typeData?value.typeData.seeBtn: ''"
               >查看物流</van-button>-->
-              <van-button
+              <!-- <van-button
                 @click.stop="sureGet(value)"
                 type="danger"
                 class="childBtn"
@@ -84,7 +90,17 @@
                 class="childBtn"
                 size="small"
                 v-if="value.typeData?value.typeData.giveBtn: ''"
-              >立即支付</van-button>
+              >立即支付</van-button> -->
+             
+              <div class="order_btn white_btn" @click.stop="detailOrder(value)" v-if="value.typeData? value.typeData.canBtn: ''">
+                取消订单
+              </div>
+               <div class="order_btn red_btn" @click.stop="detailOrder(value)" v-if="value.typeData?value.typeData.giveBtn: ''">
+                立即支付
+              </div>
+              <div class="order_btn red_btn" @click.stop="sureGet(value)" v-if="value.typeData?value.typeData.afrimBtn: ''">
+                确认收货
+              </div>
             </view>
           </div>
           <div style="width: 100%; text-align: center;margin-top: 5px;">
@@ -130,7 +146,7 @@ import {
 import noDataView from "../../components/noDataView/index";
 
 export default {
-  onShow() {
+  onLoad() {
     if (this.$root.$mp.query.id) {
       this.orderType = this.$root.$mp.query.id;
       this.currentActive = Number(this.$root.$mp.query.id) - 1;
@@ -159,7 +175,7 @@ export default {
       allCount: "",
       loading: false,
       onLoadLoading: false,
-      tabs: ["全部", "待支付", "待发货", "待收货",  "已完成"],
+      tabs: ["全部", "待支付", "待发货", "待收货", "已完成"],
       reason: "我不想买了",
       reasonShow: false, //弹出层是否显示
       //取消订单理由
@@ -524,69 +540,30 @@ export default {
 };
 </script>
 <style lang='scss'>
-#reasonPop {
-  .van-radio {
-    justify-content: flex-end !important;
-  }
-  .van-radio__icon--checked {
-    background-color: rgb(214, 70, 60) !important;
-    border-color: rgb(214, 70, 60) !important;
-    color: #fff !important;
-  }
-  .radioLabel {
-    color: #fff !important;
-  }
-  .popBtn {
-    width: 100%;
-    height: 85rpx;
-    font-size: 30rpx;
-    color: #000;
-    line-height: 85rpx;
-    border-radius: 0;
-    background: linear-gradient(70deg, rgb(214, 70, 60), red);
-    color: #fff;
-  }
+@import "./style";
+.order-card {
+  padding: 10rpx 15rpx !important;
 }
-.tabClass {
-  flex-basis: 20% !important;
+.van-card__thumb {
+  position: relative;
+  width: 136rpx !important;
+  height: 136rpx !important;
+  margin-right: 28rpx !important;
+  -webkit-flex: none;
+  flex: none;
 }
-.scroll-view-item {
-  width: 100%;
-  height: 200px;
+
+.order-image {
+  width: 136rpx !important;
+  height: 136rpx !important;
 }
-.myOrder {
-  background: #fafafa;
+.good_title {
+  font-size: 28rpx;
+  color: rgb(51, 51, 51);
 }
-.childBtn {
-  margin: 0 8px;
-}
-.title {
-  text-align: center;
-  padding: 20 rpx 0;
-  width: 100%;
-  margin-bottom: 10px;
-  span:nth-child(2) {
-    font-size: 24rpx;
-    color: #333;
-    padding: 0 10rpx;
-  }
-  span:nth-child(2n + 1) {
-    color: #999;
-  }
-}
-.section {
-  background: #fff;
-  .listViewBox {
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
-    border: 1px solid #eee;
-    .van-card {
-      background: #fff;
-      view {
-        background: #fff;
-      }
-    }
-  }
+.good_sku {
+  font-size: 24rpx;
+  color: #666;
 }
 </style>
+

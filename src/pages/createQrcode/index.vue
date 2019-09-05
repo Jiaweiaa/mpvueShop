@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 16:55:19
- * @LastEditTime: 2019-08-29 09:30:37
+ * @LastEditTime: 2019-09-05 10:09:09
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -11,33 +11,60 @@
     <van-dialog id="van-dialog" />
     <div class="myMenu boxMenu">
       <div class="left">
-        <button class="qroCodeBox" @click="saveImage">
-          <p>我的二维码</p>
-          <img class="code" :src="qrCode" alt />
-        </button>
+        <div class="input-box">
+          <div>积分数:</div>
+          <div>
+            <input type="number" v-model="score" name placeholder="输入积分码" />
+          </div>
+        </div>
+        <div class="qrcode_box">
+          <button @click="saveImage">
+            <img v-if="qrCode!=''" class="code" :src="qrCode" alt />
+          </button>
+        </div>
+
+        <button class="create_btn" @click="createQrcode">生成二维码</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { showQRCodeToScan, updateQrCode } from "../../api/distribution/index";
+import {
+  showQRCodeToScan,
+  updateQrCode,
+  genSendScoreQrCode
+} from "../../api/distribution/index";
 export default {
   data() {
     return {
       memberInfo: {},
       parentMemberInfo: null,
       memRelationship: null, //级别关系对象
+      score: "",
       qrCode: "",
-
       btnLoading: false
     };
   },
   components: {},
   onShow() {
-    this.getData();
+    // this.getData();
+    this.score = "";
   },
   methods: {
+    //生成带积分的二维码
+    createQrcode() {
+      let params = {
+        score: this.score
+      };
+      genSendScoreQrCode(params)
+        .then(res => {
+          if (res.data.code == 200) {
+            this.qrCode = res.data.result;
+          }
+        })
+        .catch(err => {});
+    },
     //保存图片
     saveImage() {
       wx.previewImage({
@@ -55,12 +82,12 @@ export default {
               .callFunction({
                 name: "getQrCode",
                 data: {
-                  memberId: wx.getStorageSync("userInfo").memberId,
+                  memberId: wx.getStorageSync("userInfo").memberId
                   // memberId: 1146359099936837633
                 }
               })
               .then(res => {
-                console.log('成功回调',res);
+                console.log("成功回调", res);
                 if (res.result.buffer) {
                   this.qrCode =
                     "data:image/png;base64," +
@@ -76,8 +103,7 @@ export default {
               })
 
               .catch(err => {
-                
-                 console.log('失败回调',err);
+                console.log("失败回调", err);
               });
           }
         })

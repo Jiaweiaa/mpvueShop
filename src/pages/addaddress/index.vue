@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-07-31 09:22:28
+ * @LastEditTime: 2019-08-29 14:43:53
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="addaddress">
     <div class="item">
@@ -88,7 +95,7 @@ export default {
       this.address = value[0] + " " + value[1] + " " + value[2];
     },
     async getDetail() {
-      let data = wx.getStorageSync('orderAdress');
+      let data = wx.getStorageSync('address');
       this.id = data.id;
       this.userName = data.firstName;
       this.telNumber = data.mobile;

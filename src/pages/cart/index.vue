@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-21 15:19:35
+ * @LastEditTime: 2019-08-29 14:11:15
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -55,7 +55,7 @@
                     :thumb="'http://qn.gaoshanmall.cn/'+item.imageUrl"
                   >
                     <div slot="desc" class="goods-bottom">
-                      <div class="sketch">{{item.sketch}}</div>
+                      <div class="sketch" v-if="item.sketch!=null">{{item.sketch}}</div>
                       <div class="sketch">
                         <span
                           v-for="(property,proIndex) in item.saleProperties"

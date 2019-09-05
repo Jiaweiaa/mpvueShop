@@ -1,82 +1,13 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-27 09:42:56
+ * @LastEditTime: 2019-09-04 11:51:50
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="search_main">
     <div class="search">
-      <div>
-        <div class="head">
-          <div>
-            <img
-              src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/search2-2fb94833aa.png"
-              alt
-            />
-            <input
-              type="text"
-              confirm-type="search"
-              focus="true"
-              v-model="words"
-              @click="inputFocus"
-              @confirm="searchWords"
-              placeholder="搜索店铺内商品"
-            />
-            <!-- <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword.keyword}}" /> -->
-            <img
-              @click="clearInput"
-              class="del"
-              src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/clearIpt-f71b83e3c2.png"
-              alt
-            />
-          </div>
-          <div @click="cancel">取消</div>
-        </div>
-      </div>
-
-      <!--
-	           搜索结果关键词
-      -->
-      <div class="searchtips" v-if="words && listData.length == 0">
-        <div
-          @click="searchWords"
-          v-if="tipsData.length!=0"
-          :data-value="item.name"
-          v-for="(item,index) in tipsData"
-          :key="index"
-        >{{ item.name }}</div>
-        <div v-if="tipsData.length==0" class="nogoods">暂无此类商品...</div>
-      </div>
-
-      <!--
-	    缓存搜索记录
-	    推送什么的
-      -->
-      <div v-if="listData.length == 0" class="helpSearch">
-        <div class="history" v-if="historyData.length > 0">
-          <div class="t">
-            <div>历史记录</div>
-            <div @click="clearHistory"></div>
-          </div>
-          <div class="cont">
-            <div
-              @click="searchWords"
-              :data-value="item.keyword"
-              v-for="(item,index) in historyData"
-              :key="index"
-            >{{item.keyword}}</div>
-          </div>
-        </div>
-        <div class="history hotsearch">
-          <div class="t">
-            <div>热门搜索</div>
-          </div>
-          <div class="cont">
-            <div
-              @click="searchWords"
-              v-for="(item,index) in hotData"
-              :data-value="item.keyword"
-              :class="{active:0==index}"
-              :key="index"
-            >{{item.keyword}}</div>
-          </div>
-        </div>
-      </div>
       <div v-if="nowIndex==0">
         <div class="store-group" v-if="storeInfo!=null">
           <div class="storeInfo" v-if="listData.length!=0&&storeInfoShow==true">
@@ -94,7 +25,46 @@
             </div>
           </div>
         </div>
-
+        <!-- 自定义店铺数据列表 -->
+        <div v-for="(dataItem,dataItemIndex) in storeStyleData" :key="dataItemIndex">
+          <!-- dataItem中的data.id作为组件唯一标识, 
+               id可能值      1.商品组件
+                            2.
+                            3.图片广告组件
+                            4.
+                            5.图文导航组件
+                            6.文本组件
+                            7.
+                            8.标题组件
+                            9.优惠券组件
+                            10.拼团组件
+                            11.限时抢购组件
+                            12.
+                            13.店铺信息组件
+                            14.
+                            15.商品搜索组件
+                            16.公告组件
+                            17.语音组件
+                            18.视频组件
+                            19.
+                            20.辅助线组件
+                            21.辅助空白组件
+          
+           -->
+           <!-- 商品组件 -->
+          <div v-if="dataItem.data.id==1" class="good_group" :style="{width:'calc(100%-'+dataItem.viewData[3]+'px'+')',margin:'0'+' '+dataItem.viewData[3]+'px'}">
+              <div v-for="(good,goodIndex) in dataItem.viewData[1].data" :key="goodIndex" :class="dataItem.viewData[2]=='3'?'good_card1':dataItem.viewData[2]=='4'?'good_card2':dataItem.viewData[2]=='5'?'good_card3':dataItem.viewData[2]=='6'?'good_card4':dataItem.viewData[2]=='7'?'good_card5':dataItem.viewData[2]=='8'?'good_card6':''">
+                    <div class="thumb">
+                      <img :src="'http://qn.gaoshanmall.cn/' + good.isCoverImageUrl" alt="">
+                    </div>
+                    <div class="text">
+                      <div class="title">{{good.title}}</div>
+                      <div class="sub_title">{{good.sketch}}</div>
+                      <div class="price">{{good.listPrice}}</div>
+                    </div>
+              </div>
+          </div>
+        </div>
         <!--商品列表  -->
         <div v-show="listData.length!=0" class="goodsList">
           <div class="sortnav">
@@ -290,11 +260,14 @@ import {
   getStoreInfo,
   collectionStoreOrItem,
   cancelFavoriteByStoreId,
-  getStoreNavigationTree
+  getStoreNavigationTree,
+  getUsingTemplate4Front
 } from "../../api/storeIndex/index";
+// import styles from './styles'
 export default {
   onLoad: function(options) {
-    this.storeId = options.id;
+    // this.storeId = options.id;
+    this.storeId = 1;
   },
   onPageScroll(e) {
     // console.log(e.scrollTop,160);
@@ -303,7 +276,7 @@ export default {
     } else {
       this.storeInfoShow = true;
     }
-    console.log(this.storeInfoShow);
+    // console.log(this.storeInfoShow);
   },
   onShow() {
     this.getHistory();
@@ -311,6 +284,7 @@ export default {
     this.getlistData();
     this.getStoreInfoData();
     this.getCategoryData();
+    this.getStoreStyle();
   },
   // 上啦加载
   async onReachBottom() {
@@ -373,6 +347,7 @@ export default {
   },
   data() {
     return {
+      storeStyleData:[],//店铺装修数据
       nowIndex: 0,
       words: "",
       historyData: [],
@@ -404,6 +379,12 @@ export default {
     };
   },
   methods: {
+    //获取店铺装修信息
+    async getStoreStyle() {
+      let res = await getUsingTemplate4Front({ storeId: this.storeId }); 
+      this.storeStyleData = JSON.parse(res.data.result.template);
+      console.log(JSON.parse(res.data.result.template), "ppp");
+    },
     //获取店铺导航
     async getCategoryData() {
       let res = await getStoreNavigationTree({ storeId: this.storeId });
@@ -661,11 +642,11 @@ export default {
     //点击导航
     tabbarChange(e) {
       this.nowIndex = e.mp.detail;
-      if(e.mp.detail==1&&this.categoryData.length==0){
+      if (e.mp.detail == 1 && this.categoryData.length == 0) {
         wx.showToast({
-          icon:'none',
-          title:'暂时没有筛选项数据'
-        })
+          icon: "none",
+          title: "暂时没有筛选项数据"
+        });
         this.nowIndex = 0;
       }
     }
@@ -687,21 +668,7 @@ export default {
     }
   }
 
-  .title {
-    text-align: center;
-    padding: 20rpx 0;
-    width: 100%;
-
-    span:nth-child(2) {
-      font-size: 24rpx;
-      color: #333;
-      padding: 0 10rpx;
-    }
-
-    span:nth-child(2n + 1) {
-      color: #999;
-    }
-  }
+ 
   .activeSearch {
     background: #b4282d !important;
     color: #fff !important;

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-21 09:17:36
- * @LastEditTime: 2019-08-28 09:42:19
+ * @LastEditTime: 2019-08-29 16:05:43
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -38,7 +38,7 @@
             </div>
             <div class="info">
               <p>{{address.mobile}}</p>
-              <p>{{address.province}}{{address.city}}{{address.district}}</p>
+              <p>{{address.province}}{{address.city}}{{address.district}}{{address.address}}</p>
             </div>
             <div></div>
           </div>
@@ -89,6 +89,13 @@
                   >{{property}}&nbsp;</span>
                 </div>
               </div>
+              <div slot="bottom">
+                <div class="vip" v-if="item.mixCashPrice &&item.mixScorePrice">
+                  <img src="/static/images/vip_price.png" alt />
+                  <span v-if="item.mixCashPrice" class="span1">￥{{item.mixCashPrice}}</span>
+                  <span v-if="item.mixScorePrice" class="span2">+{{item.mixScorePrice}}补贴金</span>
+                </div>
+              </div>
               <!-- <div slot="desc" class="goods-bottom">
                 <div>{{item.keyword}}</div>
                 <div class="sketch">{{item.sketch}}</div>
@@ -108,9 +115,11 @@
     <div class="orderbox">
       <div class="item">
         <div>商品合计</div>
-        <div>￥{{originPayAmount}}</div>
+        <div v-if="payObj.value==4">￥{{currentPayAmount}}</div>
+        <div v-else-if="payObj.value==13">￥{{currentPayCashAmount}}+补贴金{{currentPayScoreAmount}}</div>
+        <div v-else-if="payObj.value==12">￥{{currentPayAllScoreAmount}}</div>
       </div>
-      <div class="item">
+      <div class="item" v-if="discount!=0">
         <div>优惠金额</div>
         <div>￥{{discount}}</div>
       </div>
@@ -118,14 +127,14 @@
         <div>选择支付方式</div>
         <div>{{payObj.name}}</div>
       </div>
-      <div class="item" v-if="payObj.value==12 ||payObj.value==13">
+      <div class="item">
         <div>补贴金余额</div>
         <div>余额&nbsp;{{scoreAmount}}</div>
       </div>
-      <div class="item" @click="sheetShow=true">
+      <!-- <div class="item" @click="sheetShow=true">
         <div>选择配送方式</div>
         <div>{{deliveryObj.name}}</div>
-      </div>
+      </div>-->
       <!-- <div class="item">
         <div>运费</div>
         <div>免运费</div>
@@ -136,7 +145,12 @@
       </div>-->
     </div>
     <div class="bottom">
-      <div>实付 : ￥{{currentPayAmount}}</div>
+      <div>
+        实付 :
+        <span v-if="payObj.value==4">￥{{currentPayAmount}}</span>
+        <span v-else-if="payObj.value==13">￥{{currentPayCashAmount}}+补贴金{{currentPayScoreAmount}}</span>
+        <span v-else-if="payObj.value==12">￥{{currentPayAllScoreAmount}}</span>
+      </div>
       <div @click="pay">支付</div>
     </div>
     <!-- 优惠券列表弹出层 -->
@@ -242,9 +256,9 @@ export default {
   onShow() {
     getMemberAmount().then(res => {
       this.scoreAmount = res.data.result.scoreAmount;
-      if (this.scoreAmount <= 0) {
-        this.payObj.value = 4;
-      }
+      // if (this.scoreAmount <= 0) {
+      //   this.payObj.value = 4;
+      // }
     });
     if (wx.getStorageSync("orderFrom") && wx.getStorageSync("orderParams")) {
       this.from = wx.getStorageSync("orderFrom");
@@ -332,7 +346,10 @@ export default {
               });
             });
             this.currentPayAmount = res.data.result.currentPayAmount;
-            this.originPayAmount = res.data.result.originPayAmount;
+            this.currentPayCashAmount = res.data.result.currentPayCashAmount;
+            this.currentPayScoreAmount = res.data.result.currentPayScoreAmount;
+            this.currentPayAllScoreAmount =
+              res.data.result.currentPayAllScoreAmount;
             this.currentShippingFee = res.data.result.currentShippingFee;
             this.discount = res.data.result.discount;
             //使用优惠券
@@ -374,7 +391,6 @@ export default {
                   name: "微信",
                   value: 4
                 }
-                
               ];
             }
             if (res.data.result.errorFlag === false) {
@@ -431,7 +447,10 @@ export default {
               });
             });
             this.currentPayAmount = res.data.result.currentPayAmount;
-            this.originPayAmount = res.data.result.originPayAmount;
+            this.currentPayCashAmount = res.data.result.currentPayCashAmount;
+            this.currentPayScoreAmount = res.data.result.currentPayScoreAmount;
+            this.currentPayAllScoreAmount =
+              res.data.result.currentPayAllScoreAmount;
             this.currentShippingFee = res.data.result.currentShippingFee;
             this.discount = res.data.result.discount;
             //使用优惠券
@@ -492,8 +511,8 @@ export default {
       // },
       // 时刻支付方式
       payObj: {
-        name: "微信",
-        value: 4
+        name: "微信+补贴金",
+        value: 13
       },
       paySheetShow: false,
       payOption: [
@@ -510,7 +529,6 @@ export default {
           name: "补贴金",
           value: 12
         }
-        
       ],
       //  联盟券
       scoreAmount: 0,
@@ -519,7 +537,9 @@ export default {
       openId: "",
       allprice: "",
       shopList: [], //分店铺商品列表
-      originPayAmount: "", //应付金额
+      currentPayAmount: "", //应付金额
+      currentPayCashAmount: "", //混合应付金额
+      currentPayScoreAmount: "", //混合应付积分
       discount: "", //优惠金额
       currentPayAmount: "", //实付金额
       currentShippingFee: "", //运费
@@ -857,6 +877,7 @@ export default {
                         wx.showToast({
                           title: res.data.message,
                           duration: 1500,
+                          icon: "none",
                           mask: true
                         });
                         setTimeout(() => {
@@ -966,6 +987,7 @@ export default {
                       } else {
                         wx.showToast({
                           title: res.data.message,
+                          icon: "none",
                           duration: 1500,
                           mask: true
                         });

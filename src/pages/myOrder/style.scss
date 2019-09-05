@@ -1,0 +1,123 @@
+// #reasonPop {
+//     .van-radio {
+//       justify-content: flex-end !important;
+//     }
+//     .van-radio__icon--checked {
+//       background-color: rgb(214, 70, 60) !important;
+//       border-color: rgb(214, 70, 60) !important;
+//       color: #fff !important;
+//     }
+//     .radioLabel {
+//       color: #fff !important;
+//     }
+//     .popBtn {
+//       width: 100%;
+//       height: 85rpx;
+//       font-size: 30rpx;
+//       color: #000;
+//       line-height: 85rpx;
+//       border-radius: 0;
+//       background: linear-gradient(70deg, rgb(214, 70, 60), red);
+//       color: #fff;
+//     }
+//   }
+.myOrder {
+  .btn_group {
+    margin-top: 40rpx;
+    display: flex;
+    justify-content: flex-end;
+    .order_btn {
+      width: 162rpx;
+      height: 54rpx;
+      font-size: 28rpx;
+      text-align: center;
+      line-height: 54rpx;
+    //   margin-right: 15rpx;
+      margin-left: 30rpx;
+      margin-bottom: 10rpx;
+    }
+    .red_btn {
+      background: url("../../../static/images/red_btn.png");
+      background-size: 100% 100%;
+      color: #fff;
+    }
+    .white_btn {
+      background: url("../../../static/images/white_btn.png");
+      background-size: 100% 100%;
+      color: rgb(226, 61, 55);
+    }
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    .order_title {
+      display: flex;
+      align-items: center;
+      margin-left: 20rpx;
+      height: 60rpx;
+      line-height: 60rpx;
+      font-size: 30rpx;
+      width: 50%;
+      float: left;
+
+      img {
+        width: 31rpx;
+        height: 30rpx;
+        margin-right: 10rpx;
+      }
+    }
+    .order-ok {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: calc(40% - 20px);
+      padding-right: 5rpx;
+      font-size: 28rpx;
+      text-align: right;
+      color: rgb(226, 61, 55);
+    }
+  }
+  .tabClass {
+    flex-basis: 20% !important;
+  }
+  .scroll-view-item {
+    width: 100%;
+    height: 200px;
+  }
+  .myOrder {
+    background: #fafafa;
+  }
+  .childBtn {
+    margin: 0 8px;
+  }
+  .title {
+    text-align: center;
+    padding: 20 rpx 0;
+    width: 100%;
+    margin-bottom: 10px;
+    span:nth-child(2) {
+      font-size: 24rpx;
+      color: #333;
+      padding: 0 10rpx;
+    }
+    span:nth-child(2n + 1) {
+      color: #999;
+    }
+  }
+  .section {
+    background: #fff;
+    .listViewBox {
+      padding: 10px;
+      margin: 10px;
+      border-radius: 10px;
+      border: 1px solid #eee;
+      .van-card {
+        background: #fff;
+        view {
+          background: #fff;
+        }
+      }
+    }
+  }
+}

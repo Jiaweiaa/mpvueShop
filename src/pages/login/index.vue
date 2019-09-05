@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-08-27 18:00:45
+ * @LastEditTime: 2019-09-04 15:29:18
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -112,6 +112,10 @@ export default {
                       .catch(err => {});
                   }
                   wx.setStorageSync("userInfo", res.data.result.memberLoginVo);
+                  wx.setStorageSync(
+                    "userLevel",
+                    res.data.result.relationShipLevel
+                  );
                   wx.setStorageSync("tokenInfo", res.data.result.token);
                   wx.navigateBack({
                     delta: 1
@@ -145,21 +149,25 @@ export default {
               if (res.data.code == "200") {
                 wx.setStorageSync("haveLogin", true); //用户已登录标识
                 if (
-                    wx.getStorageSync("parentMemberId") &&
-                    wx.getStorageSync("parentMemberId") != ""
-                  ) {
-                    let params = {
-                      parentMemberId: wx.getStorageSync("parentMemberId")
-                    };
-                    scanQrCode(params)
-                      .then(res => {
-                        if (res.data.code == 200) {
-                          wx.setStorageSync("haveLogin", false);
-                        }
-                      })
-                      .catch(err => {});
-                  }
+                  wx.getStorageSync("parentMemberId") &&
+                  wx.getStorageSync("parentMemberId") != ""
+                ) {
+                  let params = {
+                    parentMemberId: wx.getStorageSync("parentMemberId")
+                  };
+                  scanQrCode(params)
+                    .then(res => {
+                      if (res.data.code == 200) {
+                        wx.setStorageSync("haveLogin", false);
+                      }
+                    })
+                    .catch(err => {});
+                }
                 wx.setStorageSync("userInfo", res.data.result.memberLoginVo);
+                wx.setStorageSync(
+                  "userLevel",
+                  res.data.result.relationShipLevel
+                );
                 wx.setStorageSync("tokenInfo", res.data.result.token);
                 wx.navigateBack({
                   delta: 1

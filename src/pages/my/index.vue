@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 17:12:49
- * @LastEditTime: 2019-08-27 14:48:36
+ * @LastEditTime: 2019-09-05 10:22:24
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -166,6 +166,33 @@ export default {
         .catch(err => {});
     }
     this.moreService = [""];
+
+    //判断是否有生成积分二维码权限
+    if(wx.getStorageSync("userLevel")==2){
+      this.myService = [
+        {
+          title: "优惠券",
+          icon: "http://webimg.gaoshanapp.com/my_youhui.png",
+          url: "/pages/coupon/main"
+        },
+        {
+          title: "地址管理",
+          icon: "http://webimg.gaoshanapp.com/my_address.png",
+          url: "/pages/address/main"
+        },
+        {
+          title: "补贴金",
+          icon: "http://webimg.gaoshanapp.com/my_butiejin.png",
+          url: "/pages/integral/main"
+        },
+      
+        {
+          title: "生成积分码",
+          icon: "http://webimg.gaoshanapp.com/my_butiejin.png",
+          url: "/pages/createQrcode/main"
+        }
+      ]
+    }
     if (wx.getStorageSync("tokenInfo").access_token) {
       isCapOrSup().then(isRes => {
         wx.setStorageSync("isCap", isRes.data.result.isCap);
@@ -199,7 +226,6 @@ export default {
           }
         );
       }
-      console.log(this.moreService);
     } else {
       this.moreService = [
         {
@@ -261,6 +287,7 @@ export default {
           icon: "http://webimg.gaoshanapp.com/my_butiejin.png",
           url: "/pages/integral/main"
         }
+        
       ],
       moreService: [
         {

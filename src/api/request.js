@@ -2,16 +2,16 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-14 09:05:28
+ * @LastEditTime: 2019-09-05 10:17:42
  * @LastEditors: Please set LastEditors
  */
 let Fly = require("flyio/dist/npm/wx");
-let fly = new Fly(); 
+let fly = new Fly();
 export let noTokenFly = new Fly();
 export let myFly = new Fly();
 //  noTokenFly;
 
- const refreshToken = params => {
+const refreshToken = params => {
   return myFly.request({
     url: `${process.env.BASE_API}/auth/user/refreshToken`,
     method: "post",
@@ -63,7 +63,9 @@ fly.interceptors.request.use(
     if (wx.getStorageSync("tokenInfo")) {
       let token = wx.getStorageSync("tokenInfo").access_token;
 
-      config.headers.Authorization = "Bearer " + token;
+      // config.headers.Authorization = "Bearer " + token;
+      config.headers.Authorization =
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyIqIl0sImV4cCI6MTU2ODI1MTYyOSwianRpIjoiMjM0ZDJmM2MtNjg3Ni00MDJkLTgxMDctOTU3YzA4ZWE3NjM0IiwiY2xpZW50X2lkIjoiY2xvdWRtYWxsLWNsaWVudC1iYXNpYy1hdXRoIiwidGltZXN0YW1wIjoxNTY3Mzg3NjI5NDI2fQ.oRUd1ldZWIeQOFJuGigwSD0Cp6zbrhvqsLjfUBTib88";
       // //判断token是否过期
       // if (
       //   isAccessTokenExpired() &&

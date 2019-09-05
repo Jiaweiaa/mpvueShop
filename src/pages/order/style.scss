@@ -1,4 +1,24 @@
 .order {
+  .vip {
+    margin-top: 20rpx;
+    font-size: 22rpx;
+    display: flex;
+    align-items: center;
+    // border: 1rpx solid rgb(51, 51, 60);
+    border-radius: 9rpx;
+    .span1{
+      font-size: 22rpx;
+      color:rgb(226, 61, 55);
+    }
+    .span2{
+      font-size: 22rpx;
+      color: rgb(51, 51, 60);
+    }
+    img {
+      width: 100rpx;
+      height: 40rpx;
+    }
+  }
   overflow-x: hidden;
   margin-bottom: 120rpx;
   //优惠券弹出层样式
