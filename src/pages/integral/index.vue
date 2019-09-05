@@ -79,24 +79,21 @@ export default {
     getQrcode() {
       wx.scanCode({
         success(res) {
-			console.log(res,'76598');
-			if(res.result){
-			  let arr = res.result.split(',');
-        console.log(arr);
-        scanQrCode2AddScore({qrCodeId:arr[0],bMemberId:arr[1]}).then((res) => {
-    
-          Dialog.alert({
-            title: '提示',
-            message: res.data.message
-          }).then(() => {
-            // on close
-          });
-          
-				}).catch((err) => {
-				
-				});
-			}
-          console.log(res.result);
+          if(res.result){
+            let arr = res.result.split(',');
+            scanQrCode2AddScore({qrCodeId:arr[0],bMemberId:arr[1]}).then((res) => {
+              Dialog.alert({
+                title: '提示',
+                message: res.data.message
+              }).then(() => {
+                getMemberAmount().then(resData => {
+                  this.score = resData.data.result.scoreAmount;
+                })
+              });
+            }).catch((err) => {
+            
+            });
+          }
         }
       });
     },
