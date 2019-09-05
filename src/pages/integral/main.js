@@ -19,7 +19,8 @@ export default {
       "van-button": "/static/vant/button/index",
       "van-cell-group": "/static/vant/cell-group/index",
       "van-field": "/static/vant/field/index",
-      "van-notify": "/static/vant/notify/index"
+      "van-notify": "/static/vant/notify/index",
+      "van-dialog": "/static/vant/dialog/index"
     }
   }
 }

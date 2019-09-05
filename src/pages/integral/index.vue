@@ -51,11 +51,15 @@
       </div>
     </van-popup>
     <van-notify id="van-notify" />
+    <van-dialog id="van-dialog" />
+
+
   </div>
 </template>
 
 <script>
 import Notify from "../../../static/vant/notify/notify";
+import Dialog from "../../../static/vant/dialog/dialog";
 import { getMemberAmount, rechargeScore,scanQrCode2AddScore } from "@/api/integral/index";
 
 export default {
@@ -77,10 +81,19 @@ export default {
         success(res) {
 			console.log(res,'76598');
 			if(res.result){
-				scanQrCode2AddScore({qrCodeId:res.result}).then((res) => {
-					console.log(res,'432')
+			  let arr = res.result.split(',');
+        console.log(arr);
+        scanQrCode2AddScore({qrCodeId:arr[0],bMemberId:arr[1]}).then((res) => {
+    
+          Dialog.alert({
+            title: '提示',
+            message: res.data.message
+          }).then(() => {
+            // on close
+          });
+          
 				}).catch((err) => {
-					
+				
 				});
 			}
           console.log(res.result);
