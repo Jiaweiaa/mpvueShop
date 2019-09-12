@@ -308,16 +308,26 @@
     }
   }
   //大图模式
-  .good_card1 {
-    width: 100%;
-    margin-bottom: 10px;
+  .good_card {
     .thumb {
-      img {
-        width: 100%;
-        height: 720rpx;
-      }
+      width: 100%;
+      // padding-bottom: 100%;
+      // img {
+      //   width: 100%;
+      //   height: 100%;
+      // }
     }
   }
+  // .good_card1 {
+  //   width: 100%;
+  //   margin-bottom: 10px;
+  //   .thumb {
+  //     img {
+  //       width: 100%;
+  //       height: 720rpx;
+  //     }
+  //   }
+  // }
   //一行两个
   .good_card2 {
     width: 47%;
@@ -344,8 +354,8 @@
     width: 47%;
     .thumb {
       img {
-        width: 100%;
-        height: 300rpx;
+        // width: 100%;
+        // height: 300rpx;
       }
     }
   }
@@ -357,8 +367,8 @@
     margin: 0 auto;
     .thumb {
       img {
-        width: 100%;
-        height: 720rpx;
+        // width: 100%;
+        // height: 720rpx;
       }
     }
   }

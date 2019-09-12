@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 17:12:49
- * @LastEditTime: 2019-09-05 10:22:24
+ * @LastEditTime: 2019-09-05 15:10:27
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -25,7 +25,7 @@
         <div class v-if="userInfo.nickname">
           <p>{{userInfo.nickname}}</p>
           <!-- <p>欢迎您,时刻益每家会员</p> -->
-          <p class="">欢迎您,易起省会员</p>
+          <p class>欢迎您,易起省会员</p>
           <!-- <p>欢迎您,高山会员</p> -->
           <!-- <p style="color:#fff;">
             <span ></span>省
@@ -117,31 +117,51 @@ export default {
         })
         .catch(err => {});
     }
-    this.moreService = [""];
+    this.moreService = [];
     if (wx.getStorageSync("tokenInfo").access_token) {
       isCapOrSup().then(isRes => {
         wx.setStorageSync("isCap", isRes.data.result.isCap);
         wx.setStorageSync("isSup", isRes.data.result.isSup);
-        if (isRes.data.result.isSup == false) {
-          this.moreService.push({
+      });
+      this.moreService = [];
+      if (wx.getStorageSync("isSup") == false) {
+        this.moreService.push(
+          {
             title: "供应商招募",
             icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
             url: "/pages/beGive/main"
-          });
-        } else {
-          this.moreService.push({
+          },
+          {
+            title: "我的代理",
+            icon: "http://webimg.gaoshanapp.com/my_daili.png",
+            url: "/pages/teamView/main"
+          }
+        );
+      } else {
+        this.moreService.push(
+          {
             title: "我是供应商",
             icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
             url: "/pages/giver/main"
-          });
-        }
-      });
+          },
+          {
+            title: "我的代理",
+            icon: "http://webimg.gaoshanapp.com/my_daili.png",
+            url: "/pages/teamView/main"
+          }
+        );
+      }
     } else {
       this.moreService = [
         {
           title: "供应商招募",
           icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
           url: "/pages/beGive/main"
+        },
+        {
+          title: "我的代理",
+          icon: "http://webimg.gaoshanapp.com/my_daili.png",
+          url: "/pages/teamView/main"
         }
       ];
     }
@@ -168,7 +188,7 @@ export default {
     this.moreService = [""];
 
     //判断是否有生成积分二维码权限
-    if(wx.getStorageSync("userLevel")==2){
+    if (wx.getStorageSync("userLevel") == 2) {
       this.myService = [
         {
           title: "优惠券",
@@ -185,13 +205,13 @@ export default {
           icon: "http://webimg.gaoshanapp.com/my_butiejin.png",
           url: "/pages/integral/main"
         },
-      
+
         {
           title: "生成积分码",
           icon: "http://webimg.gaoshanapp.com/my_butiejin.png",
           url: "/pages/createQrcode/main"
         }
-      ]
+      ];
     }
     if (wx.getStorageSync("tokenInfo").access_token) {
       isCapOrSup().then(isRes => {
@@ -287,7 +307,6 @@ export default {
           icon: "http://webimg.gaoshanapp.com/my_butiejin.png",
           url: "/pages/integral/main"
         }
-        
       ],
       moreService: [
         {
@@ -307,8 +326,7 @@ export default {
         }
       ],
 
-      avator:
-        "http://webimg.gaoshanapp.com/my_avator.png",
+      avator: "http://webimg.gaoshanapp.com/my_avator.png",
       allcheck: false,
       Listids: [],
       userInfo: {}

@@ -48,7 +48,7 @@
     .content {
       width: 720rpx;
       overflow-x: scroll;
-      white-space: nowrap; 
+      white-space: nowrap;
       // height: 160rpx;
       // display: flex;
       .childContent {
@@ -79,7 +79,7 @@
       width: 170rpx;
       border-radius: 50%;
     }
-    >div{
+    > div {
       margin-top: -40rpx;
     }
     div:nth-child(2) {
@@ -102,5 +102,11 @@
       top: 150rpx;
       right: 120rpx;
     }
+  }
+  /*隐藏滚动条*/
+  ::-webkit-scrollbar  {
+    width: 0;
+    height: 0;
+    color: transparent;
   }
 }

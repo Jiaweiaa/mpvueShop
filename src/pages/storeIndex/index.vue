@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-09-04 11:51:50
+ * @LastEditTime: 2019-09-06 17:59:21
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -50,19 +50,122 @@
                             20.辅助线组件
                             21.辅助空白组件
           
-           -->
-           <!-- 商品组件 -->
-          <div v-if="dataItem.data.id==1" class="good_group" :style="{width:'calc(100%-'+dataItem.viewData[3]+'px'+')',margin:'0'+' '+dataItem.viewData[3]+'px'}">
-              <div v-for="(good,goodIndex) in dataItem.viewData[1].data" :key="goodIndex" :class="dataItem.viewData[2]=='3'?'good_card1':dataItem.viewData[2]=='4'?'good_card2':dataItem.viewData[2]=='5'?'good_card3':dataItem.viewData[2]=='6'?'good_card4':dataItem.viewData[2]=='7'?'good_card5':dataItem.viewData[2]=='8'?'good_card6':''">
-                    <div class="thumb">
-                      <img :src="'http://qn.gaoshanmall.cn/' + good.isCoverImageUrl" alt="">
-                    </div>
-                    <div class="text">
-                      <div class="title">{{good.title}}</div>
-                      <div class="sub_title">{{good.sketch}}</div>
-                      <div class="price">{{good.listPrice}}</div>
-                    </div>
+          -->
+          <!-- 商品组件 -->
+          <div
+            v-if="dataItem.data.id==1"
+            class="good_group"
+            :style="{
+              width: 'calc(100%-' + dataItem.viewData[3] + 'rpx)',
+              padding: '0' + ' ' + dataItem.viewData[3] + 'rpx'
+            }"
+          >
+            <!-- 大图模式 -->
+            <div v-if="dataItem.viewData[2]==3">
+              <div
+                v-for="(good,goodIndex) in dataItem.viewData[1].data"
+                :key="goodIndex"
+                :style="{
+                    width: 'calc(100%-' + dataItem.viewData[4] + 'rpx)',
+                    paddingBottom:'100%',
+                    padding: dataItem.viewData[4] + 'rpx'
+                  }"
+              >
+                <div class="thumb">
+                  <img :src="'http://qn.gaoshanmall.cn/' + good.isCoverImageUrl" alt />
+                </div>
+                <div class="text">
+                  <div class="title">{{good.title}}</div>
+                  <div class="sub_title">{{good.sketch}}</div>
+                  <div class="price">{{good.listPrice}}</div>
+                </div>
               </div>
+            </div>
+            <!-- 一行两个 -->
+            <div v-else-if="dataItem.viewData[2]==4">
+              <div
+                v-for="(good,goodIndex) in dataItem.viewData[1].data"
+                :key="goodIndex"
+                :style="{
+                    width: 'calc(50%-' + dataItem.viewData[4] + 'rpx)',
+                    paddingBottom:'100%',
+                    padding: dataItem.viewData[4] + 'rpx'
+                  }"
+              >
+                <div class="thumb">
+                  <img :src="'http://qn.gaoshanmall.cn/' + good.isCoverImageUrl" alt />
+                </div>
+                <div class="text">
+                  <div class="title">{{good.title}}</div>
+                  <div class="sub_title">{{good.sketch}}</div>
+                  <div class="price">{{good.listPrice}}</div>
+                </div>
+              </div>
+            </div>
+            <!-- 一行三个 -->
+            <div v-else-if="dataItem.viewData[2]==5">
+              <div
+                v-for="(good,goodIndex) in dataItem.viewData[1].data"
+                :key="goodIndex"
+                :style="{
+                    width: 'calc(33%-' + dataItem.viewData[4] + 'rpx)',
+                    paddingBottom:'100%',
+                    padding: dataItem.viewData[4] + 'rpx'
+                  }"
+              >
+                <div class="thumb">
+                  <img :src="'http://qn.gaoshanmall.cn/' + good.isCoverImageUrl" alt />
+                </div>
+                <div class="text">
+                  <div class="title">{{good.title}}</div>
+                  <div class="sub_title">{{good.sketch}}</div>
+                  <div class="price">{{good.listPrice}}</div>
+                </div>
+              </div>
+            </div>
+            <!-- 详细列表 -->
+            <div v-else-if="dataItem.viewData[2]==6"></div>
+            <!-- 一大两小 -->
+            <div v-else-if="dataItem.viewData[2]==7" style="width:100%;padding-bottom:100%;">
+              <div
+                class="good_card"
+                v-for="(good,goodIndex) in dataItem.viewData[1].data"
+                :key="goodIndex"
+                :style="goodIndex%3==0?{
+                    width: 'calc(100%-' + dataItem.viewData[4] + 'rpx)',
+                    paddingBottom:'100%',
+                    padding: dataItem.viewData[4] + 'rpx'
+                  }:{
+                    width: 'calc(50%-' + dataItem.viewData[4] + 'rpx)',
+                    paddingBottom:'100%',
+                    padding: dataItem.viewData[4] + 'rpx'
+                  }"
+              >
+                <div class="thumb">
+                  <img
+                    :style="goodIndex%3==0?{
+                    width:'100vw-'+ dataItem.viewData[4] + 'rpx',
+                    height:'100vw-'+ dataItem.viewData[4] + 'rpx',
+                    paddingBottom:'100%',
+                    padding: dataItem.viewData[4] + 'rpx'
+                  }:{
+                    width: 'calc(50%-' + dataItem.viewData[4] + 'rpx)',
+                    paddingBottom:'100%',
+                    padding: dataItem.viewData[4] + 'rpx'
+                  }"
+                    :src="'http://qn.gaoshanmall.cn/' + good.isCoverImageUrl"
+                    alt
+                  />
+                </div>
+                <div class="text">
+                  <div class="title">{{good.title}}</div>
+                  <div class="sub_title">{{good.sketch}}</div>
+                  <div class="price">{{good.listPrice}}</div>
+                </div>
+              </div>
+            </div>
+            <!-- 横向滑动 -->
+            <div v-else-if="dataItem.viewData[2]==8"></div>
           </div>
         </div>
         <!--商品列表  -->
@@ -347,7 +450,7 @@ export default {
   },
   data() {
     return {
-      storeStyleData:[],//店铺装修数据
+      storeStyleData: [], //店铺装修数据
       nowIndex: 0,
       words: "",
       historyData: [],
@@ -378,12 +481,14 @@ export default {
       }
     };
   },
+
   methods: {
     //获取店铺装修信息
     async getStoreStyle() {
-      let res = await getUsingTemplate4Front({ storeId: this.storeId }); 
+      let res = await getUsingTemplate4Front({ storeId: this.storeId });
       this.storeStyleData = JSON.parse(res.data.result.template);
-      console.log(JSON.parse(res.data.result.template), "ppp");
+
+      console.log(this.storeStyleData, "ppp");
     },
     //获取店铺导航
     async getCategoryData() {
@@ -668,7 +773,6 @@ export default {
     }
   }
 
- 
   .activeSearch {
     background: #b4282d !important;
     color: #fff !important;

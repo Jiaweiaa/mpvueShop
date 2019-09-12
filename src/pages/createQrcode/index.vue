@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 16:55:19
- * @LastEditTime: 2019-09-05 11:13:58
+ * @LastEditTime: 2019-09-09 10:57:46
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -11,13 +11,26 @@
     <van-dialog id="van-dialog" />
     <div class="myMenu boxMenu">
       <div class="left">
-        <div class="input-box">
-          <div>我的积分:{{myScore}}</div>
+        <div class="top_box">
+          <van-icon
+            class="icon"
+            custom-class="iconBorder"
+            name="gold-coin"
+            size="60px"
+            color="orange"
+          />
+          <div class="title">补贴金余额</div>
+          <div class="myMoney">
+            <span style="display: inline-block; vertical-align: middle;">
+              <van-icon name="points" style="margin-right: 5px;" />
+            </span>
+            {{myScore}}
+          </div>
         </div>
         <div class="input-box">
-          <div>分出积分数:</div>
+          <div>转出补贴金:</div>
           <div>
-            <input type="number" v-model="score" name placeholder="输入积分码" />
+            <input type="number" v-model="score" name placeholder="输入数量" />
           </div>
         </div>
         <div class="qrcode_box">
@@ -25,7 +38,7 @@
             <img v-if="qrCode!=''" class="code" :src="qrCode" alt />
           </button>
         </div>
-
+        <!-- <van-button custom-class="btnStyle" @click="createQrcode" type="primary">生成二维码</van-button> -->
         <button class="create_btn" @click="createQrcode">生成二维码</button>
       </div>
     </div>
@@ -61,7 +74,9 @@ export default {
   methods: {
     // 查询我的积分
     async searchMyScore() {
+      wx.showLoading();
       const res = await getBPortCurrentScore();
+      wx.hideLoading();
       if (res.data.code == 200) {
         this.myScore = res.data.result;
       }
@@ -70,27 +85,38 @@ export default {
     },
     //生成带积分的二维码
     createQrcode() {
-      let params = {
-        score: this.score
-      };
-      genSendScoreQrCode(params)
-        .then(res => {
-          if (res.data.code == 200) {
-            Dialog.alert({
-              message: res.data.message
-            }).then(() => {
-              // on close
-            });
-            this.qrCode = res.data.result;
-          } else {
-            Dialog.alert({
-              message: res.data.message
-            }).then(() => {
-              // on close
-            });
-          }
+      if (this.score != "") {
+        let params = {
+          score: this.score
+        };
+
+        wx.showLoading();
+        genSendScoreQrCode(params)
+          .then(res => {
+            wx.hideLoading();
+            if (res.data.code == 200) {
+              Dialog.alert({
+                message: res.data.message
+              }).then(() => {
+                // on close
+              });
+              this.qrCode = res.data.result;
+            } else {
+              wx.hideLoading();
+              Dialog.alert({
+                message: res.data.message
+              }).then(() => {
+                // on close
+              });
+            }
+          })
+          .catch(err => {});
+      }else{
+        wx.showToast({
+          icon:'none',
+          title:'请输入补贴金数量'
         })
-        .catch(err => {});
+      }
     },
     //保存图片
     saveImage() {
@@ -171,10 +197,9 @@ export default {
   // left: 2.5%;
   // top: 150px;
   overflow: hidden;
-  padding: 10px;
   width: 100% !important;
   height: 100vh !important;
-  background: #1989fa;
+  background: #fff;
   .left {
     width: calc(100% - 1px);
     height: 100%;

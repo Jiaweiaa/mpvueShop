@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-05 10:35:24
+ * @LastEditTime: 2019-09-09 09:36:39
  * @LastEditors: Please set LastEditors
  */
 import Vue from "vue";
@@ -41,9 +41,9 @@ export default {
       }
     },
     pages: [
-      "pages/index/main",
+      "^pages/index/main",
       "pages/integral/main", // 积分管理
-      "^pages/createQrcode/main",
+      "pages/createQrcode/main",
       "pages/storeIndex/main",
       "pages/myOrder/main",
       "pages/category/main",

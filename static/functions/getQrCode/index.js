@@ -7,7 +7,7 @@ cloud.init()
 exports.main = async (event, context) => {
   var params = event.memberId
   try {
-    const result = await cloud.openapi.wxacode.getUnlimited({ scene: 'memberId=' + params})
+    const result = await cloud.openapi.wxacode.getUnlimited({ scene:  params})
     
     console.log(event,321321321321321)
     return result

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-05 10:35:13
+ * @LastEditTime: 2019-09-09 09:35:36
  * @LastEditors: Please set LastEditors
  */
 let Fly = require("flyio/dist/npm/wx");
@@ -65,7 +65,7 @@ fly.interceptors.request.use(
 
       config.headers.Authorization = "Bearer " + token;
       // config.headers.Authorization =
-      //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyIqIl0sImV4cCI6MTU2ODI1MTYyOSwianRpIjoiMjM0ZDJmM2MtNjg3Ni00MDJkLTgxMDctOTU3YzA4ZWE3NjM0IiwiY2xpZW50X2lkIjoiY2xvdWRtYWxsLWNsaWVudC1iYXNpYy1hdXRoIiwidGltZXN0YW1wIjoxNTY3Mzg3NjI5NDI2fQ.oRUd1ldZWIeQOFJuGigwSD0Cp6zbrhvqsLjfUBTib88";
+      //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxMzM1MjM3MjE4OCIsInNjb3BlIjpbIioiXSwibG9naW5OYW1lIjoiMTMzNTIzNzIxODgiLCJleHAiOjE1Njc3NjQzODcsImp0aSI6ImRlYmM3YjdlLTUxY2QtNGE1OC04NDNhLTk5YWUwMTY5NDBmYyIsImNsaWVudF9pZCI6ImNsb3VkbWFsbC1jbGllbnQtYmFzaWMtYXV0aCIsInRpbWVzdGFtcCI6MTU2NjkwMDM4NzYyNX0.LZZzp6dkLZYKr4FwfxG4EKxaqZ91MGuTtbulyAu1Nqo";
       // //判断token是否过期
       // if (
       //   isAccessTokenExpired() &&

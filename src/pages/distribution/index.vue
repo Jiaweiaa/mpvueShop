@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 16:55:19
- * @LastEditTime: 2019-08-29 09:30:37
+ * @LastEditTime: 2019-09-06 17:45:26
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -46,10 +46,12 @@ export default {
       });
     },
     getData() {
+      wx.showLoading();
       showQRCodeToScan()
         .then(res => {
           if (res.data.code == "200") {
             this.qrCode = res.data.result;
+            wx.hideLoading();
           } else if (res.data.code == "500") {
             wx.cloud
               .callFunction({
@@ -60,15 +62,16 @@ export default {
                 }
               })
               .then(res => {
+                wx.hideLoading();
                 console.log('成功回调',res);
                 if (res.result.buffer) {
                   this.qrCode =
                     "data:image/png;base64," +
-                    wx.arrayBufferToBase64(res.result.buffer.data);
+                    wx.arrayBufferToBase64(res.result.buffer);
                   updateQrCode({
                     qrCode:
                       "data:image/png;base64," +
-                      wx.arrayBufferToBase64(res.result.buffer.data)
+                      wx.arrayBufferToBase64(res.result.buffer)
                   })
                     .then(res => {})
                     .catch(err => {});
@@ -76,7 +79,7 @@ export default {
               })
 
               .catch(err => {
-                
+                wx.hideLoading();
                  console.log('失败回调',err);
               });
           }
@@ -118,7 +121,7 @@ export default {
   // left: 2.5%;
   // top: 150px;
   overflow: hidden;
-  padding: 10px;
+  // padding: 10px;
   width: 100% !important;
   height: 100vh !important;
   background: #1989fa;

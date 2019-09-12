@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-23 15:30:03
- * @LastEditTime: 2019-08-26 11:44:11
+ * @LastEditTime: 2019-09-05 16:37:02
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -248,7 +248,9 @@ export default {
     },
 
     async getTeamData() {
+      wx.showLoading();
       let data = await myDetile();
+       wx.hideLoading();
       this.teamData = data.data.result;
       if(this.teamData) {
         this.isFlag = true;

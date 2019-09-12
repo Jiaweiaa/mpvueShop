@@ -1,20 +1,34 @@
 .feedback {
   // height: 100%;
   background: #fff;
+  .top_box {
+    margin-top: 150rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .btnStyle {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
   .input-box {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 200rpx;
+    margin-top: 40rpx;
     input {
-      border: 1px solid #000;
-      padding-left: 10rpx;
+      border: 1px solid #27983e;
+      margin-left: 30rpx;
+      padding-left: 50rpx;
+      border-radius: 10rpx;
+
     }
   }
   .create_btn {
     width: 300rpx;
     height: 70rpx;
-    background: #000;
+    background: #27983e;
     color: #fff;
     text-align: center;
     line-height: 70rpx;
@@ -25,8 +39,8 @@
     height: 400rpx;
   }
   .title {
-    background: #1989fa;
-    color: #fff;
+    background: #fff;
+    // color: #fff;
     width: 100%;
     height: 50px;
     line-height: 50px;

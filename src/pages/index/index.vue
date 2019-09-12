@@ -2,23 +2,16 @@
  * @Description: 首页模块
  * @Author: 董
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-28 09:37:11
+ * @LastEditTime: 2019-09-11 14:21:12
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="index_home">
     <div class="search">
-      <!-- <div @click="toMappage" class="captain">
-        <div v-if="captainInfo!=null">
-          <div class="title">{{captainInfo.address}}</div>
-          <span class="toggle_btn">切 换</span>
-          <div class="address">提货位置:{{captainInfo.deliveryAddress}}</div>
-        </div>
-        <div class="title">{{cityName}}</div>
-      </div>-->
       <div @click="toSearch" class="search_bar">
         <input type="text" placeholder="搜索您要的商品" disabled placeholder-class="phcolor" />
         <span class="icon"></span>
+        <span class="qr_icon1"></span>
       </div>
     </div>
     <div class="swiper-group">
@@ -43,9 +36,7 @@
         </swiper>
       </div>
     </div>
-    <!-- <div>
-      <img :src="qrCode" style="width:200rpx;height:200rpx;" alt="">
-    </div>-->
+    
     <div class="channel">
       <div
         @click="toCategoryList(item.categoryId, item.name)"
@@ -118,6 +109,37 @@
         </div>
       </div>
     </div>
+    <!-- 限时抢购 -->
+    <div class="rush">
+      <div class="rush_title">
+          <span class="stand"></span>
+          <span class="text">限时抢购</span>
+          <span class="count_down_text">
+            距离结束还有
+          </span>
+          <!-- <div>
+            
+          </div> -->
+      </div>
+      <div class="rush_content">
+        <div class="rush_item">
+            <div>
+              <img src="http://qn.gaoshanmall.cn/cloudmall/file/662905256241269760.jpg" alt="">
+            </div>
+            <div>
+              ￥120+
+              <span></span>
+              32
+            </div>
+            <div>
+              ￥220
+            </div>
+            <div>
+              小米空气净化器
+            </div>
+        </div>
+      </div>
+    </div>
     <div v-if="newCategoryList.length > 0" class="no_more_data">
       <span>—</span>
       <span>我也是有底线的</span>
@@ -155,12 +177,14 @@ export default {
   onLoad:function(options){
     console.log(options,'看这里看这里');
     //如果是通过工作人员分享的小程序码进入,则有推荐人id 
-    if(options.memberId){
-      wx.setStorageSync("parentMemberId", decodeURIComponent(options.memberId));
+    if(options.scene){
+      wx.setStorageSync("parentMemberId", decodeURIComponent(options.scene));
     }
-    
+    console.log(decodeURIComponent(options.scene),'序列化后的参数');
   },
   onShow() {
+    console.log('是否登录:',wx.getStorageSync("haveLogin"));
+    console.log('上级ID:',wx.getStorageSync("parentMemberId"));
     if (wx.getStorageSync("haveLogin") && wx.getStorageSync("parentMemberId")) {
       let flag = wx.getStorageSync("haveLogin");
       if (flag) {
