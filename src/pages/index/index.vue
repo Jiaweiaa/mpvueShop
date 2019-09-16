@@ -2,7 +2,7 @@
  * @Description: 首页模块
  * @Author: 董
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-11 14:21:12
+ * @LastEditTime: 2019-09-16 09:47:37
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -123,18 +123,18 @@
       </div>
       <div class="rush_content">
         <div class="rush_item">
-            <div>
+            <div class="thumb">
               <img src="http://qn.gaoshanmall.cn/cloudmall/file/662905256241269760.jpg" alt="">
             </div>
-            <div>
+            <div class="vip_price">
               ￥120+
-              <span></span>
+              <img src="/static/images/index/money.png" alt="">
               32
             </div>
-            <div>
+            <div class="price">
               ￥220
             </div>
-            <div>
+            <div class="desc">
               小米空气净化器
             </div>
         </div>
