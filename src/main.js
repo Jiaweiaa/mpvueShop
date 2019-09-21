@@ -41,18 +41,18 @@ export default {
       }
     },
     pages: [
-      "^pages/index/main",
+      "pages/index/main",
       "pages/integral/main", // 积分管理
       "pages/createQrcode/main",
-      "pages/storeIndex/main",
+      "pages/storeIndex/main", // 店铺首页
       "pages/myOrder/main",
       "pages/category/main",
-      "pages/my/main", // 我的
+      "^pages/my/main", // 我的
       "pages/goods/main",
       "pages/citys/main",
       "pages/distribution/main",
       "pages/editUserInfo/main",
-      
+
       "pages/logisticsDetail/main", //物流详情页
       "pages/feedback/main",
       "pages/order/main",
@@ -62,24 +62,24 @@ export default {
       "pages/addressSelect/main",
       "pages/addaddress/main",
       "pages/address/main",
-      
+
       "pages/orderDetail/main",
       "pages/team/main", // 团长订单
       "pages/returnGoods/main",
       "pages/returnGoodsMoney/main",
       "pages/teamView/main", //团长 我的主页
       "pages/search/main",
-      
+
       "pages/login/main",
       "pages/refund/main",
       "pages/refundOrder/main",
       "pages/refundList/main", //退换货列表
-      
+
       "pages/beTeam/main", // 成为团长
       "pages/beGive/main", // 成为供应商
       "pages/categorylist/main",
       "pages/topic/main",
-      
+
       "pages/record/main", //购买记录详情
       "pages/branddetail/main",
       "pages/brandlist/main", // 商品详情
@@ -92,11 +92,13 @@ export default {
       "pages/orderDetail/main", // 订单详情
       "pages/lookDetail/main", // 团长我的 查看详情
       "pages/withdraw/main", //  提现
-      
+
       "pages/integralList/main", // 积分明细列表
       "pages/giver/main",
       "pages/superior/main", // 上级信息
-      "pages/subordinate/main"  // 下级
+      "pages/subordinate/main",  // 下级
+      "pages/shoppingBean/main", // 购物豆
+      "pages/shoppingBeanList/main" // 购物豆明细
     ],
     window: {
       backgroundTextStyle: "light",
@@ -128,7 +130,7 @@ export default {
           selectedIconPath: "static/images/bt_zhuanti_active.png",
           text: "发现"
         },
-        
+
         {
           pagePath: "pages/cart/main",
           iconPath: "static/images/bt_cart.png",

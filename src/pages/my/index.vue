@@ -40,7 +40,27 @@
         </button>
       </div>
     </div>
+  
     <div class="myMenu boxMenu">
+     <div class="boxContent" @click="goTo('/pages/integral/main')">
+      <div>
+        {{usersData.scoreAmount}}
+      </div>
+      <div>
+        我的补贴金
+      </div>
+     </div>
+     <div class="boxContent" @click="goTo('/pages/shoppingBean/main')">
+       <div>
+         {{usersData.shoppingBeans}}
+       </div>
+       <div>
+         我的购物豆
+       </div>
+     </div>
+    </div>
+    
+    <div class="mySecond boxMenu">
       <div class="title">
         <div class="navTitle">我的订单</div>
         <div class="navBody" @click="goTo('/pages/myOrder/main')">全部订单 ></div>
@@ -58,7 +78,7 @@
       </div>
     </div>
 
-    <div class="mySecond boxMenu">
+    <div class="myThree boxMenu">
       <div class="title">
         <div class="navTitle">我的服务</div>
       </div>
@@ -75,7 +95,7 @@
       </div>
     </div>
 
-    <div class="myThree boxMenu">
+    <div class="myFour boxMenu">
       <div class="title">
         <div class="navTitle">更多服务</div>
       </div>
@@ -97,8 +117,8 @@
 <script>
 import { toLogin, login } from "../../utils";
 import { shoppingcartCount } from "../../api/shoppingcart";
-import { findOrderNum } from "../../api/myOrder";
-import { isCapOrSup, checkCap, checkSup } from "../../api/login";
+import { findOrderNum, getMemberAmount } from "../../api/myOrder";
+import { isCapOrSup, checkSup } from "../../api/login";
 import Dialog from "../../../static/vant/dialog/dialog";
 export default {
   onPullDownRefresh() {
@@ -175,6 +195,11 @@ export default {
     if (login()) {
       this.userInfo = login();
       this.avator = this.userInfo.avatarUrl;
+      getMemberAmount()
+          .then(res => {
+            this.usersData = res.data.result;
+            console.log(this.usersData);
+          });
       findOrderNum()
         .then(res => {
           let result = res.data.result;
@@ -263,6 +288,9 @@ export default {
   },
   data() {
     return {
+      // 用户数据
+      usersData: '',
+      
       orderMenu: [
         {
           title: "待支付",
