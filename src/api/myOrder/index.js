@@ -88,3 +88,15 @@ export const toWriteOff = params => {
     },
   });
 };
+
+// 获取积分,购物豆
+export const getMemberAmount = params => {
+  return fly.request({
+    url: `/basic/mem/myAccount/getMemberAmount`,
+    method: "post",
+    body: params,
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+};
