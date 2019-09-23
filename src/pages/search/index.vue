@@ -2,56 +2,39 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-08-29 15:42:40
+ * @LastEditTime: 2019-09-20 11:33:53
  * @LastEditors: Please set LastEditors
  -->
 <template>
-  <div class="search_main">
-    <div class="search">
-      <div>
-        <div class="head">
-          <div>
-            <img
-              src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/search2-2fb94833aa.png"
-              alt
-            />
-            <input
-              type="text"
-              confirm-type="search"
-              focus="true"
-              v-model="words"
-              @click="inputFocus"
-              @confirm="searchWords"
-              :placeholder="active==0?'商品搜索':'店铺搜索'"
-            />
-            <!-- <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword.keyword}}" /> -->
-            <img
-              @click="clearInput"
-              class="del"
-              src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/clearIpt-f71b83e3c2.png"
-              alt
-            />
-          </div>
-          <div @click="cancel">取消</div>
-        </div>
-        <!-- tab切换 -->
-        <div class="tabs-group">
-          <van-tabs
-            :active="active"
-            custom-class="tab_main"
-            v-if="listData.length==0&&storeListData.length==0"
-            @change="tabChange"
-          >
-            <van-tab title="商品"></van-tab>
-            <van-tab title="店铺"></van-tab>
-          </van-tabs>
-        </div>
+  <div style="background:#fff;">
+    <div class="search_main">
+      <div class="search">
+        <input
+          type="text"
+          confirm-type="search"
+          focus="true"
+          v-model="words"
+          @click="inputFocus"
+          @confirm="searchWords"
+          :placeholder="active==0?'商品搜索':'店铺搜索'"
+        />
+        <span class="icon"></span>
       </div>
-
+      <div class="tabs" @change="tabChange">
+        <div
+          class="tab_item"
+          :class="tab.active?'active':''"
+          v-for="(tab,tabIndex) in tabs"
+          :key="tabIndex"
+          @click="tabChange(tab)"
+        >{{tab.name}}</div>
+      </div>
+    </div>
+    <div class="main">
       <!--
 	           搜索结果关键词
       -->
-      <div class="searchtips" v-if="words && listData.length == 0 && storeListData.length == 0">
+      <div class="searchtips" v-if="words && showTips">
         <div
           @click="searchWords"
           v-if="tipsData.length!=0"
@@ -66,7 +49,7 @@
 	    缓存搜索记录
 	    推送什么的
       -->
-      <div v-if="listData.length == 0 &&storeListData.length==0" class="helpSearch">
+      <div v-if="showTips" class="helpSearch">
         <div class="history" v-if="historyData.length > 0">
           <div class="t">
             <div>历史记录</div>
@@ -98,71 +81,64 @@
       </div>
 
       <!--商品列表  -->
-      <div v-show="listData.length!=0" class="goodsList">
+      <div v-show="listData.length!=0&&active==0&&!showTips" class="goodsList">
         <div class="sortnav">
-          <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">综合</div>
-          <div
-            @click="changeTab(1)"
-            class="price"
-            :class="[1==nowIndex ?'active':'', order =='SALE_PRICE-DESC'? 'desc':'asc']"
-          >价格</div>
+          <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">
+            <span>默认</span>
+          </div>
           <div
             @click="changeTab(2)"
             class="price"
             :class="[2==nowIndex ?'active':'', order =='SALES-DESC'? 'desc':'asc']"
-          >销量</div>
+          >
+            <span>销量</span>
+          </div>
+          <div
+            @click="changeTab(1)"
+            class="price"
+            :class="[1==nowIndex ?'active':'', order =='SALE_PRICE-DESC'? 'desc':'asc']"
+          >
+            <span>价格</span>
+          </div>
           <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
         </div>
-
         <div class="goods-group">
-          <!-- <van-card
-            :tag="item.tag"
-            :lazy-load="true"
-            :price="item.listPrice"
-            :origin-price="item.salePrice"
-            :desc="item.keyword"
-            :title="item.title"
-            thumb-class="goods-image"
-            title-class="goods-title"
-            desc-class="goods-desc"
-            v-for="(item, index) in listData"
-            :key="index"
-            @click="goodsDetail(item.id)"
-            :thumb="'http://qn.gaoshanmall.cn/' + item.img"
-          >
-            <div slot="desc" class="goods-bottom">
-              <div>{{item.keyword}}</div>
-              <div class="sketch" v-if="item.sketch!=null">{{item.sketch}}</div>
-            </div>
-          </van-card> -->
           <div class="sublist">
-          <div
-            class="good-card"
-            v-for="(good, goodIndex) in listData"
-            :key="goodIndex"
-            @click="goodsDetail(good.id)"
-          >
-            <div class="thumb">
-              <img :src="'http://qn.gaoshanmall.cn/' + good.img" alt />
-            </div>
-            <div class="desc">
-              <div class="title">{{good.title}}</div>
-              <div class="vip" v-if="good.mixCashPrice &&good.mixScorePrice">
-                <img src="/static/images/vip_price.png" alt />
-                <span v-if="good.mixCashPrice" class="span1">￥{{good.mixCashPrice}}</span>
-                <span v-if="good.mixScorePrice" class="span2">+{{good.mixScorePrice}}补贴金</span>
+            <div
+              class="good-card"
+              v-for="(good, goodIndex) in listData"
+              :key="goodIndex"
+              @click="goodsDetail(good.id)"
+            >
+              <div class="thumb">
+                <img :src="'http://qn.gaoshanmall.cn/' + good.img" alt />
               </div>
-              <div class="price">
-                <img src="/static/images/list_price.png" alt />
-                ￥{{good.listPrice}}
-              </div>
-              <div class="origin-price">
-                市场价:￥
-                <span>{{good.salePrice}}</span>
+              <div class="desc">
+                <div class="title">{{good.title}}</div>
+                <div class="keywords" v-if="good.keywords.length>0">
+                  <span
+                    class="keywords_item"
+                    v-for="(keyword,keywordIndex) in good.keywords"
+                    :key="keywordIndex"
+                  >{{keyword}}</span>
+                </div>
+                <div class="vip_price">
+                  <span>
+                    ￥{{good.mixCashPrice}}+
+                    <img src="/static/images/index/money.png" alt />
+                    {{good.mixScorePrice}}补贴金
+                  </span>
+                </div>
+                <div class="price_2">
+                  <span class="span1">￥{{good.salePrice}}</span>
+
+                  <span class="span2">{{good.salePrice}}购物豆</span>
+                </div>
+      
               </div>
             </div>
           </div>
-        </div>
+     
           <!-- <div
           @click="goodsDetail(item.id)"
           v-for="(item, index) in listData"
@@ -251,21 +227,7 @@
         </div>
       </van-popup>
       <!-- 店铺列表 -->
-      <div v-show="storeListData.length!=0" class="goodsList">
-        <!-- <div class="sortnav">
-          <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">综合</div>
-          <div
-            @click="changeTab(1)"
-            class="price"
-            :class="[1==nowIndex ?'active':'', order =='SALE_PRICE-DESC'? 'desc':'asc']"
-          >价格</div>
-          <div
-            @click="changeTab(2)"
-            class="price"
-            :class="[2==nowIndex ?'active':'', order =='SALES-DESC'? 'desc':'asc']"
-          >销量</div>
-          <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
-        </div>-->
+      <div v-show="storeListData.length!=0&&active==1&&!showTips" class="goodsList">
         <div class="goods-group">
           <div class="store-item" v-for="(store,storeIndex) in storeListData" :key="storeIndex">
             <div class="top">
@@ -291,7 +253,7 @@
           </div>
           <div class="nodata">
             <span>—</span>
-            <span>我也是有底线的</span>
+            <span>没有更多商品了哦~</span>
             <span>—</span>
           </div>
         </div>
@@ -408,6 +370,19 @@ export default {
   },
   data() {
     return {
+      tabs: [
+        {
+          name: "商品",
+          index: 0,
+          active: true
+        },
+        {
+          name: "店铺",
+          index: 1,
+          active: false
+        }
+      ],
+      showTips:true,
       active: 0,
       nowIndex: 0,
       words: "",
@@ -434,9 +409,16 @@ export default {
   },
   methods: {
     //tab栏切换
-    tabChange(e) {
+    tabChange(tab) {
       // console.log(e);
-      this.active = e.mp.detail.index;
+      this.active = tab.index;
+      this.tabs.map(tabs => {
+        if (tabs.name == tab.name) {
+          tabs.active = true;
+        } else {
+          tabs.active = false;
+        }
+      });
     },
     // 获取历史记录
     async getHistory() {
@@ -543,10 +525,11 @@ export default {
       this.tipsData = [];
     },
     inputFocus() {
+      this.showTips = true;
       //商品清空
-      this.listData = [];
+      // this.listData = [];
       //商品列表数据清空
-      this.storeListData = [];
+      // this.storeListData = [];
       //展示搜索提示信息
       // this.tipsearch();
     },
@@ -642,6 +625,7 @@ export default {
     async searchWords(e) {
       var value = e.currentTarget.dataset.value;
       this.words = value || this.words;
+      this.showTips =false;
       // const data = await post("/search/addhistoryaction", {
       //   openId: this.openid,
       //   keyword: value || this.words

@@ -1,0 +1,40 @@
+.record_content {
+  background: #fff;
+  overflow: hidden;
+  margin-bottom: 120rpx;
+  padding-bottom: 120rpx;
+  .img_group {
+    display: flex;
+    justify-content: center;
+    img {
+      width: 238rpx;
+      height: 170rpx;
+      margin-top: 56rpx;
+    }
+  }
+  .text {
+    margin-top: 45rpx;
+    text-align: center;
+    font-size: 32rpx;
+  }
+  .btn-group {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 116rpx;
+    margin-top: 72rpx;
+    .btn {
+      width: 240rpx;
+      height: 68rpx;
+      line-height: 68rpx;
+      color: rgba(102, 102, 102, 1);
+      font-size: 32rpx;
+      border: 1px solid rgba(153, 153, 153, 1);
+      border-radius: 6rpx;  
+      margin:0;    
+    }
+    .btn:nth-child(2) {
+      border:1px solid rgba(255,108,0,1);
+      color:rgba(255,108,0,1);
+    }
+  }
+}

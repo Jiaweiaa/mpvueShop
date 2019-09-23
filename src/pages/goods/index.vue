@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-27 18:07:01
+ * @LastEditTime: 2019-09-20 15:59:50
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -23,12 +23,30 @@
         </block>
       </swiper>
     </div>
+    <div class></div>
     <div class="price-bg" v-if="goodsInfo!=null">
       <!-- <p class="mixPrice">组合支付价格:￥{{mixCashPrice}}+补贴金{{mixScorePrice}}</p> -->
-      <p class="salePrice">
+      <div class="price">
+        <p class="listPrice">
+          ￥
+          <span>{{listPrice}}</span>
+        </p>
+        <p class="vipPrice">
+          <img class="vip_img" src="/static/index/vip.png" alt />
+          <span>
+            ￥{{mixCashPrice}}+
+            <img class="money_img" src="/static/index/money.png" alt />
+            {{mixScorePrice}}补贴金
+          </span>
+        </p>
+      </div>
+      <div class="buyBeans">
+        <span>198购物豆</span>
+      </div>
+      <!-- <p class="salePrice">
         组合价格:￥{{mixCashPrice}}+补贴金{{mixScorePrice}}
-      </p>
-      <p class="listPrice">商城价 ￥{{listPrice}}</p>
+      </p>-->
+      <!-- <p class="listPrice">商城价 ￥{{listPrice}}</p> -->
       <div class="countDown" v-if="timeFlag">
         <p v-if="havaTimeFlag&&!textFlag" class="title">距结束仅剩</p>
         <div class="time" v-if="havaTimeFlag&&!textFlag">
@@ -49,6 +67,26 @@
           <span class="item" v-for="(tag,tagIndex) in goodsInfo.itemTags" :key="tagIndex">{{tag}}</span>
         </div>
         <p class="sketch">{{goodsInfo.sketch}}</p>
+        <div class="shop_promise">
+          <div class="item">
+            <span>
+              <img src="/static/images/good/duihao.png" alt />
+            </span>
+            全场包邮
+          </div>
+          <div class="item">
+            <span>
+              <img src="/static/images/good/duihao.png" alt />
+            </span>
+            7天退换
+          </div>
+          <div class="item">
+            <span>
+              <img src="/static/images/good/duihao.png" alt />
+            </span>
+            48小时发货
+          </div>
+        </div>
       </div>
     </div>
     <van-cell
@@ -107,26 +145,26 @@
         </div>
         <div class="right">
           <div>
-            <p>商品价格:￥{{nowPrice}}</p>
-            <p v-if="vipPrice!=''&&integral!=''">会员价:￥{{vipPrice}}+{{integral}}补贴金</p>
-            <p>库存:{{quantity}}</p>
+            <p>
+              ￥
+              <span>{{nowPrice}}</span>
+            </p>
+            <!-- <p >会员价:￥{{vipPrice}}+{{integral}}补贴金</p> -->
+            <p v-if="vipPrice!=''&&integral!=''">
+              <img class="vip_img" src="/static/index/vip.png" alt />
+              <span>
+                ￥{{mixCashPrice}}+
+                <img class="money_img" src="/static/index/money.png" alt />
+                {{mixScorePrice}}补贴金
+              </span>
+            </p>
+            <p>库存:{{quantity}}件</p>
           </div>
         </div>
-        <div @click="showType" class="close">X</div>
+        <div @click="showType" class="close">
+          <img src="/static/images/good/close.png" alt="">
+        </div>
       </div>
-      <!-- <div style="display:block;min-width:50px;min-height:50px;">
-        <div style="float:left;">
-          <img
-            v-if="gallery.length>0"
-            style="width:50px;height:50px;"
-            :src="'http://qn.gaoshanmall.cn/'+gallery[0].picUrl"
-          >
-        </div>
-        <div style="float:right;">
-          <h3>{{goodsInfo.title}}</h3>
-          <span>{{nowPrice}}</span>
-        </div>
-      </div>-->
       <div id="goodsinfo">
         <div v-for="(item,index) in keys" :key="index">
           <div class="tabContent">
@@ -147,7 +185,7 @@
       </div>
       <!-- <p>请选择商品数量</p> -->
       <div style="display:flex;justify-content: space-between;align-items:center;">
-        <p style="margin-left:30rpx;font-size:32rpx;">我要买:</p>
+        <p style="margin-left:30rpx;font-size:32rpx;color:rgba(102,102,102,1);">我要买:</p>
         <van-stepper
           style="margin-right:30rpx;"
           async-change
@@ -167,7 +205,7 @@
     <div class="bottom-fixed">
       <div @click="toIndex()" class="home">
         <div class="car">
-          <img src="/static/images/good_home.png" />
+          <img src="/static/images/bt_home.png" />
           <span class="text" style="color:rgb(102,102,102);margin-left:-4rpx;">首页</span>
         </div>
       </div>
@@ -177,7 +215,7 @@
       <div @click="toCart" class="cart">
         <div class="car">
           <span>{{allnumber}}</span>
-          <img src="/static/images/good_cart.png" />
+          <img src="/static/images/bt_cart.png" />
           <p class="text" style="color:rgb(102,102,102);">购物车</p>
         </div>
       </div>
@@ -276,11 +314,11 @@ export default {
       showpop: false,
       gallery: [],
       goodsInfo: {}, //商品数据
-      salePrice:"",//销售价
-      listPrice:"",//挂牌价
-      scorePrice:"",//补贴金价
-      mixCashPrice:"",//混合支付现金
-      mixScorePrice:"",//混合支付补贴金
+      salePrice: "", //销售价
+      listPrice: "", //挂牌价
+      scorePrice: "", //补贴金价
+      mixCashPrice: "", //混合支付现金
+      mixScorePrice: "", //混合支付补贴金
       arrivalTime: "", //到货时间
       brand: {},
       attribute: [],
@@ -315,7 +353,7 @@ export default {
       timeFlag: false, //倒计时是否显示
       havaTimeFlag: false,
       textFlag: false,
-      timeOut:null
+      timeOut: null
     };
   },
   components: {
@@ -505,7 +543,7 @@ export default {
         }
         // console.log(this.s);
         //递归每秒调用countTime方法，显示动态时间效果
-       this.timeOut =  setTimeout(this.countTime, 1000);
+        this.timeOut = setTimeout(this.countTime, 1000);
       }
     },
 
@@ -701,8 +739,8 @@ export default {
     //获取商品详情
     async goodsDetail() {
       getGoodsDetail({
-        itemId: this.id
-        // itemId: 979
+        // itemId: this.id
+        itemId: 529
       })
         .then(res => {
           if (res.data.code == "200") {
@@ -712,9 +750,9 @@ export default {
             this.goods_desc = data.item.itemChannel.description; //详情描述富文本
             this.goodsList = data.item.pdpPropertiesCommands;
             this.quantityData = JSON.parse(data.skuJson); //SKU信息
-            console.log(this.quantityData,'567');
+            console.log(this.quantityData, "567");
             this.quantList = JSON.parse(res.data.result.skuJson);
-            console.log(this.quantList,'333');
+            console.log(this.quantList, "333");
             this.salePrice = this.quantList[0].salePrice;
             this.listPrice = this.quantList[0].listPrice;
             this.scorePrice = this.quantList[0].scorePrice;
@@ -775,7 +813,7 @@ export default {
               }
               this.keys.push(data);
             });
-            console.log(this.keys,'456');
+            console.log(this.keys, "456");
             // 库存数据
             this.quantityData.map(v => {
               // 处理商品号
@@ -1012,7 +1050,7 @@ export default {
         });
         var len = haveChangedId.length;
         var prices = this.SKUResult[haveChangedId.join(";")].prices;
-        console.log(this.SKUResult[haveChangedId.join(";")],'777');
+        console.log(this.SKUResult[haveChangedId.join(";")], "777");
         var maxPrice = Math.max.apply(Math, prices);
         var minPrice = Math.min.apply(Math, prices);
         this.nowPrice =
@@ -1094,9 +1132,9 @@ export default {
       this.quantList.map(v => {
         if (v.properties == haveChangedId) {
           this.selectSkuData = v;
-          console.log(this.selectSkuData,'666');
+          console.log(this.selectSkuData, "666");
           this.quantity = this.selectSkuData.quantity;
-          this.vipPrice = this.selectSkuData.mixCashPrice;//会员价格
+          this.vipPrice = this.selectSkuData.mixCashPrice; //会员价格
           this.integral = this.selectSkuData.mixScorePrice; //所需积分
         }
       });
@@ -1129,29 +1167,36 @@ export default {
   overflow: hidden;
   border: 1px solid #ccc;
   width: auto;
-  padding: 0px 20px;
+  padding: 10rpx;
   float: left;
-  font-size: 13px;
-  border-radius: 20px;
+  font-size: 26rpx;
+  border-radius: 6px;
   margin-right: 10px;
   margin-top: 10px;
 }
 .notClick {
-  background: #999999;
+  background: rgba(247, 247, 247, 1);
   color: white;
 }
 #goodsinfo .tabContent {
   overflow: hidden;
   padding: 10px;
+  font-size:28rpx;
+  color:rgba(102,102,102,1);
 }
 
 #goodsinfo .tabContent .active {
-  background: $main-color;
-  color: white;
+  background: rgba(250, 215, 215, 1);
+  color: rgba(219, 48, 48, 1);
 }
 .goods .van-stepper {
-  width: 200px !important;
-  margin: 30px !important;
+  width: 400rpx !important;
+  margin: 60rpx 0 !important;
+  display: flex;
+  justify-content: flex-end;
+  .van-stepper__minus{
+    
+  }
 }
 .record .label {
   flex-grow: 1;

@@ -2,15 +2,26 @@
   width: 100%;
   overflow-x: hidden;
   .list {
+    li:nth-child(1){
+      margin-top: 20rpx;
+    }
     li {
+     
+      width: 710rpx;
+      height: 481rpx;
+      margin: 0 auto;
+      border-radius:10rpx;
       background: #fff;
       text-align: center;
       padding-bottom: 20rpx;
       margin-bottom: 20rpx;
       .t-img {
-        width: 100%;
-        height: 415rpx;
+        width: 710rpx;
+        border-radius:10rpx;
+        height: 300rpx;
+       
         img {
+          border-radius:10rpx;
           width: 100%;
           height: 100%;
         }
@@ -24,14 +35,14 @@
           padding: 0 20rpx;
         }
         p:nth-child(1) {
-          color: #333;
-          font-size: 35rpx;
-          margin-top: 30rpx;
+          color:rgba(48,48,48,1);
+          font-size: 32rpx;
+          margin-top: 29rpx;
         }
         p:nth-child(2) {
-          color: #999;
-          font-size: 24rpx;
-          margin-top: 16rpx;
+          color:rgba(102,102,102,1);
+          font-size: 28rpx;
+          margin-top: 29rpx;
           
         }
         p:nth-child(3) {

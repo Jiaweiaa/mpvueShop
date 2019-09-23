@@ -2,7 +2,7 @@
  * @Description: 首页模块
  * @Author: 董
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-16 09:47:37
+ * @LastEditTime: 2019-09-18 13:41:25
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -11,7 +11,7 @@
       <div @click="toSearch" class="search_bar">
         <input type="text" placeholder="搜索您要的商品" disabled placeholder-class="phcolor" />
         <span class="icon"></span>
-        <span class="qr_icon1"></span>
+        <span class="qr_icon"></span>
       </div>
     </div>
     <div class="swiper-group">
@@ -36,7 +36,7 @@
         </swiper>
       </div>
     </div>
-    
+
     <div class="channel">
       <div
         @click="toCategoryList(item.categoryId, item.name)"
@@ -47,9 +47,52 @@
         <p>{{item.name}}</p>
       </div>
     </div>
+    
+    <!-- 限时抢购 -->
+    <div class="rush">
+      <div class="rush_title">
+        <span class="stand"></span>
+        <span class="text">限时抢购</span>
+        <span class="count_down_text">距离结束还有</span>
+      </div>
+      <div class="rush_content">
+        <div class="rush_item" v-for="(item,index) in 4" :key="index">
+          <div class="thumb">
+            <img src="http://qn.gaoshanmall.cn/cloudmall/file/662905256241269760.jpg" alt />
+          </div>
+          <div class="vip_price">
+            ￥120+
+            <img src="/static/images/index/money.png" alt />
+            32
+          </div>
+          <div class="price">￥220</div>
+          <div class="desc">小米空气净化器</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product_group">
+      <div class="product_title">
+        <div class="title_item">
+          <p>热门推荐</p>
+          <p>猜你喜欢</p>
+        </div>
+        <div class="title_item">
+          <p>新品榜单</p>
+          <p>新品榜单</p>
+        </div>
+        <div class="title_item">
+          <p>品牌好货</p>
+          <p>大品牌出厂价</p>
+        </div>
+      </div>
+      <div class="product_content">
+
+      </div>
+    </div>
     <div class="newcategory">
       <div class="list" v-for="(item, index) in newCategoryList" :key="item.id">
-        <div class="head" v-if="item.goodsList&&item.goodsList.length>0">{{item.name}}</div>
+        <!-- <div class="head" v-if="item.goodsList&&item.goodsList.length>0">{{item.name}}</div> -->
         <div v-if="item.name !== '优惠券'" class="sublist">
           <div
             class="good-card"
@@ -57,23 +100,25 @@
             :key="goodIndex"
             @click="goodsDetail(good)"
           >
-            <div class="thumb">
+            <div class="thumb"> 
               <img :src="'http://qn.gaoshanmall.cn/' + good.img" alt />
             </div>
             <div class="desc">
               <div class="title">{{good.name}}</div>
+              <div class="sketch">
+                <span>家庭必备</span>
+                <span>送礼首选</span>
+              </div>
               <div class="vip" v-if="good.mixCashPrice &&good.mixScorePrice">
-                <img src="/static/images/vip_price.png" alt />
-                <span v-if="good.mixCashPrice" class="span1">￥{{good.mixCashPrice}}</span>
-                <span v-if="good.mixScorePrice" class="span2">+{{good.mixScorePrice}}补贴金</span>
+                <img class="vip_img" src="/static/images/index/vip.png" alt />
+                <span>￥{{good.mixCashPrice}}+ <img class="money" src="/static/images/index/money.png" alt /> {{good.mixScorePrice}}补贴金</span>
               </div>
               <div class="price">
-                <img src="/static/images/list_price.png" alt />
                 ￥{{good.listPrice}}
               </div>
-              <div class="origin-price">
-                市场价:￥
-                <span>{{good.salePrice}}</span>
+              <div class="origin-price" v-if="goodIndex==0">
+
+                <span>{{good.salePrice}}购物豆</span>
               </div>
             </div>
           </div>
@@ -109,40 +154,9 @@
         </div>
       </div>
     </div>
-    <!-- 限时抢购 -->
-    <div class="rush">
-      <div class="rush_title">
-          <span class="stand"></span>
-          <span class="text">限时抢购</span>
-          <span class="count_down_text">
-            距离结束还有
-          </span>
-          <!-- <div>
-            
-          </div> -->
-      </div>
-      <div class="rush_content">
-        <div class="rush_item">
-            <div class="thumb">
-              <img src="http://qn.gaoshanmall.cn/cloudmall/file/662905256241269760.jpg" alt="">
-            </div>
-            <div class="vip_price">
-              ￥120+
-              <img src="/static/images/index/money.png" alt="">
-              32
-            </div>
-            <div class="price">
-              ￥220
-            </div>
-            <div class="desc">
-              小米空气净化器
-            </div>
-        </div>
-      </div>
-    </div>
     <div v-if="newCategoryList.length > 0" class="no_more_data">
       <span>—</span>
-      <span>我也是有底线的</span>
+      <span>暂时没有更多商品啦,祝您购物愉快</span>
       <span>—</span>
     </div>
 
@@ -174,17 +188,17 @@ export default {
     this.getData();
     this.getCartGoodsNum();
   },
-  onLoad:function(options){
-    console.log(options,'看这里看这里');
-    //如果是通过工作人员分享的小程序码进入,则有推荐人id 
-    if(options.scene){
+  onLoad: function(options) {
+    console.log(options, "看这里看这里");
+    //如果是通过工作人员分享的小程序码进入,则有推荐人id
+    if (options.scene) {
       wx.setStorageSync("parentMemberId", decodeURIComponent(options.scene));
     }
-    console.log(decodeURIComponent(options.scene),'序列化后的参数');
+    console.log(decodeURIComponent(options.scene), "序列化后的参数");
   },
   onShow() {
-    console.log('是否登录:',wx.getStorageSync("haveLogin"));
-    console.log('上级ID:',wx.getStorageSync("parentMemberId"));
+    console.log("是否登录:", wx.getStorageSync("haveLogin"));
+    console.log("上级ID:", wx.getStorageSync("parentMemberId"));
     if (wx.getStorageSync("haveLogin") && wx.getStorageSync("parentMemberId")) {
       let flag = wx.getStorageSync("haveLogin");
       if (flag) {
