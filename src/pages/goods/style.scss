@@ -1,7 +1,16 @@
 .goods {
-  .buyBtn {
-    background: linear-gradient(70deg, $buy-btn, $main-color);
-    border: none;
+  .handle {
+    display: flex;
+    justify-content: center;
+    .buyBtn {
+      background: rgba(219, 48, 48, 1);
+      color: #fff;
+      border: none;
+      width: 690rpx;
+      height: 90rpx;
+      border-radius:45rpx;
+      margin-bottom: 30rpx;
+    }
   }
 
   overflow: hidden;
@@ -47,16 +56,53 @@
   //价格
   .price-bg {
     width: 100%;
-    height: 98rpx;
-    background: url("../../../static/images/good_price_bg.png");
-    background-size: cover;
+    background: #fff;
     position: relative;
+    .price {
+      padding-top: 35rpx;
+      display: flex;
+      .listPrice {
+        color: rgba(228, 58, 65, 1);
+        font-size: 33rpx;
+        margin-top: 6rpx;
+        padding-left: 30rpx;
+        span {
+          font-size: 36rpx;
+        }
+      }
+      .vipPrice {
+        margin-left: 30rpx;
+        display: flex;
+        align-items: center;
+        .vip_img {
+          width: 60rpx;
+          height: 33rpx;
+        }
+        span {
+          .money_img {
+            width: 19rpx;
+            height: 21rpx;
+          }
+          margin-left: -20rpx;
+          padding: 0 10rpx;
+          font-size: 24rpx;
+          color: #fff;
+          background: rgba(217, 34, 49, 1);
+          border-radius: 16rpx;
+        }
+      }
+    }
+    .buyBeans {
+      color: rgba(136, 136, 136, 1);
+      font-size: 26rpx;
+      padding-left: 30rpx;
+    }
+
     .mixPrice {
       padding-left: 32rpx;
       font-size: 48rpx;
       color: #fff;
     }
-
     .salePrice {
       // margin-top: 10rpx;
       padding-top: 13rpx;
@@ -64,13 +110,7 @@
       font-size: 30rpx;
       color: rgb(217, 192, 126);
     }
-    .listPrice {
-      padding-left: 30rpx;
-      font-size: 22rpx;
-      color: #fff;
-      margin-top: 6rpx;
-      // text-decoration: line-through;
-    }
+
     .countDown {
       position: absolute;
       top: 20rpx;
@@ -117,46 +157,69 @@
       position: relative;
       height: 100%;
       .share {
-        width: 30rpx;
-        height: 30rpx;
+        width: 130rpx;
+        height: 48rpx;
         // padding: 5rpx;
-        background: url("../../../static/images/share.png") no-repeat;
-        background-size:contain;
-        padding: 0 14rpx!important;
+        background: url("../../../static/images/good/share.png") no-repeat;
+        background-size: contain;
+        padding: 0 14rpx !important;
         position: absolute;
-        right: 8rpx;
-        top: 35rpx;
+        right: 15rpx;
+        top: 90rpx;
       }
       .title {
-        font-size: 36rpx;
-        // padding: 5rpx 40rpx;
+        font-size: 32rpx;
         padding-top: 30rpx;
         padding-left: 24rpx;
-        // font-weight: 600;
         color: #000;
-        width: 500rpx;
-        // min-height: 75rpx;
+        width: 680rpx;
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
       .tags {
         padding-top: 14rpx;
         padding-bottom: 30rpx;
         padding-left: 24rpx;
         .item {
-          color: $tag-color;
-          padding: 10rpx;
+          color: rgba(254, 182, 53, 1);
+          padding: 4rpx;
           margin-right: 5rpx;
-          font-size: 22rpx;
-          border: 1px solid $tag-color;
-          border-radius: 7rpx;
+          font-size: 18rpx;
+          border: 1px solid rgba(254, 182, 53, 1);
+          border-radius: 6rpx;
         }
       }
       .sketch {
         font-size: 26rpx;
         padding: 5rpx 40rpx;
         color: #666;
+      }
+      .shop_promise {
+        display: flex;
+        width: 691rpx;
+        border-top: 1rpx solid rgba(213, 213, 213, 0.5);
+        padding: 30rpx 0;
+        margin: 0 auto;
+        .item {
+          margin-right: 60rpx;
+          display: flex;
+          align-items: center;
+          span {
+            margin-right: 18rpx;
+            display: flex;
+            align-items: center;
+            img {
+              width: 26rpx;
+              height: 26rpx;
+            }
+          }
+          font-size: 24rpx;
+          color: rgba(136, 136, 136, 1);
+        }
       }
 
       .brand {
@@ -295,7 +358,9 @@
       }
     }
   }
-
+  .detail {
+    margin-bottom: 5vh;
+  }
   .attribute {
     padding: 20rpx 30rpx;
     background: #fff;
@@ -478,36 +543,68 @@
 
       .close {
         position: absolute;
-        right: 10px;
-        top: 10px;
-        font-size: 40rpx;
-        color: #999;
+        right: 30rpx;
+        top: 30rpx;
+        img{
+          width: 26rpx;
+          height: 26rpx;
+        }
       }
 
       .left {
-        height: 177rpx;
-        width: 177rpx;
+        height: 220rpx;
+        width: 220rpx;
         margin-right: 30rpx;
-
+        margin-top: 30rpx;
         img {
           float: left;
-          height: 177rpx;
-          width: 177rpx;
+          height: 220rpx;
+          width: 220rpx;
+          border-radius: 6rpx;
         }
       }
 
       .right {
+        margin-left: 30rpx;
         flex: 1;
         display: flex;
         align-items: flex-end;
-
         p {
           width: 100%;
-          line-height: 45rpx;
+          // line-height: 45rpx;
         }
 
         p:nth-child(1) {
           color: #b4282d;
+          font-size: 33rpx;
+          span {
+            font-size: 36rpx;
+          }
+        }
+        p:nth-child(2) {
+          margin-top: 5rpx;
+          display: flex;
+          align-items: center;
+          .vip_img {
+            width: 60rpx;
+            height: 33rpx;
+          }
+          span {
+            .money_img {
+              width: 19rpx;
+              height: 21rpx;
+            }
+            margin-left: -20rpx;
+            padding: 0 10rpx;
+            font-size: 24rpx;
+            color: #fff;
+            background: rgba(217, 34, 49, 1);
+            border-radius: 16rpx;
+          }
+        }
+        p:nth-child(3) {
+          margin-top: 15rpx;
+          font-size: 28rpx;
         }
       }
     }
@@ -565,8 +662,8 @@
         width: 90rpx;
         img {
           display: block;
-          height: 40rpx;
-          width: 40rpx;
+          height: 45rpx;
+          width: 37rpx;
           position: absolute;
           top: 10rpx;
           left: 20rpx;
@@ -621,7 +718,7 @@
         .text {
           position: absolute;
           bottom: -28rpx;
-          
+
           right: 14rpx;
 
           font-size: 24rpx;

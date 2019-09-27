@@ -6,11 +6,11 @@
     align-items: center;
     // border: 1rpx solid rgb(51, 51, 60);
     border-radius: 9rpx;
-    .span1{
+    .span1 {
       font-size: 22rpx;
-      color:rgb(226, 61, 55);
+      color: rgb(226, 61, 55);
     }
-    .span2{
+    .span2 {
       font-size: 22rpx;
       color: rgb(51, 51, 60);
     }
@@ -23,16 +23,15 @@
   margin-bottom: 120rpx;
   //优惠券弹出层样式
   .van-tabs__wrap {
-    position: absolute!important;
-    top: 0!important;
-    right: 0!important;
-    left: 0!important;
-    display: -webkit-flex!important;
-    display: flex!important;
-    background-color: #fff!important;
-    
-    }
-    
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: 0 !important;
+    display: -webkit-flex !important;
+    display: flex !important;
+    background-color: #fff !important;
+  }
+
   .coupon_popup {
     height: 80vh;
     background: #666;
@@ -117,42 +116,45 @@
     line-height: 166rpx;
   }
   .address {
-    background: url("http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/address-bg-bd30f2bfeb.png")
-      0 0 repeat-x #fff;
-    padding: 50rpx 0 30rpx 0;
-    margin-bottom: 20rpx;
+    width: 710rpx;
+    height: 189rpx;
+    margin: 20rpx auto;
+    background: #fff;
+    border-radius: 10rpx;
     .item {
       padding: 0 20rpx;
       .addresslist {
         width: 100%;
-        position: relative;
-        transition: all 300ms ease;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        div:nth-child(1) {
-          width: 100rpx;
-          text-align: center;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          align-self: flex-start;
+        .first {
+          display: flex;
+          padding: 0 90rpx;   
+          padding-top: 42rpx;
+          span {
+            font-size: 32rpx;
+          }
+          span:nth-child(1) {
+            width: 120rpx;
+          }
+          span:nth-child(2) {
+            margin-right: 20rpx;
+          }
           .moren {
-            width: 60rpx;
-            height: 30rpx;
-            border: 1rpx solid #b4282d;
+            border: 1px solid rgba(230, 57, 54, 1);
+            color: rgba(230, 57, 54, 1);
+            opacity: 0.78;
+            border-radius: 6px;
             text-align: center;
-            line-height: 30rpx;
-            color: #b4282d;
-            margin: 10rpx auto 0 auto;
+            padding: 4rpx 15rpx;
+            font-size: 24rpx;
           }
         }
         .info {
-          padding: 0 20rpx;
-          flex: 1; // p:nth-child(1) {}
-          p:nth-child(2) {
-            margin-top: 5rpx;
-            color: #666;
+          padding: 0 90rpx;
+          padding-top: 22rpx;
+          padding-bottom: 38rpx;
+          p {
+          
+            color:rgba(102,102,102,1);
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
@@ -160,14 +162,7 @@
             -webkit-box-orient: vertical;
           }
         }
-        div:nth-child(3) {
-          width: 50rpx;
-          height: 50rpx;
-          margin: 0 20rpx;
-          background: url("http://yanxuan-static.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/address-right-596d39df1e.png")
-            no-repeat;
-          background-size: 100% 100%;
-        }
+        
       }
     }
   }
@@ -221,11 +216,13 @@
   }
 
   .orderbox {
-    padding: 0 30rpx;
     background: #ffffff;
+    width: 710rpx;
+    border-radius: 10rpx;
+    margin: 0 auto;
     margin-bottom: 20rpx;
     .item {
-      padding: 30rpx 0;
+      padding: 30rpx;
       display: flex;
       justify-content: space-between;
       border-bottom: 1rpx solid #d9d9d9;
@@ -235,9 +232,11 @@
     }
   }
   .cartlist {
+    width: 710rpx;
+    margin: 20rpx auto;
+    border-radius:10rpx;
     background: #fff;
-    margin-bottom: 20rpx;
-    margin-top: 20rpx;
+    overflow: hidden;
     .item {
       padding: 20rpx 0;
       border-bottom: 1rpx solid #f4f4f4; // height: 166rpx;

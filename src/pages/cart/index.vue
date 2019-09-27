@@ -2,18 +2,11 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-08-29 14:11:15
+ * @LastEditTime: 2019-09-23 09:21:19
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="cart_main">
-    <div class="top">
-      <!-- <div>时刻益每家</div> -->
-      <!-- <div>高山商城</div> -->
-      <div>易起省</div>
-      <div>轻松购</div>
-      <div>乐享购</div>
-    </div>
     <div class="cartlist" v-if="shopList!=null&&shopList.length>0">
       <!-- 分店铺形式的购物车列表 -->
       <div class="store-list" v-for="(group,index) in shopList" :key="index">
@@ -25,8 +18,7 @@
               @click="storeChange(group)"
               :class="[ group.storeAllCheck==true ? 'active' : '',{active:allCheck}]"
             ></div>
-            <van-icon name="shop-o" />
-            <span>{{group.storeInfoVo.name}}</span>
+            <span style="font-size:28rpx;font-weight:500;">{{group.storeInfoVo.name}}</span>
             <div class="getCoupon" v-if="group.canRecieveCoupon==1">
               <span @click="getCouponList(group.storeInfoVo.id)" class="coupon_btn">领券</span>
             </div>
@@ -105,7 +97,7 @@
       <div class="checkAll">全选</div>
       <div class="right">
         <div style="min-width:170px;">￥{{totalPrice}}</div>
-        <div @click="goAccount">下单</div>
+        <div @click="goAccount">结 算</div>
       </div>
     </div>
     <!-- 优惠券弹出层 -->

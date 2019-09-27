@@ -18,8 +18,9 @@
     .search_bar {
       width: 710rpx;
       height: 60rpx;
-      margin-left: 0 auto;
+      // margin-left: 0 auto;
       margin-top: 20rpx;
+      margin-bottom: 20rpx;
       position: relative;
       .phcolor {
         color: rgba(153, 153, 153, 1);
@@ -63,7 +64,7 @@
     width: 750rpx;
     display: flex;
     justify-content: center;
-    background: red;
+    // background: red;
     background-repeat: no-repeat;
     // background-position-y: -100rpx;
     background-size: contain;
@@ -97,6 +98,7 @@
     border-radius: 10rpx;
     padding-top: 1rpx;
     .rush_title {
+      margin-left: 16rpx;
       display: flex;
       align-items: center;
       margin-top: 28rpx;
@@ -121,11 +123,11 @@
       }
     }
     .rush_content {
-      width: 98%;
+      width: 94%;
       margin: 0 auto;
       display: flex;
       .rush_item {
-        
+        margin: 0 5rpx;
         .thumb {
           width: 160rpx;
           height: 160rpx;
@@ -172,10 +174,39 @@
       }
     }
   }
+  //商品列表
+  .product_group{
+    width: 94%;
+    margin: 0 auto;
+    .product_title{
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      margin: 30rpx 0;
+      .title_item{
+        p:nth-child(1){
+          font-size:32rpx;
+          text-align: center;
+        }
+        p:nth-child(2){
+          font-size:24rpx;
+          text-align: center;
+          color:rgba(102,102,102,1);
+        }
+      }
+      .title_item:nth-child(1){
+        color:rgba(219,48,48,1);
+        p:nth-child(2){
+          background: url('../../../static/index/like.png') no-repeat;
+          background-size: contain;
+          color:rgba(255,255,255,1);
+        }
+      }
+    }
+  }
   .channel {
     width: 100%;
     // padding: 20rpx 0;
-    background: #ffffff;
     overflow: hidden;
     margin-bottom: 20rpx;
     // margin-top: 30rpx;
@@ -188,6 +219,7 @@
       img {
         height: 90rpx;
         width: 90rpx;
+        border-radius: 50%;
         margin: 0 auto;
         display: inline-block;
         padding-bottom: 4rpx;
@@ -442,7 +474,7 @@
   .newcategory {
     // margin-top: 20rpx;
     // padding: 0 10rpx 25rpx 10rpx;
-    background: #f8f7f6;
+    // background: #f8f7f6;
 
     .head {
       padding: 24rpx;
@@ -458,8 +490,8 @@
       display: flex;
       flex-wrap: wrap;
       .good-card {
-        width: 344rpx;
-        // height:650rpx;
+        width: 345rpx;
+        // height:537rpx;
         margin-bottom: 14rpx;
         overflow: hidden;
         position: relative;
@@ -482,52 +514,59 @@
             margin-top: 18rpx;
             text-overflow: ellipsis;
             display: -webkit-box;
-            height: 70rpx;
             overflow: hidden;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
           }
+          .sketch{
+            margin: 3rpx 0;
+            span{
+              font-size:18rpx;
+              color:rgba(255,181,51,1);
+              padding: 3rpx 8rpx;
+              margin-right:5rpx;
+              border:1rpx solid rgba(255,181,51,1);
+              border-radius:6rpx;
+            }
+          }
           .vip {
-            margin-top: 20rpx;
+            margin-top: 15rpx;
             font-size: 22rpx;
             display: flex;
             align-items: center;
-            border: 1rpx solid rgb(51, 51, 60);
+            // border: 1rpx solid rgb(51, 51, 60);
             border-radius: 9rpx;
-            .span1 {
-              font-size: 22rpx;
-              color: rgb(226, 61, 55);
+          
+            .vip_img {
+              width: 50rpx;
+              height: 32rpx;
             }
-            .span2 {
-              font-size: 22rpx;
-              color: rgb(51, 51, 60);
-            }
-            img {
-              width: 100rpx;
-              height: 40rpx;
+            span{
+              display: flex;
+              align-items: center;
+              margin-left: -10rpx;
+              padding: 0 20rpx;
+              background:rgba(219,48,48,1);
+              border-radius:16rpx;
+              color: #fff;
+              .money{
+                width: 22rpx;
+                height: 22rpx;
+              }
             }
           }
           .price {
-            img {
-              width: 73rpx;
-              height: 30rpx;
-              margin-right: 8rpx;
-            }
-            font-size: 25rpx;
-            display: flex;
-            align-items: center;
+            font-size: 36rpx;
+            color:rgba(219,48,48,1);
             margin-top: 12rpx;
           }
 
           .origin-price {
             color: rgb(153, 153, 153);
-            font-size: 24rpx;
+            font-size: 26rpx;
             // margin: 8rpx 12rpx;
             margin-top: 10rpx;
             margin-bottom: 20rpx;
-            span {
-              text-decoration: line-through;
-            }
           }
         }
       }
