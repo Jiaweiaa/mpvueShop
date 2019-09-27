@@ -44,10 +44,10 @@ export default {
       "pages/index/main",
       "pages/integral/main", // 积分管理
       "pages/createQrcode/main",
-      "pages/storeIndex/main", // 店铺首页
+      "^pages/storeIndex/main", // 店铺首页
       "pages/myOrder/main",
       "pages/category/main",
-      "^pages/my/main", // 我的
+      "pages/my/main", // 我的
       "pages/goods/main",
       "pages/citys/main",
       "pages/distribution/main",

@@ -8,7 +8,7 @@ export default {
     backgroundTextStyle: "dark",
     backgroundColor: "#fff",
     navigationBarTitleText: "店铺首页",
-    enablePullDownRefresh: true,
+    enablePullDownRefresh: false,
     usingComponents: {
       "van-popup": "/static/vant/popup/index",
       "van-transition": "/static/vant/transition/index",
@@ -19,7 +19,8 @@ export default {
       "van-tab": "/static/vant/tab/index",
       "van-tabs": "/static/vant/tabs/index",
       "van-tabbar": "/static/vant/tabbar/index",
-      "van-tabbar-item": "/static/vant/tabbar-item/index"
+      "van-tabbar-item": "/static/vant/tabbar-item/index",
+      "van-notice-bar": "/static/vant/notice-bar/index"
     }
   }
 };
