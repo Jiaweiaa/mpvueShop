@@ -84,8 +84,8 @@
 			padding: 0
 			.listView
 				.image
+					height: 40px
 					width: 100%
-					height: 200px
 				.name
 					margin-top: -3px
 					width: 100%
