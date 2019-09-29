@@ -2,7 +2,7 @@
  * @Description: 首页模块
  * @Author: 董
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-27 11:58:23
+ * @LastEditTime: 2019-09-29 10:47:10
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -114,11 +114,12 @@
                 <span>￥{{good.mixCashPrice}}+ <img class="money" src="/static/images/index/money.png" alt /> {{good.mixScorePrice}}补贴金</span>
               </div>
               <div class="price">
-                ￥{{good.listPrice}}
+                <p>￥{{good.listPrice}}</p>
+                <p>￥{{good.salePrice}}</p>
               </div>
               <div class="origin-price" v-if="goodIndex==0">
 
-                <span>{{good.salePrice}}购物豆</span>
+                <span>{{good.salePrice?good.salePrice:''}}购物豆</span>
               </div>
             </div>
           </div>
@@ -249,7 +250,7 @@ export default {
     // 商品分类
     toCategoryList(id, name) {
       wx.navigateTo({
-        url: "../categorylist/main?id=" + id + "&name=" + name
+        url: "../search/main?id=" + id + "&name=" + name
       });
     },
 

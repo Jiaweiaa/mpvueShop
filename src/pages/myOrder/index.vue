@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-17 14:00:02
- * @LastEditTime: 2019-09-24 14:23:50
+ * @LastEditTime: 2019-09-29 16:03:10
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -42,11 +42,11 @@
                     <span
                       class="list_price"
                       v-if="value.paymentType==13"
-                    >￥{{val.mixCashPrice}}+补贴金{{val.mixScorePrice}}</span>
+                    >￥{{val.mixCashPrice?val.mixCashPrice:'0'}}+补贴金{{val.mixScorePrice?val.mixScorePrice:'0'}}</span>
                     <span
                       class="list_price"
                       v-else-if="value.paymentType==12"
-                    >补贴金{{val.mixScorePrice}}</span>
+                    >补贴金{{val.mixScorePrice?val.mixScorePrice:'0'}}</span>
                     <span class="vip_price" v-else-if="value.paymentType==4">￥{{val.listPrice}}</span>
                     <span class="quantity">x{{val.quantity}}</span>
                   </div>

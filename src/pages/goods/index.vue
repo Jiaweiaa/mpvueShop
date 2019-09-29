@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-28 17:50:58
+ * @LastEditTime: 2019-09-29 15:23:02
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -89,40 +89,13 @@
         </div>
       </div>
     </div>
-    <van-cell
-      title="店铺优惠"
-      icon="shop-collect-o"
-      is-link
-      arrow-direction="right"
-      @click="showCoupon"
-      v-if="couponShowFlag"
-    >
-      <span style="height:48rpx;line-height:48rpx;">
-        领券
-        <van-icon name="arrow-down" />
-      </span>
-    </van-cell>
-    <div v-if="recordList.length>0">
-      <div class="record" @click="toRecord">
-        <div class="header">
-          <div class="label">
-            购买记录
-            <p class="item">
-              已有
-              <span>{{buyerNum}}</span>人购买,商品共销售
-              <span>{{buyCount}}</span>份
-            </p>
-          </div>
-          <div></div>
-        </div>
-        <div class="img_group">
-          <div class="img_item" v-for="(item,index) in recordList" :key="index">
-            <img :src="item.avatar" />
-          </div>
-          <div class="img_item">
-            <img src="/static/images/omit.png" alt />
-          </div>
-        </div>
+    <div class="specification">
+      <div class="head">商品参数</div>
+      <div class="item">
+        <div>请选择 商品规格</div>
+      </div>
+      <div>
+        <van-icon name="arrow-right" />
       </div>
     </div>
 
@@ -131,6 +104,51 @@
       <div v-for="(item,index) in attribute" :key="index" class="item">
         <div>{{item.name}}</div>
         <div>{{item.value}}</div>
+      </div>
+    </div>
+    <div class="storeInfo" v-if="storeInfo">
+      <div class="pic">
+        <img :src="'http://qn.gaoshanmall.cn/'+storeInfo.storeInfo.storePic" alt />
+      </div>
+      <div class="title">{{storeInfo.name}}</div>
+      <div class="btn">进店</div>
+    </div>
+    <div>
+      <van-cell
+        title="店铺优惠"
+        icon="shop-collect-o"
+        is-link
+        arrow-direction="right"
+        @click="showCoupon"
+        v-if="couponShowFlag"
+      >
+        <span style="height:48rpx;line-height:48rpx;">
+          领券
+          <van-icon name="arrow-down" />
+        </span>
+      </van-cell>
+      <div v-if="recordList.length>0">
+        <div class="record" @click="toRecord">
+          <div class="header">
+            <div class="label">
+              购买记录
+              <p class="item">
+                已有
+                <span>{{buyerNum}}</span>人购买,商品共销售
+                <span>{{buyCount}}</span>份
+              </p>
+            </div>
+            <div></div>
+          </div>
+          <div class="img_group">
+            <div class="img_item" v-for="(item,index) in recordList" :key="index">
+              <img :src="item.avatar" />
+            </div>
+            <div class="img_item">
+              <img src="/static/images/omit.png" alt />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div v-if="goods_desc" class="detail">
@@ -149,7 +167,7 @@
               ￥
               <span>{{nowPrice}}</span>
             </p>
-            
+
             <!-- <p >会员价:￥{{vipPrice}}+{{integral}}补贴金</p> -->
             <p v-if="vipPrice!=''&&integral!=''" class="butie">
               <img class="vip_img" src="/static/images/index/vip.png" alt />
@@ -167,7 +185,7 @@
           </div>
         </div>
         <div @click="showType" class="close">
-          <img src="/static/images/good/close.png" alt="">
+          <img src="/static/images/good/close.png" alt />
         </div>
       </div>
       <div id="goodsinfo">
@@ -190,7 +208,7 @@
       </div>
       <!-- <p>请选择商品数量</p> -->
       <div style="display:flex;justify-content: space-between;align-items:center;">
-        <p style="margin-left:30rpx;font-size:32rpx;color:rgba(102,102,102,1);">我要买:</p>
+        <p style="margin-left:30rpx;font-size:32rpx;color:rgba(102,102,102,1);">购买数量:</p>
         <van-stepper
           style="margin-right:30rpx;"
           async-change
@@ -221,7 +239,7 @@
           <p class="text" style="color:rgb(102,102,102);">购物车</p>
         </div>
       </div>
-      <div  class="home">
+      <div class="home">
         <div class="car">
           <img src="/static/images/goods/service.png" />
           <span class="text" style="color:rgb(102,102,102);margin-left:-4rpx;">客服</span>
@@ -322,12 +340,13 @@ export default {
       showpop: false,
       gallery: [],
       goodsInfo: {}, //商品数据
+      storeInfo: null, //店铺信息
       salePrice: "", //销售价
       listPrice: "", //挂牌价
       scorePrice: "", //补贴金价
       mixCashPrice: "", //混合支付现金
       mixScorePrice: "", //混合支付补贴金
-      peasPrice:"", //购物豆价格
+      peasPrice: "", //购物豆价格
       arrivalTime: "", //到货时间
       brand: {},
       attribute: [],
@@ -345,7 +364,7 @@ export default {
       quantity: "-",
       vipPrice: "", //会员价格
       integral: "", //所需积分
-      nowPeasPrice:"", //现在的购物豆价格
+      nowPeasPrice: "", //现在的购物豆价格
       keys: [],
       pageNum: 1,
       pageSize: 19,
@@ -750,7 +769,7 @@ export default {
     async goodsDetail() {
       getGoodsDetail({
         itemId: this.id
-        // itemId: 529
+        // itemId: 520
       })
         .then(res => {
           if (res.data.code == "200") {
@@ -760,7 +779,9 @@ export default {
             this.goods_desc = data.item.itemChannel.description; //详情描述富文本
             this.goodsList = data.item.pdpPropertiesCommands;
             this.quantityData = JSON.parse(data.skuJson); //SKU信息
-            console.log(this.quantityData, "567");
+            this.storeInfo = data.storeVo;
+            console.log(this.storeInfo, "店铺信息");
+            // console.log(this.quantityData, "567");
             this.quantList = JSON.parse(res.data.result.skuJson);
             console.log(this.quantList, "333");
             this.salePrice = this.quantList[0].salePrice;
@@ -1193,8 +1214,8 @@ export default {
 #goodsinfo .tabContent {
   overflow: hidden;
   padding: 10px;
-  font-size:28rpx;
-  color:rgba(102,102,102,1);
+  font-size: 28rpx;
+  color: rgba(102, 102, 102, 1);
 }
 
 #goodsinfo .tabContent .active {
@@ -1206,8 +1227,7 @@ export default {
   margin: 60rpx 0 !important;
   display: flex;
   justify-content: flex-end;
-  .van-stepper__minus{
-    
+  .van-stepper__minus {
   }
 }
 .record .label {

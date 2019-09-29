@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-21 09:17:36
- * @LastEditTime: 2019-09-27 16:17:00
+ * @LastEditTime: 2019-09-29 16:37:38
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -151,7 +151,7 @@
         <div>商品小计</div>
         <div v-if="payObj.value==4">￥{{currentPayAmount}}</div>
         <div v-else-if="payObj.value==13">￥{{currentPayCashAmount}}+补贴金{{currentPayScoreAmount}}</div>
-        <div v-else-if="payObj.value==12">￥{{currentPayAllScoreAmount}}</div>
+        <div v-else-if="payObj.value==12">补贴金{{currentPayAllScoreAmount}}</div>
         <div v-else-if="payObj.value==14">{{currentPayAllPeasAmount}}购物豆</div>
       </div>
       <!-- <div class="item" @click="sheetShow=true">
@@ -315,6 +315,10 @@ export default {
                   value: 13
                 },
                 {
+                  name: "补贴金",
+                  value: 12
+                },
+                {
                   name: "微信",
                   value: 4
                 },
@@ -384,7 +388,7 @@ export default {
               res.data.result.currentPayAllScoreAmount;
             this.currentPayAllPeasAmount =
               res.data.result.currentPayAllPeasAmount; //购物豆价格
-            this.currentShippingFee = res.data.result.currentPayAllScoreAmount;
+            // this.currentShippingFee = res.data.result.currentPayAllScoreAmount;
             // this.currentShippingFee = res.data.result.currentShippingFee;
             this.discount = res.data.result.discount;
             //使用优惠券
@@ -421,6 +425,10 @@ export default {
                 {
                   name: "微信+补贴金",
                   value: 13
+                },
+                {
+                  name: "补贴金",
+                  value: 12
                 },
                 {
                   name: "微信",
@@ -492,7 +500,7 @@ export default {
               res.data.result.currentPayAllScoreAmount;
             this.currentPayAllPeasAmount =
               res.data.result.currentPayAllPeasAmount; //购物豆价格
-            this.currentShippingFee = res.data.result.currentShippingFee;
+            // this.currentShippingFee = res.data.result.currentShippingFee;
             this.discount = res.data.result.discount;
             //使用优惠券
             if (useCouponFlag) {
@@ -562,6 +570,10 @@ export default {
           value: 13
         },
         {
+          name: "补贴金",
+          value: 12
+        },
+        {
           name: "微信",
           value: 4
         },
@@ -579,11 +591,12 @@ export default {
       shopList: [], //分店铺商品列表
       currentPayAmount: "", //应付金额
       currentPayCashAmount: "", //混合应付金额
+      currentPayAllScoreAmount:"",
       currentPayScoreAmount: "", //混合应付积分
       currentPayAllPeasAmount: "", //购物豆应付价格
       discount: "", //优惠金额
       currentPayAmount: "", //实付金额
-      currentShippingFee: "", //运费
+      // currentShippingFee: "", //运费
       userInfo: "", //用户信息 里面有memberID等一系列信息
       address: null, //收货地址
       orderLines: null,
@@ -720,7 +733,6 @@ export default {
       }
     },
     closeCoupon() {
-      console.log(888);
       this.couponShow = false;
     },
     //取消使用优惠券列表
@@ -1046,6 +1058,14 @@ export default {
                       });
                     });
                 }
+              } else {
+                wx.showToast({
+                  title: res.data.message,
+                  duration: 1500,
+                  icon: "none",
+                  mask: true
+                });
+                wx.hideLoading();
               }
             })
 
@@ -1080,7 +1100,7 @@ export default {
 </style>
 <style lang="scss">
 .van-card {
-  background-color:#fff !important;
+  background-color: #fff !important;
 }
 .radioStyle {
   .van-radio {

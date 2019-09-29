@@ -149,7 +149,7 @@ export default {
     },
     categoryList(id, name) {
       wx.navigateTo({
-        url: "../categorylist/main?id=" + id + "&name=" + name
+        url: "../search/main?id=" + id + "&name=" + name
       });
     }
   },

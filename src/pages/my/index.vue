@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 17:12:49
- * @LastEditTime: 2019-09-28 17:19:12
+ * @LastEditTime: 2019-09-29 15:51:47
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -42,12 +42,12 @@
     </div>
 
     <div class="myMenu boxMenu" v-if="userInfo">
-      <div class="boxContent" @click="goTo('/pages/integral/main')">
-        <div>{{usersData.scoreAmount?usersData.scoreAmount:'0'}}</div>
+      <div class="boxContent" @click="goTo('/pages/integral/main?active=1')">
+        <div>{{score}}</div>
         <div>我的补贴金</div>
       </div>
-      <div class="boxContent" @click="goTo('/pages/integral/main')">
-        <div>{{usersData.shoppingBeans?usersData.shoppingBeans:'0'}}</div>
+      <div class="boxContent" @click="goTo('/pages/integral/main?active=0')">
+        <div>{{beanScore}}</div>
         <div>我的购物豆</div>
       </div>
     </div>
@@ -107,13 +107,15 @@
 </template>
 
 <script>
+import {getMemberAmount} from "@/api/integral/index";
 import { toLogin, login } from "../../utils";
 import { shoppingcartCount } from "../../api/shoppingcart";
-import { findOrderNum, getMemberAmount } from "../../api/myOrder";
+import { findOrderNum } from "../../api/myOrder";
 import { isCapOrSup, checkSup } from "../../api/login";
 import Dialog from "../../../static/vant/dialog/dialog";
 export default {
   onPullDownRefresh() {
+    this.getBeanData();
     this.getCartGoodsNum();
     // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
     if (login()) {
@@ -224,6 +226,7 @@ export default {
     wx.stopPullDownRefresh();
   },
   onShow() {
+    this.getBeanData();
     this.getCartGoodsNum();
     // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
     if (login()) {
@@ -330,6 +333,9 @@ export default {
   },
   data() {
     return {
+      
+      score:0,//补贴金
+      beanScore:0,//购物豆
       // 用户数据
       usersData: "",
 
@@ -370,6 +376,13 @@ export default {
     };
   },
   methods: {
+    //获取购物豆及补贴金数量
+     // 获取数据
+    async getBeanData() {
+      let data = await getMemberAmount();
+      this.score = data.data.result.scoreAmount;
+      this.beanScore = data.data.result.shoppingBeans;
+    },
     //获取购物车中的商品数量
     getCartGoodsNum() {
       shoppingcartCount()

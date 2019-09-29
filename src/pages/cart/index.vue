@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-23 09:21:19
+ * @LastEditTime: 2019-09-29 11:28:48
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -96,7 +96,7 @@
 
       <div class="checkAll">全选</div>
       <div class="right">
-        <div style="min-width:170px;">￥{{totalPrice}}</div>
+        <div >￥{{totalPrice}}</div>
         <div @click="goAccount">结 算</div>
       </div>
     </div>

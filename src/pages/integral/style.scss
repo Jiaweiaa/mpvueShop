@@ -53,7 +53,7 @@
       div:nth-child(1) {
         display: flex;
         justify-content: center;
-        img{
+        img {
           width: 128rpx;
           height: 140rpx;
         }
@@ -102,7 +102,7 @@
         font-size: 24rpx;
         color: rgba(136, 136, 136, 1);
         text-align: center;
-        img{
+        img {
           width: 24rpx;
           height: 24rpx;
           margin-right: 10rpx;
@@ -150,6 +150,19 @@
         text-align: center;
         border-radius: 34rpx;
         background: #e63936;
+      }
+    }
+    .beanBtnRow {
+      display: flex;
+      justify-content: center;
+      margin-top: 50rpx;
+      .btnStyle {
+        width: 400rpx;
+        height: 68rpx;
+        line-height: 68rpx;
+        text-align: center;
+        border-radius: 34rpx;
+        background: #f65e35;
       }
     }
   }

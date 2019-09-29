@@ -266,9 +266,12 @@
     .right {
       overflow: hidden;
       display: flex;
+      flex: 1;
+      justify-content: flex-end;
       div:nth-child(1) {
-        color: #b4282d;
-        padding-right: 110rpx;
+        color: #E43B42;
+        margin-right: 50rpx;
+        // padding-right: 110rpx;
       }
       div:nth-child(2) {
         width: 200rpx;

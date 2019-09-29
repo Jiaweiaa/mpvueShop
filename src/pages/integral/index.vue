@@ -2,19 +2,25 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-24 14:25:58
- * @LastEditTime: 2019-09-26 17:55:18
+ * @LastEditTime: 2019-09-29 15:59:43
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="my">
     <div class="tabs">
-      <div class="tabItem" @click="tabChange(tab)" :class="{active:tab.active}" v-for="(tab,tabIndex) in tabs" :key="tabIndex">{{tab.title}}</div>
+      <div
+        class="tabItem"
+        @click="tabChange(tab)"
+        :class="{active:tab.active}"
+        v-for="(tab,tabIndex) in tabs"
+        :key="tabIndex"
+      >{{tab.title}}</div>
     </div>
     <div class="butiejin" v-if="tabIndex==0">
       <div class="detail" @click="beanList">购物豆明细</div>
       <div class="btMain">
         <div>
-          <img src="/static/images/butie/bean.png" alt="">
+          <img src="/static/images/butie/bean.png" alt />
         </div>
         <div class="text">
           <p>我的购物豆</p>
@@ -26,15 +32,16 @@
       </div>
       <div class="tip" @click="toWhatBean">
         <p>
-          <img src="/static/images/butie/what.png" alt="">
-          什么是购物豆?</p>
+          <img src="/static/images/butie/what.png" alt />
+          什么是购物豆?
+        </p>
       </div>
     </div>
     <div class="butiejin" v-else>
       <div class="detail" @click="integralList">补贴金明细</div>
       <div class="btMain">
         <div>
-          <img src="/static/images/butie/butie.png" alt="">
+          <img src="/static/images/butie/butie.png" alt />
         </div>
         <div class="text">
           <p>我的补贴金</p>
@@ -47,8 +54,9 @@
       </div>
       <div class="tip" @click="toWhatIntegral">
         <p>
-          <img src="/static/images/butie/what.png" alt="">
-          什么是补贴金?</p>
+          <img src="/static/images/butie/what.png" alt />
+          什么是补贴金?
+        </p>
       </div>
     </div>
 
@@ -88,7 +96,7 @@
         <div class="content">
           <van-cell-group>
             <van-field
-              :value="code"
+              :value="beanCode"
               required
               clearable
               label="购物豆充值卡"
@@ -97,14 +105,14 @@
             />
           </van-cell-group>
         </div>
-        <div class="btnRow" style="top: 135px">
-          <van-button
-            custom-class="btnStyle"
+        <div class="beanBtnRow" style="top: 135px">
+          <button
+            class="btnStyle"
             :loading="btnLoading"
             loading-text="充值中..."
             @click="BeanClick"
             type="primary"
-          >充值</van-button>
+          >充值</button>
         </div>
       </div>
     </van-popup>
@@ -116,6 +124,7 @@
 <script>
 import Notify from "../../../static/vant/notify/notify";
 import Dialog from "../../../static/vant/dialog/dialog";
+import { getShoppingBeansLogList } from "@/api/shopping/index";
 import {
   getMemberAmount,
   rechargeScore,
@@ -125,51 +134,64 @@ import { rechargeShoppingBeans } from "@/api/shopping/index";
 
 export default {
   onShow() {
+    if (this.$root.$mp.query.active) {
+      this.tabIndex = this.$root.$mp.query.active;
+    }
+    console.log(this.tabIndex, "aaaa");
+    this.tabs.map((item, index) => {
+      // console.log(item, "xxx");
+      item.active = false;
+      if (index == this.tabIndex) {
+        item.active = true;
+        this.tabIndex = index;
+      }
+    });
+
     this.getData();
   },
   data() {
     return {
-      tabs:[
+      tabs: [
         {
-          title:'购物豆',
-          active:false
+          title: "购物豆",
+          active: false
         },
         {
-          title:'补贴金',
-          active:true
+          title: "补贴金",
+          active: true
         }
       ],
-      tabIndex:1,
+      tabIndex: 1,
       code: "",
-      beanCode:"",
+      beanCode: "",
       show: false,
-      beanShow:false,
-      score: "",//补贴金
-      beanScore:"",//购物豆
+      beanShow: false,
+      score: "", //补贴金
+      beanScore: "", //购物豆
 
       btnLoading: false
     };
   },
   methods: {
-    toWhatIntegral(){
+    toWhatIntegral() {
       wx.navigateTo({
-        url:"/pages/whatButie/main"
-      })
+        url: "/pages/whatButie/main"
+      });
     },
-    toWhatBean(){
+    toWhatBean() {
       wx.navigateTo({
-        url:"/pages/whatBean/main"
-      })
+        url: "/pages/whatBean/main"
+      });
     },
     //选项卡
-    tabChange(tab){
-      this.tabs.map((item,index) =>{
+    tabChange(tab) {
+      this.tabs.map((item, index) => {
         item.active = false;
-        if(item.title==tab.title){
+        if (item.title == tab.title) {
           item.active = true;
           this.tabIndex = index;
         }
-      })
+      });
     },
     //扫码获取补贴金
     getQrcode() {
@@ -203,10 +225,10 @@ export default {
     getIntegral() {
       this.show = true;
     },
-    getBean(){
+    getBean() {
       this.beanShow = true;
     },
-    BeanClick(){
+    BeanClick() {
       if (this.beanCode) {
         if (this.btnLoading) return;
         this.btnLoading = true;
@@ -260,7 +282,7 @@ export default {
     },
     // 输入框变化
     fieldChange(val) {
-      this.code = val.mp.detail;
+      this.beanCode = val.mp.detail;
     },
 
     integralList() {
@@ -276,7 +298,7 @@ export default {
     onClose() {
       this.show = false;
     },
-    onBeanClose(){
+    onBeanClose() {
       this.beanShow = false;
     }
   }

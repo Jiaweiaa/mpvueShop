@@ -2,11 +2,11 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-09-27 17:28:00
+ * @LastEditTime: 2019-09-29 11:10:03
  * @LastEditors: Please set LastEditors
  -->
 <template>
-  <div style="background:#fff;">
+  <div>
     <div class="search_main">
       <div class="search">
         <input
@@ -20,7 +20,7 @@
         />
         <span class="icon"></span>
       </div>
-      <div class="tabs" @change="tabChange">
+      <div class="tabs" @change="tabChange" v-if="storeId==''">
         <div
           class="tab_item"
           :class="tab.active?'active':''"
@@ -81,7 +81,7 @@
       </div>
 
       <!--商品列表  -->
-      <div v-show="listData.length!=0&&active==0&&!showTips" class="goodsList">
+      <div v-if="listData.length!=0&&active==0&&!showTips" class="goodsList">
         <div class="sortnav">
           <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">
             <span>默认</span>
@@ -132,30 +132,16 @@
                 <div class="price_2">
                   <span class="span1">￥{{good.salePrice}}</span>
 
-                  <span class="span2">{{good.peasPrice}}购物豆</span>
+                  <span class="span2" v-if="good.peasPrice">{{good.peasPrice}}购物豆</span>
+                  <span class="span3" v-else>￥{{good.listPrice}}</span>
                 </div>
-      
               </div>
             </div>
           </div>
-     
-          <!-- <div
-          @click="goodsDetail(item.id)"
-          v-for="(item, index) in listData"
-          :key="index"
-          :class="[(listData.length)%2==0?'active':'none']"
-          class="item"
-        >
-          <img :src="'http://qn.gaoshanmall.cn/' + item.img" alt />
-          <p class="name">{{item.title}} - {{item.subtitle}}</p>
-          <p class="price">￥{{item.salePrice}}</p>
-          </div>-->
-          <!-- <div class="title">
-            <span>—</span>
-            <span>我也是有底线的</span>
-            <span>—</span>
-          </div> -->
         </div>
+      </div>
+      <div class="noGood" v-else-if="listData.length==0&&active==0&&!showTips">
+        <img src="/static/images/nodata/shangpin.png" alt />
       </div>
       <!-- 商品分类 -->
       <van-popup
@@ -227,8 +213,8 @@
         </div>
       </van-popup>
       <!-- 店铺列表 -->
-      <div v-show="storeListData.length!=0&&active==1&&!showTips" class="goodsList">
-        <div class="goods-group">
+      <div v-show="storeListData.length!=0&&active==1&&!showTips" class="storeList">
+        
           <div class="store-item" v-for="(store,storeIndex) in storeListData" :key="storeIndex">
             <div class="top">
               <div class="logo">
@@ -247,16 +233,13 @@
                 @click="goodsDetail(good.id)"
               >
                 <img :src="'http://qn.gaoshanmall.cn/'+good.picUrl" alt />
-                <span>{{good.title}}</span>
               </div>
             </div>
           </div>
-          <div class="nodata">
-            <span>—</span>
-            <span>没有更多商品了哦~</span>
-            <span>—</span>
+          <div class="nomoreStore">
+            <p>没有更多店铺了哦~</p>
           </div>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -273,10 +256,29 @@ import {
 } from "../../api/category/index";
 
 export default {
-  onLoad() {
+  // onLoad() {
+  //   this.openid = wx.getStorageSync("openid") || "";
+  //   this.getHistory();
+  //   this.getHotData();
+  // },
+  mounted() {
     this.openid = wx.getStorageSync("openid") || "";
     this.getHistory();
     this.getHotData();
+    //获取页面传的参数
+    if (this.$root.$mp) {
+      if (this.$root.$mp.query.id) {
+        this.categoryId = this.$root.$mp.query.id;
+        this.showTips = false;
+      }
+      if (this.$root.$mp.query.name) {
+        this.name = this.$root.$mp.query.name;
+      }
+      if (this.$root.$mp.query.storeId) {
+        this.storeId = this.$root.$mp.query.storeId;
+      }
+    }
+    this.getlistData();
   },
   // 上啦加载
   async onReachBottom() {
@@ -291,21 +293,7 @@ export default {
         wx.hideLoading();
       } else {
         this.pageNum++;
-        const res = await searchItem({
-          k: this.words,
-          s: this.order,
-          p: this.pageNum
-        });
-        if (res.data.code == 200) {
-          this.loading = false;
-          this.listData = this.listData.concat(res.data.result.itemDocs);
-          this.listData.map(v => {
-            v.img = JSON.parse(v.image)[0].images[0];
-          });
-          this.allCount = res.data.result.totalElements;
-        } else {
-          this.loading = false;
-        }
+        this.getGoodList();
         setTimeout(() => {
           wx.hideLoading();
         }, this.GLOBAL.timer);
@@ -338,26 +326,29 @@ export default {
   async onPullDownRefresh() {
     this.pageNum = 1;
     if (this.active == 0) {
-      const res = await searchItem({
-        k: this.words,
-        s: this.order,
-        p: this.pageNum
-      });
-      if (res.data.code == 200) {
-        this.listData = res.data.result.itemDocs;
-        this.tipsData = this.listData;
-        this.allCount = res.data.result.totalElements;
-        this.listData.map(v => {
-          if (this.order == "SALES-ASC") {
-            if (index < 5) {
-              this.$set(v, "tag", "热销");
-            }
-          }
-          v.img = JSON.parse(v.image)[0].images[0];
-          this.$set(v, "keyword", v.keywords.join("||"));
-        });
-        this.tipsData = [];
-      }
+      this.getGoodList();
+      // const res = await searchItem({
+      //   k: this.words,
+      //   s: this.order,
+      //   p: this.pageNum,
+      //   navid: this.categoryId,
+      //   storeId:this.storeId
+      // });
+      // if (res.data.code == 200) {
+      //   this.listData = res.data.result.itemDocs;
+      //   this.tipsData = this.listData;
+      //   this.allCount = res.data.result.totalElements;
+      //   this.listData.map(v => {
+      //     if (this.order == "SALES-ASC") {
+      //       if (index < 5) {
+      //         this.$set(v, "tag", "热销");
+      //       }
+      //     }
+      //     v.img = JSON.parse(v.image)[0].images[0];
+      //     this.$set(v, "keyword", v.keywords.join("||"));
+      //   });
+      //   this.tipsData = [];
+      // }
     } else if (this.active == 1) {
       const res = await findHistorySearch({ k: this.words });
       if (res.data.code == 200) {
@@ -382,7 +373,10 @@ export default {
           active: false
         }
       ],
-      showTips:true,
+      categoryId: "", //分类ID
+      name: "", //分类名称
+      storeId: "", //店铺ID
+      showTips: true,
       active: 0,
       nowIndex: 0,
       words: "",
@@ -403,11 +397,37 @@ export default {
       navData: [],
       pageNum: 1,
       loading: false,
-
       searchPopupShow: false
     };
   },
   methods: {
+    //获取商品列表
+    async getGoodList() {
+      const res = await searchItem({
+        k: this.words,
+        s: this.order,
+        p: this.pageNum,
+        navid: this.categoryId,
+        storeId: this.storeId
+      });
+      if (res.data.code == 200) {
+        this.listData = res.data.result.itemDocs;
+        // this.tipsData = this.listData;
+        this.allCount = res.data.result.totalElements;
+        this.listData.map(v => {
+          if (this.order == "SALES-ASC") {
+            if (index < 5) {
+              this.$set(v, "tag", "热销");
+            }
+          }
+          v.img = JSON.parse(v.image)[0].images[0];
+          this.$set(v, "keyword", v.keywords.join("||"));
+        });
+        this.tipsData = [];
+      } else {
+        this.loading = false;
+      }
+    },
     //tab栏切换
     tabChange(tab) {
       // console.log(e);
@@ -542,7 +562,9 @@ export default {
         k: this.words,
         s: this.order,
         p: this.pageNum,
-        fq: this.aeo
+        fq: this.aeo,
+        storeId: this.storeId,
+        navid: this.categoryId
       });
       this.navData = res.data.result;
       this.listData = res.data.result.itemDocs;
@@ -625,7 +647,7 @@ export default {
     async searchWords(e) {
       var value = e.currentTarget.dataset.value;
       this.words = value || this.words;
-      this.showTips =false;
+      this.showTips = false;
       // const data = await post("/search/addhistoryaction", {
       //   openId: this.openid,
       //   keyword: value || this.words
@@ -673,21 +695,7 @@ export default {
     }
   }
 
-  .nodata {
-    text-align: center;
-    padding: 20rpx 0;
-    width: 100%;
-
-    span:nth-child(2) {
-      font-size: 24rpx;
-      color: #333;
-      padding: 0 10rpx;
-    }
-
-    span:nth-child(2n + 1) {
-      color: #999;
-    }
-  }
+ 
   .activeSearch {
     background: #b4282d !important;
     color: #fff !important;

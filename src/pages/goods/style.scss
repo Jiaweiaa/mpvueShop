@@ -394,6 +394,50 @@
       }
     }
   }
+  .specification {
+    padding: 20rpx 30rpx;
+    background: #fff;
+    margin: 20rpx 0;
+    display: flex;
+    .head {
+      margin-left: 15rpx;
+      color: #888;
+      font-size: 26rpx;
+    }
+    .item {
+      margin-left: 30rpx;
+      font-size: 26rpx;
+    }
+  }
+  //店铺信息
+  .storeInfo {
+    display: flex;
+    align-items: center;
+    margin-top: 20rpx;
+    padding: 1rpx;
+    background: #fff;
+    .pic {
+      margin-left: 30rpx;
+      img {
+        width: 76rpx;
+        height: 76rpx;
+        border-radius: 50%;
+      }
+    }
+    .title {
+      width: 250rpx;
+      font-size: 28rpx;
+      font-weight: 500;
+    }
+    .btn {
+      margin-left: 202rpx;
+      font-size: 26rpx;
+      color: #d40004;
+      padding: 5rpx 50rpx;
+      border: 1rpx solid #d40004;
+      border-radius: 24rpx;
+    }
+  }
 
   .common-problem {
     margin-bottom: 110rpx;
@@ -584,7 +628,7 @@
             font-size: 36rpx;
           }
         }
-     
+
         .butie {
           margin-top: 5rpx;
           display: flex;

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-29 09:31:19
+ * @LastEditTime: 2019-09-29 15:23:12
  * @LastEditors: Please set LastEditors
  */
 import Vue from "vue";
@@ -41,7 +41,7 @@ export default {
       }
     },
     pages: [
-      "pages/my/main", // 我的
+      "^pages/my/main", // 我的
       "pages/lookDetail/main", // 团长我的 查看详情
       "pages/subordinate/main", // 下级
       "pages/whatBean/main",
@@ -51,11 +51,10 @@ export default {
       "pages/editStoreInfo/main",
       "pages/cart/main",
       "pages/joinUs/main",
-      "^pages/index/main",
+      "pages/index/main",
       "pages/teamView/main", //团长 我的主页
       "pages/withdraw/main", //  提现
       "pages/beGive/main", // 成为供应商
-      
       "pages/integral/main", // 积分管理
       "pages/collectlist/main",
       "pages/categorylist/main",
@@ -64,7 +63,6 @@ export default {
       "pages/myOrder/main",
       "pages/orderDetail/main",
       "pages/category/main",
-      
       "pages/goods/main",
       "pages/citys/main",
       "pages/distribution/main",

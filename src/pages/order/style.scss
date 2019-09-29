@@ -354,6 +354,9 @@
       span {
         text-align: right;
       }
+      span:nth-child(2){
+        color: #E43B42;
+      }
     }
     div:nth-child(2) {
       width: 220rpx;

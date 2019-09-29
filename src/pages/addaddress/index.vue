@@ -2,18 +2,18 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-31 09:22:28
- * @LastEditTime: 2019-09-24 09:56:03
+ * @LastEditTime: 2019-09-29 11:22:33
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="addaddress">
     <div class="item">
       <span>收货人</span>
-      <input type="text" placeholder="姓名" v-model="userName">
+      <input type="text" placeholder="请填写收货人姓名" v-model="userName">
     </div>
     <div class="item">
       <span>联系电话</span>
-      <input type="text" placeholder="手机号码" v-model="telNumber">
+      <input type="text" placeholder="请填写收货手机号" v-model="telNumber">
     </div>
     <div class="item">
       <span>所在区域</span>
