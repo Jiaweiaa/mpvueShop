@@ -22,20 +22,21 @@
 				<div class="logoImg">
 					<image
 						class="img"
-						src="./../../../../../static/images/logo.png"
+						:src="data.storeInfo.storePic ? 'http://qn.gaoshanmall.cn/'+data.storeInfo.storePic :'./../../../../../static/images/logo.png'"
 						mode="scaleToFill"></image>
 				</div>
 				
-				<div class="title">店铺名称</div>
+				<div class="title">{{data.store.name}}</div>
 				<div class="desc" v-if="dataSource.viewData[38] == '61'">
-					<span>满减</span>在线支付满150减30.满100减20>
+					<!--<span>满减</span>在线支付满150减30.满100减20>-->
 				</div>
 				<div v-else>
 					<div class="elseStyle" v-if="dataSource.viewData[38] !== '65'"></div>
 					<div class="borderLine" v-else></div>
 					<div class="goodsStyle">
-						<div style="border-right: 1px solid #999;">全部商品999</div>
-						<div style="padding-left: 10px;">上新30</div>
+						<!--style="border-right: 1px solid #999;"-->
+						<div>全部商品{{data.itemCount}}</div>
+						<!--<div style="padding-left: 10px;">上新30</div>-->
 					</div>
 				</div>
 			</div>
@@ -44,15 +45,34 @@
 </template>
 
 <script>
+  import {
+    getStoreInfoAndItemCount
+  } from "../../../api/storeIndex/index";
   export default {
     name: 'storeInfo',
     props:  ['dataSource'],
 
+	  created() {
+      this.id = this.$root.$mp.query.id;
+      this.getData();
+    },
     data() {
       return {
+        id: '',
+	      data: {
+          store: {},
+          storeInfo: {}
+	      }
       }
     },
     methods: {
+      getData() {
+        getStoreInfoAndItemCount({
+          storeId: this.id
+        }).then(res => {
+          this.data = res.data.result;
+        })
+      }
     }
   }
 </script>
@@ -167,7 +187,9 @@
 					top: 10px
 					div
 						float: left
-						padding-right: 10px
+						width: 100%
+						text-align: center
+						/*padding-right: 10px*/
 			.type3
 				height: 50px
 				background: transparent
@@ -212,7 +234,8 @@
 					z-index: 19
 					div
 						float: left
-						padding-right: 10px
+						color: #fff
+						/*padding-right: 10px*/
 			.type4
 				height: 100px
 				background: #fff
@@ -258,11 +281,11 @@
 					color: #999
 					position: absolute
 					bottom: 10px
-					left: 130px
+					left: 150px
 					z-index: 19
 					div
 						float: left
-						padding-right: 10px
+						/*padding-right: 10px*/
 			.type5
 				height: 100px
 				background: transparent
@@ -308,9 +331,9 @@
 					color: #fff
 					position: absolute
 					top: 210px
-					left: 130px
+					left: 150px
 					z-index: 19
 					div
 						float: left
-						padding-right: 10px
+						/*padding-right: 10px*/
 </style>

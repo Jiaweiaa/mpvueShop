@@ -70,3 +70,16 @@ export const getStoreNavigationTree = params => {
     body: data
   });
 };
+
+// 取消关注店铺
+export const getStoreInfoAndItemCount = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: "/store/storeFront/getStoreInfoAndItemCount",
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: data
+  });
+};

@@ -2,9 +2,7 @@
 	<div class="search">
 		<!--
      wjw
-     商品
-     
-     ? 差个搜索功能
+     商品搜索
     -->
 		<div
 			class="searchBox"
@@ -33,7 +31,7 @@
 					:style="{
 						color: dataSource.viewData['54']
 					}"
-					@confirm=""
+					@click="pageChange"
 					:placeholder="dataSource.viewData['48'][0] ? dataSource.viewData['48'][0] : '商品搜索'"
 				/>
 			</div>
@@ -45,15 +43,23 @@
 <script>
   export default {
     name: 'goodsSearch',
-    created() {
-    },
-			
     props:  ['dataSource'],
     data() {
       return {
+        id: ''
       }
     },
-    methods: {}
+	  created() {
+      this.id = this.$root.$mp.query.id;
+      console.log(this.id);
+    },
+    methods: {
+      pageChange() {
+        wx.navigateTo({
+          url: "../search/main?storeId=" + this.id
+        });
+      }
+    }
   }
 </script>
 
