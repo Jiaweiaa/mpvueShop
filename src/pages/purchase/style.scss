@@ -1,0 +1,463 @@
+.search_main {
+  width: 750rpx;
+  height: 165rpx;
+  background: url("http://webimg.gaoshanapp.com/bg.png") no-repeat;
+  background-size: contain;
+  padding-top: 1rpx;
+  position: fixed;
+  top: 0;
+  z-index: 99;
+  .search {
+    position: relative;
+    input {
+      width: 585rpx;
+      height: 60rpx;
+      background: rgba(255, 255, 255, 1);
+      border-radius: 30rpx;
+      margin: 0 auto;
+      margin-top: 20rpx;
+      padding-left: 90rpx;
+    }
+    .icon {
+      position: absolute;
+      top: 17rpx;
+      left: 90rpx;
+      background: url("../../../static/images/index/search.png") center
+        no-repeat;
+      background-size: 100%;
+      width: 28rpx;
+      height: 28rpx;
+      margin-right: 10rpx;
+    }
+  }
+  .tabs {
+    height: 85rpx;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .tab_item {
+      width: 60rpx;
+      text-align: center;
+      height: 40rpx;
+      line-height: 40rpx;
+      font-size: 26rpx;
+      color: #fff;
+    }
+    .active {
+      border-bottom: 1rpx solid #fff;
+    }
+  }
+}
+
+.main {
+  height: calc(100vh-165rpx);
+  overflow: hidden;
+  position: relative;
+  top: 165rpx;
+
+  .head {
+    height: 91rpx;
+    padding-top: 1rpx;
+    display: flex;
+    padding: 0 32rpx;
+    align-items: center;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    justify-content: space-between;
+    background: #fff;
+    border-bottom: 1rpx solid rgba(0, 0, 0, 0.15);
+    div:nth-child(1) {
+      height: 59rpx;
+      display: flex;
+      align-items: center;
+      background: #f4f4f4;
+      img {
+        display: inline-block;
+        width: 31rpx;
+        height: 31rpx;
+        padding: 0 20rpx;
+      }
+      input {
+        display: inline-block;
+        width: 480rpx;
+        height: 59rpx;
+        margin-left: 10rpx;
+      }
+      .del {
+        width: 53rpx;
+        height: 53rpx;
+        padding: 0;
+      }
+    }
+    div:nth-child(2) {
+      flex: 1;
+      text-align: center;
+    }
+  }
+  .searchtips {
+    position: absolute;
+    width: 100%;
+    top: 40rpx;
+    left: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    padding: 0 32rpx;
+    z-index: 9;
+    background: #fff;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    div {
+      padding: 20rpx 0;
+    }
+    .nogoods {
+      text-align: center;
+      margin-top: 450rpx;
+    }
+  }
+  .helpSearch {
+    padding-top: 1rpx;
+  }
+  .goodsList {
+    padding-top: 1rpx;
+    position: relative;
+    .sortnav {
+      position: fixed;
+      top: 165rpx;
+      z-index: 99;
+      display: flex;
+      width: 100%;
+      height: 78rpx;
+      line-height: 78rpx;
+      background: #fff;
+      border-bottom: 1rpx solid #d9d9d9;
+      div {
+        width: 250rpx;
+        height: 100%;
+        text-align: center;
+        span{
+          font-size:26rpx;
+          color:rgba(136,136,136,1);
+        }
+      }
+      .active {
+        color: #b4282d;
+      }
+      .price {
+        background: url(//yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/no-3127092a69.png)
+          165rpx center no-repeat;
+        background-size: 15rpx 21rpx;
+      }
+      .active.desc {
+        background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/down-95e035f3e5.png)
+          165rpx center no-repeat;
+        background-size: 15rpx 21rpx;
+      }
+      .active.asc {
+        background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/up-636b92c0a5.png)
+          165rpx center no-repeat;
+        background-size: 15rpx 21rpx;
+      }
+    }
+    .goods-group {
+      margin-top: 91rpx;
+      background: #fff;
+      .sublist {
+        // width: 100%;
+        // margin: 0 auto;
+        padding: 0 24rpx;
+        display: flex;
+        flex-wrap: wrap;
+        .good-card {
+          width: 720rpx;
+          display: flex;
+          margin: 0 15rpx;
+          margin-bottom: 16rpx;
+          overflow: hidden;
+          position: relative;
+          background: #fff;
+          border-radius: 10rpx;
+          .thumb {
+            width: 220rpx;
+            height: 220rpx;
+            img {
+              width: 220rpx;
+              height: 220rpx;
+            }
+          }
+          .desc {
+            margin: 0 20rpx;
+            .title {
+              font-size: 26rpx;
+              margin-top: 18rpx;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              height: 76rpx;
+              overflow: hidden;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+            }
+            .keywords {
+              margin-bottom: 6rpx;
+              .keywords_item {
+                font-size: 18rpx;
+                padding: 3rpx 5rpx;
+                margin-right: 6rpx;
+                border-radius: 6rpx;
+                color: rgba(255, 181, 51, 1);
+                border: 1rpx solid rgba(255, 181, 51, 1);
+              }
+            }
+            .vip_price {
+              span {
+                color: #fff;
+                background: rgba(219, 48, 48, 1);
+                border-radius: 16rpx;
+                text-align: center;
+                padding: 2rpx 6rpx;
+                img {
+                  width: 23rpx;
+                  height: 23rpx;
+                }
+              }
+            }
+            .price_2 {
+              margin-top: 7rpx;
+              display: flex;
+              align-items: center;
+              .span1 {
+                font-size: 36rpx;
+                color: rgba(219, 48, 48, 1);
+              }
+
+              .span2 {
+                margin-left: 30rpx;
+                font-size: 26rpx;
+                color: rgba(136, 136, 136, 1);
+              }
+            }
+  
+          }
+        }
+        .good-card:nth-child(odd) {
+          margin-right: 14rpx;
+        }
+        .hot {
+          position: absolute;
+          top: 0;
+          right: 10rpx;
+          color: $hot-color !important;
+          font-weight: 600;
+        }
+        .sale {
+          margin: 15rpx 0;
+          display: flex;
+          .sold {
+            padding: 10rpx;
+            color: #fff;
+            background: $hot-color;
+            border: 1rpx solid $hot-color;
+            border-radius: 3rpx 0 0 3rpx;
+          }
+          .remain {
+            padding: 10rpx;
+            color: $hot-color;
+            background: #fff;
+            border: 1rpx solid $hot-color;
+            border-radius: 0 3rpx 3rpx 0;
+          }
+        }
+        .goods-image {
+          width: $image-width;
+          height: $image-height;
+          border-radius: $border-radius;
+        }
+        .goods-price {
+          font-size: $price-fontSize;
+          color: $price-color;
+          min-width: $price-width;
+        }
+        .goods-origin-price {
+          font-size: $originPrice-fontSize;
+          color: $originPrice-color;
+        }
+        .goods-title {
+          font-size: $title-fontSize;
+          color: $title-color;
+          width: $title-width;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          margin-top: 15rpx;
+          min-height: 40rpx;
+        }
+        .goods-desc {
+          min-height: 24rpx;
+        }
+        .goods-bottom {
+          margin: 5rpx 0;
+          div {
+            font-size: $bottom-fontSize;
+            color: $bottom-color;
+          }
+          .sketch {
+            font-size: $bottom-sketch;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 340rpx;
+          }
+        }
+      }
+      .noProduct
+      {
+        height: 65vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img{
+          width: 220rpx;
+          height: 300rpx;
+        }
+      }
+    }
+  }
+  .history {
+    background: #fff;
+    padding: 32rpx;
+    .t {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30rpx;
+      div:nth-child(1) {
+        color: rgba(153, 153, 153, 1);
+        font-size: 26rpx;
+      }
+      div:nth-child(2) {
+        width: 55rpx;
+        height: 55rpx;
+        background: url("http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/del1-93f0a4add4.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+    }
+    .cont {
+      display: flex;
+      flex-wrap: wrap;
+      div {
+        padding: 8rpx;
+        font-size: 26rpx;
+        background: rgba(241, 241, 241, 1);
+        color: rgba(153, 153, 153, 1);
+        margin-right: 18rpx;
+        margin-bottom: 18rpx;
+        border-radius: 6rpx;
+      }
+    }
+  }
+  .hotsearch {
+    margin-top: 20rpx;
+  }
+  //店铺列表样式
+  .store-item {
+    width: 96%;
+    height: 350rpx;
+    border-radius: 10rpx;
+    background: #fff;
+    margin: 8rpx auto;
+    .top {
+      display: flex;
+      align-items: center;
+      height: 80rpx;
+      margin-bottom: 6rpx;
+      .logo {
+        margin-left: 5rpx;
+        width: 79rpx;
+        height: 79rpx;
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 30rpx;
+        }
+      }
+      .title {
+        margin-left: 8rpx;
+        text-align: left;
+        width: 400rpx;
+        font-size: 29rpx;
+      }
+      .btn {
+        flex: 1;
+        text-align: right;
+        span {
+          margin-right: 15rpx;
+          padding: 4rpx 10rpx;
+          border-radius: 8rpx;
+          border: 1rpx solid $buy-btn;
+          color: $buy-btn;
+          font-size: 26rpx;
+        }
+      }
+    }
+    .bottom {
+      display: flex;
+      justify-content: space-around;
+      .good-item {
+        width: 220rpx;
+        height: 220rpx;
+
+        position: relative;
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 10rpx;
+        }
+        span {
+          width: 100%;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          background: rgba(0, 0, 0, 0.5);
+          color: #fff;
+          border-radius: 0 0 10rpx 10rpx;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+}
+.goods-image {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 20rpx;
+}
+.goods-title {
+  margin-top: 15rpx;
+  min-height: 40rpx;
+}
+.goods-desc {
+  min-height: 24rpx;
+}
+.goods-price {
+  color: $price-color;
+}
+.goods-bottom {
+  margin: 5rpx 0;
+  div {
+    font-size: 24rpx;
+    color: #999;
+  }
+  .sketch {
+    font-size: 20rpx;
+  }
+}
+.van-card__thumb {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 20rpx;
+}

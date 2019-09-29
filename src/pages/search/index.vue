@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-09-20 11:33:53
+ * @LastEditTime: 2019-09-27 17:28:00
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -42,7 +42,7 @@
           v-for="(item,index) in tipsData"
           :key="index"
         >{{ item.name }}</div>
-        <div v-if="tipsData.length==0" class="nogoods">暂无此类商品...</div>
+        <!-- <div v-if="tipsData.length==0" class="nogoods">暂无此类商品...</div> -->
       </div>
 
       <!--
@@ -132,7 +132,7 @@
                 <div class="price_2">
                   <span class="span1">￥{{good.salePrice}}</span>
 
-                  <span class="span2">{{good.salePrice}}购物豆</span>
+                  <span class="span2">{{good.peasPrice}}购物豆</span>
                 </div>
       
               </div>
@@ -150,11 +150,11 @@
           <p class="name">{{item.title}} - {{item.subtitle}}</p>
           <p class="price">￥{{item.salePrice}}</p>
           </div>-->
-          <div class="title">
+          <!-- <div class="title">
             <span>—</span>
             <span>我也是有底线的</span>
             <span>—</span>
-          </div>
+          </div> -->
         </div>
       </div>
       <!-- 商品分类 -->

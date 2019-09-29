@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-20 15:59:50
+ * @LastEditTime: 2019-09-28 17:50:58
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -32,16 +32,16 @@
           <span>{{listPrice}}</span>
         </p>
         <p class="vipPrice">
-          <img class="vip_img" src="/static/index/vip.png" alt />
+          <img class="vip_img" src="/static/images/index/vip.png" alt />
           <span>
             ￥{{mixCashPrice}}+
-            <img class="money_img" src="/static/index/money.png" alt />
+            <img class="money_img" src="/static/images/index/money.png" alt />
             {{mixScorePrice}}补贴金
           </span>
         </p>
       </div>
       <div class="buyBeans">
-        <span>198购物豆</span>
+        <span>{{peasPrice}}购物豆</span>
       </div>
       <!-- <p class="salePrice">
         组合价格:￥{{mixCashPrice}}+补贴金{{mixScorePrice}}
@@ -145,18 +145,23 @@
         </div>
         <div class="right">
           <div>
-            <p>
+            <p class="nowPrice">
               ￥
               <span>{{nowPrice}}</span>
             </p>
+            
             <!-- <p >会员价:￥{{vipPrice}}+{{integral}}补贴金</p> -->
-            <p v-if="vipPrice!=''&&integral!=''">
-              <img class="vip_img" src="/static/index/vip.png" alt />
+            <p v-if="vipPrice!=''&&integral!=''" class="butie">
+              <img class="vip_img" src="/static/images/index/vip.png" alt />
               <span>
                 ￥{{mixCashPrice}}+
-                <img class="money_img" src="/static/index/money.png" alt />
+                <img class="money_img" src="/static/images/index/money.png" alt />
                 {{mixScorePrice}}补贴金
               </span>
+            </p>
+            <p class="bean">
+              ￥
+              <span>{{nowPeasPrice}}购物豆</span>
             </p>
             <p>库存:{{quantity}}件</p>
           </div>
@@ -209,14 +214,17 @@
           <span class="text" style="color:rgb(102,102,102);margin-left:-4rpx;">首页</span>
         </div>
       </div>
-      <!-- <div @click="collect">
-        <div class="collect" :class="[collectFlag ? 'active' :'']"></div>
-      </div>-->
       <div @click="toCart" class="cart">
         <div class="car">
           <span>{{allnumber}}</span>
           <img src="/static/images/bt_cart.png" />
           <p class="text" style="color:rgb(102,102,102);">购物车</p>
+        </div>
+      </div>
+      <div  class="home">
+        <div class="car">
+          <img src="/static/images/goods/service.png" />
+          <span class="text" style="color:rgb(102,102,102);margin-left:-4rpx;">客服</span>
         </div>
       </div>
       <div class="btn-group">
@@ -319,6 +327,7 @@ export default {
       scorePrice: "", //补贴金价
       mixCashPrice: "", //混合支付现金
       mixScorePrice: "", //混合支付补贴金
+      peasPrice:"", //购物豆价格
       arrivalTime: "", //到货时间
       brand: {},
       attribute: [],
@@ -336,6 +345,7 @@ export default {
       quantity: "-",
       vipPrice: "", //会员价格
       integral: "", //所需积分
+      nowPeasPrice:"", //现在的购物豆价格
       keys: [],
       pageNum: 1,
       pageSize: 19,
@@ -739,8 +749,8 @@ export default {
     //获取商品详情
     async goodsDetail() {
       getGoodsDetail({
-        // itemId: this.id
-        itemId: 529
+        itemId: this.id
+        // itemId: 529
       })
         .then(res => {
           if (res.data.code == "200") {
@@ -758,6 +768,7 @@ export default {
             this.scorePrice = this.quantList[0].scorePrice;
             this.mixCashPrice = this.quantList[0].mixCashPrice;
             this.mixScorePrice = this.quantList[0].mixScorePrice;
+            this.peasPrice = this.quantList[0].peasPrice;
             this.quantList.map(v => {
               v.properties = JSON.parse(v.properties).toString();
             });
@@ -1136,6 +1147,7 @@ export default {
           this.quantity = this.selectSkuData.quantity;
           this.vipPrice = this.selectSkuData.mixCashPrice; //会员价格
           this.integral = this.selectSkuData.mixScorePrice; //所需积分
+          this.nowPeasPrice = this.selectSkuData.peasPrice; //购物豆价格
         }
       });
     }

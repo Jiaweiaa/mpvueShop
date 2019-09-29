@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-17 14:00:29
- * @LastEditTime: 2019-08-20 17:58:47
+ * @LastEditTime: 2019-09-25 10:37:22
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -172,91 +172,22 @@
         v-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type==2 &&  (detailData.refundProcessing.status!=2 && detailData.refundProcessing.status!=4 && detailData.refundProcessing.status!=9 &&detailData.refundProcessing.status!=10)"
       >换货状态：{{detailData.refundTitle}}</span>
     </div>
-
-    <!-- 第一个板块 -->
-    <div class="info">
-      <div class="header">
-        <h3>提货信息</h3>
-      </div>
-      <div class="body">
-        <div class="borderT" v-if="detailData.captainVo"></div>
-
-        <div class="item" v-if="detailData.captainVo">
-          <div class="left">团长信息</div>
-          <div class="right">{{detailData.captainVo.captain.name}}</div>
-        </div>
-        <div class="item" v-if="detailData.orderVo.shippingAddress.deliveryType!=''">
-          <div class="left">提货方式</div>
-          <div class="right">{{detailData.orderVo.shippingAddress.deliveryType=='1'? '自提':'送货上门'}}</div>
-        </div>
-        <div class="item" v-if="detailData.captainVo">
-          <div class="left">提货地点</div>
-          <div class="right">
-            {{detailData.captainVo.captain.city}}
-            {{detailData.captainVo.captain.address}}
-            {{detailData.captainVo.captain.deliveryAddress}}
-          </div>
-        </div>
-
-        <div class="borderT"></div>
-
-        <div class="item">
-          <div class="left">收货人</div>
-          <div
-            class="right"
-          >{{detailData.orderVo.shippingAddress.firstName}} {{detailData.orderVo.shippingAddress.mobile}}</div>
-        </div>
-        <div class="item">
-          <div class="left">收货地址</div>
-          <div class="right">
-            {{detailData.orderVo.shippingAddress.province}} {{detailData.orderVo.shippingAddress.city}}
-            {{detailData.orderVo.shippingAddress.district}}
-            {{detailData.orderVo.shippingAddress.address}}
-          </div>
-        </div>
-        <div
-          class="item"
-          v-if="detailData.orCode!=null&&detailData.newestRefund==null&&detailData.orderVo.logisticsStatus==8"
-        >
-          <div class="left">核销码</div>
-          <div class="right">
-            <img class="code" :src="detailData.orCode" alt />
-          </div>
-        </div>
-      </div>
-      <div class="footer">
-        <p
-          class="p1"
-          v-if="detailData.orderVo.totalSalesPrice!=null"
-        >总价:￥{{detailData.orderVo.totalSalesPrice}} 优惠:￥{{detailData.orderVo.discount}}</p>
-        <p class="p2" v-if="detailData.orderVo.paymentType==4">
-          共1件商品,合计
-          <span>￥{{detailData.orderVo.totalActure}}</span>
-        </p>
-        <p class="p2" v-else-if="detailData.orderVo.paymentType==12">
-          共1件商品,合计
-          <span>{{detailData.orderVo.totalScoreActure}}补贴金</span>
-        </p>
-        <p class="p2" v-else>
-          共1件商品,合计
-          <span>￥{{detailData.orderVo.totalActure}}+补贴金{{detailData.orderVo.totalScoreActure}}</span>
-        </p>
-      </div>
+    <!-- 地址 -->
+    <div class="address">
+      <p>{{detailData.orderVo.shippingAddress.firstName}} {{detailData.orderVo.shippingAddress.mobile}}</p>
+      <p>
+        {{detailData.orderVo.shippingAddress.province}}{{detailData.orderVo.shippingAddress.city}}{{detailData.orderVo.shippingAddress.district}}{{detailData.orderVo.shippingAddress.address}} 
+      </p>
     </div>
+  
     <!-- 第二个板块 -->
     <div class="info">
       <div class="header">
         <h3>商品信息</h3>
-        <span>共1件商品</span>
       </div>
       <div class="body">
         <div class="borderT"></div>
         <div class="store-info">
-          <!-- <div class="store-name">
-            <van-icon name="shop-o" />
-            <span>{{}}}</span>
-            <van-icon name="arrow" />
-          </div>-->
           <div class="goods">
             <div
               class="goods-item"
@@ -267,23 +198,17 @@
                 <img :src="'http://qn.gaoshanmall.cn/'+goods.itemImg" alt />
               </div>
               <div class="goods-info">
-                <h3 class="van-ellipsis" style="font-size:26rpx;">{{goods.itemName}}</h3>
-                <p>
-                  <span
-                    style="font-size:21rpx;"
-                    v-for="(propert,proIndex) in goods.propertiesValue"
-                    :key="proIndex"
-                  >{{propert}}</span>
+                <h3 class="van-ellipsis title">{{goods.itemName}}</h3>
+                <p class="propert">
+                  <span>{{goods.propertiesValue}}</span>
                 </p>
                 <p>
-                  <span style="font-size:23rpx;">￥{{goods.salePrice}}</span>
-                  <!-- <span
-                    style="text-decoration:line-through;color:#999;font-size:22rpx;"
-                  >￥{{goods.listPrice}}</span>-->
+                  <span>￥{{goods.salePrice}}</span>
+                  <span>x{{goods.quantity}}</span>
                 </p>
               </div>
               <div class="goods-num">
-                <span>数量:{{goods.quantity}}</span>
+                <!-- <span>数量:{{goods.quantity}}</span> -->
                 <button
                   @click="applyRefund(goods)"
                   class="refundBtn"
@@ -307,11 +232,7 @@
     </div>
     <!-- 第三个板块 -->
     <div class="info">
-      <div class="header">
-        <h3>订单信息</h3>
-      </div>
       <div class="body">
-        <div class="borderT"></div>
         <div class="item">
           <div class="left">订单编号</div>
           <div class="right">{{detailData.orderVo.orderReVo.orderCode}}</div>
@@ -320,12 +241,20 @@
           <div class="left">下单时间</div>
           <div class="right">{{detailData.orderVo.createTime}}</div>
         </div>
-
         <div class="item">
-          <div class="left">商品总价</div>
+          <div class="left">购买方式</div>
+          <div
+            class="right"
+          >{{detailData.orderVo.paymentType==4?'微信支付':detailData.orderVo.paymentType==12?'补贴金':'补贴金+微信'}}</div>
+        </div>
+        <div class="item">
+          <div class="left">商品合计</div>
           <div class="right">￥{{detailData.orderVo.totalActure}}</div>
         </div>
-        <div class="borderT"></div>
+        <div class="item">
+          <div class="left">订单备注</div>
+          <div class="right">{{detailData.orderVo.remark==null?'无':detailData.orderVo.remark}}</div>
+        </div>
         <!-- <div class="item">
           <div class="left">促销优惠</div>
           <div class="right">没这个字段</div>
@@ -334,13 +263,10 @@
           <div class="left">余额抵扣</div>
           <div class="right">没这个字段</div>
         </div>-->
+        <div class="borderT"></div>
         <div class="item">
-          <div class="left">在线支付</div>
-          <div class="right">￥{{detailData.orderVo.totalActure}}</div>
-        </div>
-        <div class="item">
-          <div class="left">备注信息</div>
-          <div class="right">{{detailData.orderVo.remark==null?'无':detailData.orderVo.remark}}</div>
+          <div class="left">实付款</div>
+          <div class="right" style="color:#D92231;">￥{{detailData.orderVo.totalActure}}</div>
         </div>
       </div>
     </div>
@@ -414,7 +340,7 @@ let querystring = require("querystring");
 let deviceId = new Date().getTime();
 export default {
   onLoad: function(options) {
-    this.orderObj.id = options.id;
+    this.orderObj.id = 213;
 
     // let params = {
     //   id:options.id
@@ -677,7 +603,7 @@ export default {
               let params = {
                 subOrdinate: res.data.result.subOrdinate,
                 deviceType: 2,
-                orderTab:2,
+                orderTab: 2
               };
               let url = `/trade${res.data.result.redirectUrl}`;
               let querystring = require("querystring");

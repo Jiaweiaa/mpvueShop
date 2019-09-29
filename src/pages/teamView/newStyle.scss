@@ -1,0 +1,238 @@
+.my {
+  .myinfo {
+    width: 750rpx;
+    height: 400rpx;
+    background: url("http://pydsg4puk.bkt.clouddn.com/teamView_bg.png")
+      no-repeat;
+    background-size: contain;
+    position: relative;
+    padding: 1rpx;
+
+    p:nth-child(1) {
+      margin-top: 139rpx;
+      margin-left: 222rpx;
+      color: #fff;
+      font-weight: 500;
+    }
+    p:nth-child(2) {
+      color: #fff;
+      margin-top: 20rpx;
+      margin-left: 222rpx;
+      font-size: 24rpx;
+      font-weight: 400;
+    }
+    .editInfo {
+      position: absolute;
+      right: 46rpx;
+      top: 89rpx;
+      width: 180rpx;
+      height: 60rpx;
+      line-height: 60rpx;
+      background: #fff;
+      border-radius: 30rpx;
+      color: #e32e38;
+      font-size: 28rpx;
+      text-align: center;
+    }
+  }
+  .doHandle {
+    position: relative;
+    z-index: 99;
+    background: #fff;
+    width: 690rpx;
+    height: 222rpx;
+    border-radius: 10rpx;
+    margin: 0 auto;
+    margin-top: -74rpx;
+    display: flex;
+    align-items: center;
+    .item {
+      width: 345rpx;
+      height: 120rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        margin-right: 30rpx;
+        width: 52rpx;
+        height: 49rpx;
+      }
+      p {
+        font-size: 32rpx;
+      }
+    }
+    .item:nth-child(1) {
+      border-right: 1rpx solid #dcdcdc;
+    }
+  }
+  .money {
+    width: 691rpx;
+    height: 237rpx;
+    border-radius: 10rpx;
+    box-shadow: 0px 0px 19px 1px rgba(209, 209, 209, 0.3);
+    background: #fff;
+    margin: 0 auto;
+    margin-top: 30rpx;
+    padding-bottom: 30rpx;
+    .top {
+      width: 620rpx;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      padding: 1rpx;
+      padding-bottom: 40rpx;
+      border-bottom: 1rpx solid #dcdcdc;
+      .item {
+        width: 100rpx;
+        p:nth-child(1) {
+          font-size: 32rpx;
+          margin-top: 40rpx;
+          text-align: center;
+        }
+        p:nth-child(2) {
+          font-size: 24rpx;
+          margin-top: 19rpx;
+          text-align: center;
+          color: #888;
+        }
+      }
+    }
+    .bottom {
+      width: 620rpx;
+      height: 87rpx;
+      margin: 0 auto;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      p:nth-child(1) {
+        font-size: 28rpx;
+      }
+      p:nth-child(2) {
+        font-size: 28rpx;
+        color: #e32e38;
+      }
+    }
+  }
+  .service {
+    width: 691rpx;
+    height: 237rpx;
+    padding: 1rpx;
+    margin: 0 auto;
+    margin-top: 30rpx;
+    box-shadow: 0px 0px 19px 1px rgba(209, 209, 209, 0.3);
+    background: #fff;
+    border-radius: 10rpx;
+    .title {
+      font-size: 32rpx;
+      font-weight: 500;
+      margin-left: 36rpx;
+      margin-top: 42rpx;
+    }
+    .content {
+      margin-left: 36rpx;
+      margin-top: 37rpx;
+      display: flex;
+      .item {
+        margin-right: 48rpx;
+        .iconBox {
+          display: flex;
+          justify-content: center;
+        }
+        .childText {
+          margin-top: 5rpx;
+          font-size: 24rpx;
+        }
+      }
+    }
+  }
+}
+
+.myMenu {
+  position: absolute;
+  left: 2.5%;
+  top: 150px;
+  overflow: hidden;
+  padding: 10px;
+  width: calc(95% - 20px) !important;
+  height: 80px !important;
+  .left {
+    border-right: 1px solid #ab2b2b;
+  }
+  .left,
+  .right {
+    width: calc(50% - 1px);
+    height: 100%;
+    float: left;
+    p {
+      width: 50%;
+      height: 100%;
+      line-height: 80px;
+      margin-left: 70px;
+    }
+  }
+}
+.mySecond {
+  position: absolute;
+  top: 275px;
+  left: 2.5%;
+}
+
+.myThree {
+  position: absolute;
+  top: 400px;
+  left: 2.5%;
+}
+.boxMenu {
+  width: 95%;
+  overflow: hidden;
+  background: #fff;
+  height: 100px;
+  border-radius: 5px;
+  .title {
+    height: 30px;
+    width: 95%;
+    margin: 0 auto;
+    border-bottom: 1px solid #ccc;
+    line-height: 30px;
+    .navTitle {
+      float: left;
+      width: 40%;
+      font-weight: bold;
+      padding-left: 10px;
+    }
+    .navBody {
+      width: calc(60% - 20px);
+      text-align: right;
+      float: left;
+      padding-right: 10px;
+      color: #999;
+      font-size: 20rpx;
+    }
+  }
+  .content {
+    overflow: hidden;
+    height: 70px;
+    .childContent {
+      height: 100%;
+      padding: 10px;
+      float: left;
+      width: calc(25% - 20px);
+      text-align: center;
+      .childText {
+        font-size: 24rpx;
+      }
+    }
+  }
+}
+.btnClass {
+  background: rgba(255, 255, 255, 0.3) !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 0 12px !important;
+}
+.myMenu .van-icon {
+  margin-top: 22px;
+  margin-left: 30px;
+  float: left;
+}

@@ -1,0 +1,156 @@
+.iconBorder {
+  border: 3px solid yellow;
+  border-radius: 50%;
+}
+
+.van-button__loading-text {
+  color: #fff !important;
+}
+.popupBox {
+  .van-loading {
+    view,
+    text {
+      color: #fff;
+    }
+  }
+}
+
+.my {
+  background: #fff;
+  position: relative;
+  .tabs {
+    margin-top: 28rpx;
+    display: flex;
+    justify-content: space-around;
+    .tabItem {
+      color: rgba(48, 48, 48, 1);
+      font-size: 33rpx;
+      padding-bottom: 23rpx;
+    }
+    .active {
+      color: #e63936;
+      border-bottom: 4rpx solid #e63936;
+    }
+  }
+  .butiejin {
+    //补贴金明细
+    .detail {
+      width: 164rpx;
+      height: 44rpx;
+      line-height: 44rpx;
+      background: rgba(241, 241, 241, 1);
+      border-radius: 22rpx;
+      color: rgba(136, 136, 136, 1);
+      font-size: 24rpx;
+      text-align: center;
+      position: absolute;
+      top: 128rpx;
+      right: 40rpx;
+    }
+    //补贴金
+    .btMain {
+      margin-top: 50rpx;
+      div:nth-child(1) {
+        display: flex;
+        justify-content: center;
+        img{
+          width: 128rpx;
+          height: 140rpx;
+        }
+      }
+      .text {
+        margin-top: 50rpx;
+        p {
+          text-align: center;
+        }
+        p:nth-child(1) {
+          font-size: 36rpx;
+          font-weight: 500;
+        }
+        p:nth-child(2) {
+          margin-top: 29rpx;
+          font-size: 72rpx;
+          font-weight: bold;
+        }
+      }
+    }
+    .btnRow {
+      margin-top: 184rpx;
+      .btnStyle {
+        width: 580rpx;
+        margin: 0 auto;
+        height: 90rpx;
+        line-height: 90rpx;
+        border-radius: 45rpx;
+        margin-bottom: 30rpx;
+      }
+      .btnStyle:nth-child(1) {
+        border: 2rpx solid rgba(227, 45, 55, 1);
+        color: rgba(230, 57, 54, 1);
+        background: #fff;
+      }
+      .btnStyle:nth-child(2) {
+        background: rgba(227, 45, 55, 1);
+        color: #fff;
+      }
+    }
+    .tip {
+      p {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24rpx;
+        color: rgba(136, 136, 136, 1);
+        text-align: center;
+        img{
+          width: 24rpx;
+          height: 24rpx;
+          margin-right: 10rpx;
+        }
+      }
+    }
+  }
+
+  //   .title {
+  //     position: absolute;
+  //     top: 160px;
+  //     width: 100%;
+  //     text-align: center;
+  //     font-size: 16px;
+  //   }
+  //   .myMoney {
+  //     position: absolute;
+  //     font-size: 20px;
+  //     width: 100%;
+  //     text-align: center;
+  //     top: 210px;
+  //   }
+
+  .popupBox {
+    height: 200px;
+    position: relative;
+    .title {
+      margin-top: 15rpx;
+      font-size: 32rpx;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 18rpx;
+    }
+    .content {
+      width: 100%;
+    }
+    .btnRow {
+      display: flex;
+      justify-content: center;
+      margin-top: 50rpx;
+      .btnStyle {
+        width: 400rpx;
+        height: 68rpx;
+        line-height: 68rpx;
+        text-align: center;
+        border-radius: 34rpx;
+        background: #e63936;
+      }
+    }
+  }
+}

@@ -1,6 +1,13 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-20 10:36:07
+ * @LastEditTime: 2019-09-27 17:47:01
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
 	<div class="noData">
-		<img src="http://pic.51yuansu.com/pic3/cover/02/79/38/5a43641525cd6_610.jpg">
+		<img style="height:305rpx;" src="/static/images/nodata/dingdan.png">
 	</div>
 </template>
 
@@ -21,9 +28,11 @@
 		height: 100vh
 		position: relative
 		img
+			display:block
 			position: absolute
-			width: 300px
+			width: 110px
+		
 			left: 50%
-			margin-left: -150px
+			margin-left: -55px
 			top: 130px
 </style>

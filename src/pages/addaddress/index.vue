@@ -2,43 +2,42 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-31 09:22:28
- * @LastEditTime: 2019-08-29 14:43:53
+ * @LastEditTime: 2019-09-24 09:56:03
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="addaddress">
     <div class="item">
+      <span>收货人</span>
       <input type="text" placeholder="姓名" v-model="userName">
     </div>
     <div class="item">
+      <span>联系电话</span>
       <input type="text" placeholder="手机号码" v-model="telNumber">
     </div>
     <div class="item">
-      <picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem">
+      <span>所在区域</span>
+      <picker class="picker" mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem">
         <input type="text" disabled placeholder="省份、城市、区县" v-model="address">
       </picker>
     </div>
-    <!-- <view class="section">
-      <view class="section__title">省市区选择器</view>
-      <picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem">
-        <view class="picker">
-          当前选择：{{region[0]}}，{{region[1]}}，{{region[2]}}
-        </view>
-      </picker>
-    </view> -->
     <div class="item">
+      <span>详细地址</span>
       <input type="text" placeholder="详细地址，如楼道、楼盘号等" v-model="detailadress">
     </div>
     <div class="item itemend">
-      <checkbox-group @change="checkboxChange">
+      
+      <span>设为默认地址</span>
+       <switch :checked="checked" color="#E63936"  @change="checkboxChange" />
+      <!-- <checkbox-group @change="checkboxChange">
         <label class="checkbox">
           <checkbox class="box" value="true" :checked="checked" color="#B4282D" />设置为默认地址
         </label>
-      </checkbox-group>
+      </checkbox-group> -->
       <!--<div @click="wxaddress">一键导入微信></div>-->
     </div>
     <div @click="saveAddress" class="bottom">
-      保存
+      保 存
     </div>
 	
 	  <van-notify id="van-notify" />

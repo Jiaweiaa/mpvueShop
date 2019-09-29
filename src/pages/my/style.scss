@@ -3,7 +3,7 @@
   padding-bottom: 20px;
   .myMenu {
     position: relative;
-    height: 131px;
+    height: 160rpx;
     z-index: 99;
     margin-top: -30px !important;
     overflow: hidden;
@@ -11,15 +11,15 @@
       width: 50%;
       float: left;
       div:first-child {
-        font-size: 18px;
+        font-size: 48rpx;
         font-weight: bold;
-        margin-top: 35px;
+        margin-top: 18rpx;
       }
       div {
         width: 100%;
         text-align: center;
-        margin-top: 20px;
-        font-size: 14px;
+        margin-top: 10rpx;
+        font-size: 28rpx;
       }
 
     }

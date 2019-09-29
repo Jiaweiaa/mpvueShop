@@ -2,14 +2,67 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-23 15:30:03
- * @LastEditTime: 2019-09-05 16:37:02
+ * @LastEditTime: 2019-09-26 16:55:53
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="my">
     <van-notify id="custom-selector" />
+    <!-- newUI -->
     <div class="myinfo">
-      <div v-if="isFlag">
+      <p>用户昵称</p>
+      <p>欢迎您,易起省代理</p>
+      <div class="editInfo" @click="toEditInfo">完善信息</div>
+    </div>
+    <div class="doHandle">
+      <div class="item" @click="scanFun">
+        <img src="/static/images/teamView/scan.png" alt />
+        <p>扫码绑定</p>
+      </div>
+      <div class="item" @click="toCode">
+        <img src="/static/images/teamView/code.png" alt />
+        <p>我的二维码</p>
+      </div>
+    </div>
+    <div class="money">
+      <div class="top">
+        <div class="item">
+          <p>254.13</p>
+          <p>累计佣金</p>
+        </div>
+        <div class="item">
+          <p>254</p>
+          <p>累计订单</p>
+        </div>
+        <div class="item">
+          <p>254</p>
+          <p>累计用户</p>
+        </div>
+        <div class="item">
+          <p>254</p>
+          <p>累计邀请</p>
+        </div>
+      </div>
+      <div class="bottom">
+        <p>可提现金额</p>
+        <p>￥224.2</p>
+      </div>
+    </div>
+    <div class="service">
+      <div class="title">商家服务</div>
+      <div class="content">
+        <div class="item" @click="goTo(item.url)" :key="index" v-for="(item, index) in orderMenu">
+          <div class="iconBox">
+            <van-icon size="30px" :name="item.icon" />
+          </div>
+
+          <div class="childText">{{item.title}}</div>
+        </div>
+      </div>
+    </div>
+    <!-- ****** -->
+    <!-- <div class="myinfo">
+      <div>
         <div class="myMoney">
           <p>我的佣金</p>
           <p>¥&nbsp;{{teamData.commission}}</p>
@@ -19,13 +72,13 @@
           <p>¥&nbsp;{{teamData.undrawnCommission}}</p>
         </div>
         <van-button
-            style="position: absolute; right: 20px; bottom: 50px;"
-            @click="goToDetail"
-            size="small"
-            custom-class="btnClass"
-            round
-            plain
-            type="default"
+          style="position: absolute; right: 20px; bottom: 50px;"
+          @click="goToDetail"
+          size="small"
+          custom-class="btnClass"
+          round
+          plain
+          type="default"
         >查看详情</van-button>
       </div>
       <div class="textView" v-else>
@@ -34,7 +87,7 @@
         <p>绑定前请完善个人信息。</p>
       </div>
     </div>
-   
+
     <div class="myMenu boxMenu">
       <div class="left">
         <button @tap="scanFun">
@@ -79,7 +132,7 @@
           <div class="childText">{{item.title}}</div>
         </div>
       </div>
-    </div>
+    </div>-->
 
     <van-notify id="van-notify" />
     <van-dialog id="van-dialog" />
@@ -91,7 +144,7 @@
 import { myDetile } from "../../api/myTeam/index";
 import Notify from "../../../static/vant/notify/notify";
 import Dialog from "../../../static/vant/dialog/dialog";
-import Toast from '../../../static/vant/toast/toast';
+import Toast from "../../../static/vant/toast/toast";
 import { scanQrCode, showQRCodeToScan } from "../../api/distribution/index";
 export default {
   onShow() {
@@ -151,7 +204,7 @@ export default {
       userInfo: {},
 
       isFlag: false,
-      
+
       teamData: {}
     };
   },
@@ -167,16 +220,16 @@ export default {
         complete: res => {
           if (res.result) {
             console.log(res.result);
-          
+
             Dialog.confirm({
               title: "绑定上级",
               message: "确认绑定这位用户为上级吗?"
             })
-            .then(() => {
-              let params = {
-                parentMemberId: res.result
-              };
-              scanQrCode(params)
+              .then(() => {
+                let params = {
+                  parentMemberId: res.result
+                };
+                scanQrCode(params)
                   .then(res => {
                     if (res.data.code == 200) {
                       Dialog.alert({
@@ -184,42 +237,40 @@ export default {
                       }).then(() => {
                         this.getTeamData();
                       });
-                    }else{
+                    } else {
                       Dialog.alert({
                         message: res.data.message
-                      }).then(() => {
-                      
-                      });
+                      }).then(() => {});
                     }
                   })
                   .catch(err => {});
-                  // let data = [];
-                  // // data.push(res.result);
-                  // writeOffByQRcode({
-                  //   orderCode: res.result
-                  // }).then(res => {
-                  //   //   console.log(res.data, "456");
-                  //   if (res.data.code == 200) {
-                  //     Dialog.alert({
-                  //       message: res.data.result
-                  //     }).then(() => {
-                  //       // on close
-                  //     });
-                
-                  //     // });
-                  //   } else {
-                  //     Dialog.alert({
-                  //       message: res.data.message
-                  //     }).then(() => {
-                  //       // on close
-                  //     });
-                  //   }
-                  // });
-                })
-                .catch(() => {
-                  Notify("网络错误,请检查网络");
-                  // on cancel
-                });
+                // let data = [];
+                // // data.push(res.result);
+                // writeOffByQRcode({
+                //   orderCode: res.result
+                // }).then(res => {
+                //   //   console.log(res.data, "456");
+                //   if (res.data.code == 200) {
+                //     Dialog.alert({
+                //       message: res.data.result
+                //     }).then(() => {
+                //       // on close
+                //     });
+
+                //     // });
+                //   } else {
+                //     Dialog.alert({
+                //       message: res.data.message
+                //     }).then(() => {
+                //       // on close
+                //     });
+                //   }
+                // });
+              })
+              .catch(() => {
+                Notify("网络错误,请检查网络");
+                // on cancel
+              });
           } else {
             // Notify("该二维码已失效");
           }
@@ -239,6 +290,11 @@ export default {
         });
       }
     },
+    toEditInfo() {
+      wx.navigateTo({
+        url: "/pages/editUserInfo/main"
+      });
+    },
 
     // 详情
     goToDetail() {
@@ -250,21 +306,28 @@ export default {
     async getTeamData() {
       wx.showLoading();
       let data = await myDetile();
-       wx.hideLoading();
+      wx.hideLoading();
       this.teamData = data.data.result;
-      if(this.teamData) {
+      if (this.teamData) {
         this.isFlag = true;
-        this.orderMenu.push({
-          title: "我的上级",
-          icon: "user-o",
-          url: "/pages/superior/main"
-        },
-        {
-          title: "我的下级",
-          icon: "friends-o",
-          url: "/pages/subordinate/main"
-        });
-      }else {
+        this.orderMenu.push(
+          {
+            title: "我的上级",
+            icon: "user-o",
+            url: "/pages/superior/main"
+          },
+          {
+            title: "我的下级",
+            icon: "friends-o",
+            url: "/pages/subordinate/main"
+          },
+          {
+            title: "推广海报",
+            icon: "http://pydsg4puk.bkt.clouddn.com/haibao.png",
+            url: "/pages/subordinate/main"
+          }
+        );
+      } else {
         this.isFlag = false;
       }
     },
@@ -274,9 +337,9 @@ export default {
       // showQRCodeToScan()
       // .then(res => {
       //   if (res.data.code == "200") {
-          wx.navigateTo({
-            url: "/pages/distribution/main"
-          });
+      wx.navigateTo({
+        url: "/pages/distribution/main"
+      });
       //   }else {
       //     Toast(res.data.message);
       //     }
@@ -284,7 +347,6 @@ export default {
       // .catch(err => {
       //   console.log(err);
       // });
-    
     }
   },
   computed: {}
@@ -298,7 +360,8 @@ export default {
   padding-left: 20px;
 }
 .van-toast {
-  view, text {
+  view,
+  text {
     color: #fff;
   }
 }
@@ -307,128 +370,6 @@ page {
 }
 </style>
 <style lang='scss' scoped>
-.my {
-  position: relative;
-  .myinfo {
-    width: 100%;
-    height: 184px;
-    background: $main-color;
-    padding: 0 30rpx;
-    box-sizing: border-box;
-    position: absolute;
-    left: 0;
-    top: 0;
-    .myMoney {
-      width: 100%;
-      color: #fff;
-      height: 50px;
-      margin-top: 20px;
-      margin-bottom: 20px;
-      p {
-        font-size: 16px;
-      }
-    }
-    .noMoney {
-      width: 100%;
-      color: #fff;
-      p {
-        font-size: 13px;
-      }
-    }
-    p {
-      color: #fff;
-    }
-  }
-}
-
-.myMenu {
-  position: absolute;
-  left: 2.5%;
-  top: 150px;
-  overflow: hidden;
-  padding: 10px;
-  width: calc(95% - 20px) !important;
-  height: 80px !important;
-  .left {
-    border-right: 1px solid #ab2b2b;
-  }
-  .left,
-  .right {
-    width: calc(50% - 1px);
-    height: 100%;
-    float: left;
-    p {
-      width: 50%;
-      height: 100%;
-      line-height: 80px;
-      margin-left: 70px;
-    }
-  }
-}
-.mySecond {
-  position: absolute;
-  top: 275px;
-  left: 2.5%;
-}
-
-.myThree {
-  position: absolute;
-  top: 400px;
-  left: 2.5%;
-}
-.boxMenu {
-  width: 95%;
-  overflow: hidden;
-  background: #fff;
-  height: 100px;
-  border-radius: 5px;
-  .title {
-    height: 30px;
-    width: 95%;
-    margin: 0 auto;
-    border-bottom: 1px solid #ccc;
-    line-height: 30px;
-    .navTitle {
-      float: left;
-      width: 40%;
-      font-weight: bold;
-      padding-left: 10px;
-    }
-    .navBody {
-      width: calc(60% - 20px);
-      text-align: right;
-      float: left;
-      padding-right: 10px;
-      color: #999;
-      font-size: 20rpx;
-    }
-  }
-  .content {
-    overflow: hidden;
-    height: 70px;
-    .childContent {
-      height: 100%;
-      padding: 10px;
-      float: left;
-      width: calc(25% - 20px);
-      text-align: center;
-      .childText {
-        font-size: 24rpx;
-      }
-    }
-  }
-}
+@import "./newStyle";
 </style>
-<style>
-.btnClass {
-  background: rgba(255, 255, 255, 0.3) !important;
-  color: #fff !important;
-  border: none !important;
-  padding: 0 12px !important;
-}
-.myMenu .van-icon {
-  margin-top: 22px;
-  margin-left: 30px;
-  float: left;
-}
-</style>
+

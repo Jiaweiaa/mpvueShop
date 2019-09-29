@@ -1,15 +1,25 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-12 11:26:21
+ * @LastEditTime: 2019-09-28 17:17:34
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="my">
     <div class="myinfo">
-	    <div class="myMoney">
-		   <p>我的佣金</p>
-		   <p>¥&nbsp;{{teamData.commission}}</p>
-	     </div>
-	    <div class="noMoney">
+      <div class="noMoney">
 		    <p>到账佣金</p>
 		    <p>¥&nbsp;{{teamData.undrawnCommission}}</p>
 	    </div>
-	    <van-button style="position: absolute; right: 20px; bottom: 50px;" size="small" @click="getWithdraw" custom-class="btnClass" round plain type="default">申请提现</van-button>
+	    <div class="myMoney">
+		   <p>未到账佣金</p>
+		   <p>¥&nbsp;{{teamData.commission}}</p>
+	     </div>
+        <div class="tixian" @click="getWithdraw">
+          <img src="/static/images/myCommission/tixian.png" alt="">
+        </div>
+	    <!-- <van-button style="position: absolute; right: 20px; bottom: 50px;" size="small" @click="getWithdraw" custom-class="btnClass" round plain type="default">申请提现</van-button> -->
     </div>
 	  <div class="boxMenu">
 		  <van-tabs color="#ab2b2b" @change="tabChange">
@@ -169,112 +179,6 @@
 	}
 </style>
 <style lang='scss' scoped>
-	.my {
-		position: relative;
-		.myinfo {
-			width: 100%;
-			height: 184px;
-			background: $main-color;
-			padding: 0 30rpx;
-			box-sizing: border-box;
-			position: absolute;
-			left: 0;
-			top: 0;
-			.myMoney {
-				width: 100%;
-				color: #fff;
-				height: 50px;
-				margin-top: 20px;
-				margin-bottom: 20px;
-				p {
-					font-size: 16px;
-				}
-			}
-			.noMoney {
-				width: 100%;
-				color: #fff;
-				p {
-					font-size: 13px;
-				}
-			}
-			p {
-				color: #fff;
-			}
-		}
-		.noData {
-			width: 100%;
-			height: 50px;
-			line-height: 50px;
-			text-align: center;
-			font-size: 12px;
-			color: #ccc;
-		}
-	}
-	
-  .boxMenu {
-		width: 95%;
-		overflow: hidden;
-		background: #fff;
-		border-radius: 10px;
-	  position: absolute;
-	  left: 1.5%;
-	  top: 150px;
-	  .item {
-		  height: 80px;
-		  padding: 10px 15px 0;
-		  .box {
-			  border-bottom: 1px solid #cccccc;
-			  position: relative;
-			  height: 98%;
-			  .title {
-				  position: absolute;
-				  top: 15px;
-				  left: 20px;
-				  font-weight: bold;
-			  }
-			  .money {
-				  position: absolute;
-				  top: 15px;
-				  right: 20px;
-				  color: #ab2b2b;
-			    font-size: 16px;
-			  }
-			  .date {
-				  position: absolute;
-				  top: 48px;
-				  left: 20px;
-				  font-size: 13px;
-				  color: #8c9bae;
-			  }
-		  }
-	  }
-	}
-	
-	.endTitle {
-		text-align: center;
-		padding: 20rpx 0;
-		margin-bottom: 10px;
-		width: 100%;
-		span:nth-child(2) {
-			font-size: 24 rpx;
-			color: #333;
-			padding: 0 10 rpx;
-		}
-		span:nth-child(2n + 1) {
-			color: #999;
-		}
-	}
+	@import "./style";
 </style>
-<style>
-	.btnClass {
-		background: rgba(255,255,255,0.3)!important;
-		color: #fff!important;
-		border: none!important;
-		padding: 0 12px!important;
-	}
-	.myMenu .van-icon {
-		margin-top: 22px;
-		margin-left: 30px;
-		float: left;
-	}
-</style>
+

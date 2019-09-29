@@ -2,7 +2,7 @@
  * @Description: 首页模块
  * @Author: 董
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-18 13:41:25
+ * @LastEditTime: 2019-09-27 11:58:23
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -49,7 +49,7 @@
     </div>
     
     <!-- 限时抢购 -->
-    <div class="rush">
+    <!-- <div class="rush">
       <div class="rush_title">
         <span class="stand"></span>
         <span class="text">限时抢购</span>
@@ -69,7 +69,7 @@
           <div class="desc">小米空气净化器</div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="product_group">
       <div class="product_title">

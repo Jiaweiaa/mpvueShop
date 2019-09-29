@@ -1,31 +1,42 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-26 09:36:30
+ * @LastEditTime: 2019-09-24 09:38:46
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="address">
-
     <scroll-view :scroll-y="scrollflag" class="addcont" style="height: 100%;">
       <!-- <div class="addcont"> -->
       <div v-if="listData.length!=0" class="item">
-        <div class="list" @touchstart="startMove" :data-index="index" @touchmove="deleteGoods" @touchend="endMove" v-for="(item, index) in listData" :key="index">
-          <div class="addresslist" :style="item.textStyle">
-            <div>
+        <div
+          class="list"
+          @touchstart="startMove"
+          :data-index="index"
+          @touchmove="deleteGoods"
+          @touchend="endMove"
+          v-for="(item, index) in listData"
+          :key="index"
+        >
+          <div class="group">
+            <div class="top">
               <span>{{item.firstName}}</span>
-              <div v-if="item.defalutFlag" class="moren">
-                默认
-              </div>
+              <span>{{item.mobile}}</span>
+              <div v-if="item.defalutFlag" class="moren">默认</div>
             </div>
-            <div class="info">
-              <p>{{item.mobile}}</p>
+            <div class="bottom">
               <p>{{item.province + item.city + item.district + item.address}}</p>
+              
             </div>
-            <div @click="toDetail(item)"></div>
-
+            <div class="edit" @click="toDetail(item)">
+              <p >编辑</p>
+            </div>
           </div>
           <div @click="delAddress(item.id)" class="delete" :style="item.textStyle1">
-            <div>
-              删除
-            </div>
+            <div>删除</div>
           </div>
         </div>
-
       </div>
 
       <div v-else class="center">
@@ -33,8 +44,8 @@
       </div>
     </scroll-view>
 
-    <div class="bottom">
-      <div @click="wxaddress(1)">+新建地址</div>
+    <div class="newAddress">
+      <div @click="wxaddress(1)">添加新地址</div>
       <!--<div @click="wxaddress">一键导入微信地址</div>-->
     </div>
   </div>
@@ -42,7 +53,11 @@
 
 <script>
 import { get, getStorageOpenid } from "../../utils";
-import { getMemAddressList, setDefaultAddress, deleteMemAddress } from '../../api/address';
+import {
+  getMemAddressList,
+  setDefaultAddress,
+  deleteMemAddress
+} from "../../api/address";
 export default {
   onShow() {
     // this.openId = getStorageOpenid();
@@ -55,12 +70,12 @@ export default {
   },
   data() {
     return {
-      chosenAddressId: '',
+      chosenAddressId: "",
       scrollflag: true,
       nowIndex: 0,
       userInfo: {},
       imgUrl: "",
-      listData: [],  //地址列表
+      listData: [], //地址列表
       list: [],
       tranX: 0,
       tranX1: 0,
@@ -121,7 +136,9 @@ export default {
         this.moveY = e.touches[0].pageY;
         this.X = this.moveX - this.startX;
         this.Y = this.moveX - this.startY;
-        this.listData[index].textStyle = `transform:translateX(${this.tranX}rpx);`;
+        this.listData[index].textStyle = `transform:translateX(${
+          this.tranX
+        }rpx);`;
         if (this.X >= 100) {
           this.X = 0;
         }
@@ -130,7 +147,9 @@ export default {
           this.X = -100;
         }
         this.tranX1 = this.X;
-        this.listData[index].textStyle1 = `transform:translateX(${this.tranX1}rpx);`;
+        this.listData[index].textStyle1 = `transform:translateX(${
+          this.tranX1
+        }rpx);`;
       } else {
         this.moveX = e.touches[0].pageX;
         this.moveY = e.touches[0].pageY;
@@ -138,7 +157,9 @@ export default {
         this.Y = this.moveX - this.startY;
 
         this.tranX = this.X - 100;
-        this.listData[index].textStyle = `transform:translateX(${this.tranX}rpx);`;
+        this.listData[index].textStyle = `transform:translateX(${
+          this.tranX
+        }rpx);`;
         // transform:'translateX(' + tranX + 'rpx)'
 
         if (this.X + -100 > -100) {
@@ -169,13 +190,21 @@ export default {
       if (this.X > -50) {
         this.tranX1 = 0;
         this.tranX = 0;
-        this.listData[index].textStyle = `transform:translateX(${this.tranX}rpx);`;
-        this.listData[index].textStyle1 = `transform:translateX(${this.tranX1}rpx);`;
+        this.listData[index].textStyle = `transform:translateX(${
+          this.tranX
+        }rpx);`;
+        this.listData[index].textStyle1 = `transform:translateX(${
+          this.tranX1
+        }rpx);`;
       } else if (this.X <= -50) {
         this.tranX1 = -100;
         this.tranX = -100;
-        this.listData[index].textStyle = `transform:translateX(${this.tranX}rpx);`;
-        this.listData[index].textStyle1 = `transform:translateX(${this.tranX1}rpx);`;
+        this.listData[index].textStyle = `transform:translateX(${
+          this.tranX
+        }rpx);`;
+        this.listData[index].textStyle1 = `transform:translateX(${
+          this.tranX1
+        }rpx);`;
       }
       // if (Math.abs(this.X) >= 300) {
       //   this.tranX = 0;
@@ -196,31 +225,32 @@ export default {
       // this.tranX = X;
     },
     toDetail(row) {
-      wx.setStorageSync('address', row)
+      wx.setStorageSync("address", row);
       wx.navigateTo({
         url: "/pages/addaddress/main?edit=true"
       });
     },
-    
-    
+
     async getAddressList() {
       wx.showLoading();
-      getMemAddressList().then(res => {
-        if (res.data.code == 200) {
-          this.listData = res.data.result;
-          for (let i = 0; i < this.listData.length; i++) {
-            this.list[i] = {};
-            this.listData[i].name = this.list[i].firstName;
-            this.listData[i].tel = this.list[i].mobile;
-            if(this.listData[i].defalutFlag == true) {
-              this.chosenAddressId = this.listData[i].id;
+      getMemAddressList()
+        .then(res => {
+          if (res.data.code == 200) {
+            this.listData = res.data.result;
+            for (let i = 0; i < this.listData.length; i++) {
+              this.list[i] = {};
+              this.listData[i].name = this.list[i].firstName;
+              this.listData[i].tel = this.list[i].mobile;
+              if (this.listData[i].defalutFlag == true) {
+                this.chosenAddressId = this.listData[i].id;
+              }
             }
           }
-        }
-        wx.hideLoading();
-      }).catch((err) => {
-        wx.hideLoading();
-      })
+          wx.hideLoading();
+        })
+        .catch(err => {
+          wx.hideLoading();
+        });
     },
     wxaddress(index) {
       if (index == 1) {

@@ -1,0 +1,130 @@
+.my {
+  position: relative;
+  .myinfo {
+    width: 710rpx;
+    height: 371rpx;
+    background: url("http://pydsg4puk.bkt.clouddn.com/commissionBg.png")
+      no-repeat;
+    background-size: contain;
+    margin: 0 auto;
+    margin-top: 20rpx;
+    // box-sizing: border-box;
+    position: absolute;
+    left: 20rpx;
+    top: 0;
+    .myMoney {
+      // width: 100%;
+      margin-left: 62rpx;
+      color: #fff;
+      height: 50px;
+      margin-top: 30rpx;
+      margin-bottom: 20px;
+      p:nth-child(1) {
+        font-size: 28rpx;
+      }
+      p:nth-child(2) {
+        font-size: 60rpx;
+        font-weight: 500;
+      }
+    }
+    .noMoney {
+      margin-left: 62rpx;
+      margin-top: 68rpx;
+      // width: 100%;
+      color: #fff;
+      p:nth-child(1) {
+        font-size: 28rpx;
+      }
+      p:nth-child(2) {
+        font-size: 60rpx;
+        font-weight: 500;
+      }
+    }
+    .tixian {
+      position: absolute;
+      top: 53rpx;
+      right: 43rpx;
+      
+      img{
+        width: 216rpx;
+        height: 98rpx;
+      }
+    }
+    p {
+      color: #fff;
+    }
+  }
+  .noData {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 12px;
+    color: #ccc;
+  }
+}
+
+.boxMenu {
+  width: 95%;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 10px;
+  position: absolute;
+  left: 1.5%;
+  top: 450rpx;
+  .item {
+    height: 80px;
+    padding: 10px 15px 0;
+    .box {
+      border-bottom: 1px solid #cccccc;
+      position: relative;
+      height: 98%;
+      .title {
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        font-weight: bold;
+      }
+      .money {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        color: #ab2b2b;
+        font-size: 16px;
+      }
+      .date {
+        position: absolute;
+        top: 48px;
+        left: 20px;
+        font-size: 13px;
+        color: #8c9bae;
+      }
+    }
+  }
+}
+
+.endTitle {
+  text-align: center;
+  padding: 20rpx 0;
+  margin-bottom: 10px;
+  width: 100%;
+  span:nth-child(2) {
+    font-size: 24 rpx;
+    color: #333;
+    padding: 0 10 rpx;
+  }
+  span:nth-child(2n + 1) {
+    color: #999;
+  }
+}
+.btnClass {
+  background: rgba(255, 255, 255, 0.3) !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 0 12px !important;
+}
+.myMenu .van-icon {
+  margin-top: 22px;
+  margin-left: 30px;
+  float: left;
+}

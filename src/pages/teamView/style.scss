@@ -1,0 +1,121 @@
+.my {
+    position: relative;
+    .myinfo {
+      width: 750rpx;
+      height: 400rpx;
+      background: url('http://pydsg4puk.bkt.clouddn.com/teamView_bg.png') no-repeat;
+      background-size: contain;
+      position: absolute;
+      left: 0;
+      top: 0;
+      .myMoney {
+        width: 100%;
+        color: #fff;
+        height: 50px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        p {
+          font-size: 16px;
+        }
+      }
+      .noMoney {
+        width: 100%;
+        color: #fff;
+        p {
+          font-size: 13px;
+        }
+      }
+      p {
+        color: #fff;
+      }
+    }
+  }
+  
+  .myMenu {
+    position: absolute;
+    left: 2.5%;
+    top: 150px;
+    overflow: hidden;
+    padding: 10px;
+    width: calc(95% - 20px) !important;
+    height: 80px !important;
+    .left {
+      border-right: 1px solid #ab2b2b;
+    }
+    .left,
+    .right {
+      width: calc(50% - 1px);
+      height: 100%;
+      float: left;
+      p {
+        width: 50%;
+        height: 100%;
+        line-height: 80px;
+        margin-left: 70px;
+      }
+    }
+  }
+  .mySecond {
+    position: absolute;
+    top: 275px;
+    left: 2.5%;
+  }
+  
+  .myThree {
+    position: absolute;
+    top: 400px;
+    left: 2.5%;
+  }
+  .boxMenu {
+    width: 95%;
+    overflow: hidden;
+    background: #fff;
+    height: 100px;
+    border-radius: 5px;
+    .title {
+      height: 30px;
+      width: 95%;
+      margin: 0 auto;
+      border-bottom: 1px solid #ccc;
+      line-height: 30px;
+      .navTitle {
+        float: left;
+        width: 40%;
+        font-weight: bold;
+        padding-left: 10px;
+      }
+      .navBody {
+        width: calc(60% - 20px);
+        text-align: right;
+        float: left;
+        padding-right: 10px;
+        color: #999;
+        font-size: 20rpx;
+      }
+    }
+    .content {
+      overflow: hidden;
+      height: 70px;
+      .childContent {
+        height: 100%;
+        padding: 10px;
+        float: left;
+        width: calc(25% - 20px);
+        text-align: center;
+        .childText {
+          font-size: 24rpx;
+        }
+      }
+    }
+  }
+  .btnClass {
+    background: rgba(255, 255, 255, 0.3) !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 0 12px !important;
+  }
+  .myMenu .van-icon {
+    margin-top: 22px;
+    margin-left: 30px;
+    float: left;
+  }

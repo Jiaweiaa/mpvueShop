@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-21 09:17:36
- * @LastEditTime: 2019-09-23 11:35:58
+ * @LastEditTime: 2019-09-27 16:17:00
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -40,11 +40,25 @@
             <div class="info">
               <p>{{address.province}}{{address.city}}{{address.district}}{{address.address}}</p>
             </div>
+            <div class="location">
+              <img src="/static/images/order/location.png" alt />
+            </div>
+            <div class="arrow">
+              <img src="/static/images/order/arrow.png" alt />
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div @click="toAdd" v-show="address==null" class="seladdress">请添加收货地址</div>
+    <div @click="toAdd" v-show="address==null" class="seladdress">
+      <div class="text">请添加收货地址</div>
+      <div class="location">
+        <img src="/static/images/order/location.png" alt />
+      </div>
+      <div class="arrow">
+        <img src="/static/images/order/arrow.png" alt />
+      </div>
+    </div>
 
     <div class="cartlist">
       <!-- 分店铺形式的购物车列表 -->
@@ -69,9 +83,7 @@
             <van-card
               :tag="item.tag"
               :lazy-load="true"
-              :price="item.listPrice"
               :title="item.itemTitle"
-              :num="item.quantity"
               thumb-class="goods-image"
               title-class="goods-title"
               price-class="goods-price"
@@ -87,17 +99,19 @@
                   >{{property}}&nbsp;</span>
                 </div>
               </div>
-              <div slot="bottom">
+              <!-- <div slot="bottom">
                 <div class="vip" v-if="item.mixCashPrice &&item.mixScorePrice">
                   <img src="/static/images/vip_price.png" alt />
                   <span v-if="item.mixCashPrice" class="span1">￥{{item.mixCashPrice}}</span>
                   <span v-if="item.mixScorePrice" class="span2">+{{item.mixScorePrice}}补贴金</span>
                 </div>
-              </div>
-              <!-- <div slot="desc" class="goods-bottom">
-                <div>{{item.keyword}}</div>
-                <div class="sketch">{{item.sketch}}</div>
               </div>-->
+              <div slot="bottom" class="card_bottom">
+                <div class="price">
+                  <p>￥{{item.listPrice}}</p>
+                  <p>x{{item.quantity}}</p>
+                </div>
+              </div>
             </van-card>
           </van-cell>
         </div>
@@ -117,7 +131,6 @@
       </div>
     </div>
     <div class="orderbox">
-      
       <div class="item" v-if="discount!=0">
         <div>优惠金额</div>
         <div>￥{{discount}}</div>
@@ -126,15 +139,20 @@
         <div>购买方式</div>
         <div>{{payObj.name}}</div>
       </div>
-      <div class="item">
+      <div class="item" v-if="payObj.value==13">
         <div>补贴金余额</div>
         <div>余额&nbsp;{{scoreAmount}}</div>
+      </div>
+      <div class="item" v-if="payObj.value==14">
+        <div>购物豆余额</div>
+        <div>余额&nbsp;{{shoppingBeans}}</div>
       </div>
       <div class="item">
         <div>商品小计</div>
         <div v-if="payObj.value==4">￥{{currentPayAmount}}</div>
         <div v-else-if="payObj.value==13">￥{{currentPayCashAmount}}+补贴金{{currentPayScoreAmount}}</div>
         <div v-else-if="payObj.value==12">￥{{currentPayAllScoreAmount}}</div>
+        <div v-else-if="payObj.value==14">{{currentPayAllPeasAmount}}购物豆</div>
       </div>
       <!-- <div class="item" @click="sheetShow=true">
         <div>选择配送方式</div>
@@ -151,12 +169,14 @@
     </div>
     <div class="bottom">
       <div>
-        实付 :
+        <span>实付 :</span>
+
         <span v-if="payObj.value==4">￥{{currentPayAmount}}</span>
         <span v-else-if="payObj.value==13">￥{{currentPayCashAmount}}+补贴金{{currentPayScoreAmount}}</span>
         <span v-else-if="payObj.value==12">￥{{currentPayAllScoreAmount}}</span>
+        <span v-else-if="payObj.value==14">{{currentPayAllPeasAmount}}购物豆</span>
       </div>
-      <div @click="pay">支付</div>
+      <div @click="pay">结 算</div>
     </div>
     <!-- 优惠券列表弹出层 -->
     <van-popup
@@ -261,6 +281,7 @@ export default {
   onShow() {
     getMemberAmount().then(res => {
       this.scoreAmount = res.data.result.scoreAmount;
+      this.shoppingBeans = res.data.result.shoppingBeans;
       // if (this.scoreAmount <= 0) {
       //   this.payObj.value = 4;
       // }
@@ -280,310 +301,224 @@ export default {
       title: "获取订单信息..", //提示的内容,
       mask: true //显示透明蒙层，防止触摸穿透,
     });
-    //***修改样式
-    let params = {
-      shoppingCartIds: ["121"]
-    };
-    ShopCartOrderconfirm(params)
-      .then(res => {
-        if (res.data.code == "200") {
-          if (!res.data.result.canScorePayFlag) {
-            this.payOption = [
-              {
-                name: "微信",
-                value: 4
-              },
-              {
-                name: "微信+补贴金",
-                value: 13
+
+    // 将字符串转换成数组或者对象
+    if (this.from == "shoppingcart") {
+      let params = this.params;
+      ShopCartOrderconfirm(params)
+        .then(res => {
+          if (res.data.code == "200") {
+            if (!res.data.result.canScorePayFlag) {
+              this.payOption = [
+                {
+                  name: "微信+补贴金",
+                  value: 13
+                },
+                {
+                  name: "微信",
+                  value: 4
+                },
+
+                {
+                  name: "购物豆",
+                  value: 14
+                }
+              ];
+            }
+            if (res.data.result.errorFlag === false) {
+              return wx.showToast({
+                title: res.data.result.errorMap.errorMsg,
+                icon: "none",
+                duration: 3000,
+                mask: true
+              });
+              setTimeout(() => {
+                wx.navigateBack({
+                  delta: 1
+                });
+              }, 3000);
+            }
+            //地址信息赋值
+            if (this.address == null) {
+              let addressObj = res.data.result.shippingAddressVo;
+              if (addressObj.defaultMemberAddress) {
+                this.address = Object.assign(
+                  {},
+                  addressObj.defaultMemberAddress
+                );
+              } else if (addressObj.shippingAddress) {
+                this.address = Object.assign({}, addressObj.shippingAddress);
               }
-            ];
-          }
-          if (res.data.result.errorFlag === false) {
-            return wx.showToast({
-              title: res.data.result.errorMap.errorMsg,
+            }
+            //商品信息赋值
+            this.shopList = res.data.result.storeShoppingCartLineDtos;
+            let useCouponFlag = false; //是否有可用优惠券标识 迭代时只要有一个店铺有优惠券 就调用使用优惠券接口重新获取总价
+            this.shopList.map(v => {
+              // 如果存在优惠券 优惠券时间戳改时间
+              if (v.canBeAppliedCoupons) {
+                useCouponFlag = true;
+                //初始化订单时给orderLines的每个商品设置一个coupons的空字段
+                v.shoppingCartLineDtos.map(good => {
+                  this.$set(good, "coupons", "");
+                });
+                v.canBeAppliedCoupons.map(coupon => {
+                  this.$set(coupon, "active", false);
+                });
+                //初始化的时候 如果店铺含有优惠券 则默认第一个优惠券被使用
+                this.$set(
+                  v,
+                  "selectCouponCode",
+                  v.canBeAppliedCoupons[0].offerCouponCodeVo[0].offerCode
+                );
+                this.$set(v, "selectCouponName", v.canBeAppliedCoupons[0].name);
+              }
+              v.shoppingCartLineDtos.map(vv => {
+                this.$set(vv, "storeId", v.storeInfoVo.id);
+                this.$set(vv, "shoppingCartIds", vv.id);
+              });
+            });
+            this.currentPayAmount = res.data.result.currentPayAmount;
+            this.currentPayCashAmount = res.data.result.currentPayCashAmount;
+            this.currentPayScoreAmount = res.data.result.currentPayScoreAmount;
+            this.currentPayAllScoreAmount =
+              res.data.result.currentPayAllScoreAmount;
+            this.currentPayAllPeasAmount =
+              res.data.result.currentPayAllPeasAmount; //购物豆价格
+            this.currentShippingFee = res.data.result.currentPayAllScoreAmount;
+            // this.currentShippingFee = res.data.result.currentShippingFee;
+            this.discount = res.data.result.discount;
+            //使用优惠券
+            if (useCouponFlag) {
+              this.toUseCoupon();
+            } else {
+              wx.hideLoading();
+            }
+          } else {
+            wx.showToast({
+              title: res.data.message,
               icon: "none",
-              duration: 3000,
+              duration: 2000,
               mask: true
             });
             setTimeout(() => {
               wx.navigateBack({
                 delta: 1
               });
-            }, 3000);
+            }, 1000);
           }
-          //地址信息赋值
-          if (this.address == null) {
-            let addressObj = res.data.result.shippingAddressVo;
-            if (addressObj.defaultMemberAddress) {
-              this.address = Object.assign({}, addressObj.defaultMemberAddress);
-            } else if (addressObj.shippingAddress) {
-              this.address = Object.assign({}, addressObj.shippingAddress);
+        })
+        .catch(function(error) {
+          wx.hideLoading();
+          console.log(error, "获取商品信息和地址接口报错");
+        });
+    } else if (this.from == "goodsDetail") {
+      let params = this.params;
+      detailOrderconfirm(params)
+        .then(res => {
+          if (res.data.code == "200") {
+            if (!res.data.result.canScorePayFlag) {
+              this.payOption = [
+                {
+                  name: "微信+补贴金",
+                  value: 13
+                },
+                {
+                  name: "微信",
+                  value: 4
+                },
+                {
+                  name: "购物豆",
+                  value: 14
+                }
+              ];
             }
-          }
-          //商品信息赋值
-          this.shopList = res.data.result.storeShoppingCartLineDtos;
-          let useCouponFlag = false; //是否有可用优惠券标识 迭代时只要有一个店铺有优惠券 就调用使用优惠券接口重新获取总价
-          this.shopList.map(v => {
-            // 如果存在优惠券 优惠券时间戳改时间
-            if (v.canBeAppliedCoupons) {
-              useCouponFlag = true;
-              //初始化订单时给orderLines的每个商品设置一个coupons的空字段
-              v.shoppingCartLineDtos.map(good => {
-                this.$set(good, "coupons", "");
+            if (res.data.result.errorFlag === false) {
+              return wx.showToast({
+                title: res.data.result.errorMap.errorMsg,
+                icon: "none",
+                duration: 3000,
+                mask: true
               });
-              v.canBeAppliedCoupons.map(coupon => {
-                this.$set(coupon, "active", false);
-              });
-              //初始化的时候 如果店铺含有优惠券 则默认第一个优惠券被使用
-              this.$set(
-                v,
-                "selectCouponCode",
-                v.canBeAppliedCoupons[0].offerCouponCodeVo[0].offerCode
-              );
-              this.$set(v, "selectCouponName", v.canBeAppliedCoupons[0].name);
+              setTimeout(() => {
+                wx.navigateBack({
+                  delta: 1
+                });
+              }, 3000);
             }
-            v.shoppingCartLineDtos.map(vv => {
-              this.$set(vv, "storeId", v.storeInfoVo.id);
-              this.$set(vv, "shoppingCartIds", vv.id);
+            //地址信息赋值
+            if (this.address == null) {
+              let addressObj = res.data.result.shippingAddressVo;
+              if (addressObj.defaultMemberAddress) {
+                this.address = Object.assign(
+                  {},
+                  addressObj.defaultMemberAddress
+                );
+              } else if (addressObj.shippingAddress) {
+                this.address = Object.assign({}, addressObj.shippingAddress);
+              }
+            }
+
+            //商品信息赋值
+            this.orderLines = [];
+            this.shopList = res.data.result.storeShoppingCartLineDtos;
+            let useCouponFlag = false; //是否有可用优惠券标识 迭代时只要有一个店铺有优惠券 就调用使用优惠券接口重新获取总价
+            this.shopList.map(v => {
+              //优惠券时间戳改时间
+              if (v.canBeAppliedCoupons) {
+                useCouponFlag = true;
+                //初始化订单时给orderLines的每个商品设置一个coupons的空字段
+                v.shoppingCartLineDtos.map(good => {
+                  this.$set(good, "coupons", "");
+                });
+                v.canBeAppliedCoupons.map(coupon => {
+                  this.$set(coupon, "active", false);
+                });
+                this.$set(
+                  v,
+                  "selectCouponCode",
+                  v.canBeAppliedCoupons[0].offerCouponCodeVo[0].offerCode
+                );
+                this.$set(v, "selectCouponName", v.canBeAppliedCoupons[0].name);
+              }
+              v.shoppingCartLineDtos.map(vv => {
+                this.$set(vv, "storeId", v.storeInfoVo.id);
+                this.$set(vv, "shoppingCartIds", vv.id);
+              });
             });
-          });
-          this.currentPayAmount = res.data.result.currentPayAmount;
-          this.currentPayCashAmount = res.data.result.currentPayCashAmount;
-          this.currentPayScoreAmount = res.data.result.currentPayScoreAmount;
-          this.currentPayAllScoreAmount =
-            res.data.result.currentPayAllScoreAmount;
-          this.currentShippingFee = res.data.result.currentShippingFee;
-          this.discount = res.data.result.discount;
-          //使用优惠券
-          if (useCouponFlag) {
-            this.toUseCoupon();
+            this.currentPayAmount = res.data.result.currentPayAmount;
+            this.currentPayCashAmount = res.data.result.currentPayCashAmount;
+            this.currentPayScoreAmount = res.data.result.currentPayScoreAmount;
+            this.currentPayAllScoreAmount =
+              res.data.result.currentPayAllScoreAmount;
+            this.currentPayAllPeasAmount =
+              res.data.result.currentPayAllPeasAmount; //购物豆价格
+            this.currentShippingFee = res.data.result.currentShippingFee;
+            this.discount = res.data.result.discount;
+            //使用优惠券
+            if (useCouponFlag) {
+              this.toUseCoupon();
+            } else {
+              wx.hideLoading();
+            }
           } else {
-            wx.hideLoading();
-          }
-        } else {
-          wx.showToast({
-            title: res.data.message,
-            icon: "none",
-            duration: 2000,
-            mask: true
-          });
-          setTimeout(() => {
-            wx.navigateBack({
-              delta: 1
+            wx.showToast({
+              title: res.data.message,
+              icon: "none",
+              duration: 2000,
+              mask: true
             });
-          }, 1000);
-        }
-      })
-      .catch(function(error) {
-        wx.hideLoading();
-        console.log(error, "获取商品信息和地址接口报错");
-      });
-    //**** */
-
-    //将字符串转换成数组或者对象
-    // if (this.from == "shoppingcart") {
-    //   let params = this.params;
-    //   ShopCartOrderconfirm(params)
-    //     .then(res => {
-    //       if (res.data.code == "200") {
-    //         if (!res.data.result.canScorePayFlag) {
-    //           this.payOption = [
-    //             {
-    //               name: "微信",
-    //               value: 4
-    //             },
-    //             {
-    //               name: "微信+补贴金",
-    //               value: 13
-    //             }
-    //           ];
-    //         }
-    //         if (res.data.result.errorFlag === false) {
-    //           return wx.showToast({
-    //             title: res.data.result.errorMap.errorMsg,
-    //             icon: "none",
-    //             duration: 3000,
-    //             mask: true
-    //           });
-    //           setTimeout(() => {
-    //             wx.navigateBack({
-    //               delta: 1
-    //             });
-    //           }, 3000);
-    //         }
-    //         //地址信息赋值
-    //         if (this.address == null) {
-    //           let addressObj = res.data.result.shippingAddressVo;
-    //           if (addressObj.defaultMemberAddress) {
-    //             this.address = Object.assign(
-    //               {},
-    //               addressObj.defaultMemberAddress
-    //             );
-    //           } else if (addressObj.shippingAddress) {
-    //             this.address = Object.assign({}, addressObj.shippingAddress);
-    //           }
-    //         }
-    //         //商品信息赋值
-    //         this.shopList = res.data.result.storeShoppingCartLineDtos;
-    //         let useCouponFlag = false; //是否有可用优惠券标识 迭代时只要有一个店铺有优惠券 就调用使用优惠券接口重新获取总价
-    //         this.shopList.map(v => {
-    //           // 如果存在优惠券 优惠券时间戳改时间
-    //           if (v.canBeAppliedCoupons) {
-    //             useCouponFlag = true;
-    //             //初始化订单时给orderLines的每个商品设置一个coupons的空字段
-    //             v.shoppingCartLineDtos.map(good => {
-    //               this.$set(good, "coupons", "");
-    //             });
-    //             v.canBeAppliedCoupons.map(coupon => {
-    //               this.$set(coupon, "active", false);
-    //             });
-    //             //初始化的时候 如果店铺含有优惠券 则默认第一个优惠券被使用
-    //             this.$set(
-    //               v,
-    //               "selectCouponCode",
-    //               v.canBeAppliedCoupons[0].offerCouponCodeVo[0].offerCode
-    //             );
-    //             this.$set(v, "selectCouponName", v.canBeAppliedCoupons[0].name);
-    //           }
-    //           v.shoppingCartLineDtos.map(vv => {
-    //             this.$set(vv, "storeId", v.storeInfoVo.id);
-    //             this.$set(vv, "shoppingCartIds", vv.id);
-    //           });
-    //         });
-    //         this.currentPayAmount = res.data.result.currentPayAmount;
-    //         this.currentPayCashAmount = res.data.result.currentPayCashAmount;
-    //         this.currentPayScoreAmount = res.data.result.currentPayScoreAmount;
-    //         this.currentPayAllScoreAmount =
-    //           res.data.result.currentPayAllScoreAmount;
-    //         this.currentShippingFee = res.data.result.currentShippingFee;
-    //         this.discount = res.data.result.discount;
-    //         //使用优惠券
-    //         if (useCouponFlag) {
-    //           this.toUseCoupon();
-    //         } else {
-    //           wx.hideLoading();
-    //         }
-    //       } else {
-    //         wx.showToast({
-    //           title: res.data.message,
-    //           icon: "none",
-    //           duration: 2000,
-    //           mask: true
-    //         });
-    //         setTimeout(() => {
-    //           wx.navigateBack({
-    //             delta: 1
-    //           });
-    //         }, 1000);
-    //       }
-    //     })
-    //     .catch(function(error) {
-    //       wx.hideLoading();
-    //       console.log(error, "获取商品信息和地址接口报错");
-    //     });
-    // } else if (this.from == "goodsDetail") {
-    //   let params = this.params;
-    //   detailOrderconfirm(params)
-    //     .then(res => {
-    //       if (res.data.code == "200") {
-    //         if (!res.data.result.canScorePayFlag) {
-    //           this.payOption = [
-    //             {
-    //               name: "微信+补贴金",
-    //               value: 13
-    //             },
-    //             {
-    //               name: "微信",
-    //               value: 4
-    //             }
-    //           ];
-    //         }
-    //         if (res.data.result.errorFlag === false) {
-    //           return wx.showToast({
-    //             title: res.data.result.errorMap.errorMsg,
-    //             icon: "none",
-    //             duration: 3000,
-    //             mask: true
-    //           });
-    //           setTimeout(() => {
-    //             wx.navigateBack({
-    //               delta: 1
-    //             });
-    //           }, 3000);
-    //         }
-    //         //地址信息赋值
-    //         if (this.address == null) {
-    //           let addressObj = res.data.result.shippingAddressVo;
-    //           if (addressObj.defaultMemberAddress) {
-    //             this.address = Object.assign(
-    //               {},
-    //               addressObj.defaultMemberAddress
-    //             );
-    //           } else if (addressObj.shippingAddress) {
-    //             this.address = Object.assign({}, addressObj.shippingAddress);
-    //           }
-    //         }
-
-    //         //商品信息赋值
-    //         this.orderLines = [];
-    //         this.shopList = res.data.result.storeShoppingCartLineDtos;
-    //         let useCouponFlag = false; //是否有可用优惠券标识 迭代时只要有一个店铺有优惠券 就调用使用优惠券接口重新获取总价
-    //         this.shopList.map(v => {
-    //           //优惠券时间戳改时间
-    //           if (v.canBeAppliedCoupons) {
-    //             useCouponFlag = true;
-    //             //初始化订单时给orderLines的每个商品设置一个coupons的空字段
-    //             v.shoppingCartLineDtos.map(good => {
-    //               this.$set(good, "coupons", "");
-    //             });
-    //             v.canBeAppliedCoupons.map(coupon => {
-    //               this.$set(coupon, "active", false);
-    //             });
-    //             this.$set(
-    //               v,
-    //               "selectCouponCode",
-    //               v.canBeAppliedCoupons[0].offerCouponCodeVo[0].offerCode
-    //             );
-    //             this.$set(v, "selectCouponName", v.canBeAppliedCoupons[0].name);
-    //           }
-    //           v.shoppingCartLineDtos.map(vv => {
-    //             this.$set(vv, "storeId", v.storeInfoVo.id);
-    //             this.$set(vv, "shoppingCartIds", vv.id);
-    //           });
-    //         });
-    //         this.currentPayAmount = res.data.result.currentPayAmount;
-    //         this.currentPayCashAmount = res.data.result.currentPayCashAmount;
-    //         this.currentPayScoreAmount = res.data.result.currentPayScoreAmount;
-    //         this.currentPayAllScoreAmount =
-    //           res.data.result.currentPayAllScoreAmount;
-    //         this.currentShippingFee = res.data.result.currentShippingFee;
-    //         this.discount = res.data.result.discount;
-    //         //使用优惠券
-    //         if (useCouponFlag) {
-    //           this.toUseCoupon();
-    //         } else {
-    //           wx.hideLoading();
-    //         }
-    //       } else {
-    //         wx.showToast({
-    //           title: res.data.message,
-    //           icon: "none",
-    //           duration: 2000,
-    //           mask: true
-    //         });
-    //         setTimeout(() => {
-    //           wx.navigateBack({
-    //             delta: 1
-    //           });
-    //         }, 1000);
-    //       }
-    //     })
-    //     .catch(function(error) {
-    //       wx.hideLoading();
-    //       console.log(error, "获取商品信息和地址接口报错");
-    //     });
-    // }
+            setTimeout(() => {
+              wx.navigateBack({
+                delta: 1
+              });
+            }, 1000);
+          }
+        })
+        .catch(function(error) {
+          wx.hideLoading();
+          console.log(error, "获取商品信息和地址接口报错");
+        });
+    }
   },
 
   data() {
@@ -630,15 +565,14 @@ export default {
           name: "微信",
           value: 4
         },
-
         {
-          name: "补贴金",
-          value: 12
+          name: "购物豆",
+          value: 14
         }
       ],
       //  联盟券
-      scoreAmount: 0,
-
+      scoreAmount: 0, //补贴金
+      shoppingBeans: 0, //购物豆
       addressId: "",
       openId: "",
       allprice: "",
@@ -646,6 +580,7 @@ export default {
       currentPayAmount: "", //应付金额
       currentPayCashAmount: "", //混合应付金额
       currentPayScoreAmount: "", //混合应付积分
+      currentPayAllPeasAmount: "", //购物豆应付价格
       discount: "", //优惠金额
       currentPayAmount: "", //实付金额
       currentShippingFee: "", //运费
@@ -963,7 +898,7 @@ export default {
                   mask: true //显示透明蒙层，防止触摸穿透,
                 });
                 //如果paymentType为 12 则是用积分支付 不调用微信支付接口
-                if (params.paymentType == 12) {
+                if (params.paymentType == 12 || params.paymentType == 14) {
                   toPay(params)
                     .then(res => {
                       wx.hideLoading();
@@ -1144,6 +1079,9 @@ export default {
 @import "./style";
 </style>
 <style lang="scss">
+.van-card {
+  background-color:#fff !important;
+}
 .radioStyle {
   .van-radio {
     background: #fff;

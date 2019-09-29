@@ -1,36 +1,73 @@
-.withdraw{
-    page {
-        background: #eee;
+.withdraw {
+  page {
+    background: #eee;
+  }
+  .banner {
+    background: #fff;
+    width: 750rpx;
+    height: 120rpx;
+    display: flex;
+    align-items: center;
+    img {
+      width: 48rpx;
+      height: 48rpx;
+      margin-left: 60rpx;
+    }
+    p {
+      font-size: 32rpx;
+      font-weight: bold;
+      margin-left: 28rpx;
+    }
+  }
+  .my {
+    padding: 1rpx;
+    margin-top: 22rpx;
+    height: 300rpx;
+    background: #fff;
+    .title{
+      margin-top: 37rpx;
+      margin-left: 57rpx;
+      
+      
+      p{
+        font-size:32rpx;
+        color: #666666;
       }
-    .my {
-        position: relative;
-        height: 100vh;
-        .myinfo {
-          padding: 10px 20px 0;
-          width: 100%;
-          height: 40px;
-          background: $main-color;
-          box-sizing: border-box;
-          position: absolute;
-          left: 0;
-          top: 0;
-          .title {
-            color: #fff;
-          }
-        }
-        .contentBox {
-          position: absolute;
-          top: 40px;
-          width: 100%;
-          height: calc(100% - 100px);
-        }
+        
+    }
+    .title:nth-child(2){
+      margin-top: 24rpx;
+      p{
+        font-size:28rpx;
       }
-      .btnClass {
-        background: $main-color !important;
-        color: #fff !important;
-        border: none !important;
-        width: 97%;
-        margin: 0 auto;
-        border-radius: 10px !important;
+      
+    }
+    .contentBox{
+      width: 630rpx;
+      margin: 0 auto;
+      margin-top: 37rpx;
+      display: flex;
+      align-items: center;
+      img{
+        width: 35rpx;
+        height: 44rpx;
+        margin-right: 20rpx;
       }
+    }
+ 
+  }
+  .btnGroup {
+    width: 690rpx;
+    margin: 0 auto;
+    margin-top: 147rpx;
+    .btnClass {
+      background: #E32E38!important;
+      color: #fff !important;
+      font-weight:bold !important;
+      border: none !important;
+      width: 100%;
+      margin: 0 auto;
+      border-radius: 45rpx !important;
+    }
+  }
 }

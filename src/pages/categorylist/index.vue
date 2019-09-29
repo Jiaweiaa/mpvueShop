@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-08-29 15:42:22
+ * @LastEditTime: 2019-09-29 09:29:54
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -28,44 +28,18 @@
         >销量</div>
         <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
       </div>
-      <!--<div class="sortlist">-->
-      <!--<div @click="goodsDetail(item.id)" v-for="(item, index) in listData" :key="index" :class="[(listData.length)%2==0?'active':'none']" class="item">-->
-      <!--<img :src="item.list_pic_url" alt="">-->
-      <!--<p class="name">{{item.name}}</p>-->
-      <!--<p class="price">￥{{item.retail_price}}</p>-->
-      <!--</div>-->
-      <!--</div>-->
     </div>
     <div class="info">
       <p>{{name}}</p>
       <p>性价比超高.</p>
     </div>
-    <div class="list" v-if="goodsList.length!=0">
-      <!-- <van-card
-        :tag="item.tag"
-        :lazy-load="true"
-        :price="item.listPrice"
-        :origin-price="item.salePrice"
-        :title="item.title"
-        thumb-class="goods-image"
-        title-class="goods-title"
-        desc-class="goods-desc"
-        price-class="goods-price"
-        v-for="(item, index) in goodsList"
-        :key="index"
-        @click="goodsDetail(item.id)"
-        :thumb="'http://qn.gaoshanmall.cn/' + item.img"
-      >
-        <div slot="desc" class="goods-bottom">
-          <div>{{item.keyword}}</div>
-          <div class="sketch" v-if="item.sketch!=null">{{item.sketch}}</div>
-        </div>
-      </van-card> -->
+    <div class="list" v-if="listData.length!=0">
+     
       <div class="newcategory">
         <div class="sublist">
           <div
             class="good-card"
-            v-for="(good, goodIndex) in goodsList"
+            v-for="(good, goodIndex) in listData"
             :key="goodIndex"
             @click="goodsDetail(good.id)"
           >
@@ -185,7 +159,7 @@ export default {
       title: "加载中"
     });
     this.loading = true;
-    if (this.goodsList.length >= this.allCount) {
+    if (this.listData.length >= this.allCount) {
       this.loading = false;
       wx.hideLoading();
     } else {
@@ -199,9 +173,9 @@ export default {
 
       if (res.data.code == 200) {
         this.loading = false;
-        this.goodsList = this.goodsList.concat(res.data.result.itemDocs);
+        this.listData = this.listData.concat(res.data.result.itemDocs);
         this.allCount = res.data.result.totalElements;
-        this.goodsList.map(v => {
+        this.listData.map(v => {
           v.img = JSON.parse(v.image)[0].images[0];
           this.$set(v, "keyword", v.keywords.join("||"));
         });
@@ -224,9 +198,9 @@ export default {
       fq: this.aeo
     });
     if (res.data.code == 200) {
-      this.goodsList = res.data.result.itemDocs;
+      this.listData = res.data.result.itemDocs;
       this.allCount = res.data.result.totalElements;
-      this.goodsList.map((v, index) => {
+      this.listData.map((v, index) => {
         if (this.order == "SALES-ASC") {
           if (index < 5) {
             this.$set(v, "tag", "热销");
@@ -246,7 +220,7 @@ export default {
       filterList: [],
       categoryId: "",
       nowIndex: 0,
-      goodsList: [],
+      listData: [],
       navData: [],
       currentNav: {},
       order: "",
@@ -291,10 +265,10 @@ export default {
       wx.hideLoading();
       this.navData = res.data.result;
       this.currentNav = {};
-      this.goodsList = this.navData.itemDocs;
+      this.listData = this.navData.itemDocs;
       this.allCount = res.data.result.totalElements;
       // wx.hideLoading();
-      this.goodsList.map((v, index) => {
+      this.listData.map((v, index) => {
         if (this.order == "SALES-ASC") {
           if (index < 5) {
             this.$set(v, "tag", "热销");

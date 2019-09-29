@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-23 14:50:24
+ * @LastEditTime: 2019-09-28 18:01:43
  * @LastEditors: Please set LastEditors
  */
 import Vue from "vue";
@@ -14,7 +14,7 @@ import "./assets/styles/baituan.scss";
 import MyPlugin from "./minxins";
 //全局变量
 import globalVariable from "@/utils/global_variable";
-Vue.prototype.GLOBAL = globalVariable
+Vue.prototype.GLOBAL = globalVariable;
 Vue.use(MyPlugin);
 
 //引入store
@@ -27,7 +27,7 @@ App.mpType = "app";
 
 wx.cloud.init({
   traceUser: true
-})
+});
 const app = new Vue(App);
 app.$mount();
 
@@ -41,45 +41,51 @@ export default {
       }
     },
     pages: [
-      "pages/index/main",
+      "pages/my/main", // 我的
+      "pages/lookDetail/main", // 团长我的 查看详情
+      "pages/subordinate/main", // 下级
+      "pages/whatBean/main",
+      "pages/whatButie/main",
+      "pages/purchase/main",
+      "pages/storeInfo/main",
+      "pages/editStoreInfo/main",
+      "pages/cart/main",
+      "pages/joinUs/main",
+      "^pages/index/main",
+      "pages/teamView/main", //团长 我的主页
+      "pages/withdraw/main", //  提现
+      "pages/beGive/main", // 成为供应商
+      
       "pages/integral/main", // 积分管理
       "pages/collectlist/main",
       "pages/categorylist/main",
-      "pages/createQrcode/main",
+      "pages/butiejin/main",
       "pages/storeIndex/main", // 店铺首页
       "pages/myOrder/main",
+      "pages/orderDetail/main",
       "pages/category/main",
-      "^pages/my/main", // 我的
+      
       "pages/goods/main",
       "pages/citys/main",
       "pages/distribution/main",
       "pages/editUserInfo/main",
       "pages/logisticsDetail/main", //物流详情页
       "pages/feedback/main",
-      
-      
       "pages/mappage/main",
-      
+      "pages/address/main",
       "pages/addressSelect/main",
       "pages/addaddress/main",
-      "pages/address/main",
-      "pages/orderDetail/main",
       "pages/team/main", // 团长订单
       "pages/returnGoods/main",
       "pages/returnGoodsMoney/main",
-      "pages/teamView/main", //团长 我的主页
       "pages/search/main",
-
       "pages/login/main",
       "pages/refund/main",
       "pages/refundOrder/main",
       "pages/refundList/main", //退换货列表
-
       "pages/beTeam/main", // 成为团长
-      "pages/beGive/main", // 成为供应商
       "pages/categorylist/main",
       "pages/topic/main",
-
       "pages/record/main", //购买记录详情
       "pages/branddetail/main",
       "pages/brandlist/main", // 商品详情
@@ -90,13 +96,10 @@ export default {
       "pages/myCommunity/main", // 团长 我的社区
       "pages/teamReaking/main", // 团长我的 团长排行
       "pages/orderDetail/main", // 订单详情
-      "pages/lookDetail/main", // 团长我的 查看详情
-      "pages/withdraw/main", //  提现
-
       "pages/integralList/main", // 积分明细列表
       "pages/giver/main",
       "pages/superior/main", // 上级信息
-      "pages/subordinate/main",  // 下级
+      
       "pages/shoppingBean/main", // 购物豆
       "pages/shoppingBeanList/main" // 购物豆明细
     ],

@@ -8,7 +8,7 @@
       border: none;
       width: 690rpx;
       height: 90rpx;
-      border-radius:45rpx;
+      border-radius: 45rpx;
       margin-bottom: 30rpx;
     }
   }
@@ -72,6 +72,7 @@
       }
       .vipPrice {
         margin-left: 30rpx;
+        margin-top: 10rpx;
         display: flex;
         align-items: center;
         .vip_img {
@@ -93,9 +94,11 @@
       }
     }
     .buyBeans {
-      color: rgba(136, 136, 136, 1);
-      font-size: 26rpx;
       padding-left: 30rpx;
+      span {
+        color: #888;
+        font-size: 26rpx;
+      }
     }
 
     .mixPrice {
@@ -545,7 +548,7 @@
         position: absolute;
         right: 30rpx;
         top: 30rpx;
-        img{
+        img {
           width: 26rpx;
           height: 26rpx;
         }
@@ -574,14 +577,15 @@
           // line-height: 45rpx;
         }
 
-        p:nth-child(1) {
+        .nowPrice {
           color: #b4282d;
           font-size: 33rpx;
           span {
             font-size: 36rpx;
           }
         }
-        p:nth-child(2) {
+     
+        .butie {
           margin-top: 5rpx;
           display: flex;
           align-items: center;
@@ -602,7 +606,7 @@
             border-radius: 16rpx;
           }
         }
-        p:nth-child(3) {
+        .bean {
           margin-top: 15rpx;
           font-size: 28rpx;
         }
@@ -736,7 +740,7 @@
       // padding-left: -5rpx;
       .addCart {
         width: 234rpx;
-        background: $main-color;
+        background: #ffb533;
         float: left;
         height: 100%;
         line-height: 112rpx;
@@ -748,7 +752,7 @@
         height: 100%;
         line-height: 112rpx;
         text-align: center;
-        background: $buy-btn;
+        background: #db3030;
         color: #fff;
       }
     }

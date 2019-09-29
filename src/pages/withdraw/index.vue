@@ -1,11 +1,33 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-12 11:26:21
+ * @LastEditTime: 2019-09-26 15:34:47
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="withdraw">
+    <div class="banner">
+      <img src="/static/images/withdraw/wechat.png" alt />
+      <p>微信零钱</p>
+    </div>
     <div class="my">
-      <div class="myinfo">
-        <div class="title">输入提现金额(最低0元-手续费0%)</div>
+      <div class="title">
+        <p>提现金额</p>
       </div>
-
       <div class="contentBox">
+        <img src="/static/images/withdraw/rmb.png" alt />
+        <van-field
+          :value="teamData.amount"
+          :clearable="true"
+          placeholder="请输入提现额"
+          @input="withdrawChange"
+        />
+      </div>
+      <div class="title">
+        <p>可提现金额0.00元</p>
+      </div>
+      <!-- <div class="contentBox">
         <van-cell-group>
           <van-field
             :value="teamData.amount"
@@ -14,39 +36,19 @@
             placeholder="请输入提现额"
             @input="withdrawChange"
           />
-          <!--<van-field-->
-            <!--:value="teamData.name"-->
-            <!--:clearable="true"-->
-            <!--label="姓名"-->
-            <!--placeholder="请输入姓名"-->
-            <!--@input="nameChange"-->
-          <!--/>-->
-          <!--<van-field-->
-            <!--:value="teamData.mobile"-->
-            <!--:clearable="true"-->
-			<!--type="number"-->
-            <!--label="手机"-->
-            <!--placeholder="请输入手机"-->
-            <!--@input="mobileChange"-->
-          <!--/>-->
-          <!--<van-field-->
-            <!--:value="teamData.wechatAccount"-->
-            <!--:clearable="true"-->
-            <!--label="微信号"-->
-            <!--placeholder="请输入微信号"-->
-            <!--@input="wechatAccountChange"-->
-          <!--/>-->
-          <!--error-message="手机号格式错误"-->
+        
         </van-cell-group>
+        
+      </div>-->
+      <div class="btnGroup">
         <van-button
           @click="submitData"
           square
           type="primary"
-          style="position: absolute; top: 85%;left: 1.5%; width: 100%;"
+          
           custom-class="btnClass"
-        >提交申请</van-button>
+        >确认提现</van-button>
       </div>
-
       <van-notify id="van-notify" />
     </div>
   </div>

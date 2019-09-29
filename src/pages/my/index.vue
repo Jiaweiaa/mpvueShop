@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 17:12:49
- * @LastEditTime: 2019-09-05 15:10:27
+ * @LastEditTime: 2019-09-28 17:19:12
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -11,7 +11,7 @@
     <div class="myinfo">
       <div class="avatar" style="width: 130rpx;height: 130rpx;border-radius: 50%;overflow: hidden;">
         <img
-          v-if="userInfo.avatar"
+          v-if="userInfo&& userInfo.avatar"
           style="width:130rpx;height:130rpx;border-raduis:50%;"
           :src="'https:'+userInfo.avatar"
         />
@@ -22,7 +22,7 @@
         />
       </div>
       <div class="user">
-        <div class v-if="userInfo.nickname">
+        <div class v-if="userInfo!=null">
           <p>{{userInfo.nickname}}</p>
           <!-- <p>欢迎您,时刻益每家会员</p> -->
           <p class>欢迎您,易起省会员</p>
@@ -40,27 +40,19 @@
         </button>
       </div>
     </div>
-  
-    <div class="myMenu boxMenu">
-     <div class="boxContent" @click="goTo('/pages/integral/main')">
-      <div>
-        {{usersData.scoreAmount}}
+
+    <div class="myMenu boxMenu" v-if="userInfo">
+      <div class="boxContent" @click="goTo('/pages/integral/main')">
+        <div>{{usersData.scoreAmount?usersData.scoreAmount:'0'}}</div>
+        <div>我的补贴金</div>
       </div>
-      <div>
-        我的补贴金
+      <div class="boxContent" @click="goTo('/pages/integral/main')">
+        <div>{{usersData.shoppingBeans?usersData.shoppingBeans:'0'}}</div>
+        <div>我的购物豆</div>
       </div>
-     </div>
-     <div class="boxContent" @click="goTo('/pages/shoppingBean/main')">
-       <div>
-         {{usersData.shoppingBeans}}
-       </div>
-       <div>
-         我的购物豆
-       </div>
-     </div>
     </div>
-    
-    <div class="mySecond boxMenu">
+
+    <div class="mySecond boxMenu" v-if="userInfo">
       <div class="title">
         <div class="navTitle">我的订单</div>
         <div class="navBody" @click="goTo('/pages/myOrder/main')">全部订单 ></div>
@@ -78,7 +70,7 @@
       </div>
     </div>
 
-    <div class="myThree boxMenu">
+    <div class="myThree boxMenu" v-if="myService.length>0">
       <div class="title">
         <div class="navTitle">我的服务</div>
       </div>
@@ -95,7 +87,7 @@
       </div>
     </div>
 
-    <div class="myFour boxMenu">
+    <div class="myFour boxMenu" v-if="moreService.length>0">
       <div class="title">
         <div class="navTitle">更多服务</div>
       </div>
@@ -136,54 +128,96 @@ export default {
           this.$set(this.orderMenu[3], "total", result.waitBackCount);
         })
         .catch(err => {});
-    }
-    this.moreService = [];
-    if (wx.getStorageSync("tokenInfo").access_token) {
-      isCapOrSup().then(isRes => {
-        wx.setStorageSync("isCap", isRes.data.result.isCap);
-        wx.setStorageSync("isSup", isRes.data.result.isSup);
-      });
-      this.moreService = [];
-      if (wx.getStorageSync("isSup") == false) {
-        this.moreService.push(
-          {
-            title: "供应商招募",
-            icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
-            url: "/pages/beGive/main"
-          },
-          {
-            title: "我的代理",
-            icon: "http://webimg.gaoshanapp.com/my_daili.png",
-            url: "/pages/teamView/main"
-          }
-        );
-      } else {
-        this.moreService.push(
-          {
-            title: "我是供应商",
-            icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
-            url: "/pages/giver/main"
-          },
-          {
-            title: "我的代理",
-            icon: "http://webimg.gaoshanapp.com/my_daili.png",
-            url: "/pages/teamView/main"
-          }
-        );
-      }
-    } else {
-      this.moreService = [
-        {
-          title: "供应商招募",
-          icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
-          url: "/pages/beGive/main"
-        },
-        {
-          title: "我的代理",
-          icon: "http://webimg.gaoshanapp.com/my_daili.png",
-          url: "/pages/teamView/main"
+      //9.27日判断菜单权限
+      if (this.userInfo) {
+        //普通用户登录
+        if (wx.getStorageSync("userLevel") == null) {
+          this.myService = [
+            {
+              title: "新手帮助",
+              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              url: "/pages/coupon/main"
+            },
+            {
+              title: "地址管理",
+              icon: "http://pydsg4puk.bkt.clouddn.com/dizhi.png",
+              url: "/pages/address/main"
+            },
+            {
+              title: "联系客服",
+              icon: "http://pydsg4puk.bkt.clouddn.com/kefu.png",
+              url: "/pages/address/main"
+            }
+          ];
+          this.moreService = [];
+        } else if (wx.getStorageSync("userLevel") == 1) {
+          this.myService = [];
+          this.moreService = [
+            {
+              title: "我的佣金",
+              icon: "http://pydsg4puk.bkt.clouddn.com/yongjin.png",
+              url: "/pages/lookDetail/main"
+            },
+            {
+              title: "我的代理",
+              icon: "http://pydsg4puk.bkt.clouddn.com/daili.png",
+              url: "/pages/teamView/main"
+            }
+          ];
+        } else if (wx.getStorageSync("userLevel") == 2) {
+          this.myService = [
+            {
+              title: "新手帮助",
+              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              url: "/pages/coupon/main"
+            },
+            {
+              title: "地址管理",
+              icon: "http://pydsg4puk.bkt.clouddn.com/dizhi.png",
+              url: "/pages/address/main"
+            },
+            {
+              title: "联系客服",
+              icon: "http://pydsg4puk.bkt.clouddn.com/kefu.png",
+              url: "/pages/address/main"
+            },
+            {
+              title: "采购中心",
+              icon: "http://pydsg4puk.bkt.clouddn.com/caigou.png",
+              url: "/pages/purchase/main"
+            }
+          ];
+          this.moreService = [
+            {
+              title: "补贴金发放",
+              icon: "http://pydsg4puk.bkt.clouddn.com/butiejin.png",
+              url: "/pages/butiejin/main"
+            },
+            {
+              title: "我的合伙人",
+              icon: "http://pydsg4puk.bkt.clouddn.com/hehuoren.png",
+              url: "/pages/subordinate/main"
+            },
+            {
+              title: "我的佣金",
+              icon: "http://pydsg4puk.bkt.clouddn.com/yongjin.png",
+              url: "/pages/lookDetail/main"
+            },
+            {
+              title: "店铺信息",
+              icon: "http://pydsg4puk.bkt.clouddn.com/dianpu.png",
+              url: "/pages/storeInfo/main"
+            },
+            {
+              title: "我的代理",
+              icon: "http://pydsg4puk.bkt.clouddn.com/daili.png",
+              url: "/pages/teamView/main"
+            }
+          ];
         }
-      ];
+      }
+
+      //******** */
     }
 
     //刷新完成后关闭
@@ -195,11 +229,6 @@ export default {
     if (login()) {
       this.userInfo = login();
       this.avator = this.userInfo.avatarUrl;
-      getMemberAmount()
-          .then(res => {
-            this.usersData = res.data.result;
-            console.log(this.usersData);
-          });
       findOrderNum()
         .then(res => {
           let result = res.data.result;
@@ -209,155 +238,135 @@ export default {
           this.$set(this.orderMenu[3], "total", result.waitBackCount);
         })
         .catch(err => {});
-    }
-    this.moreService = [""];
-
-    //判断是否有生成积分二维码权限
-    if (wx.getStorageSync("userLevel") == 2) {
-      this.myService = [
-        {
-          title: "优惠券",
-          icon: "http://webimg.gaoshanapp.com/my_youhui.png",
-          url: "/pages/coupon/main"
-        },
-        {
-          title: "地址管理",
-          icon: "http://webimg.gaoshanapp.com/my_address.png",
-          url: "/pages/address/main"
-        },
-        {
-          title: "补贴金",
-          icon: "http://webimg.gaoshanapp.com/my_butiejin.png",
-          url: "/pages/integral/main"
-        },
-
-        {
-          title: "生成积分码",
-          icon: "http://webimg.gaoshanapp.com/my_butiejin.png",
-          url: "/pages/createQrcode/main"
+      //9.27日判断菜单权限
+      if (this.userInfo) {
+        //普通用户登录
+        if (wx.getStorageSync("userLevel") == null) {
+          this.myService = [
+            {
+              title: "新手帮助",
+              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              url: "/pages/coupon/main"
+            },
+            {
+              title: "地址管理",
+              icon: "http://pydsg4puk.bkt.clouddn.com/dizhi.png",
+              url: "/pages/address/main"
+            },
+            {
+              title: "联系客服",
+              icon: "http://pydsg4puk.bkt.clouddn.com/kefu.png",
+              url: "/pages/address/main"
+            }
+          ];
+          this.moreService = [];
+        } else if (wx.getStorageSync("userLevel") == 1) {
+          this.myService = [];
+          this.moreService = [
+            {
+              title: "我的佣金",
+              icon: "http://pydsg4puk.bkt.clouddn.com/yongjin.png",
+              url: "/pages/lookDetail/main"
+            },
+            {
+              title: "我的代理",
+              icon: "http://pydsg4puk.bkt.clouddn.com/daili.png",
+              url: "/pages/teamView/main"
+            }
+          ];
+        } else if (wx.getStorageSync("userLevel") == 2) {
+          this.myService = [
+            {
+              title: "新手帮助",
+              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              url: "/pages/coupon/main"
+            },
+            {
+              title: "地址管理",
+              icon: "http://pydsg4puk.bkt.clouddn.com/dizhi.png",
+              url: "/pages/address/main"
+            },
+            {
+              title: "联系客服",
+              icon: "http://pydsg4puk.bkt.clouddn.com/kefu.png",
+              url: "/pages/address/main"
+            },
+            {
+              title: "采购中心",
+              icon: "http://pydsg4puk.bkt.clouddn.com/caigou.png",
+              url: "/pages/purchase/main"
+            }
+          ];
+          this.moreService = [
+            {
+              title: "补贴金发放",
+              icon: "http://pydsg4puk.bkt.clouddn.com/butiejin.png",
+              url: "/pages/butiejin/main"
+            },
+            {
+              title: "我的合伙人",
+              icon: "http://pydsg4puk.bkt.clouddn.com/hehuoren.png",
+              url: "/pages/subordinate/main"
+            },
+            {
+              title: "我的佣金",
+              icon: "http://pydsg4puk.bkt.clouddn.com/yongjin.png",
+              url: "/pages/lookDetail/main"
+            },
+            {
+              title: "店铺信息",
+              icon: "http://pydsg4puk.bkt.clouddn.com/dianpu.png",
+              url: "/pages/storeInfo/main"
+            },
+            {
+              title: "我的代理",
+              icon: "http://pydsg4puk.bkt.clouddn.com/daili.png",
+              url: "/pages/teamView/main"
+            }
+          ];
         }
-      ];
-    }
-    if (wx.getStorageSync("tokenInfo").access_token) {
-      isCapOrSup().then(isRes => {
-        wx.setStorageSync("isCap", isRes.data.result.isCap);
-        wx.setStorageSync("isSup", isRes.data.result.isSup);
-      });
-      this.moreService = [];
-      if (wx.getStorageSync("isSup") == false) {
-        this.moreService.push(
-          {
-            title: "供应商招募",
-            icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
-            url: "/pages/beGive/main"
-          },
-          {
-            title: "我的代理",
-            icon: "http://webimg.gaoshanapp.com/my_daili.png",
-            url: "/pages/teamView/main"
-          }
-        );
-      } else {
-        this.moreService.push(
-          {
-            title: "我是供应商",
-            icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
-            url: "/pages/giver/main"
-          },
-          {
-            title: "我的代理",
-            icon: "http://webimg.gaoshanapp.com/my_daili.png",
-            url: "/pages/teamView/main"
-          }
-        );
       }
-    } else {
-      this.moreService = [
-        {
-          title: "供应商招募",
-          icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
-          url: "/pages/beGive/main"
-        },
-        {
-          title: "我的代理",
-          icon: "http://webimg.gaoshanapp.com/my_daili.png",
-          url: "/pages/teamView/main"
-        }
-      ];
     }
   },
   data() {
     return {
       // 用户数据
-      usersData: '',
-      
+      usersData: "",
+
       orderMenu: [
         {
-          title: "待支付",
-          icon: "http://webimg.gaoshanapp.com/my_daizhifu.png",
+          title: "待付款",
+          icon: "http://pydsg4puk.bkt.clouddn.com/daifukuan.png",
           url: "/pages/myOrder/main?id=2"
         },
 
         {
           title: "待发货",
-          icon: "http://webimg.gaoshanapp.com/my_daifahuo.png",
+          icon: "http://pydsg4puk.bkt.clouddn.com/daifahuo.png",
           url: "/pages/myOrder/main?id=4"
         },
         {
           title: "待收货",
-          icon: "http://webimg.gaoshanapp.com/my_daishouhuo.png",
+          icon: "http://pydsg4puk.bkt.clouddn.com/daishouhuo.png",
           url: "/pages/myOrder/main?id=3"
         },
         {
           title: "已完成",
-          icon: "http://webimg.gaoshanapp.com/my_yiwancheng.png",
+          icon: "http://pydsg4puk.bkt.clouddn.com/yiwancheng.png",
           url: "/pages/myOrder/main?id=5"
         },
         {
           title: "退/换货",
-          icon: "http://webimg.gaoshanapp.com/my_tuihuan.png",
+          icon: "http://pydsg4puk.bkt.clouddn.com/tuihuo.png",
           url: "/pages/refundList/main"
         }
       ],
-      myService: [
-        {
-          title: "优惠券",
-          icon: "http://webimg.gaoshanapp.com/my_youhui.png",
-          url: "/pages/coupon/main"
-        },
-        {
-          title: "地址管理",
-          icon: "http://webimg.gaoshanapp.com/my_address.png",
-          url: "/pages/address/main"
-        },
-        {
-          title: "补贴金",
-          icon: "http://webimg.gaoshanapp.com/my_butiejin.png",
-          url: "/pages/integral/main"
-        }
-      ],
-      moreService: [
-        {
-          title: "供应商招募",
-          icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
-          url: "/pages/beGive/main"
-        },
-        {
-          title: "我是供应商",
-          icon: "http://webimg.gaoshanapp.com/my_gongyingshang.png",
-          url: "/pages/giver/main"
-        },
-        {
-          title: "我的代理",
-          icon: "http://webimg.gaoshanapp.com/my_daili.png",
-          url: "/pages/teamView/main"
-        }
-      ],
-
+      myService: [],
+      moreService: [],
       avator: "http://webimg.gaoshanapp.com/my_avator.png",
       allcheck: false,
       Listids: [],
-      userInfo: {}
+      userInfo: null
     };
   },
   methods: {

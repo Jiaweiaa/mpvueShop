@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-17 14:00:02
- * @LastEditTime: 2019-08-30 11:07:26
+ * @LastEditTime: 2019-09-24 14:23:50
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -23,23 +23,21 @@
             class="listViewBox"
             @click="detailOrder(value)"
           >
-            <div class="top border-bottom" style="overflow: hidden;">
-              <div class="order_title">
-                <img src="/static/images/order_icon.png" />
-                易起省商城
-              </div>
+            <div class="top">
+              <div class="order_title">易起省商城</div>
               <div class="order-ok">{{value.typeData ? value.typeData.title : ''}}</div>
             </div>
             <div v-for="(val,childIndex) in value.orderLines" :key="childIndex">
               <van-card
                 custom-class="order-card"
-                :num="val.quantity"
                 thumb-class="order-image"
                 :thumb="'http://qn.gaoshanmall.cn/'+val.itemImg"
               >
                 <div slot="title">
-                  <div class="good_title">商品名称:{{val.itemName}}</div>
-                  <div class="good_sku">商品规格:{{val.propertiesValue}}</div>
+                  <div class="good_title">{{val.itemName}}</div>
+                  <div class="good_sku">
+                    <span>{{val.propertiesValue}}</span>
+                  </div>
                   <div class="good_price">
                     <span
                       class="list_price"
@@ -50,57 +48,39 @@
                       v-else-if="value.paymentType==12"
                     >补贴金{{val.mixScorePrice}}</span>
                     <span class="vip_price" v-else-if="value.paymentType==4">￥{{val.listPrice}}</span>
+                    <span class="quantity">x{{val.quantity}}</span>
                   </div>
                 </div>
               </van-card>
             </div>
-            <div
-              v-if="value.paymentType==13"
-              style="text-align:right;"
-            >合计:￥{{value.totalActure}}+补贴金{{value.totalScoreActure}}</div>
-            <div
-              v-else-if="value.paymentType==4"
-              style="text-align:right;"
-            >合计:￥{{value.totalActure}}</div>
-            <div v-else style="text-align:right;">合计:补贴金{{value.totalScoreActure}}</div>
-            <view slot="footer" class="btn_group" >
-              <!-- <van-button
+            <div v-if="value.paymentType==13" style="text-align:right;">
+              <span style="color:rgba(102,102,102,1);">应付款:</span>
+              <span>￥{{value.totalActure}}+补贴金{{value.totalScoreActure}}</span>
+            </div>
+            <div v-else-if="value.paymentType==4" style="text-align:right;">
+              <span style="color:rgba(102,102,102,1);">应付款:</span>
+              <span>￥{{value.totalActure}}</span>
+            </div>
+            <div v-else style="text-align:right;">
+              <span style="color:rgba(102,102,102,1);">应付款:</span>
+              <span>补贴金{{value.totalScoreActure}}</span>
+            </div>
+            <view slot="footer" class="btn_group">
+              <div
+                class="order_btn white_btn"
                 @click.stop="detailOrder(value)"
-                type="danger"
-                class="childBtn"
-                size="small"
                 v-if="value.typeData? value.typeData.canBtn: ''"
-              >取消订单</van-button> -->
-              <!-- <van-button
-                @click.stop="logistics(value)"
-                class="childBtn"
-                size="small"
-                v-if="value.typeData?value.typeData.seeBtn: ''"
-              >查看物流</van-button>-->
-              <!-- <van-button
-                @click.stop="sureGet(value)"
-                type="danger"
-                class="childBtn"
-                size="small"
-                v-if="value.typeData?value.typeData.afrimBtn: ''"
-              >确认收货</van-button>
-              <van-button
+              >取消订单</div>
+              <div
+                class="order_btn red_btn"
                 @click.stop="detailOrder(value)"
-                type="primary"
-                class="childBtn"
-                size="small"
                 v-if="value.typeData?value.typeData.giveBtn: ''"
-              >立即支付</van-button> -->
-             
-              <div class="order_btn white_btn" @click.stop="detailOrder(value)" v-if="value.typeData? value.typeData.canBtn: ''">
-                取消订单
-              </div>
-               <div class="order_btn red_btn" @click.stop="detailOrder(value)" v-if="value.typeData?value.typeData.giveBtn: ''">
-                立即支付
-              </div>
-              <div class="order_btn red_btn" @click.stop="sureGet(value)" v-if="value.typeData?value.typeData.afrimBtn: ''">
-                确认收货
-              </div>
+              >立即付款</div>
+              <div
+                class="order_btn red_btn"
+                @click.stop="sureGet(value)"
+                v-if="value.typeData?value.typeData.afrimBtn: ''"
+              >确认收货</div>
             </view>
           </div>
           <div style="width: 100%; text-align: center;margin-top: 5px;">
@@ -541,6 +521,7 @@ export default {
 </script>
 <style lang='scss'>
 @import "./style";
+
 .order-card {
   padding: 10rpx 15rpx !important;
 }
@@ -554,16 +535,31 @@ export default {
 }
 
 .order-image {
-  width: 136rpx !important;
-  height: 136rpx !important;
+  width: 180rpx !important;
+  height: 180rpx !important;
 }
 .good_title {
   font-size: 28rpx;
   color: rgb(51, 51, 51);
+  margin-bottom: 13rpx;
 }
 .good_sku {
-  font-size: 24rpx;
-  color: #666;
+  span {
+    font-size: 24rpx;
+    color: #666;
+    padding: 9rpx 8rpx;
+    background: #f8f8f8;
+  }
+}
+.good_price {
+  margin-top: 53rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  .quantity {
+    margin-left: 15rpx;
+    font-size: 28rpx;
+    color: rgba(153, 153, 153, 1);
+  }
 }
 </style>
 
