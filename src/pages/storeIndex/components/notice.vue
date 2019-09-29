@@ -4,7 +4,13 @@
      wjw
      公告
     -->
-		
+		<van-notice-bar
+			left-icon="volume-o"
+			mode="closeable"
+			:text="dataSource.viewData[45]"
+			:color="dataSource.viewData[47]"
+			:backgroundColor="dataSource.viewData[46]"
+		/>
 	
 	</div>
 </template>
@@ -16,6 +22,9 @@
     data() {
       return {
       }
+    },
+	  created() {
+      console.log(this.dataSource);
     },
     methods: {
     }

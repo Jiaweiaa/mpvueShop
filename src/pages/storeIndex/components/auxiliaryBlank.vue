@@ -5,6 +5,9 @@
      辅助留白
     -->
 		<div
+			:style="{
+				height: dataSource.viewData['44'] + 'px'
+			}"
 			class="content">
 		</div>
 	
@@ -27,5 +30,6 @@
 
 <style lang="sass">
 	.auxiliary
-
+		.content
+			padding: 0
 </style>

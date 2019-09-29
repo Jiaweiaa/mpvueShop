@@ -4,6 +4,42 @@
      wjw
      店铺信息
     -->
+		<div
+			class="content">
+			<image
+				class="backStyle"
+				:src="'http://qn.gaoshanmall.cn/' + dataSource.viewData['39'].imgUrl"
+				mode="scaleToFill"></image>
+			<div
+					:class="
+					dataSource.viewData[38] == '61' ? 'type1' :
+					dataSource.viewData[38] == '62' ? 'type2' :
+					dataSource.viewData[38] == '63' ? 'type3' :
+					dataSource.viewData[38] == '64' ? 'type4' :
+					dataSource.viewData[38] == '65' ? 'type5' : ''
+				"
+				class="mask">
+				<div class="logoImg">
+					<image
+						class="img"
+						src="./../../../../../static/images/logo.png"
+						mode="scaleToFill"></image>
+				</div>
+				
+				<div class="title">店铺名称</div>
+				<div class="desc" v-if="dataSource.viewData[38] == '61'">
+					<span>满减</span>在线支付满150减30.满100减20>
+				</div>
+				<div v-else>
+					<div class="elseStyle" v-if="dataSource.viewData[38] !== '65'"></div>
+					<div class="borderLine" v-else></div>
+					<div class="goodsStyle">
+						<div style="border-right: 1px solid #999;">全部商品999</div>
+						<div style="padding-left: 10px;">上新30</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -30,8 +66,10 @@
 			font-size: 14px
 			text-align: center
 		.content
+			padding: 0
 			width: 100%
 			height: 300px
+			overflow: hidden
 			position: relative
 			.backStyle
 				-webkit-filter: blur(5px) /* Chrome, Opera */
@@ -66,8 +104,9 @@
 					width: 70px
 					height: 70px
 					.img
-						width: 60px
-						margin: 14px 5px
+						width: 50px
+						height: 50px
+						margin: 10px 11px
 				.title
 					font-size: 15px
 					font-weight: bold
@@ -100,8 +139,9 @@
 					border-radius: 50%
 					z-index: 99
 					.img
-						width: 60px
-						margin: 14px 5px
+						width: 50px
+						height: 50px
+						margin: 10px 11px
 				.title
 					font-size: 15px
 					color: #fff
@@ -143,8 +183,9 @@
 					height: 70px
 					z-index: 99
 					.img
-						width: 60px
-						margin: 14px 5px
+						width: 50px
+						height: 50px
+						margin: 10px 11px
 				.title
 					font-size: 15px
 					color: #fff
@@ -189,8 +230,9 @@
 					z-index: 99
 					border-radius: 50%
 					.img
-						width: 60px
-						margin: 14px 5px
+						width: 50px
+						height: 50px
+						margin: 10px 11px
 				.title
 					font-size: 15px
 					color: #000
@@ -238,8 +280,9 @@
 					z-index: 99
 					border-radius: 50%
 					.img
-						width: 60px
-						margin: 14px 5px
+						width: 50px
+						height: 50px
+						margin: 10px 11px
 				.title
 					font-size: 15px
 					color: #fff
