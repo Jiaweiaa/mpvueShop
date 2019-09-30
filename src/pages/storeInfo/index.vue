@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-12 11:26:21
- * @LastEditTime: 2019-09-27 09:01:01
+ * @LastEditTime: 2019-09-30 09:12:26
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -10,7 +10,7 @@
     <div class="top">
       <div class="row">
         <div class="pic">
-          <img src="/static/images/bt_my.png" alt="">
+          <img src="/static/images/bt_my.png" alt />
         </div>
         <div class="text">
           <p>易起省商城</p>
@@ -18,9 +18,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="title">
-          我的店铺
-        </div>
+        <div class="title">我的店铺</div>
         <div class="group">
           <div class="item">
             <p>100</p>
@@ -41,19 +39,19 @@
       <div class="group">
         <div class="item">
           <div class="pic">
-              <img src="/static/images/myStore/storePic.png" alt="">
+            <img src="/static/images/myStore/storePic.png" alt />
           </div>
           <p>店铺照片</p>
         </div>
         <div class="item">
           <div class="pic">
-              <img src="/static/images/myStore/xuke.png" alt="">
+            <img src="/static/images/myStore/xuke.png" alt />
           </div>
           <p>经营许可</p>
         </div>
-        <div class="item">
+        <div class="item" @click="toEditStoreInfo">
           <div class="pic">
-              <img src="/static/images/myStore/editInfo.png" alt="">
+            <img src="/static/images/myStore/editInfo.png" alt />
           </div>
           <p>修改信息</p>
         </div>
@@ -68,13 +66,15 @@ import Notify from "../../../static/vant/notify/notify";
 export default {
   onShow() {},
   data() {
-    return {
-      
-    };
+    return {};
   },
   components: {},
   methods: {
-   
+    toEditStoreInfo() {
+      wx.navigateTo({
+        url: "/pages/editStoreInfo/main"
+      });
+    }
   },
   computed: {}
 };

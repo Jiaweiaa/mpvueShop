@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-24 14:25:58
- * @LastEditTime: 2019-09-29 15:59:43
+ * @LastEditTime: 2019-09-30 11:21:17
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -137,7 +137,6 @@ export default {
     if (this.$root.$mp.query.active) {
       this.tabIndex = this.$root.$mp.query.active;
     }
-    console.log(this.tabIndex, "aaaa");
     this.tabs.map((item, index) => {
       // console.log(item, "xxx");
       item.active = false;
@@ -194,20 +193,29 @@ export default {
       });
     },
     //扫码获取补贴金
-    getQrcode() {
+     getQrcode() {
+       let _this = this;
       wx.scanCode({
         success(res) {
+          console.log(res)
           if (res.result) {
             let arr = res.result.split(",");
-            scanQrCode2AddScore({ qrCodeId: arr[0], bMemberId: arr[1] })
+            console.log('scan')
+            scanQrCode2AddScore({
+              qrCodeId: arr[0],
+              bMemberId: arr[1]
+            })
               .then(res => {
+                console.log("111");
+                _this.getData();
+
                 Dialog.alert({
                   title: "提示",
                   message: res.data.message
                 }).then(() => {
-                  getMemberAmount().then(resData => {
-                    this.score = resData.data.result.scoreAmount;
-                  });
+                  // getMemberAmount().then(resData => {
+                  //   this.score = resData.data.result.scoreAmount;
+                  // });
                 });
               })
               .catch(err => {});
@@ -216,10 +224,17 @@ export default {
       });
     },
     // 获取数据
-    async getData() {
-      let data = await getMemberAmount();
-      this.score = data.data.result.scoreAmount;
-      this.beanScore = data.data.result.shoppingBeans;
+    getData() {
+      // let data = getMemberAmount();
+       console.log("22");
+      getMemberAmount()
+        .then(res => {
+          console.log("3333");
+          this.score = res.data.result.scoreAmount;
+          this.beanScore = res.data.result.shoppingBeans;
+        })
+        .catch(err => {});
+      // console.log(data, "111888");
     },
     // 充值积分
     getIntegral() {

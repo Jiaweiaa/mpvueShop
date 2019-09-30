@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 17:12:49
- * @LastEditTime: 2019-09-29 15:51:47
+ * @LastEditTime: 2019-09-30 11:34:04
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -210,11 +210,11 @@ export default {
               icon: "http://pydsg4puk.bkt.clouddn.com/dianpu.png",
               url: "/pages/storeInfo/main"
             },
-            {
-              title: "我的代理",
-              icon: "http://pydsg4puk.bkt.clouddn.com/daili.png",
-              url: "/pages/teamView/main"
-            }
+            // {
+            //   title: "我的代理",
+            //   icon: "http://pydsg4puk.bkt.clouddn.com/daili.png",
+            //   url: "/pages/teamView/main"
+            // }
           ];
         }
       }

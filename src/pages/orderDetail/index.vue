@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-17 14:00:29
- * @LastEditTime: 2019-09-25 10:37:22
+ * @LastEditTime: 2019-09-30 10:27:56
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -203,7 +203,7 @@
                   <span>{{goods.propertiesValue}}</span>
                 </p>
                 <p>
-                  <span>￥{{goods.salePrice}}</span>
+                  <span>￥{{goods.subTotal}}</span>
                   <span>x{{goods.quantity}}</span>
                 </p>
               </div>
@@ -266,7 +266,10 @@
         <div class="borderT"></div>
         <div class="item">
           <div class="left">实付款</div>
-          <div class="right" style="color:#D92231;">￥{{detailData.orderVo.totalActure}}</div>
+          <div class="right" v-if="detailData.orderVo.paymentType==4" style="color:#D92231;">￥{{detailData.orderVo.totalActure}}</div>
+          <div class="right" v-else-if="detailData.orderVo.paymentType==12" style="color:#D92231;">{{detailData.orderVo.totalScoreActure}}补贴金</div>
+          <div class="right" v-else-if="detailData.orderVo.paymentType==13" style="color:#D92231;">￥{{detailData.orderVo.totalActure}}+{{detailData.orderVo.totalScoreActure}}补贴金</div>
+          <div class="right" v-else-if="detailData.orderVo.paymentType==14" style="color:#D92231;">￥{{detailData.orderVo.totalPeasActure}}</div>
         </div>
       </div>
     </div>

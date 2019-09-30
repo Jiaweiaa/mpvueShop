@@ -2,7 +2,7 @@
  * @Description: 首页模块
  * @Author: 董
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-29 10:47:10
+ * @LastEditTime: 2019-09-29 17:08:38
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -155,11 +155,11 @@
         </div>
       </div>
     </div>
-    <div v-if="newCategoryList.length > 0" class="no_more_data">
+    <!-- <div v-if="newCategoryList.length > 0" class="no_more_data">
       <span>—</span>
       <span>暂时没有更多商品啦,祝您购物愉快</span>
       <span>—</span>
-    </div>
+    </div> -->
 
     <van-notify id="van-notify" />
   </div>
