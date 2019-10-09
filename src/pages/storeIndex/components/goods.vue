@@ -80,7 +80,25 @@
 								fontWeight: dataSource.viewData[9] == '21'? '': 'bold',
 								textAlign: dataSource.viewData[10] == '23'? 'left': 'center',
 							}">
-							￥{{item.salePrice}}
+							<div class="vipPrice" v-show="dataSource.viewData[59] !== '88'">
+								<image class="vip_img" src="/static/images/index/vip.png" alt />
+								<div class="priceBox">
+                ￥{{item.skuInventoryQtyDtos[0].mixCashPrice}} +
+	                <image class="money_img" src="/static/images/index/money.png" alt />
+								{{item.skuInventoryQtyDtos[0].mixScorePrice}}补贴金
+		           </div>
+							</div>
+							<div>
+								￥{{item.salePrice}}
+								<span
+									style="text-decoration: line-through; font-size: 12px; color: #ccc;"
+								>￥{{item.salePrice}}</span>
+								</div>
+							<div style="font-size: 12px; color: #999;">
+								<span v-show="dataSource.viewData[59] == '90'">
+									{{item.skuInventoryQtyDtos[0].peasPrice}}购物豆
+								</span>
+							</div>
 						</div>
 					</div>
 					<!--<van-icon name="cart-o" class="cart" />-->
@@ -148,7 +166,25 @@
 							fontWeight: dataSource.viewData[9] == '21'? '': 'bold',
 							textAlign: dataSource.viewData[10] == '23'? 'left': 'center',
 						}">
-							￥{{item.salePrice}}
+							<div class="vipPrice" v-show="dataSource.viewData[59] !== '88'">
+								<image class="vip_img" src="/static/images/index/vip.png" alt />
+								<div class="priceBox">
+									￥{{item.skuInventoryQtyDtos[0].mixCashPrice}} +
+									<image class="money_img" src="/static/images/index/money.png" alt />
+									{{item.skuInventoryQtyDtos[0].mixScorePrice}}补贴金
+								</div>
+							</div>
+							<div>
+								￥{{item.salePrice}}
+								<span
+										style="text-decoration: line-through; font-size: 12px; color: #ccc;"
+								>￥{{item.salePrice}}</span>
+							</div>
+							<div style="font-size: 12px; color: #999;">
+								<span v-show="dataSource.viewData[59] == '90'">
+									{{item.skuInventoryQtyDtos[0].peasPrice}}购物豆
+								</span>
+							</div>
 						</div>
 					</div>
 					<!--<van-icon name="cart-o" class="cart" />-->
@@ -227,12 +263,31 @@
 							fontWeight: dataSource.viewData[9] == '21'? '': 'bold',
 							textAlign: dataSource.viewData[10] == '23'? 'left': 'center',
 						}">
-							￥{{item.salePrice}}
+							<div class="vipPrice" v-show="dataSource.viewData[59] !== '88'">
+								<image class="vip_img" src="/static/images/index/vip.png" alt />
+								<div class="priceBox">
+									￥{{item.skuInventoryQtyDtos[0].mixCashPrice}} +
+									<image class="money_img" src="/static/images/index/money.png" alt />
+									{{item.skuInventoryQtyDtos[0].mixScorePrice}}补贴金
+								</div>
+							</div>
+							<div>
+								￥{{item.salePrice}}
+								<span
+										style="text-decoration: line-through; font-size: 12px; color: #ccc;"
+								>￥{{item.salePrice}}</span>
+							</div>
+							<div style="font-size: 12px; color: #999;">
+								<span v-show="dataSource.viewData[59] == '90'">
+									{{item.skuInventoryQtyDtos[0].peasPrice}}购物豆
+								</span>
+							</div>
 						</div>
 					</div>
 					<!--<van-icon name="cart-o" class="cart" />-->
 				</div>
 			</div>
+			
 			<!--
 				横向滑动
 			-->
@@ -295,7 +350,25 @@
 							fontWeight: dataSource.viewData[9] == '21'? '': 'bold',
 							textAlign: dataSource.viewData[10] == '23'? 'left': 'center',
 						}">
-							￥{{item.salePrice}}
+							<div class="vipPrice" v-show="dataSource.viewData[59] !== '88'">
+								<image class="vip_img" src="/static/images/index/vip.png" alt />
+								<div class="priceBox">
+									￥{{item.skuInventoryQtyDtos[0].mixCashPrice}} +
+									<image class="money_img" src="/static/images/index/money.png" alt />
+									{{item.skuInventoryQtyDtos[0].mixScorePrice}}补贴金
+								</div>
+							</div>
+							<div>
+								￥{{item.salePrice}}
+								<span
+										style="text-decoration: line-through; font-size: 12px; color: #ccc;"
+								>￥{{item.salePrice}}</span>
+							</div>
+							<div style="font-size: 12px; color: #999;">
+								<span v-show="dataSource.viewData[59] == '90'">
+									{{item.skuInventoryQtyDtos[0].peasPrice}}购物豆
+								</span>
+							</div>
 						</div>
 					</div>
 					<!--<van-icon name="cart-o" class="cart" />-->
@@ -325,7 +398,33 @@
 
 <style lang="sass">
 	.goods
-		background: #fff
+		.vipPrice
+			margin-top: 5px
+			align-items: center
+			overflow: hidden
+			margin-bottom: 5px
+			.vip_img
+				width: 20px
+				height: 20px
+				float: left
+			.priceBox
+				padding: 2px
+				max-width: calc(95% - 20px)
+				line-height: 16px
+				float: left
+				display: flex
+				white-space: nowrap
+				height: 16px
+				font-size: 12px
+				color: #fff
+				background: rgba(217, 34, 49, 1)
+				border-radius: 0 8px 8px 0
+				vertical-align: center
+				align-items: center
+				.money_img
+					margin: 0 3px
+					width: 13px
+					height: 13px
 		.listView
 			text-align: center
 			overflow: hidden
@@ -357,7 +456,6 @@
 					font-size: 13px
 					color: #999
 				.price
-					height: 20px
 					line-height: 20px
 					margin-left: 10px
 					color: #f44
@@ -368,13 +466,15 @@
 					color: #f44
 					float: right
 					margin-right: 10px
+					margin-top: 5px
+					font-size: 14px
 					text-align: right
 		.listTwo
 			display: block
 			overflow: hidden
 			.listView
 				float: left
-				width: 48%
+				width: 49%
 				margin-right: 1%
 				position: relative
 				.title
@@ -389,7 +489,6 @@
 					font-size: 13px
 					color: #999
 				.price
-					height: 20px
 					line-height: 20px
 					margin-left: 10px
 					color: #f44
@@ -397,6 +496,7 @@
 					width: 100%
 					float: left
 				.cart
+					font-size: 14px
 					color: #f44
 					float: right
 					position: absolute
@@ -407,31 +507,40 @@
 			overflow: hidden
 			.listView
 				margin-left: 1%
-				width: 31.5%
+				width: 32%
 				float: left
+				.vip_img
+					width: 20px
+					height: 20px
+					float: left
+				.money_img
+					margin: 0
 				.title
 					font-size: 14px
-					margin-left: 10px
 					height: 20px
 					line-height: 20px
 				.desc
 					height: 20px
 					line-height: 20px
-					margin-left: 10px
 					font-size: 13px
 					color: #999
 				.price
-					height: 20px
 					line-height: 20px
-					margin-left: 10px
 					color: #f44
 					font-size: 15px
 					float: left
 				.cart
+					margin-top: 3px
+					font-size: 13px
 					color: #f44
 					float: right
 					margin-right: 10px
 					text-align: right
+				.priceBox
+					max-width: calc(90% - 20px)
+				.money_img
+					width: 13px
+					height: 13px
 		.listData
 			.listView
 				overflow: hidden
@@ -444,35 +553,39 @@
 					font-size: 14px
 					height: 20px
 					line-height: 20px
-					margin-top: 10px
+					margin-top: 8px
 				.desc
 					height: 20px
 					line-height: 20px
 					margin-left: 10px
-					margin-top: 10px
+					margin-top: 5px
 					font-size: 13px
 					color: #999
 				.price
-					height: 20px
 					line-height: 20px
 					margin-left: 10px
 					color: #f44
 					font-size: 15px
-					margin-top: 20px
 				.cart
 					color: #f44
 					float: right
+					margin-top: 3px
+					font-size: 14px
 					margin-right: 10px
 					text-align: right
 		.rowList
-			display: block
+			display: flex
+			align-items: flex-start
+			flex-wrap: nowrap
 			overflow-x: scroll
 			white-space: nowrap
 			overflow-y: hidden
 			.listView
-				display: inline-block;
+				display: inline-block
 				min-width: 120px
+				flex: content
 				margin-right: 1.5%
+				float: left
 				.title
 					font-size: 13px
 					margin-left: 10px
@@ -485,15 +598,17 @@
 					font-size: 13px
 					color: #999
 				.price
-					height: 20px
 					line-height: 20px
 					margin-left: 10px
 					color: #f44
 					font-size: 15px
 					float: left
+					width: 90%
 				.cart
 					color: #f44
 					float: right
+					font-size: 13px
+					margin-top: 2px
 					margin-right: 5px
 					text-align: right
 		.smallData
@@ -516,15 +631,16 @@
 					font-size: 13px
 					color: #999
 				.price
-					height: 20px
+					width: 100%
 					line-height: 20px
-					margin-left: 10px
+					margin-left: 8px
 					color: #f44
 					font-size: 15px
 					float: left
 				.cart
 					color: #f44
 					float: right
+					font-size: 15px
 					margin-right: 10px
 					text-align: right
 </style>
