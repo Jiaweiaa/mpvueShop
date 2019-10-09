@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-17 14:00:02
- * @LastEditTime: 2019-09-29 16:03:10
+ * @LastEditTime: 2019-10-06 15:45:52
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -61,7 +61,11 @@
               <span style="color:rgba(102,102,102,1);">应付款:</span>
               <span>￥{{value.totalActure}}</span>
             </div>
-            <div v-else style="text-align:right;">
+            <div v-else-if="value.paymentType==14" style="text-align:right;">
+              <span style="color:rgba(102,102,102,1);">应付款:</span>
+              <span>购物豆{{value.totalPeasActure}}</span>
+            </div>
+            <div v-else-if="value.paymentType==12" style="text-align:right;">
               <span style="color:rgba(102,102,102,1);">应付款:</span>
               <span>补贴金{{value.totalScoreActure}}</span>
             </div>

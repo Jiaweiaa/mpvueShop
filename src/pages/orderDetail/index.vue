@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-17 14:00:29
- * @LastEditTime: 2019-09-30 10:27:56
+ * @LastEditTime: 2019-09-30 17:17:55
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -343,7 +343,8 @@ let querystring = require("querystring");
 let deviceId = new Date().getTime();
 export default {
   onLoad: function(options) {
-    this.orderObj.id = 213;
+    // console.log(options,'aaa');
+    this.orderObj.id = options.id;
 
     // let params = {
     //   id:options.id

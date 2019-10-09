@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-29 15:23:02
+ * @LastEditTime: 2019-10-09 15:00:21
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -40,8 +40,8 @@
           </span>
         </p>
       </div>
-      <div class="buyBeans">
-        <span>{{peasPrice}}购物豆</span>
+      <div class="buyBeans" >
+        <span v-if="peasPrice!=0">{{peasPrice}}购物豆</span>
       </div>
       <!-- <p class="salePrice">
         组合价格:￥{{mixCashPrice}}+补贴金{{mixScorePrice}}
@@ -62,6 +62,7 @@
       <div class="c">
         <button class="share" hover-class="none" open-type="share" value></button>
         <p class="title">{{goodsInfo.title}}</p>
+        <p class="subTitle">{{goodsInfo.subTitle}}</p>
         <p class="sketch" v-if="arrivalTime!=''">现在下单,预计{{arrivalTime}}送到</p>
         <div class="tags" v-if="goodsInfo!=null">
           <span class="item" v-for="(tag,tagIndex) in goodsInfo.itemTags" :key="tagIndex">{{tag}}</span>
@@ -89,7 +90,7 @@
         </div>
       </div>
     </div>
-    <div class="specification">
+    <div class="specification" @click="openSku('buyNow')">
       <div class="head">商品参数</div>
       <div class="item">
         <div>请选择 商品规格</div>
@@ -111,7 +112,7 @@
         <img :src="'http://qn.gaoshanmall.cn/'+storeInfo.storeInfo.storePic" alt />
       </div>
       <div class="title">{{storeInfo.name}}</div>
-      <div class="btn">进店</div>
+      <div class="btn" @click="toStore(storeInfo.id)">进店</div>
     </div>
     <div>
       <van-cell
@@ -430,6 +431,12 @@ export default {
     };
   },
   methods: {
+    //进店
+    toStore(id) {
+      wx.navigateTo({
+        url: "/pages/oldStoreIndex/main?storeId=" + id
+      });
+    },
     //优惠券列表弹出层是否展示
     showCoupon() {
       this.couponShow = true;

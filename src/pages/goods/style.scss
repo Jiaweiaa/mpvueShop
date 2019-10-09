@@ -90,6 +90,8 @@
           color: #fff;
           background: rgba(217, 34, 49, 1);
           border-radius: 16rpx;
+          display: block;
+          height: 33rpx;
         }
       }
     }
@@ -126,6 +128,7 @@
         font-weight: 400;
         margin-bottom: 5rpx;
       }
+      
 
       .time {
         display: flex;
@@ -176,6 +179,19 @@
         padding-left: 24rpx;
         color: #000;
         width: 680rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+      .subTitle{
+        color: #000;
+        font-size: 28rpx;
+        padding-top: 30rpx;
+        padding-left: 24rpx;
+        width: 620rpx;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;

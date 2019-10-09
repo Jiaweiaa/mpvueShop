@@ -1,8 +1,8 @@
 .search_main {
   width: 750rpx;
-  height: 165rpx;
+  height: 125rpx;
   background: url("http://webimg.gaoshanapp.com/bg.png") no-repeat;
-  background-size: contain;
+  background-size: cover;
   padding-top: 1rpx;
   position: fixed;
   top: 0;
@@ -128,50 +128,64 @@
   .goodsList {
     padding-top: 1rpx;
     position: relative;
-    background: #fff;
-
-    .sortnav {
-      position: fixed;
-      top: 165rpx;
-      z-index: 99;
+    // background: #fff;
+    .swiper-group {
+      width: 750rpx;
       display: flex;
-      width: 100%;
-      height: 78rpx;
-      line-height: 78rpx;
-      background: #fff;
-      border-bottom: 1rpx solid #d9d9d9;
-      div {
-        width: 250rpx;
-        height: 100%;
-        text-align: center;
-        span {
-          font-size: 26rpx;
-          color: rgba(136, 136, 136, 1);
+      justify-content: center;
+      // background: red;
+      background-repeat: no-repeat;
+      // background-position-y: -100rpx;
+      background-size: contain;
+      // padding-top: 153rpx;
+
+      // height: 280rpx;
+      .swiper {
+        width: 710rpx;
+        height: 280rpx;
+        border-radius: 10rpx;
+        .swiper-container {
+          width: 100%;
+          height: 100%;
+          .swiper-item {
+            width: 100%;
+            height: 100%;
+            .slide-image {
+              width: 100%;
+              height: 100%;
+              border-radius: 20rpx;
+            }
+          }
         }
       }
-      .active span {
-        color: #d92231;
-        padding-bottom: 20rpx;
-        border-bottom: 2rpx solid #d92231;
+    }
+    .storeInfo {
+      width: 95%;
+      // position: fixed;
+      background: #fff;
+      // top: 138rpx;
+      // z-index: 99;
+      display: flex;
+      align-items: center;
+      height: 140rpx;
+      margin: 20rpx auto;
+      margin-top:0;
+      border-radius: 20rpx;
+
+      img {
+        margin-left: 30rpx;
+        width: 70rpx;
+        height: 70rpx;
       }
-      .price {
-        background: url(//yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/no-3127092a69.png)
-          165rpx center no-repeat;
-        background-size: 15rpx 21rpx;
-      }
-      .active.desc {
-        background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/down-95e035f3e5.png)
-          165rpx center no-repeat;
-        background-size: 15rpx 21rpx;
-      }
-      .active.asc {
-        background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/up-636b92c0a5.png)
-          165rpx center no-repeat;
-        background-size: 15rpx 21rpx;
+      p {
+        margin-left: 25rpx;
+        font-size: 30rpx;
       }
     }
+
     .goods-group {
-      margin-top: 91rpx;
+      margin-top: 33rpx;
+      margin-bottom: 100rpx;
       .sublist {
         // width: 100%;
         // margin: 0 auto;
@@ -179,97 +193,118 @@
         display: flex;
         flex-wrap: wrap;
         .good-card {
-          width: 720rpx;
-          display: flex;
-          margin: 0 15rpx;
-          margin-bottom: 16rpx;
+          width: 345rpx;
+          margin-bottom: 14rpx;
           overflow: hidden;
           position: relative;
           background: #fff;
           border-radius: 10rpx;
           .thumb {
-            width: 220rpx;
-            height: 220rpx;
+            width: 345rpx;
+            height: 345rpx;
             img {
-              width: 220rpx;
-              height: 220rpx;
+              width: 100%;
+              height: 100%;
             }
           }
           .desc {
-            margin: 0 20rpx;
+            margin: 0;
+            margin-left: 20rpx;
             .title {
-              font-size: 26rpx;
+              font-size: 24rpx;
               margin-top: 18rpx;
               text-overflow: ellipsis;
               display: -webkit-box;
-              height: 76rpx;
               overflow: hidden;
-              -webkit-line-clamp: 2;
+              -webkit-line-clamp: 1;
               -webkit-box-orient: vertical;
             }
-            .keywords {
-              padding-top: 1rpx;
-              padding-bottom: 6rpx;
-              display: flex;
-              .keywords_item {
-                display: block;
+            .sketch {
+              margin: 3rpx 0;
+              span {
                 font-size: 18rpx;
-                padding: 3rpx 5rpx;
-                margin-right: 6rpx;
-                border-radius: 6rpx;
                 color: rgba(255, 181, 51, 1);
+                padding: 3rpx 8rpx;
+                margin-right: 5rpx;
                 border: 1rpx solid rgba(255, 181, 51, 1);
+                border-radius: 6rpx;
               }
             }
             .pd {
               height: 16rpx;
               width: 100%;
             }
-            .vip_price {
+            .vip {
+              margin-top: 15rpx;
+              font-size: 22rpx;
               display: flex;
               align-items: center;
+              // border: 1rpx solid rgb(51, 51, 60);
+              border-radius: 9rpx;
+
               .vip_img {
                 width: 50rpx;
-                height: 33rpx;
+                height: 32rpx;
               }
-              div {
-                margin-left: -11rpx;
+              span {
                 display: flex;
                 align-items: center;
-                color: #fff;
+                margin-left: -10rpx;
+                padding: 0 20rpx;
                 background: rgba(219, 48, 48, 1);
                 border-radius: 16rpx;
-                text-align: center;
-                padding: 0 6rpx;
-                height: 33rpx;
-                font-size: 24rpx;
-                img {
-                  width: 23rpx;
-                  height: 23rpx;
+                color: #fff;
+                .money {
+                  width: 22rpx;
+                  height: 22rpx;
                 }
               }
             }
-            .price_2 {
-              margin-top: 7rpx;
+            .price {
+              margin-top: 12rpx;
               display: flex;
               align-items: center;
-              .span1 {
+              p:nth-child(1) {
                 font-size: 36rpx;
                 color: rgba(219, 48, 48, 1);
               }
 
-              .span2 {
-                margin-left: 30rpx;
+              p:nth-child(2) {
+                color: #888;
                 font-size: 26rpx;
-                color: rgba(136, 136, 136, 1);
-              }
-              .span3 {
-                margin-left: 30rpx;
-                font-size: 26rpx;
-                color: rgba(136, 136, 136, 1);
                 text-decoration: line-through;
+                margin-left: 29rpx;
+                margin-top: 5rpx;
               }
             }
+            .origin-price {
+              color: rgb(153, 153, 153);
+              font-size: 26rpx;
+              // margin: 8rpx 12rpx;
+              margin-top: 10rpx;
+              margin-bottom: 20rpx;
+            }
+            // .price_2 {
+            //   margin-top: 7rpx;
+            //   display: flex;
+            //   align-items: center;
+            //   .span1 {
+            //     font-size: 36rpx;
+            //     color: rgba(219, 48, 48, 1);
+            //   }
+
+            //   .span2 {
+            //     margin-left: 30rpx;
+            //     font-size: 26rpx;
+            //     color: rgba(136, 136, 136, 1);
+            //   }
+            //   .span3 {
+            //     margin-left: 30rpx;
+            //     font-size: 26rpx;
+            //     color: rgba(136, 136, 136, 1);
+            //     text-decoration: line-through;
+            //   }
+            // }
           }
         }
         .good-card:nth-child(odd) {
@@ -358,10 +393,10 @@
       .top {
         display: flex;
         align-items: center;
-        height: 120rpx;
-        margin-bottom: 21rpx;
+        height: 80rpx;
+        margin-bottom: 6rpx;
         .logo {
-          // margin-top: 20rpx;
+          margin-top: 20rpx;
           margin-left: 24rpx;
           width: 76rpx;
           height: 76rpx;
@@ -382,32 +417,28 @@
           flex: 1;
           text-align: right;
           display: flex;
-          padding: 2rpx;
-
           justify-content: flex-end;
-          div {
+          span {
             // width: 60rpx;
             margin-right: 20rpx;
-            // margin-top: 30rpx;
+            margin-top: 30rpx;
             padding: 9rpx 40rpx;
             border-radius: 24rpx;
             border: 1rpx solid #d60000;
-            border-bottom: 1rpx solid #d60000;
             color: #d60000;
             font-size: 26rpx;
             display: block;
             text-align: center;
-            margin-bottom: 3rpx;
           }
         }
       }
       .bottom {
         display: flex;
-        // justify-content: space-around;
+        justify-content: space-around;
         .good-item {
           width: 210rpx;
           height: 210rpx;
-          margin-left: 30rpx;
+
           position: relative;
           img {
             width: 100%;

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-23 15:30:03
- * @LastEditTime: 2019-09-26 16:55:53
+ * @LastEditTime: 2019-09-30 15:39:49
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -10,42 +10,50 @@
     <van-notify id="custom-selector" />
     <!-- newUI -->
     <div class="myinfo">
-      <p>用户昵称</p>
-      <p>欢迎您,易起省代理</p>
+      <div class="userImg">
+        <img v-if="userImg!=''" :src="userImg" alt="">
+      </div>
+      
+      <p class="shuju">{{teamData.realName}}</p>
+      <p class="huanying">欢迎您,易起省代理</p>
       <div class="editInfo" @click="toEditInfo">完善信息</div>
     </div>
     <div class="doHandle">
-      <div class="item" @click="scanFun">
+      <div class="item" >
         <img src="/static/images/teamView/scan.png" alt />
         <p>扫码绑定</p>
       </div>
+      <!-- <div class="item" @click="scanFun">
+        <img src="/static/images/teamView/scan.png" alt />
+        <p>扫码绑定</p>
+      </div> -->
       <div class="item" @click="toCode">
         <img src="/static/images/teamView/code.png" alt />
         <p>我的二维码</p>
       </div>
     </div>
-    <div class="money">
+    <div class="money" >
       <div class="top">
         <div class="item">
-          <p>254.13</p>
+          <p>{{totalData.totalCommision}}</p>
           <p>累计佣金</p>
         </div>
-        <div class="item">
+        <!-- <div class="item">
           <p>254</p>
           <p>累计订单</p>
-        </div>
+        </div> -->
         <div class="item">
-          <p>254</p>
+          <p>{{totalData.totalUser}}</p>
           <p>累计用户</p>
         </div>
         <div class="item">
-          <p>254</p>
+          <p>{{totalData.totalInvite}}</p>
           <p>累计邀请</p>
         </div>
       </div>
       <div class="bottom">
         <p>可提现金额</p>
-        <p>￥224.2</p>
+        <p>￥{{totalData.canGetCommision}}</p>
       </div>
     </div>
     <div class="service">
@@ -141,7 +149,7 @@
 </template>
 
 <script>
-import { myDetile } from "../../api/myTeam/index";
+import { myDetile,myAgentData } from "../../api/myTeam/index";
 import Notify from "../../../static/vant/notify/notify";
 import Dialog from "../../../static/vant/dialog/dialog";
 import Toast from "../../../static/vant/toast/toast";
@@ -149,6 +157,10 @@ import { scanQrCode, showQRCodeToScan } from "../../api/distribution/index";
 export default {
   onShow() {
     this.getTeamData();
+    this.getTotalData();
+    if(wx.getStorageSync("userInfo")){
+      this.userImg = wx.getStorageSync("userInfo").avatar
+    }
   },
   onHide() {
     this.orderMenu = [
@@ -204,8 +216,9 @@ export default {
       userInfo: {},
 
       isFlag: false,
-
-      teamData: {}
+      userImg:"",
+      teamData: {},
+      totalData:{}
     };
   },
   methods: {
@@ -331,7 +344,14 @@ export default {
         this.isFlag = false;
       }
     },
-
+    async getTotalData() {
+      wx.showLoading();
+      let data = await myAgentData();
+      console.log(data,'444');
+      wx.hideLoading();
+      this.totalData = data.data.result;
+   
+    },
     // 团长订单
     toCode() {
       // showQRCodeToScan()

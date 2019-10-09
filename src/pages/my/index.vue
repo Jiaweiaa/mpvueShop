@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 17:12:49
- * @LastEditTime: 2019-09-30 11:34:04
+ * @LastEditTime: 2019-10-08 11:41:35
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import {getMemberAmount} from "@/api/integral/index";
+import { getMemberAmount } from "@/api/integral/index";
 import { toLogin, login } from "../../utils";
 import { shoppingcartCount } from "../../api/shoppingcart";
 import { findOrderNum } from "../../api/myOrder";
@@ -132,13 +132,28 @@ export default {
         .catch(err => {});
       //9.27日判断菜单权限
       if (this.userInfo) {
+        console.log(wx.getStorageSync("userLevel"), "888");
         //普通用户登录
-        if (wx.getStorageSync("userLevel") == null) {
+        if (
+          wx.getStorageSync("userLevel") == null ||
+          wx.getStorageSync("userLevel") == 0 ||
+          wx.getStorageSync("userLevel") == 5
+        ) {
           this.myService = [
             {
               title: "新手帮助",
               icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
               url: "/pages/coupon/main"
+            },
+            {
+              title: "完善信息",
+              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              url: "/pages/editUserInfo/main"
+            },
+            {
+              title: "商家招募",
+              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              url: "/pages/whatRecruit/main"
             },
             {
               title: "地址管理",
@@ -209,7 +224,7 @@ export default {
               title: "店铺信息",
               icon: "http://pydsg4puk.bkt.clouddn.com/dianpu.png",
               url: "/pages/storeInfo/main"
-            },
+            }
             // {
             //   title: "我的代理",
             //   icon: "http://pydsg4puk.bkt.clouddn.com/daili.png",
@@ -244,12 +259,26 @@ export default {
       //9.27日判断菜单权限
       if (this.userInfo) {
         //普通用户登录
-        if (wx.getStorageSync("userLevel") == null) {
+        if (
+          wx.getStorageSync("userLevel") == null ||
+          wx.getStorageSync("userLevel") == 0 ||
+          wx.getStorageSync("userLevel") == 5
+        ) {
           this.myService = [
             {
               title: "新手帮助",
               icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
               url: "/pages/coupon/main"
+            },
+            {
+              title: "完善信息",
+              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              url: "/pages/editUserInfo/main"
+            },
+            {
+              title: "商家招募",
+              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              url: "/pages/whatRecruit/main"
             },
             {
               title: "地址管理",
@@ -333,9 +362,8 @@ export default {
   },
   data() {
     return {
-      
-      score:0,//补贴金
-      beanScore:0,//购物豆
+      score: 0, //补贴金
+      beanScore: 0, //购物豆
       // 用户数据
       usersData: "",
 
@@ -377,7 +405,7 @@ export default {
   },
   methods: {
     //获取购物豆及补贴金数量
-     // 获取数据
+    // 获取数据
     async getBeanData() {
       let data = await getMemberAmount();
       this.score = data.data.result.scoreAmount;
@@ -436,6 +464,12 @@ export default {
 };
 </script>
 <style>
+.van-icon--image {
+  width: 48rpx !important;
+  height: 48rpx !important;
+  margin-bottom: 20rpx !important;
+}
+
 page {
   background: #eee;
 }

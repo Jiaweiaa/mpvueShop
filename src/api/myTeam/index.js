@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-12 11:26:21
+ * @LastEditTime: 2019-09-30 15:10:43
+ * @LastEditors: Please set LastEditors
+ */
 import fly from '../request';
 let querystring = require("querystring");
 let deviceId = new Date().getTime();
@@ -6,6 +13,17 @@ let deviceId = new Date().getTime();
 export const myDetile = params => {
   return fly.request({
     url: `/basic/memRelationShip/myRelationInfo`,
+    method: "post",
+    body: params,
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+};
+// 总量信息
+export const myAgentData = params => {
+  return fly.request({
+    url: `/basic/memRelationShip/myAgentData`,
     method: "post",
     body: params,
     headers: {
