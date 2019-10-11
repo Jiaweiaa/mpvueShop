@@ -41,7 +41,8 @@ export default {
       }
     },
     pages: [
-      "^pages/my/main", // 我的
+      "pages/canvas/main", // 二维码
+      "pages/my/main", // 我的
       "pages/lookDetail/main", // 团长我的 查看详情
       "pages/subordinate/main", // 下级
       "pages/whatBean/main",
@@ -51,7 +52,7 @@ export default {
       "pages/editStoreInfo/main",
       "pages/cart/main",
       "pages/joinUs/main",
-      "pages/index/main",
+      "^pages/index/main",
       "pages/teamView/main", //团长 我的主页
       "pages/withdraw/main", //  提现
       "pages/beGive/main", // 成为供应商

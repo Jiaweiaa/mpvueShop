@@ -61,14 +61,9 @@
   
   export default {
     onLoad: function(options) {
-      // this.storeId = options.id;
-      this.storeId = 1;
+      this.storeId = options.id;
+      // this.storeId = 1;
       this.getStoreStyle();
-    },
-    onPageScroll(e) {
-    },
-    onShow() {
-    
     },
     components: {
       Goods,
@@ -83,18 +78,21 @@
       CouponComponents,
       AuxiliaryBlank
     },
-    
     data() {
       return {
         storeStyleData: ''
       };
     },
-    
     methods: {
       async getStoreStyle() {
         let res = await getUsingTemplate4Front({ storeId: this.storeId });
-        this.storeStyleData = JSON.parse(res.data.result.template);
-        console.log(this.storeStyleData);
+        // if(res.data.result == null) {
+        //   wx.navigateTo({
+        //     url: "/pages/oldStoreIndex/main?storeId=" + this.storeId
+        //   });
+        // }else {
+          this.storeStyleData = JSON.parse(res.data.result.template);
+        // }
       },
     }
   };
