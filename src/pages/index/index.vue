@@ -2,7 +2,7 @@
  * @Description: 首页模块
  * @Author: 董
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-29 17:08:38
+ * @LastEditTime: 2019-10-09 13:51:05
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -106,20 +106,19 @@
             <div class="desc">
               <div class="title">{{good.name}}</div>
               <div class="sketch">
-                <span>家庭必备</span>
-                <span>送礼首选</span>
+                <span  v-for="(keyword,keywordIndex) in good.keywords" :key="keywordIndex">{{keyword}}</span>
               </div>
               <div class="vip" v-if="good.mixCashPrice &&good.mixScorePrice">
                 <img class="vip_img" src="/static/images/index/vip.png" alt />
-                <span>￥{{good.mixCashPrice}}+ <img class="money" src="/static/images/index/money.png" alt /> {{good.mixScorePrice}}补贴金</span>
+                <div>￥{{good.mixCashPrice}}+ <img class="money" src="/static/images/index/money.png" alt /> {{good.mixScorePrice}}补贴金</div>
               </div>
               <div class="price">
                 <p>￥{{good.listPrice}}</p>
-                <p>￥{{good.salePrice}}</p>
+                <!-- <p>￥{{good.salePrice}}</p> -->
               </div>
-              <div class="origin-price" v-if="goodIndex==0">
+              <div class="origin-price" v-if="good.salePrice!=''">
 
-                <span>{{good.salePrice?good.salePrice:''}}购物豆</span>
+                <!-- <span>{{good.salePrice?good.salePrice:''}}购物豆</span> -->
               </div>
             </div>
           </div>

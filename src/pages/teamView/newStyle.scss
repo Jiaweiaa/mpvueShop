@@ -7,14 +7,24 @@
     background-size: contain;
     position: relative;
     padding: 1rpx;
+    .userImg {
+      position: absolute;
+      top: 103rpx;
+      left: 53rpx;
+      img {
+        width: 140rpx;
+        height: 140rpx;
+        border-radius: 50%;
+      }
+    }
 
-    p:nth-child(1) {
+    .nickName {
       margin-top: 139rpx;
       margin-left: 222rpx;
       color: #fff;
       font-weight: 500;
     }
-    p:nth-child(2) {
+    .huanying {
       color: #fff;
       margin-top: 20rpx;
       margin-left: 222rpx;

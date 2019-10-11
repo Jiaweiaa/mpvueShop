@@ -2,161 +2,187 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-10-09 13:43:08
+ * @LastEditTime: 2019-10-08 13:44:55
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div>
-    <div class="search_main">
-      <div class="search">
-        <input
-          type="text"
-          confirm-type="search"
-          v-model="words"
-          @click="inputFocus"
-          @confirm="searchWords"
-          :placeholder="active==0?'商品搜索':'店铺搜索'"
-        />
-        <span class="icon"></span>
-        <span class="cancel" v-if="showTips" @click="hideTips">取消</span>
+    <div v-if="tabbarActive == 0">
+      <div class="search_main">
+        <div class="search">
+          <input
+            type="text"
+            confirm-type="search"
+            v-model="words"
+            @click="inputFocus"
+            @confirm="searchWords"
+            :placeholder="active==0?'搜索店铺内商品':'店铺搜索'"
+          />
+          <span class="icon"></span>
+          <span class="cancel" v-if="showTips" @click="hideTips">取消</span>
+        </div>
+        <div class="tabs" @change="tabChange" v-if="false">
+          <div
+            class="tab_item"
+            :class="tab.active?'active':''"
+            v-for="(tab,tabIndex) in tabs"
+            :key="tabIndex"
+            @click="tabChange(tab)"
+          >{{tab.name}}</div>
+        </div>
       </div>
-      <div class="tabs" @change="tabChange" v-if="storeId==''">
-        <div
-          class="tab_item"
-          :class="tab.active?'active':''"
-          v-for="(tab,tabIndex) in tabs"
-          :key="tabIndex"
-          @click="tabChange(tab)"
-        >{{tab.name}}</div>
-      </div>
-    </div>
-    <div class="main">
-      <!--
+      <div class="main">
+        <!--
 	           搜索结果关键词
-      -->
-      <div class="searchtips" v-if="words && showTips">
-        <div
-          @click="searchWords"
-          v-if="tipsData.length!=0"
-          :data-value="item.name"
-          v-for="(item,index) in tipsData"
-          :key="index"
-        >{{ item.name }}</div>
-        <!-- <div v-if="tipsData.length==0" class="nogoods">暂无此类商品...</div> -->
-      </div>
+        -->
+        <div class="searchtips" v-if="words && showTips">
+          <div
+            @click="searchWords"
+            v-if="tipsData.length!=0"
+            :data-value="item.name"
+            v-for="(item,index) in tipsData"
+            :key="index"
+          >{{ item.name }}</div>
+          <!-- <div v-if="tipsData.length==0" class="nogoods">暂无此类商品...</div> -->
+        </div>
 
-      <!--
+        <!--
 	    缓存搜索记录
 	    推送什么的
-      -->
-      <div v-if="showTips" class="helpSearch">
-        <div class="history" v-if="historyData.length > 0">
-          <div class="t">
-            <div>历史记录</div>
-            <div @click="clearHistory"></div>
+        -->
+        <div v-if="showTips" class="helpSearch">
+          <div class="history" v-if="historyData.length > 0 &&showTips">
+            <div class="t">
+              <div>历史记录</div>
+              <div @click="clearHistory"></div>
+            </div>
+            <div class="cont">
+              <div
+                @click="searchWords"
+                :data-value="item.keyword"
+                v-for="(item,index) in historyData"
+                :key="index"
+              >{{item.keyword}}</div>
+            </div>
           </div>
-          <div class="cont">
-            <div
-              @click="searchWords"
-              :data-value="item.keyword"
-              v-for="(item,index) in historyData"
-              :key="index"
-            >{{item.keyword}}</div>
+          <div class="history hotsearch">
+            <div class="t">
+              <div>热门搜索</div>
+            </div>
+            <div class="cont">
+              <div
+                @click="searchWords"
+                v-for="(item,index) in hotData"
+                :data-value="item.keyword"
+                :class="{active:0==index}"
+                :key="index"
+              >{{item.keyword}}</div>
+            </div>
           </div>
         </div>
-        <div class="history hotsearch">
-          <div class="t">
-            <div>热门搜索</div>
-          </div>
-          <div class="cont">
-            <div
-              @click="searchWords"
-              v-for="(item,index) in hotData"
-              :data-value="item.keyword"
-              :class="{active:0==index}"
-              :key="index"
-            >{{item.keyword}}</div>
-          </div>
-        </div>
-      </div>
 
-      <!--商品列表  -->
-      <div v-if="listData.length!=0&&active==0&&!showTips" class="goodsList">
-        <div class="sortnav">
-          <div @click="changeTab(0)" :class="[0==nowIndex ?'active':'']">
-            <span>默认</span>
+        <!--商品列表  -->
+        <div v-if="listData.length!=0&&active==0&&!showTips" class="goodsList">
+          <div class="storeInfo">
+            <img :src="'http://qn.gaoshanmall.cn/' + storeLogo" alt />
+            <p>{{storeName}}</p>
           </div>
-          <div
-            @click="changeTab(2)"
-            class="price"
-            :class="[2==nowIndex ?'active':'', order =='SALES-DESC'? 'desc':'asc']"
-          >
-            <span>销量</span>
+          <div class="swiper-group">
+            <div class="swiper">
+              <swiper
+                class="swiper-container"
+                indicator-dots="true"
+                autoplay="true"
+                interval="3000"
+                circular="true"
+                duration="500"
+              >
+                <block>
+                  <swiper-item class="swiper-item">
+                    <img
+                      src="http://qn.gaoshanmall.cn/cloudmall/file/703372357716156416.png"
+                      class="slide-image"
+                    />
+                  </swiper-item>
+                </block>
+              </swiper>
+            </div>
           </div>
-          <div
-            @click="changeTab(1)"
-            class="price"
-            :class="[1==nowIndex ?'active':'', order =='SALE_PRICE-DESC'? 'desc':'asc']"
-          >
-            <span>价格</span>
-          </div>
-          <div @click="changeTab(3)" :class="[3==nowIndex ?'active':'']">筛选</div>
-        </div>
-        <div class="goods-group">
-          <div class="sublist">
-            <div
-              class="good-card"
-              v-for="(good, goodIndex) in listData"
-              :key="goodIndex"
-              @click="goodsDetail(good.id)"
-            >
-              <div class="thumb">
-                <img :src="'http://qn.gaoshanmall.cn/' + good.img" alt />
-              </div>
-              <div class="desc">
-                <div class="title">{{good.title}}</div>
-                <div class="keywords" v-if="good.keywords.length>0">
+          <div class="goods-group">
+            <div class="sublist">
+              <div
+                class="good-card"
+                v-for="(good, goodIndex) in listData"
+                :key="goodIndex"
+                @click="goodsDetail(good.id)"
+              >
+                <div class="thumb">
+                  <img :src="'http://qn.gaoshanmall.cn/' + good.img" alt />
+                </div>
+                <div class="desc">
+                  <div class="title">{{good.title}}</div>
+                  <div class="sketch">
+                    <span>家庭必备</span>
+                    <span>送礼首选</span>
+                  </div>
+                  <!-- <div class="keywords" v-if="good.keywords.length>0">
                   <span
                     class="keywords_item"
                     v-for="(keyword,keywordIndex) in good.keywords"
                     :key="keywordIndex"
                   >{{keyword}}</span>
-                </div>
-                <div class="pd">
-
-                </div>
-                <div class="vip_price" v-if="good.mixCashPrice && good.mixScorePrice">
-                  <img class="vip_img" src="/static/images/index/vip.png" alt />
-                  <div>
+                  </div>-->
+                  <div class="pd"></div>
+                  <div class="vip" v-if="good.mixCashPrice &&good.mixScorePrice">
+                    <img class="vip_img" src="/static/images/index/vip.png" alt />
+                    <span>
+                      ￥{{good.mixCashPrice}}+
+                      <img
+                        class="money"
+                        src="/static/images/index/money.png"
+                        alt
+                      />
+                      {{good.mixScorePrice}}补贴金
+                    </span>
+                  </div>
+                  <!-- <div class="vip_price" v-if="good.mixCashPrice && good.mixScorePrice">
+                  <span>
                     ￥{{good.mixCashPrice}}+
                     <img src="/static/images/index/money.png" alt />
                     {{good.mixScorePrice}}补贴金
+                  </span>
+                  </div>-->
+                  <div class="price">
+                    <p>￥{{good.listPrice}}</p>
+                    <!-- <p>￥{{good.salePrice}}</p> -->
                   </div>
-                </div>
-                <div class="price_2">
+                  <div class="origin-price" v-if="good.salePrice!=''">
+                    <!-- <span>{{good.salePrice?good.salePrice:''}}购物豆</span> -->
+                  </div>
+                  <!-- <div class="price_2">
                   <span class="span1">￥{{good.listPrice}}</span>
 
                   <span class="span2" v-if="good.peasPrice">{{good.peasPrice}}购物豆</span>
                   <span class="span3" v-else>￥{{good.salePrice}}</span>
+                  </div>-->
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="noGood" v-else-if="listData.length==0&&active==0&&!showTips">
-        <img src="/static/images/nodata/shangpin.png" alt />
-      </div>
-      <!-- 商品分类 -->
-      <van-popup
-        :show="searchPopupShow"
-        position="right"
-        class="filterlayer"
-        @close="searchPopupClose"
-        :duration="600"
-      >
-        <div class="filterInner" style="overflow-y: scroll;height: 100vh; width: 85vw; ">
-          <!-- <div class="item">
+        <div class="noGood" v-else-if="listData.length==0&&active==0&&!showTips">
+          <img src="/static/images/nodata/shangpin.png" alt />
+        </div>
+        <!-- 商品分类 -->
+        <van-popup
+          :show="searchPopupShow"
+          position="right"
+          class="filterlayer"
+          @close="searchPopupClose"
+          :duration="600"
+        >
+          <div class="filterInner" style="overflow-y: scroll;height: 100vh; width: 85vw; ">
+            <!-- <div class="item">
           <div class="itemTitle">
             <div>价格区间</div>
           </div>
@@ -167,87 +193,70 @@
             >-</div>
             <input placeholder-class="center" placeholder="最高价  ">
           </div>
-          </div>-->
-          <div
-            class="item"
-            v-show="filterList.length>0"
-            v-for="(group, grouPindex) in filterList"
-            :key="grouPindex"
-          >
-            <div class="itemTitle" @click="showTabber(grouPindex)">
-              <div style="width: 40%; float: left;">{{group.label}}</div>
-              <van-icon
-                style="float: right;margin-right: 10px;"
-                :name="group.isShowAll ? 'arrow-up' : 'arrow-down'"
-              />
-            </div>
-            <van-transition
-              style="overflow: hidden;"
-              :show="group.isShowAll"
-              custom-class="block"
-              name="slide-down"
+            </div>-->
+            <div
+              class="item"
+              v-show="filterList.length>0"
+              v-for="(group, grouPindex) in filterList"
+              :key="grouPindex"
             >
-              <div class="content">
-                <div
-                  class="childItem active"
-                  @click="isClickChild(item, group)"
-                  :class="{'activeSearch': item.isChecked == true}"
-                  v-for="(item, childItem) in group.facetFilterUnitList"
-                  :key="childItem"
-                >{{item.label}}</div>
+              <div class="itemTitle" @click="showTabber(grouPindex)">
+                <div style="width: 40%; float: left;">{{group.label}}</div>
+                <van-icon
+                  style="float: right;margin-right: 10px;"
+                  :name="group.isShowAll ? 'arrow-up' : 'arrow-down'"
+                />
               </div>
-            </van-transition>
-          </div>
-          <div class="footer">
-            <van-button
-              size="small"
-              style="text-align: center;width: 47%; float: left; margin-left: 1%; margin-right: 2%"
-              round
-              type="danger"
-              @click="resetFq()"
-            >重置</van-button>
-            <van-button
-              size="small"
-              style="text-align: center;width: 47%; float: left; margin-left: 2%;"
-              round
-              type="primary"
-              @click="popupShow=false"
-            >确认</van-button>
-          </div>
-        </div>
-      </van-popup>
-      <!-- 店铺列表 -->
-      <div v-show="storeListData.length!=0&&active==1&&!showTips" class="storeList">
-        
-          <div class="store-item" v-for="(store,storeIndex) in storeListData" :key="storeIndex">
-            <div class="top">
-              <div class="logo">
-                <img :src="'http://qn.gaoshanmall.cn/'+store.logo" alt />
-              </div>
-              <div class="title">{{store.name}}</div>
-   
-              <div class="btn">
-                <div @click="toQrcode(store.id)">小程序码</div>
-                <div @click="toStore(store.id)">进店</div>
-              </div>
-            </div>
-            <div class="bottom">
-              <div
-                class="good-item"
-                v-for="(good,goodIndex) in store.itemAndImgDtos"
-                :key="goodIndex"
-                @click="goodsDetail(good.id)"
+              <van-transition
+                style="overflow: hidden;"
+                :show="group.isShowAll"
+                custom-class="block"
+                name="slide-down"
               >
-                <img :src="'http://qn.gaoshanmall.cn/'+good.picUrl" alt />
-              </div>
+                <div class="content">
+                  <div
+                    class="childItem active"
+                    @click="isClickChild(item, group)"
+                    :class="{'activeSearch': item.isChecked == true}"
+                    v-for="(item, childItem) in group.facetFilterUnitList"
+                    :key="childItem"
+                  >{{item.label}}</div>
+                </div>
+              </van-transition>
+            </div>
+            <div class="footer">
+              <van-button
+                size="small"
+                style="text-align: center;width: 47%; float: left; margin-left: 1%; margin-right: 2%"
+                round
+                type="danger"
+                @click="resetFq()"
+              >重置</van-button>
+              <van-button
+                size="small"
+                style="text-align: center;width: 47%; float: left; margin-left: 2%;"
+                round
+                type="primary"
+                @click="popupShow=false"
+              >确认</van-button>
             </div>
           </div>
-          <div class="nomoreStore">
-            <p>没有更多店铺了哦~</p>
-          </div>
-        
+        </van-popup>
+        <!-- tabbar -->
       </div>
     </div>
+
+    <StoreCategory v-else></StoreCategory>
+    <van-tabbar :active="tabbarActive" @change="tabbarChange">
+      <van-tabbar-item>
+        <image slot="icon" src="/static/images/bt_home.png" mode="aspectFit" />
+        <image slot="icon-active" src="/static/images/bt_home_active.png" mode="aspectFit" />商品
+      </van-tabbar-item>
+      <van-tabbar-item>
+        <image slot="icon" src="/static/images/bt_fenlei.png" mode="aspectFit" />
+        <image slot="icon-active" src="/static/images/bt_fenlei_active.png" mode="aspectFit" />分类
+      </van-tabbar-item>
+    </van-tabbar>
   </div>
 </template>
 
@@ -258,15 +267,38 @@ import {
   getKeyword,
   setHistorySearch,
   removeHistorySearch,
-  findHistorySearch
+  findHistorySearch,
+  getStoreInfo
 } from "../../api/category/index";
-
+import StoreCategory from "./components/StoreCategory";
 export default {
   // onLoad() {
   //   this.openid = wx.getStorageSync("openid") || "";
   //   this.getHistory();
   //   this.getHotData();
   // },
+  components: {
+    StoreCategory
+  },
+  onLoad: function(options) {
+    if (options.storeId) {
+      wx.setStorageSync("storeId", options.storeId);
+    } else if (options.scene) {
+      wx.setStorageSync("storeId", options.scene);
+    } else {
+      wx.setStorageSync("storeId", 1);
+    }
+    this.storeId = wx.getStorageSync("storeId");
+    getStoreInfo({ storeId: this.storeId })
+      .then(res => {
+        this.storeName = res.data.result.name;
+        this.storeLogo = res.data.result.logo;
+        wx.setNavigationBarTitle({
+          title: res.data.result.name
+        });
+      })
+      .catch(err => {});
+  },
   mounted() {
     this.openid = wx.getStorageSync("openid") || "";
     this.getHistory();
@@ -293,40 +325,40 @@ export default {
       title: "加载中"
     });
     this.loading = true;
-    console.log(this.active,'active的值');
+    console.log(this.active, "active的值");
     if (this.active == 0) {
-      console.log(this.listData.length,'数据长度');
-      console.log(this.allCount,'后台返回的总数');
+      console.log(this.listData.length, "数据长度");
+      console.log(this.allCount, "后台返回的总数");
       if (this.listData.length >= this.allCount) {
         this.loading = false;
         wx.hideLoading();
       } else {
         this.pageNum++;
         const res = await searchItem({
-        k: this.words,
-        s: this.order,
-        p: this.pageNum,
-        navid: this.categoryId,
-        storeId: this.storeId
-      });
-      if (res.data.code == 200) {
-        this.listData = this.listData.concat(res.data.result.itemDocs);
-        // this.tipsData = this.listData;
-        this.allCount = res.data.result.totalElements;
-        this.listData.map(v => {
-          if (this.order == "SALES-ASC") {
-            if (index < 5) {
-              this.$set(v, "tag", "热销");
-            }
-          }
-          v.img = JSON.parse(v.image)[0].images[0];
-          this.$set(v, "keyword", v.keywords.join("||"));
+          k: this.words,
+          s: this.order,
+          p: this.pageNum,
+          navid: this.categoryId,
+          storeId: this.storeId
         });
-        this.tipsData = [];
-        this.loading = false;
-      } else {
-        this.loading = false;
-      }
+        if (res.data.code == 200) {
+          this.listData = this.listData.concat(res.data.result.itemDocs);
+          // this.tipsData = this.listData;
+          this.allCount = res.data.result.totalElements;
+          this.listData.map(v => {
+            if (this.order == "SALES-ASC") {
+              if (index < 5) {
+                this.$set(v, "tag", "热销");
+              }
+            }
+            v.img = JSON.parse(v.image)[0].images[0];
+            this.$set(v, "keyword", v.keywords.join("||"));
+          });
+          this.tipsData = [];
+          this.loading = false;
+        } else {
+          this.loading = false;
+        }
         setTimeout(() => {
           wx.hideLoading();
         }, this.GLOBAL.timer);
@@ -394,6 +426,9 @@ export default {
   },
   data() {
     return {
+      tabbarActive: 0, //tabbar默认值
+      storeName: "",
+      storeLogo: "",
       tabs: [
         {
           name: "商品",
@@ -409,7 +444,7 @@ export default {
       categoryId: "", //分类ID
       name: "", //分类名称
       storeId: "", //店铺ID
-      showTips: true,
+      showTips: false,
       active: 0,
       nowIndex: 0,
       words: "",
@@ -434,11 +469,16 @@ export default {
     };
   },
   methods: {
+    tabbarChange(event) {
+      console.log(event, "ooo");
+      this.tabbarActive = event.mp.detail;
+    },
     //取消搜索
-   hideTips(){
-     this.showTips=false;
-     this.words = ""
-   },
+    hideTips() {
+      this.showTips = false;
+      this.words = "";
+      this.getGoodList();
+    },
     //获取商品列表
     async getGoodList() {
       const res = await searchItem({
@@ -712,10 +752,10 @@ export default {
     },
     toStore(id) {
       wx.navigateTo({
-        url: "/pages/oldStoreIndex/main?storeId=" + id
+        url: "/pages/storeIndex/main?id=" + id
       });
     },
-    toQrcode(id){
+    toQrcode(id) {
       wx.navigateTo({
         url: "/pages/storeQrcode/main?storeId=" + id
       });
@@ -738,7 +778,6 @@ export default {
     }
   }
 
- 
   .activeSearch {
     background: #b4282d !important;
     color: #fff !important;

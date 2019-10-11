@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-12 11:26:21
+ * @LastEditTime: 2019-10-08 11:05:28
+ * @LastEditors: Please set LastEditors
+ */
 import fly from "../request";
 let querystring = require("querystring");
 let deviceId = new Date().getTime();
@@ -15,6 +22,30 @@ export const getNavigations = params => {
   });
 };
 
+// 获取店铺的菜单
+export const getStoreNavigations = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: "/store/navigation/getNavigations",
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: data
+  });
+};
+// 获取店铺信息
+export const getStoreInfo = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: "/store/storeFront/getStoreInfo",
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: data
+  });
+};
 // 搜索商品
 export const searchItem = params => {
   let data = querystring.encode(params);

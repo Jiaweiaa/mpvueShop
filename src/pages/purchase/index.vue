@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-09-30 10:46:08
+ * @LastEditTime: 2019-10-08 10:54:56
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -675,7 +675,7 @@ export default {
     },
     toStore(id) {
       wx.navigateTo({
-        url: "/pages/storeIndex/main?id=" + id
+        url: "/pages/oldStoreIndex/main?storeId=" + id
       });
     }
   }

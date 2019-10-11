@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-12 11:26:21
- * @LastEditTime: 2019-09-28 17:17:34
+ * @LastEditTime: 2019-10-08 08:48:09
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -10,11 +10,11 @@
     <div class="myinfo">
       <div class="noMoney">
 		    <p>到账佣金</p>
-		    <p>¥&nbsp;{{teamData.undrawnCommission}}</p>
+		    <p>¥&nbsp;{{teamData.commission}}</p> 
 	    </div>
 	    <div class="myMoney">
 		   <p>未到账佣金</p>
-		   <p>¥&nbsp;{{teamData.commission}}</p>
+		   <p>¥&nbsp;{{teamData.undrawnCommission}}</p>
 	     </div>
         <div class="tixian" @click="getWithdraw">
           <img src="/static/images/myCommission/tixian.png" alt="">
