@@ -61,7 +61,11 @@
   
   export default {
     onLoad: function(options) {
-      this.storeId = options.id;
+      if(options.id){
+        this.storeId = options.id;
+      }else if(options.scene){
+        this.storeId = options.scene;
+      }
       // this.storeId = 1;
       this.getStoreStyle();
     },
