@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-12 11:26:21
- * @LastEditTime: 2019-10-08 08:48:09
+ * @LastEditTime: 2019-10-10 13:58:28
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -17,7 +17,7 @@
 		   <p>¥&nbsp;{{teamData.undrawnCommission}}</p>
 	     </div>
         <div class="tixian" @click="getWithdraw">
-          <img src="/static/images/myCommission/tixian.png" alt="">
+          <img src="http://pz53ekn6o.bkt.clouddn.com/tixian.png" alt="">
         </div>
 	    <!-- <van-button style="position: absolute; right: 20px; bottom: 50px;" size="small" @click="getWithdraw" custom-class="btnClass" round plain type="default">申请提现</van-button> -->
     </div>

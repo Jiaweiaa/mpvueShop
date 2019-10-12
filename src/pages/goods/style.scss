@@ -166,7 +166,7 @@
         width: 130rpx;
         height: 48rpx;
         // padding: 5rpx;
-        background: url("../../../static/images/good/share.png") no-repeat;
+        background: url("http://pz5990zt2.bkt.clouddn.com/share.png") no-repeat;
         background-size: contain;
         padding: 0 14rpx !important;
         position: absolute;
@@ -268,7 +268,7 @@
     div:nth-child(2) {
       width: 52rpx;
       height: 52rpx;
-      background: url("../../../static/images/address_right.png") no-repeat;
+      background: url("http://pz53ekn6o.bkt.clouddn.com/address_right.png") no-repeat;
       background-size: 100% 100%;
     }
   }
@@ -372,7 +372,7 @@
       div:nth-child(2) {
         width: 52rpx;
         height: 52rpx;
-        background: url("../../../static/images/address_right.png") no-repeat;
+        background: url("http://pz53ekn6o.bkt.clouddn.com/address_right.png") no-repeat;
         background-size: 100% 100%;
       }
     }
@@ -577,7 +577,7 @@
           display: inline-block;
           width: 70rpx;
           height: 70rpx;
-          background: url("../../../static/images/rightbig.png") no-repeat;
+          background: url("http://pz53ekn6o.bkt.clouddn.com/rightbig.png") no-repeat;
           background-size: 100% 100%;
           margin-top: 60rpx;
         }
@@ -599,6 +599,7 @@
   }
 
   .attr-pop {
+    border-radius:10rpx 10rpx 0px 0px;
     .top {
       display: flex;
       margin-bottom: 35rpx;
@@ -617,6 +618,7 @@
       .left {
         height: 220rpx;
         width: 220rpx;
+        margin-left: 30rpx;
         margin-right: 30rpx;
         margin-top: 30rpx;
         img {
@@ -628,16 +630,8 @@
       }
 
       .right {
-        margin-left: 30rpx;
-        flex: 1;
-        display: flex;
-        align-items: flex-end;
-        p {
-          width: 100%;
-          // line-height: 45rpx;
-        }
-
         .nowPrice {
+          margin-top:66rpx;
           color: #b4282d;
           font-size: 33rpx;
           span {
@@ -646,7 +640,7 @@
         }
 
         .butie {
-          margin-top: 5rpx;
+          margin-top: 18rpx;
           display: flex;
           align-items: center;
           .vip_img {
@@ -669,6 +663,10 @@
         .bean {
           margin-top: 15rpx;
           font-size: 28rpx;
+        }
+        .num{
+          font-size: 28rpx;
+          margin-top: 28rpx;
         }
       }
     }

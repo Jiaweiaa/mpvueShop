@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 17:12:49
- * @LastEditTime: 2019-10-08 11:41:35
+ * @LastEditTime: 2019-10-12 11:48:30
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -142,42 +142,53 @@ export default {
           this.myService = [
             {
               title: "新手帮助",
-              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/xinshou.png",
               url: "/pages/coupon/main"
             },
             {
               title: "完善信息",
-              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/xinshou.png",
               url: "/pages/editUserInfo/main"
             },
             {
               title: "商家招募",
-              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/zhaomu.png",
               url: "/pages/whatRecruit/main"
             },
             {
               title: "地址管理",
-              icon: "http://pydsg4puk.bkt.clouddn.com/dizhi.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/dizhi.png",
               url: "/pages/address/main"
             },
             {
               title: "联系客服",
-              icon: "http://pydsg4puk.bkt.clouddn.com/kefu.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/kefu.png",
               url: "/pages/address/main"
             }
           ];
           this.moreService = [];
         } else if (wx.getStorageSync("userLevel") == 1) {
-          this.myService = [];
+         this.myService = [
+            {
+              title: "采购中心",
+              icon: "http://pz5adc55v.bkt.clouddn.com/caigou.png",
+              url: "/pages/purchase/main"
+            }
+          ];
           this.moreService = [
             {
+              title: "补贴金发放",
+              icon: "http://pz5adc55v.bkt.clouddn.com/butiejin.png",
+              url: "/pages/butiejin/main"
+            },
+            {
               title: "我的佣金",
-              icon: "http://pydsg4puk.bkt.clouddn.com/yongjin.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/yongjin.png",
               url: "/pages/lookDetail/main"
             },
             {
               title: "我的代理",
-              icon: "http://pydsg4puk.bkt.clouddn.com/daili.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/daili.png",
               url: "/pages/teamView/main"
             }
           ];
@@ -185,44 +196,44 @@ export default {
           this.myService = [
             {
               title: "新手帮助",
-              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/xinshou.png",
               url: "/pages/coupon/main"
             },
             {
               title: "地址管理",
-              icon: "http://pydsg4puk.bkt.clouddn.com/dizhi.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/dizhi.png",
               url: "/pages/address/main"
             },
             {
               title: "联系客服",
-              icon: "http://pydsg4puk.bkt.clouddn.com/kefu.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/kefu.png",
               url: "/pages/address/main"
             },
             {
               title: "采购中心",
-              icon: "http://pydsg4puk.bkt.clouddn.com/caigou.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/caigou.png",
               url: "/pages/purchase/main"
             }
           ];
           this.moreService = [
             {
               title: "补贴金发放",
-              icon: "http://pydsg4puk.bkt.clouddn.com/butiejin.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/butiejin.png",
               url: "/pages/butiejin/main"
             },
             {
               title: "我的合伙人",
-              icon: "http://pydsg4puk.bkt.clouddn.com/hehuoren.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/hehuoren.png",
               url: "/pages/subordinate/main"
             },
             {
               title: "我的佣金",
-              icon: "http://pydsg4puk.bkt.clouddn.com/yongjin.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/yongjin.png",
               url: "/pages/lookDetail/main"
             },
             {
               title: "店铺信息",
-              icon: "http://pydsg4puk.bkt.clouddn.com/dianpu.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/dianpu.png",
               url: "/pages/storeInfo/main"
             }
             // {
@@ -267,42 +278,53 @@ export default {
           this.myService = [
             {
               title: "新手帮助",
-              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/xinshou.png",
               url: "/pages/coupon/main"
             },
             {
               title: "完善信息",
-              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/xinshou.png",
               url: "/pages/editUserInfo/main"
             },
             {
               title: "商家招募",
-              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/zhaomu.png",
               url: "/pages/whatRecruit/main"
             },
             {
               title: "地址管理",
-              icon: "http://pydsg4puk.bkt.clouddn.com/dizhi.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/dizhi.png",
               url: "/pages/address/main"
             },
             {
               title: "联系客服",
-              icon: "http://pydsg4puk.bkt.clouddn.com/kefu.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/kefu.png",
               url: "/pages/address/main"
             }
           ];
           this.moreService = [];
         } else if (wx.getStorageSync("userLevel") == 1) {
-          this.myService = [];
+          this.myService = [
+            {
+              title: "采购中心",
+              icon: "http://pz5adc55v.bkt.clouddn.com/caigou.png",
+              url: "/pages/purchase/main"
+            }
+          ];
           this.moreService = [
             {
+              title: "补贴金发放",
+              icon: "http://pz5adc55v.bkt.clouddn.com/butiejin.png",
+              url: "/pages/butiejin/main"
+            },
+            {
               title: "我的佣金",
-              icon: "http://pydsg4puk.bkt.clouddn.com/yongjin.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/yongjin.png",
               url: "/pages/lookDetail/main"
             },
             {
               title: "我的代理",
-              icon: "http://pydsg4puk.bkt.clouddn.com/daili.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/daili.png",
               url: "/pages/teamView/main"
             }
           ];
@@ -310,49 +332,49 @@ export default {
           this.myService = [
             {
               title: "新手帮助",
-              icon: "http://pydsg4puk.bkt.clouddn.com/xinshou.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/xinshou.png",
               url: "/pages/coupon/main"
             },
             {
               title: "地址管理",
-              icon: "http://pydsg4puk.bkt.clouddn.com/dizhi.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/dizhi.png",
               url: "/pages/address/main"
             },
             {
               title: "联系客服",
-              icon: "http://pydsg4puk.bkt.clouddn.com/kefu.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/kefu.png",
               url: "/pages/address/main"
             },
             {
               title: "采购中心",
-              icon: "http://pydsg4puk.bkt.clouddn.com/caigou.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/caigou.png",
               url: "/pages/purchase/main"
             }
           ];
           this.moreService = [
             {
               title: "补贴金发放",
-              icon: "http://pydsg4puk.bkt.clouddn.com/butiejin.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/butiejin.png",
               url: "/pages/butiejin/main"
             },
             {
               title: "我的合伙人",
-              icon: "http://pydsg4puk.bkt.clouddn.com/hehuoren.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/hehuoren.png",
               url: "/pages/subordinate/main"
             },
             {
               title: "我的佣金",
-              icon: "http://pydsg4puk.bkt.clouddn.com/yongjin.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/yongjin.png",
               url: "/pages/lookDetail/main"
             },
             {
               title: "店铺信息",
-              icon: "http://pydsg4puk.bkt.clouddn.com/dianpu.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/dianpu.png",
               url: "/pages/storeInfo/main"
             },
             {
               title: "我的代理",
-              icon: "http://pydsg4puk.bkt.clouddn.com/daili.png",
+              icon: "http://pz5adc55v.bkt.clouddn.com/daili.png",
               url: "/pages/teamView/main"
             }
           ];
@@ -370,28 +392,28 @@ export default {
       orderMenu: [
         {
           title: "待付款",
-          icon: "http://pydsg4puk.bkt.clouddn.com/daifukuan.png",
+          icon: "http://pz5adc55v.bkt.clouddn.com/daifukuan.png",
           url: "/pages/myOrder/main?id=2"
         },
 
         {
           title: "待发货",
-          icon: "http://pydsg4puk.bkt.clouddn.com/daifahuo.png",
+          icon: "http://pz5adc55v.bkt.clouddn.com/daifahuo.png",
           url: "/pages/myOrder/main?id=4"
         },
         {
           title: "待收货",
-          icon: "http://pydsg4puk.bkt.clouddn.com/daishouhuo.png",
+          icon: "http://pz5adc55v.bkt.clouddn.com/daishouhuo.png",
           url: "/pages/myOrder/main?id=3"
         },
         {
           title: "已完成",
-          icon: "http://pydsg4puk.bkt.clouddn.com/yiwancheng.png",
+          icon: "http://pz5adc55v.bkt.clouddn.com/yiwancheng.png",
           url: "/pages/myOrder/main?id=5"
         },
         {
           title: "退/换货",
-          icon: "http://pydsg4puk.bkt.clouddn.com/tuihuo.png",
+          icon: "http://pz5adc55v.bkt.clouddn.com/tuihuo.png",
           url: "/pages/refundList/main"
         }
       ],
@@ -465,8 +487,8 @@ export default {
 </script>
 <style>
 .van-icon--image {
-  width: 48rpx !important;
-  height: 48rpx !important;
+  width: 54rpx !important;
+  height: 54rpx !important;
   margin-bottom: 20rpx !important;
 }
 

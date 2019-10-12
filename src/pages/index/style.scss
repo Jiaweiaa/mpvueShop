@@ -31,7 +31,7 @@
         // width: 710rpx;
         height: 60rpx;
         border-radius: 30rpx;
-        background: #eee;
+        background: #fff;
         box-sizing: border-box;
         padding-left: 100rpx;
       }
@@ -40,7 +40,7 @@
         position: absolute;
         top: 16rpx;
         left: 6%;
-        background: url("../../../static/images/index/search.png") center
+        background: url("http://pz53m5lax.bkt.clouddn.com/index_search.png") center
           no-repeat;
         background-size: 100%;
         width: 28rpx;
@@ -51,7 +51,7 @@
         position: absolute;
         top: 16rpx;
         right: 6%;
-        background: url("../../../static/images/index/qrcode.png") center
+        background: url("http://pz53m5lax.bkt.clouddn.com/index_qrcode.png") center
           no-repeat;
         background-size: 100%;
         width: 28rpx;
@@ -197,7 +197,7 @@
       .title_item:nth-child(1) {
         color: rgba(219, 48, 48, 1);
         p:nth-child(2) {
-          background: url("../../../static/images/index/like.png") no-repeat;
+          background: url("http://pz53m5lax.bkt.clouddn.com/index_like.png") no-repeat;
           background-size: contain;
           color: rgba(255, 255, 255, 1);
         }
@@ -215,6 +215,7 @@
       text-align: center;
       float: left;
       margin-top: 30rpx;
+      
       // padding: 5px;
       img {
         height: 90rpx;
@@ -222,9 +223,10 @@
         border-radius: 50%;
         margin: 0 auto;
         display: inline-block;
-        padding-bottom: 4rpx;
+        
       }
       p {
+        margin-top: 4rpx;
         font-size: 24rpx;
         color: rgba(48, 48, 48, 1);
         border-left: none;
@@ -283,7 +285,7 @@
       margin-top: 20rpx;
       height: 260rpx;
       width: 100%;
-      background: url("../../../static/images/bgnew.png") no-repeat;
+      background: url("http://pz53m5lax.bkt.clouddn.com/index_bgnew.png") no-repeat;
       background-size: 100% 100%;
       text-align: center;
       display: flex;
@@ -364,7 +366,7 @@
 
   .hotgoods {
     .newgoods-top {
-      background: url("../../../static/images/bgtopic.png") no-repeat;
+      background: url("http://pz53m5lax.bkt.clouddn.com/index_bgtopic.png") no-repeat;
       background-size: 100% 100%;
 
       .top {
@@ -406,7 +408,7 @@
         width: 32rpx;
         height: 32rpx;
         margin-left: 5rpx;
-        background: url("../../../static//images/right.png") no-repeat;
+        background: url("http://pz53m5lax.bkt.clouddn.com/index_right.png") no-repeat;
         background-size: 100% 100%;
         vertical-align: middle;
       }

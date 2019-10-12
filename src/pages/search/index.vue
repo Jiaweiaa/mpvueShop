@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-10-09 13:43:08
+ * @LastEditTime: 2019-10-10 14:37:21
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -126,10 +126,10 @@
 
                 </div>
                 <div class="vip_price" v-if="good.mixCashPrice && good.mixScorePrice">
-                  <img class="vip_img" src="/static/images/index/vip.png" alt />
+                  <img class="vip_img" src="http://pz53m5lax.bkt.clouddn.com/index_vip.png" alt />
                   <div>
                     ￥{{good.mixCashPrice}}+
-                    <img src="/static/images/index/money.png" alt />
+                    <img src="http://pz53m5lax.bkt.clouddn.com/index_money.png" alt />
                     {{good.mixScorePrice}}补贴金
                   </div>
                 </div>
@@ -145,7 +145,7 @@
         </div>
       </div>
       <div class="noGood" v-else-if="listData.length==0&&active==0&&!showTips">
-        <img src="/static/images/nodata/shangpin.png" alt />
+        <img src="http://pz53ekn6o.bkt.clouddn.com/base_shangpin.png" alt />
       </div>
       <!-- 商品分类 -->
       <van-popup

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-17 14:00:29
- * @LastEditTime: 2019-09-30 17:17:55
+ * @LastEditTime: 2019-10-11 10:47:52
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -175,11 +175,9 @@
     <!-- 地址 -->
     <div class="address">
       <p>{{detailData.orderVo.shippingAddress.firstName}} {{detailData.orderVo.shippingAddress.mobile}}</p>
-      <p>
-        {{detailData.orderVo.shippingAddress.province}}{{detailData.orderVo.shippingAddress.city}}{{detailData.orderVo.shippingAddress.district}}{{detailData.orderVo.shippingAddress.address}} 
-      </p>
+      <p>{{detailData.orderVo.shippingAddress.province}}{{detailData.orderVo.shippingAddress.city}}{{detailData.orderVo.shippingAddress.district}}{{detailData.orderVo.shippingAddress.address}}</p>
     </div>
-  
+
     <!-- 第二个板块 -->
     <div class="info">
       <div class="header">
@@ -245,11 +243,14 @@
           <div class="left">购买方式</div>
           <div
             class="right"
-          >{{detailData.orderVo.paymentType==4?'微信支付':detailData.orderVo.paymentType==12?'补贴金':'补贴金+微信'}}</div>
+          >{{detailData.orderVo.paymentType==4?'微信支付':detailData.orderVo.paymentType==12?'补贴金':detailData.orderVo.paymentType==14?'购物豆':'补贴金+微信'}}</div>
         </div>
         <div class="item">
           <div class="left">商品合计</div>
-          <div class="right">￥{{detailData.orderVo.totalActure}}</div>
+          <div class="right" v-if="detailData.orderVo.paymentType==13">￥{{detailData.orderVo.totalActure}}+补贴金{{detailData.orderVo.totalScoreActure}}</div>
+          <div class="right" v-else-if="detailData.orderVo.paymentType==4">￥{{detailData.orderVo.totalActure}}</div>
+          <div class="right" v-else-if="detailData.orderVo.paymentType==14">购物豆{{detailData.orderVo.totalPeasActure}}</div>
+          <div class="right" v-else-if="detailData.orderVo.paymentType==12">补贴金{{detailData.orderVo.totalScoreActure}}</div>
         </div>
         <div class="item">
           <div class="left">订单备注</div>
@@ -266,10 +267,26 @@
         <div class="borderT"></div>
         <div class="item">
           <div class="left">实付款</div>
-          <div class="right" v-if="detailData.orderVo.paymentType==4" style="color:#D92231;">￥{{detailData.orderVo.totalActure}}</div>
-          <div class="right" v-else-if="detailData.orderVo.paymentType==12" style="color:#D92231;">{{detailData.orderVo.totalScoreActure}}补贴金</div>
-          <div class="right" v-else-if="detailData.orderVo.paymentType==13" style="color:#D92231;">￥{{detailData.orderVo.totalActure}}+{{detailData.orderVo.totalScoreActure}}补贴金</div>
-          <div class="right" v-else-if="detailData.orderVo.paymentType==14" style="color:#D92231;">￥{{detailData.orderVo.totalPeasActure}}</div>
+          <div
+            class="right"
+            v-if="detailData.orderVo.paymentType==4"
+            style="color:#D92231;"
+          >￥{{detailData.orderVo.totalActure}}</div>
+          <div
+            class="right"
+            v-else-if="detailData.orderVo.paymentType==12"
+            style="color:#D92231;"
+          >补贴金{{detailData.orderVo.totalScoreActure}}</div>
+          <div
+            class="right"
+            v-else-if="detailData.orderVo.paymentType==13"
+            style="color:#D92231;"
+          >￥{{detailData.orderVo.totalActure}}+补贴金{{detailData.orderVo.totalScoreActure}}</div>
+          <div
+            class="right"
+            v-else-if="detailData.orderVo.paymentType==14"
+            style="color:#D92231;"
+          >购物豆{{detailData.orderVo.totalPeasActure}}</div>
         </div>
       </div>
     </div>

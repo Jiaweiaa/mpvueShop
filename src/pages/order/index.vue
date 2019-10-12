@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-21 09:17:36
- * @LastEditTime: 2019-09-29 16:37:38
+ * @LastEditTime: 2019-10-10 14:29:26
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -41,10 +41,10 @@
               <p>{{address.province}}{{address.city}}{{address.district}}{{address.address}}</p>
             </div>
             <div class="location">
-              <img src="/static/images/order/location.png" alt />
+              <img src="http://pz5bdcnvo.bkt.clouddn.com/location.png" alt />
             </div>
             <div class="arrow">
-              <img src="/static/images/order/arrow.png" alt />
+              <img src="http://pz5bdcnvo.bkt.clouddn.com/arrow.png" alt />
             </div>
           </div>
         </div>
@@ -53,10 +53,10 @@
     <div @click="toAdd" v-show="address==null" class="seladdress">
       <div class="text">请添加收货地址</div>
       <div class="location">
-        <img src="/static/images/order/location.png" alt />
+        <img src="http://pz5bdcnvo.bkt.clouddn.com/location.png" alt />
       </div>
       <div class="arrow">
-        <img src="/static/images/order/arrow.png" alt />
+        <img src="http://pz5bdcnvo.bkt.clouddn.com/arrow.png" alt />
       </div>
     </div>
 

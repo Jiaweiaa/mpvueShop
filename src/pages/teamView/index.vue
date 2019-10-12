@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-23 15:30:03
- * @LastEditTime: 2019-09-30 15:39:49
+ * @LastEditTime: 2019-10-10 14:52:59
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -20,7 +20,7 @@
     </div>
     <div class="doHandle">
       <div class="item" >
-        <img src="/static/images/teamView/scan.png" alt />
+        <img src="http://pz5bnkm8t.bkt.clouddn.com/scan.png" alt />
         <p>扫码绑定</p>
       </div>
       <!-- <div class="item" @click="scanFun">
@@ -28,7 +28,7 @@
         <p>扫码绑定</p>
       </div> -->
       <div class="item" @click="toCode">
-        <img src="/static/images/teamView/code.png" alt />
+        <img src="http://pz5bnkm8t.bkt.clouddn.com/code.png" alt />
         <p>我的二维码</p>
       </div>
     </div>
@@ -336,7 +336,7 @@ export default {
           },
           {
             title: "推广海报",
-            icon: "http://pydsg4puk.bkt.clouddn.com/haibao.png",
+            icon: "http://pz5bnkm8t.bkt.clouddn.com/haibao.png",
             url: "/pages/subordinate/main"
           }
         );

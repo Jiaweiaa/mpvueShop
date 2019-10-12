@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-12 11:26:21
- * @LastEditTime: 2019-09-30 09:12:26
+ * @LastEditTime: 2019-10-10 14:41:03
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -39,19 +39,19 @@
       <div class="group">
         <div class="item">
           <div class="pic">
-            <img src="/static/images/myStore/storePic.png" alt />
+            <img src="http://pz5bh8x2t.bkt.clouddn.com/storePic.png" alt />
           </div>
           <p>店铺照片</p>
         </div>
         <div class="item">
           <div class="pic">
-            <img src="/static/images/myStore/xuke.png" alt />
+            <img src="http://pz5bh8x2t.bkt.clouddn.com/xuke.png" alt />
           </div>
           <p>经营许可</p>
         </div>
         <div class="item" @click="toEditStoreInfo">
           <div class="pic">
-            <img src="/static/images/myStore/editInfo.png" alt />
+            <img src="http://pz5bh8x2t.bkt.clouddn.com/editInfo.png" alt />
           </div>
           <p>修改信息</p>
         </div>

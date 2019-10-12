@@ -1,7 +1,39 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-15 16:47:11
+ * @LastEditTime: 2019-10-12 16:46:54
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
-  <div class="cart">
+  <div class="refundChoose">
     <!-- 退款商品备选项 -->
     <div>
+      <div class="goods-group">
+        <div class="good-item" v-for="(goods,index) in goodsList" :key="index">
+          <div class="checked">
+            <div
+              class="icon"
+              :class="[ goods.selectStatus=='1' ? 'active' : '',{active:allCheck}]"
+              @click="itemChange(goods)"
+            ></div>
+          </div>
+          <div class="good-card">
+            <div class="thums">
+              <img :src="'http://qn.gaoshanmall.cn/'+goods.itemImg" alt />
+            </div>
+            <div class="desc">
+              <p class="title">{{goods.itemTitle}}</p>
+              <p class="propery">{{goods.propertiesValue}}</p>
+              <p class="price">￥{{goods.salePrice}}</p>
+              <div class="stepper-group">
+                <van-stepper integer :min="1" :max="goods.quantity" :step="1" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <van-cell-group>
         <van-cell v-for="(goods,index) in goodsList" :key="index">
           <div style="display:flex;">
@@ -22,7 +54,7 @@
             >
               <div slot="footer">
                 <!-- <div>￥  {{item.salePrice}}</div> -->
-                <van-stepper integer :min="1" :max="goods.quantity" :step="1"/>
+                <van-stepper integer :min="1" :max="goods.quantity" :step="1" />
               </div>
             </van-card>
           </div>
@@ -42,7 +74,142 @@
     </div>
   </div>
 </template>
+<script>
+import { findAvailableOrderlines } from "../../api/refund";
+import Toast from "../../../static/vant/toast/toast";
+
+export default {
+  onLoad: function(options) {},
+  onShow() {
+    this.orderInfo = Object.assign({}, wx.getStorageSync("orderInfo"));
+    // this.goodsList = wx.getStorageSync("refundGoodsList");
+    // this.goodsList.map(goods => {
+    //   goods.orderLineId = goods.id;
+    //   goods.refundCount = goods.quantity;
+    // });
+    this.getGoodsGroup();
+  },
+  created() {},
+  data() {
+    return {
+      goodsList: [], //退款商品列表
+      orderInfo: {},
+      refundPrice: "", //退款金额
+      select: [],
+      allCheck: false
+    };
+  },
+  components: {},
+  methods: {
+    //获取订单内可退货订单行
+    getGoodsGroup() {
+      wx.showLoading({
+        title: "加载中"
+      });
+      let params = {
+        orderId: this.orderInfo.orderVo.id,
+        applylines: this.goodsList
+      };
+      findAvailableOrderlines(params)
+        .then(res => {
+          if (res.data.code == "200") {
+            this.goodsList = res.data.result;
+            this.goodsList.map(goods => {
+              goods.orderLineId = goods.id;
+              goods.refundCount = goods.quantity;
+            });
+            let flag = this.goodsList.every(goods => {
+              return goods.selectStatus == "1";
+            });
+            // console.log(flag, 444);
+            if (flag) {
+              this.allCheck = true;
+            }
+          }
+          wx.hideLoading();
+        })
+        .catch(err => {
+          wx.hideLoading();
+        });
+    },
+    //单选
+    itemChange(item, group) {
+      this.select = [];
+      let shopListLength = null;
+      let allCheckFlag = true;
+      item.selectStatus == "1"
+        ? (item.selectStatus = "0")
+        : (item.selectStatus = "1");
+      shopListLength = this.goodsList.length;
+      this.goodsList.map(goods => {
+        if (goods.selectStatus == "1") {
+          this.select.push(goods);
+        } else {
+          allCheckFlag = false;
+        }
+      });
+      allCheckFlag == true ? (this.allCheck = true) : (this.allCheck = false);
+    },
+    //全选
+    allCheckChange() {
+      this.allCheck = !this.allCheck;
+      this.goodsList.map(goods => {
+        if (this.allCheck) {
+          goods.selectStatus = "1";
+        } else {
+          goods.selectStatus = "0";
+        }
+      });
+    },
+    //提交选择
+    submitChoose() {
+      let selectArr = this.goodsList.filter(goods => {
+        return goods.selectStatus == "1";
+      });
+      if (selectArr.length > 0) {
+        selectArr.map(goods => {
+          goods.orderLineId = goods.id;
+          goods.refundCount = goods.quantity;
+        });
+        console.log(selectArr, 666);
+        wx.setStorageSync("refundGoodsList", selectArr);
+        // console.log(wx.getStorageSync("refundGoods"),666);
+        wx.navigateBack({
+          delta: 1
+        });
+      } else {
+        wx.showToast({
+          title: "请至少选择一个商品",
+          icon: "none",
+          duration: 2000
+        });
+      }
+    }
+  },
+  computed: {}
+};
+</script>
 <style lang='scss'>
+.van-stepper {
+  width: 160rpx;
+  height: 42rpx;
+  border: 1rpx solid rgba(209, 209, 209, 1);
+  border-radius: 6rpx;
+}
+.van-stepper__minus,
+.van-stepper__plus {
+  position: relative;
+  display: inline-block;
+  width: 40rpx!important;
+  height: 50rpx!important;
+  // padding: 5rpx;
+  margin: 1rpx;
+  vertical-align: middle;
+  background-color: #f2f3f5;
+  border: 0;
+  box-sizing: border-box;
+}
+
 .page {
   padding-bottom: 200rpx;
   //  padding-bottom: 10rpx;
@@ -205,14 +372,7 @@
     }
   }
 }
-.hint {
-  p {
-    width: 90%;
-    margin: 0 auto;
-    font-size: 24rpx;
-    color: rgb(153, 153, 153);
-  }
-}
+
 .fixed {
   position: fixed;
   bottom: 0;
@@ -238,121 +398,7 @@
   }
 }
 </style>
-<script>
-import { findAvailableOrderlines } from "../../api/refund";
-import Toast from "../../../static/vant/toast/toast";
 
-export default {
-  onLoad: function(options) {},
-  onShow() {
-    this.orderInfo = Object.assign({}, wx.getStorageSync("orderInfo"));
-    // this.goodsList = wx.getStorageSync("refundGoodsList");
-    // this.goodsList.map(goods => {
-    //   goods.orderLineId = goods.id;
-    //   goods.refundCount = goods.quantity;
-    // });
-    this.getGoodsGroup();
-  },
-  created() {},
-  data() {
-    return {
-      goodsList: [], //退款商品列表
-      orderInfo: {},
-      refundPrice: "", //退款金额
-      select: [],
-      allCheck: false
-    };
-  },
-  components: {},
-  methods: {
-    //获取订单内可退货订单行
-    getGoodsGroup() {
-      wx.showLoading({
-        title: '加载中'
-      });
-      let params = {
-        orderId: this.orderInfo.orderVo.id,
-        applylines: this.goodsList
-      };
-      findAvailableOrderlines(params)
-        .then(res => {
-          if (res.data.code == "200") {
-            this.goodsList = res.data.result;
-            this.goodsList.map(goods => {
-              goods.orderLineId = goods.id;
-              goods.refundCount = goods.quantity;
-            });
-            let flag = this.goodsList.every(goods => {
-              return goods.selectStatus == "1";
-            });
-            // console.log(flag, 444);
-            if (flag) {
-              this.allCheck = true;
-            }
-          }
-          wx.hideLoading();
-        })
-        .catch(err => {
-          wx.hideLoading();
-        });
-    },
-    //单选
-    itemChange(item, group) {
-      this.select = [];
-      let shopListLength = null;
-      let allCheckFlag = true;
-      item.selectStatus == "1"
-        ? (item.selectStatus = "0")
-        : (item.selectStatus = "1");
-      shopListLength = this.goodsList.length;
-      this.goodsList.map(goods => {
-        if (goods.selectStatus == "1") {
-          this.select.push(goods);
-        } else {
-          allCheckFlag = false;
-        }
-      });
-      allCheckFlag == true ? (this.allCheck = true) : (this.allCheck = false);
-    },
-    //全选
-    allCheckChange() {
-      this.allCheck = !this.allCheck;
-      this.goodsList.map(goods => {
-        if (this.allCheck) {
-          goods.selectStatus = "1";
-        } else {
-          goods.selectStatus = "0";
-        }
-      });
-    },
-    //提交选择
-    submitChoose() {
-      let selectArr = this.goodsList.filter(goods => {
-        return goods.selectStatus == "1";
-      });
-      if (selectArr.length > 0) {
-        selectArr.map(goods => {
-          goods.orderLineId = goods.id;
-          goods.refundCount = goods.quantity;
-        });
-        console.log(selectArr, 666);
-        wx.setStorageSync("refundGoodsList", selectArr);
-        // console.log(wx.getStorageSync("refundGoods"),666);
-        wx.navigateBack({
-          delta: 1
-        });
-      } else {
-        wx.showToast({
-          title: "请至少选择一个商品",
-          icon: "none",
-          duration: 2000
-        });
-      }
-    }
-  },
-  computed: {}
-};
-</script>
 
 <style lang='scss' scoped>
 @import "./style";

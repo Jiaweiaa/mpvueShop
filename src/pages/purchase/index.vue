@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-10-08 10:54:56
+ * @LastEditTime: 2019-10-10 14:31:52
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -141,7 +141,7 @@
         </div>
       </div>
       <div class="noGood" v-else-if="listData.length==0&&active==0&&!showTips">
-        <img  src="/static/images/nodata/shangpin.png" alt />
+        <img  src="http://pz53ekn6o.bkt.clouddn.com/base_shangpin.png" alt />
       </div>
       <!-- 商品分类 -->
       <van-popup

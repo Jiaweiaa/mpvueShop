@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 16:55:19
- * @LastEditTime: 2019-09-28 18:04:41
+ * @LastEditTime: 2019-10-10 11:00:49
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -19,7 +19,7 @@
             size="60px"
             color="orange"
           /> -->
-          <img class="butieImg" src="/static/images/butie/butie.png" alt="">
+          <img class="butieImg" src="http://pz4xmn1ek.bkt.clouddn.com/butiejin_butie.png" alt="">
           <div class="title">补贴金余额</div>
           <div class="myMoney">
             

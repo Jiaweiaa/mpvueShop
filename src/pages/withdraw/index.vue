@@ -2,13 +2,13 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-12 11:26:21
- * @LastEditTime: 2019-09-26 15:34:47
+ * @LastEditTime: 2019-10-10 16:24:14
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="withdraw">
     <div class="banner">
-      <img src="/static/images/withdraw/wechat.png" alt />
+      <img src="http://pz5fj7nlh.bkt.clouddn.com/wechat.png" alt />
       <p>微信零钱</p>
     </div>
     <div class="my">
@@ -16,7 +16,7 @@
         <p>提现金额</p>
       </div>
       <div class="contentBox">
-        <img src="/static/images/withdraw/rmb.png" alt />
+        <img src="http://pz5fj7nlh.bkt.clouddn.com/rmb.png" alt />
         <van-field
           :value="teamData.amount"
           :clearable="true"

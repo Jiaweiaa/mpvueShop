@@ -2,7 +2,7 @@
  * @Description: 首页模块
  * @Author: 董
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-10-09 13:51:05
+ * @LastEditTime: 2019-10-10 13:51:54
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -46,6 +46,9 @@
         <img :src="'http://qn.gaoshanmall.cn/'+ item.logo" alt />
         <p>{{item.name}}</p>
       </div>
+    </div>
+    <div class="notice">
+
     </div>
     
     <!-- 限时抢购 -->
@@ -109,8 +112,8 @@
                 <span  v-for="(keyword,keywordIndex) in good.keywords" :key="keywordIndex">{{keyword}}</span>
               </div>
               <div class="vip" v-if="good.mixCashPrice &&good.mixScorePrice">
-                <img class="vip_img" src="/static/images/index/vip.png" alt />
-                <div>￥{{good.mixCashPrice}}+ <img class="money" src="/static/images/index/money.png" alt /> {{good.mixScorePrice}}补贴金</div>
+                <img class="vip_img" src="http://pz53m5lax.bkt.clouddn.com/index_vip.png" alt />
+                <div>￥{{good.mixCashPrice}}+ <img class="money" src="http://pz53m5lax.bkt.clouddn.com/index_money.png" alt /> {{good.mixScorePrice}}补贴金</div>
               </div>
               <div class="price">
                 <p>￥{{good.listPrice}}</p>
@@ -129,7 +132,7 @@
             v-for="(couponData, couponIndex) in item.goodsList"
             :key="couponIndex"
           >
-            <img class="bg" src="/static/images/coupon.png" />
+            <img class="bg" src="http://pz53m5lax.bkt.clouddn.com/index_coupon.png" />
             <div class="content">
               <div class="left">
                 <p style="position:relative;">

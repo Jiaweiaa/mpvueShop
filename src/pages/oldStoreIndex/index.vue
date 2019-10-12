@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-10-08 13:44:55
+ * @LastEditTime: 2019-10-10 14:25:40
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -83,10 +83,10 @@
 
         <!--商品列表  -->
         <div v-if="listData.length!=0&&active==0&&!showTips" class="goodsList">
-          <div class="storeInfo">
+          <!-- <div class="storeInfo">
             <img :src="'http://qn.gaoshanmall.cn/' + storeLogo" alt />
             <p>{{storeName}}</p>
-          </div>
+          </div> -->
           <div class="swiper-group">
             <div class="swiper">
               <swiper
@@ -100,7 +100,7 @@
                 <block>
                   <swiper-item class="swiper-item">
                     <img
-                      src="http://qn.gaoshanmall.cn/cloudmall/file/703372357716156416.png"
+                      src="http://pz53ekn6o.bkt.clouddn.com/shuimu.jpeg"
                       class="slide-image"
                     />
                   </swiper-item>
@@ -134,12 +134,12 @@
                   </div>-->
                   <div class="pd"></div>
                   <div class="vip" v-if="good.mixCashPrice &&good.mixScorePrice">
-                    <img class="vip_img" src="/static/images/index/vip.png" alt />
+                    <img class="vip_img" src="http://pz53m5lax.bkt.clouddn.com/index_vip.png" alt />
                     <span>
                       ￥{{good.mixCashPrice}}+
                       <img
                         class="money"
-                        src="/static/images/index/money.png"
+                        src="http://pz53m5lax.bkt.clouddn.com/index_money.png"
                         alt
                       />
                       {{good.mixScorePrice}}补贴金
@@ -171,7 +171,7 @@
           </div>
         </div>
         <div class="noGood" v-else-if="listData.length==0&&active==0&&!showTips">
-          <img src="/static/images/nodata/shangpin.png" alt />
+          <img src="http://pz53ekn6o.bkt.clouddn.com/base_shangpin.png" alt />
         </div>
         <!-- 商品分类 -->
         <van-popup

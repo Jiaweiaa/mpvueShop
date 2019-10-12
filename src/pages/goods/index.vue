@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-10-09 15:00:21
+ * @LastEditTime: 2019-10-11 15:11:43
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -32,16 +32,16 @@
           <span>{{listPrice}}</span>
         </p>
         <p class="vipPrice">
-          <img class="vip_img" src="/static/images/index/vip.png" alt />
+          <img class="vip_img" src="http://pz53m5lax.bkt.clouddn.com/index_vip.png" alt />
           <span>
             ￥{{mixCashPrice}}+
-            <img class="money_img" src="/static/images/index/money.png" alt />
+            <img class="money_img" src="http://pz53m5lax.bkt.clouddn.com/index_money.png" alt />
             {{mixScorePrice}}补贴金
           </span>
         </p>
       </div>
       <div class="buyBeans" >
-        <span v-if="peasPrice!=0">{{peasPrice}}购物豆</span>
+        <span v-if="peasPrice!='0'">{{peasPrice}}购物豆</span>
       </div>
       <!-- <p class="salePrice">
         组合价格:￥{{mixCashPrice}}+补贴金{{mixScorePrice}}
@@ -71,19 +71,19 @@
         <div class="shop_promise">
           <div class="item">
             <span>
-              <img src="/static/images/good/duihao.png" alt />
+              <img src="http://pz4xmn1ek.bkt.clouddn.com/goods_duihao.png" alt />
             </span>
             全场包邮
           </div>
           <div class="item">
             <span>
-              <img src="/static/images/good/duihao.png" alt />
+              <img src="http://pz4xmn1ek.bkt.clouddn.com/goods_duihao.png" alt />
             </span>
             7天退换
           </div>
           <div class="item">
             <span>
-              <img src="/static/images/good/duihao.png" alt />
+              <img src="http://pz4xmn1ek.bkt.clouddn.com/goods_duihao.png" alt />
             </span>
             48小时发货
           </div>
@@ -128,7 +128,8 @@
           <van-icon name="arrow-down" />
         </span>
       </van-cell>
-      <div v-if="recordList.length>0">
+      <!-- 购买记录 -->
+      <!-- <div v-if="recordList.length>0">
         <div class="record" @click="toRecord">
           <div class="header">
             <div class="label">
@@ -150,7 +151,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <div v-if="goods_desc" class="detail">
       <wxParse :content="goods_desc" />
@@ -171,22 +172,22 @@
 
             <!-- <p >会员价:￥{{vipPrice}}+{{integral}}补贴金</p> -->
             <p v-if="vipPrice!=''&&integral!=''" class="butie">
-              <img class="vip_img" src="/static/images/index/vip.png" alt />
+              <img class="vip_img" src="http://pz4xmn1ek.bkt.clouddn.com/index_vip.png" alt />
               <span>
                 ￥{{mixCashPrice}}+
-                <img class="money_img" src="/static/images/index/money.png" alt />
+                <img class="money_img" src="http://pz4xmn1ek.bkt.clouddn.com/index_money.png" alt />
                 {{mixScorePrice}}补贴金
               </span>
             </p>
-            <p class="bean">
-              ￥
+            <p class="bean" v-if="nowPeasPrice!=''&&nowPeasPrice!=null&&nowPeasPrice!=0">
+              
               <span>{{nowPeasPrice}}购物豆</span>
             </p>
-            <p>库存:{{quantity}}件</p>
+            <p class="num">库存:{{quantity}}件</p>
           </div>
         </div>
         <div @click="showType" class="close">
-          <img src="/static/images/good/close.png" alt />
+          <img src="http://pz4xmn1ek.bkt.clouddn.com/goods_close.png" alt />
         </div>
       </div>
       <div id="goodsinfo">
@@ -221,7 +222,7 @@
       </div>
 
       <div class="handle">
-        <van-button type="danger" size="large" custom-class="buyBtn" @click="submit()">确定</van-button>
+        <van-button type="danger" size="large" custom-class="buyBtn" @click="submit()">完成</van-button>
       </div>
     </van-popup>
 
@@ -242,7 +243,7 @@
       </div>
       <div class="home">
         <div class="car">
-          <img src="/static/images/goods/service.png" />
+          <img src="http://pz5990zt2.bkt.clouddn.com/service.png" />
           <span class="text" style="color:rgb(102,102,102);margin-left:-4rpx;">客服</span>
         </div>
       </div>
@@ -265,7 +266,7 @@
         <h3 class="title">优惠</h3>
         <p class="coupon_title" v-if="couponList.length>0">领券</p>
         <div class="coupon_box" v-for="(item,index) in couponList" :key="index">
-          <img class="bg" src="/static/images/coupon.png" />
+          <img class="bg" src="http://pz53m5lax.bkt.clouddn.com/index_coupon.png" />
           <div class="content">
             <div class="left">
               <p style="position:relative;">

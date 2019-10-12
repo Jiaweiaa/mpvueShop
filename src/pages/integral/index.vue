@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-24 14:25:58
- * @LastEditTime: 2019-09-30 11:21:17
+ * @LastEditTime: 2019-10-10 17:03:09
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -20,7 +20,7 @@
       <div class="detail" @click="beanList">购物豆明细</div>
       <div class="btMain">
         <div>
-          <img src="/static/images/butie/bean.png" alt />
+          <img src="http://pz59eou1l.bkt.clouddn.com/bean.png" alt />
         </div>
         <div class="text">
           <p>我的购物豆</p>
@@ -32,7 +32,7 @@
       </div>
       <div class="tip" @click="toWhatBean">
         <p>
-          <img src="/static/images/butie/what.png" alt />
+          <img src="http://pz59eou1l.bkt.clouddn.com/what.png" alt />
           什么是购物豆?
         </p>
       </div>
@@ -41,7 +41,7 @@
       <div class="detail" @click="integralList">补贴金明细</div>
       <div class="btMain">
         <div>
-          <img src="/static/images/butie/butie.png" alt />
+          <img src="http://pz59eou1l.bkt.clouddn.com/butie.png" alt />
         </div>
         <div class="text">
           <p>我的补贴金</p>
@@ -54,7 +54,7 @@
       </div>
       <div class="tip" @click="toWhatIntegral">
         <p>
-          <img src="/static/images/butie/what.png" alt />
+          <img src="http://pz59eou1l.bkt.clouddn.com/what.png" alt />
           什么是补贴金?
         </p>
       </div>

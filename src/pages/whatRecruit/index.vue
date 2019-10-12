@@ -2,12 +2,12 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-12 11:26:21
- * @LastEditTime: 2019-09-30 13:48:14
+ * @LastEditTime: 2019-10-10 15:53:58
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div style="width:100vw;height:100vh;" @click="toBeGive">
-    <img style="width:100%;height:100%" src="http://pydsg4puk.bkt.clouddn.com/recruit_text.png" alt />
+    <img style="width:100%;height:100%" src="http://pz53ekn6o.bkt.clouddn.com/zhaomu_text.png" alt />
   </div>
 </template>
 

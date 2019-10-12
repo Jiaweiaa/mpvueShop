@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-15 16:47:11
+ * @LastEditTime: 2019-10-12 14:57:04
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="page">
     <!-- 第二个板块 -->
@@ -17,20 +24,23 @@
                 <img :src="'http://qn.gaoshanmall.cn/'+goods.itemImg" alt />
               </div>
               <div class="goods-info" >
-                <h3 class="van-ellipsis" style="font-size:26rpx;">{{goods.itemName}}</h3>
-                <p>
+                <h3 class="van-ellipsis title">{{goods.itemName}}</h3>
+                <p class="property">
                   <span style="font-size:21rpx;">{{goods.propertiesValue}}</span>
                 </p>
-                <p>
+                <p class="refund-num">
+                  <span>退货数量:{{goods.quantity}}</span>
+                </p>
+                <!-- <p class="price">
                   <span style="font-size:23rpx;">￥{{goods.listPrice}}</span>
                   <span
                     style="text-decoration:line-through;color:#999;font-size:22rpx;"
                   >￥{{goods.salePrice}}</span>
-                </p>
+                </p> -->
               </div>
-              <div class="goods-num">
-                <span>数量:{{goods.quantity}}</span>
-              </div>
+              <!-- <div class="goods-num">
+                <span>退货数量:{{goods.quantity}}</span>
+              </div> -->
             </div>
           </div>
         </div>
@@ -52,8 +62,8 @@
           退款金额:
           <span style="color:rgba(255,108,0,1);">￥{{refundPrice}}</span>
         </p>
-        <p>
-          退款说明:
+        <p class="refundMark">
+          <span>退款说明:</span>          
           <input type="text" placeholder="选填" />
         </p>
       </div>
@@ -88,240 +98,7 @@
     </van-popup>
   </div>
 </template>
-<style lang='scss'>
-.page {
-  padding-bottom: 200rpx;
-  //  padding-bottom: 10rpx;
-  min-height: 140vh;
-}
-#orderPop {
-  .van-radio {
-    justify-content: flex-end !important;
-  }
-  .van-radio__icon--checked {
-    background-color: rgb(214, 70, 60) !important;
-    border-color: rgb(214, 70, 60) !important;
-    color: #fff !important;
-  }
-  .radioLabel {
-    color: #fff !important;
-  }
-  .popBtn {
-    width: 100%;
-    height: 85rpx;
-    font-size: 30rpx;
-    color: #000;
-    line-height: 85rpx;
-    border-radius: 0;
-    background: linear-gradient(70deg, rgb(214, 70, 60), red);
-    color: #fff;
-  }
-}
-//提交按钮
-.submitBtn {
-  width: 690rpx;
-  height: 90rpx;
-  margin: 0 auto;
-  background: linear-gradient(
-    -90deg,
-    rgba(255, 167, 48, 1) 0%,
-    rgba(255, 108, 0, 1) 100%
-  );
-  border-radius: 45rpx;
-  color: #fff;
-  font-size: 32rpx;
-  line-height: 90rpx;
-}
-.info {
-  background: #fff;
-  border-radius: 20rpx;
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 30rpx;
-  padding-top: 1rpx;
-  padding-bottom: 20rpx;
-  .header {
-    width: 94%;
-    margin: 3%;
-    padding-top: 1rpx;
-    display: flex;
-    justify-content: space-between;
-    p {
-      width: 50%;
-      height: 52rpx;
-      line-height: 52rpx;
-      // font-size: 28rpx;
-    }
-    p:nth-child(2) {
-      display: flex;
-      justify-content: flex-end;
-      .addBtn {
-        font-size: 24rpx;
-        line-height: 48rpx;
-        color: rgba(255, 108, 0, 1);
-        width: 140rpx;
-        height: 48rpx;
-        border: 1px solid rgba(255, 108, 0, 1);
-        opacity: 0.6;
-        border-radius: 24rpx;
-        margin: 0;
-      }
-    }
-  }
-  .body {
-    width: 94%;
-    margin: 0 3%;
-    .borderT {
-      border-top: 1rpx solid #999;
-      height: 1rpx;
-      margin: 20rpx 0 !important;
-      padding-top: 1rpx !important;
-    }
-    //正常文本cell样式
-    .item {
-      display: flex;
-      margin: 10rpx 0;
-      .left {
-        width: 50%;
-        font-size: 22rpx;
-        text-align: left;
-        color: #999;
-      }
-      .right {
-        width: 50%;
-        font-size: 22rpx;
-        text-align: right;
-        color: #000;
-      }
-    }
-    //商品cell样式
-    .store-info {
-      .store-name {
-        display: flex;
-        align-items: center;
-        height: 47rpx;
-        van-icon {
-          height: 49rpx;
-        }
-        span {
-          height: 48rpx;
-          font-size: 27rpx;
-          // line-height: 50rpx;
-        }
-      }
-      .goods {
-        .goods-item {
-          display: flex;
-          // align-items: flex-start;
-          .img-box {
-            width: 180rpx;
-            height: 180rpx;
-            display: flex;
-            // justify-content: center;
-            img {
-              width: 180rpx;
-              height: auto;
-            }
-          }
-          .goods-info {
-            margin-left: 10rpx;
-            width: 50%;
-            h3 {
-            }
-            p:nth-child(1) {
-              color: #999;
-              font-size: 28rpx;
-            }
-            p:nth-child(2) {
-              color: red;
-              font-size: 24rpx;
-              min-height: 75rpx;
-              del {
-                color: #999;
-              }
-            }
-          }
-          .goods-num {
-            width: 30%;
-            color: #999;
-            font-size: 24rpx;
-            text-align: right;
-          }
-        }
-      }
-    }
-  }
-  .footer {
-    width: 94%;
-    margin: 0 3%;
-    text-align: right !important;
-    .p1 {
-      font-size: 22rpx;
-      color: #999;
-    }
-    .p2 {
-      font-size: 24rpx;
-      span {
-        font-size: 36rpx;
-        color: red;
-      }
-    }
-  }
-}
-.refund-cell {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 30rpx;
-  padding: 1rpx 0;
-  .title {
-    font-size: 32rpx;
-  }
-  .item {
-    width: 100%;
-    background: #fff;
-    border-radius: 20rpx;
-    padding: 1rpx 0;
 
-    p {
-      margin: 25rpx 20rpx;
-      padding: 1rpx 0;
-      font-size: 28rpx;
-    }
-  }
-}
-.hint {
-  p {
-    width: 90%;
-    margin: 0 auto;
-    font-size: 24rpx;
-    color: rgb(153, 153, 153);
-  }
-}
-.fixed {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  width: 100%;
-  height: 85rpx;
-  button {
-    width: 50%;
-    height: 85rpx;
-    font-size: 30rpx;
-    color: #000;
-    line-height: 85rpx;
-    border-radius: 0;
-  }
-  .plain {
-    background: #fff;
-    color: #999;
-  }
-  .danger {
-    background: linear-gradient(70deg, rgb(214, 70, 60), red);
-    color: #fff;
-  }
-}
-</style>
 <script>
 import { applyRefund } from "../../api/refund";
 import Toast from "../../../static/vant/toast/toast";
@@ -414,3 +191,6 @@ export default {
 };
 </script>
 
+<style lang='scss'>
+@import "./style";
+</style>

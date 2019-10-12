@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-09-29 11:28:48
+ * @LastEditTime: 2019-10-10 10:58:37
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -112,7 +112,7 @@
         <h3 class="title">优惠</h3>
         <p class="coupon_title" v-if="couponList.length>0">领券</p>
         <div class="coupon_box" v-for="(item,index) in couponList" :key="index">
-          <img class="bg" src="/static/images/coupon.png" />
+          <img class="bg" src="http://pz4xmn1ek.bkt.clouddn.com/index_coupon.png" />
           <div class="content">
             <div class="left">
               <p style="position:relative;">

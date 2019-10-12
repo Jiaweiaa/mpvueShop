@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-23 14:48:06
- * @LastEditTime: 2019-09-29 15:32:58
+ * @LastEditTime: 2019-10-10 14:38:50
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -24,7 +24,7 @@
     </div>
   </div>
   <div v-else class="noShuju">
-    <img src="/static/images/nodata/shuju.png" alt />
+    <img src="http://pz53ekn6o.bkt.clouddn.com/base_shuju.png" alt />
   </div>
 </template>
 

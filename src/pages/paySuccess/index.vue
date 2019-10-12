@@ -2,13 +2,13 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-12 11:26:21
- * @LastEditTime: 2019-09-23 14:45:59
+ * @LastEditTime: 2019-10-10 14:31:15
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="record_content">
     <div class="img_group">
-      <img src="/static/images/paySuccess/success.png" alt />
+      <img src="http://pz53ekn6o.bkt.clouddn.com/success.png" alt />
     </div>
     <div class="text">订单已支付成功</div>
     <div class="btn-group">
