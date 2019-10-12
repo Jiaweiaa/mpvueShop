@@ -711,8 +711,11 @@ export default {
       });
     },
     toStore(id) {
+      // wx.navigateTo({
+      //   url: "/pages/oldStoreIndex/main?storeId=" + id
+      // });
       wx.navigateTo({
-        url: "/pages/oldStoreIndex/main?storeId=" + id
+        url: "/pages/storeIndex/main?id=" + id
       });
     },
     toQrcode(id){
