@@ -76,7 +76,7 @@
 						>
 							<span
 								style="font-size: 31px; font-weight: bold; margin-right: 5px;"
-							>{{item.offerCouponType}}</span>元
+							>{{item.offerActionType == 1000 ? item.actionTypeValue / 10 :item.actionTypeValue}}</span>{{item.offerActionType == 1000 ? '折': item.offerActionType == 2000 ? '元': ''}}
 						</div>
 						<div
 								class="type"
@@ -119,7 +119,7 @@
 						>
 							<span
 									style="font-size: 31px; font-weight: bold; margin-right: 5px;"
-							>{{item.offerCouponType}}</span>元
+							>{{item.offerActionType == 1000 ? item.actionTypeValue / 10 :item.actionTypeValue}}</span>{{item.offerActionType == 1000 ? '折': item.offerActionType == 2000 ? '元': ''}}
 						</div>
 						<div
 								class="type"
@@ -161,7 +161,7 @@
 							}">
 							<span
 									style="font-size: 31px; font-weight: bold; margin-right: 5px;"
-							>{{item.offerCouponType}}</span>元
+							>{{item.offerActionType == 1000 ? item.actionTypeValue / 10 :item.actionTypeValue}}</span>{{item.offerActionType == 1000 ? '折': item.offerActionType == 2000 ? '元': ''}}
 						</div>
 						<div
 								class="type"

@@ -90,13 +90,13 @@
     methods: {
       async getStoreStyle() {
         let res = await getUsingTemplate4Front({ storeId: this.storeId });
-        // if(res.data.result == null) {
-        //   wx.navigateTo({
-        //     url: "/pages/oldStoreIndex/main?storeId=" + this.storeId
-        //   });
-        // }else {
+        if(res.data.result == null) {
+          wx.navigateTo({
+            url: "/pages/oldStoreIndex/main?storeId=" + this.storeId
+          });
+        }else {
           this.storeStyleData = JSON.parse(res.data.result.template);
-        // }
+        }
       },
     }
   };
