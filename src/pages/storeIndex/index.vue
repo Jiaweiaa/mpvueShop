@@ -1,11 +1,4 @@
 <!--
- * @Description: In User Settings Edit
- * @Author: your name
- * @Date: 2019-09-23 14:48:06
- * @LastEditTime: 2019-09-23 14:48:06
- * @LastEditors: your name
- -->
-<!--
   店铺首页
  -->
 <template>
@@ -68,19 +61,13 @@
   
   export default {
     onLoad: function(options) {
-      // this.storeId = options.id;
       if(options.id){
         this.storeId = options.id;
       }else if(options.scene){
         this.storeId = options.scene;
       }
-      
+      // this.storeId = 1;
       this.getStoreStyle();
-    },
-    onPageScroll(e) {
-    },
-    onShow() {
-    
     },
     components: {
       Goods,
@@ -95,18 +82,21 @@
       CouponComponents,
       AuxiliaryBlank
     },
-    
     data() {
       return {
         storeStyleData: ''
       };
     },
-    
     methods: {
       async getStoreStyle() {
         let res = await getUsingTemplate4Front({ storeId: this.storeId });
-        this.storeStyleData = JSON.parse(res.data.result.template);
-        console.log(this.storeStyleData);
+        if(res.data.result == null) {
+          wx.navigateTo({
+            url: "/pages/oldStoreIndex/main?storeId=" + this.storeId
+          });
+        }else {
+          this.storeStyleData = JSON.parse(res.data.result.template);
+        }
       },
     }
   };

@@ -45,9 +45,9 @@
       toDetail(item) {
         if(item.imgType == 1 ) {
           // 1 导航
-          wx.switchTab({
-            url: "/pages/category/main"
-          })
+          wx.navigateTo({
+            url: "/pages/search/main?id=" + item.goodsSelected.id + "&name=" +  item.goodsSelected.mame +"&storeId=" + this.$parent.storeId
+          });
         }else if(item.imgType == 2 ) {
           console.log(item);
           // 2 商品

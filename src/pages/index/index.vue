@@ -103,7 +103,7 @@
             :key="goodIndex"
             @click="goodsDetail(good)"
           >
-            <div class="thumb"> 
+            <div class="thumb">
               <img :src="'http://qn.gaoshanmall.cn/' + good.img" alt />
             </div>
             <div class="desc">
@@ -405,7 +405,6 @@ export default {
     },
     // 使用优惠券
     useBtn(val) {
-      console.log(val);
       val.btnAble = false;
       let params = {
         uniqueId: val.couponDetailVo.uniqueId,
