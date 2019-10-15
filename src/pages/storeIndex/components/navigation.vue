@@ -57,7 +57,7 @@
         }else if(item.imgType == 3 ) {
           // 3 优惠券
           console.log('优惠券暂无')
-        }else {
+        }else if(item.imgType == 4) {
           // 4 专题
           wx.navigateTo({
             url: "/pages/topicdetail/main?id=" + item.id

@@ -24,18 +24,6 @@
 					<image
 					class="image"
 					:style="{
-					width: dataSource.viewData[7] == '15' && dataSource.viewData[2] == 3 ? '375px':
-								dataSource.viewData[7] == '15' && dataSource.viewData[2] == 4 ? '188px':
-								dataSource.viewData[7] == '15' && dataSource.viewData[2] == 5 ? '125px':
-								dataSource.viewData[7] == '16' && dataSource.viewData[2] == 3 ? '375px':
-								dataSource.viewData[7] == '16' && dataSource.viewData[2] == 4 ? '188px':
-								dataSource.viewData[7] == '16' && dataSource.viewData[2] == 5 ? '125px':
-								dataSource.viewData[7] == '17' && dataSource.viewData[2] == 3 ? '282px':
-								dataSource.viewData[7] == '17' && dataSource.viewData[2] == 4 ? '141px':
-								dataSource.viewData[7] == '17' && dataSource.viewData[2] == 5 ? '94px':
-								dataSource.viewData[7] == '18' && dataSource.viewData[2] == 3 ? '375px':
-								dataSource.viewData[7] == '18' && dataSource.viewData[2] == 4 ? '188px':
-								dataSource.viewData[7] == '18' && dataSource.viewData[2] == 5 ? '125px': '',
 					
 					height:dataSource.viewData[7] == '15' && dataSource.viewData[2] == 3 ? '375px':
 							dataSource.viewData[7] == '15' && dataSource.viewData[2] == 4 ? '188px':
@@ -127,10 +115,6 @@
 					<image
 						class="image"
 						:style="{
-						width: dataSource.viewData[7] == '15' ? '180px':
-									 dataSource.viewData[7] == '16' ? '120px':
-							     dataSource.viewData[7] == '17' ? '90px':
-							     dataSource.viewData[7] == '18' ? '214px': '' ,
 						height:dataSource.viewData[7] == '15' ? '120px':
 									 dataSource.viewData[7] == '16' ? '120px':
 							     dataSource.viewData[7] == '17' ? '120px':
@@ -212,26 +196,17 @@
 					borderRadius: dataSource.viewData[6] == '14' ? '5px' : ''
 					}">
 					<image
-							class="image"
-							:style="{
-							width: dataSource.viewData[7] == '15' && ((index%3 +1) !== 1) ? '188px':
-										 dataSource.viewData[7] == '15' && ((index%3 +1) == 1) ? '375px':
-										 dataSource.viewData[7] == '16' && ((index%3 +1) !== 1) ? '188px':
-										 dataSource.viewData[7] == '16' && ((index%3 +1) == 1) ? '375px':
-										 
-								     dataSource.viewData[7] == '17' && ((index%3 +1) !== 1) ? '141px':
-										 dataSource.viewData[7] == '17' && ((index%3 +1) == 1) ? '282px':
-								     dataSource.viewData[7] == '18' && ((index%3 +1) !== 1) ? '188px':
-								     dataSource.viewData[7] == '18' && (index%3 +1) == 1 ? '375px': '' ,
-							height:dataSource.viewData[7] == '15' && ((index%3 +1) !== 1) ? '106px':
-										 dataSource.viewData[7] == '15' && ((index%3 +1) == 1) ? '210px':
-										 dataSource.viewData[7] == '16' && ((index%3 +1) !== 1) ? '188px':
-										 dataSource.viewData[7] == '16' && ((index%3 +1) == 1) ? '375px':
-										 
-								     dataSource.viewData[7] == '17' && ((index%3 +1) !== 1) ? '188px':
-										 dataSource.viewData[7] == '17' && ((index%3 +1) == 1) ? '375px':
-								     dataSource.viewData[7] == '18' && ((index%3 +1) !== 1) ? '105px':
-								     dataSource.viewData[7] == '18' && (index%3 +1) == 1 ? '210px': '' ,
+						class="image"
+						:style="{
+						height:dataSource.viewData[7] == '15' && ((index%3 +1) !== 1) ? '106px':
+									 dataSource.viewData[7] == '15' && ((index%3 +1) == 1) ? '210px':
+									 dataSource.viewData[7] == '16' && ((index%3 +1) !== 1) ? '188px':
+									 dataSource.viewData[7] == '16' && ((index%3 +1) == 1) ? '375px':
+									 
+							     dataSource.viewData[7] == '17' && ((index%3 +1) !== 1) ? '188px':
+									 dataSource.viewData[7] == '17' && ((index%3 +1) == 1) ? '375px':
+							     dataSource.viewData[7] == '18' && ((index%3 +1) !== 1) ? '105px':
+							     dataSource.viewData[7] == '18' && (index%3 +1) == 1 ? '210px': '' ,
 						 }"
 							:mode="dataSource.viewData[8] == '19' ? 'scaleToFill' : 'aspectFit'"
 							:src="'http://qn.gaoshanmall.cn/'+item.isCoverImageUrl"></image>
@@ -311,10 +286,6 @@
 					<image
 						class="image"
 						:style="{
-						width: dataSource.viewData[7] == '15' ? '126px':
-									 dataSource.viewData[7] == '16' ? '126px':
-							     dataSource.viewData[7] == '17' ? '126px':
-							     dataSource.viewData[7] == '18' ? '126px': '' ,
 						height:dataSource.viewData[7] == '15' ? '84px':
 									 dataSource.viewData[7] == '16' ? '126px':
 							     dataSource.viewData[7] == '17' ? '168px':
@@ -450,6 +421,9 @@
 					height: 20px
 					line-height: 20px
 				.desc
+					text-overflow: ellipsis
+					white-space: nowrap
+					overflow: hidden
 					height: 20px
 					line-height: 20px
 					margin-left: 10px
@@ -483,6 +457,9 @@
 					height: 20px
 					line-height: 20px
 				.desc
+					text-overflow: ellipsis
+					white-space: nowrap
+					overflow: hidden
 					height: 20px
 					line-height: 20px
 					margin-left: 10px
@@ -523,6 +500,9 @@
 					height: 20px
 					line-height: 20px
 					font-size: 13px
+					text-overflow: ellipsis
+					white-space: nowrap
+					overflow: hidden
 					color: #999
 				.price
 					line-height: 20px
@@ -555,6 +535,9 @@
 					line-height: 20px
 					margin-top: 8px
 				.desc
+					text-overflow: ellipsis
+					white-space: nowrap
+					overflow: hidden
 					height: 20px
 					line-height: 20px
 					margin-left: 10px
@@ -596,6 +579,9 @@
 					line-height: 20px
 					margin-left: 10px
 					font-size: 13px
+					text-overflow: ellipsis
+					white-space: nowrap
+					overflow: hidden
 					color: #999
 				.price
 					line-height: 20px
@@ -627,6 +613,9 @@
 				.desc
 					height: 20px
 					line-height: 20px
+					text-overflow: ellipsis
+					white-space: nowrap
+					overflow: hidden
 					margin-left: 10px
 					font-size: 13px
 					color: #999

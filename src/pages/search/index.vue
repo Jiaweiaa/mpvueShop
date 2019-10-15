@@ -130,7 +130,7 @@
                   <div>
                     ￥{{good.mixCashPrice}}+
                     <img src="http://pz53m5lax.bkt.clouddn.com/index_money.png" alt />
-                    {{good.mixScorePrice}}补贴金
+                    {{good.mixScorePrice}}<span class="butie">补贴金</span>  
                   </div>
                 </div>
                 <div class="price_2">

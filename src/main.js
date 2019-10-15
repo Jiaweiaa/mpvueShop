@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-10-15 15:22:39
+ * @LastEditTime: 2019-10-15 16:21:46
  * @LastEditors: Please set LastEditors
  */
 import Vue from "vue";
@@ -54,7 +54,7 @@ export default {
       "pages/editStoreInfo/main",
       "pages/cart/main",
       "pages/joinUs/main",
-      "pages/index/main",
+      "^pages/index/main",
       "pages/oldStoreIndex/main",
       "pages/storeQrcode/main",
       "pages/teamView/main", //团长 我的主页
@@ -63,7 +63,7 @@ export default {
       "pages/collectlist/main",
       "pages/categorylist/main",
       "pages/butiejin/main",
-      "pages/storeIndex/main", // 店铺首页
+      "^pages/storeIndex/main", // 店铺首页
       "pages/myOrder/main",
       "pages/orderDetail/main",
       "pages/category/main",
@@ -84,8 +84,7 @@ export default {
       "pages/login/main",
       "pages/refund/main",
       "pages/refundOrder/main",
-      
-      "^pages/refundList/main", //退换货列表
+      "pages/refundList/main", //退换货列表
       "pages/beTeam/main", // 成为团长
       "pages/categorylist/main",
       "pages/topic/main",

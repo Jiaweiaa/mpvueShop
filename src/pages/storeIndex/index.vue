@@ -61,12 +61,12 @@
   
   export default {
     onLoad: function(options) {
-      if(options.id){
-        this.storeId = options.id;
-      }else if(options.scene){
-        this.storeId = options.scene;
-      }
-      // this.storeId = 1;
+      // if(options.id){
+      //   this.storeId = options.id;
+      // }else if(options.scene){
+      //   this.storeId = options.scene;
+      // }
+      this.storeId = 315;
       this.getStoreStyle();
     },
     components: {
@@ -96,6 +96,7 @@
           });
         }else {
           this.storeStyleData = JSON.parse(res.data.result.template);
+          console.log(this.storeStyleData);
         }
       },
     }

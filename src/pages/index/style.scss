@@ -152,6 +152,9 @@
             width: 19rpx;
             height: 21rpx;
           }
+          .butie{
+            font-size: 21rpx;
+          }
         }
         .price {
           display: flex;
@@ -548,12 +551,15 @@
               display: flex;
               align-items: center;
               margin-left: -11rpx;
-              padding: 0 20rpx;
+              padding: 0 10rpx;
               background: rgba(219, 48, 48, 1);
               border-radius: 16rpx;
               color: #fff;
               height: 33rpx;
               font-size: 24rpx;
+              .butie{
+                font-size: 20rpx;
+              }
               .money {
                 width: 22rpx;
                 height: 22rpx;
