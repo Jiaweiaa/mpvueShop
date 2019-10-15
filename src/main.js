@@ -62,7 +62,7 @@ export default {
       "pages/collectlist/main",
       "pages/categorylist/main",
       "pages/butiejin/main",
-      "pages/storeIndex/main", // 店铺首页
+      "^pages/storeIndex/main", // 店铺首页
       "pages/myOrder/main",
       "pages/orderDetail/main",
       "pages/category/main",
@@ -83,7 +83,7 @@ export default {
       "pages/login/main",
       "pages/refund/main",
       "pages/refundOrder/main",
-      "^pages/refundChoose/main",
+      "pages/refundChoose/main",
       "pages/refundList/main", //退换货列表
       "pages/beTeam/main", // 成为团长
       "pages/categorylist/main",

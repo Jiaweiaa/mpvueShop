@@ -46,7 +46,7 @@
         }else if(type == 3 ) {
           // 3 优惠券
           console.log('优惠券暂无')
-        }else {
+        }else if(type == 4){
           // 4 专题
           wx.navigateTo({
             url: "/pages/topicdetail/main?id=" + this.dataSource.viewData[31].goodsSelected.id
