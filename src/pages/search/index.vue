@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-10-10 14:37:21
+ * @LastEditTime: 2019-10-15 13:34:31
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -285,6 +285,7 @@ export default {
       }
     }
     this.getlistData();
+    console.log(this.showTips,'我的值');
   },
   // 上啦加载
   async onReachBottom() {

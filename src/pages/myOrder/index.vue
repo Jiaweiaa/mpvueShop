@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-17 14:00:02
- * @LastEditTime: 2019-10-06 15:45:52
+ * @LastEditTime: 2019-10-15 11:42:49
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -42,12 +42,15 @@
                     <span
                       class="list_price"
                       v-if="value.paymentType==13"
-                    >￥{{val.mixCashPrice?val.mixCashPrice:'0'}}+补贴金{{val.mixScorePrice?val.mixScorePrice:'0'}}</span>
+                    >￥{{val.mixCashPrice?val.mixCashPrice:'0'}}+<img src="http://pz59eou1l.bkt.clouddn.com/butie.png" alt="">{{val.mixScorePrice?val.mixScorePrice:'0'}}</span>
                     <span
                       class="list_price"
                       v-else-if="value.paymentType==12"
                     >补贴金{{val.mixScorePrice?val.mixScorePrice:'0'}}</span>
                     <span class="vip_price" v-else-if="value.paymentType==4">￥{{val.listPrice}}</span>
+                    <span class="vip_price" v-else-if="value.paymentType==14">
+                      <img src="http://pz59eou1l.bkt.clouddn.com/bean.png" alt="">
+                      {{val.peasPrice}}</span>
                     <span class="quantity">x{{val.quantity}}</span>
                   </div>
                 </div>
@@ -63,11 +66,11 @@
             </div>
             <div v-else-if="value.paymentType==14" style="text-align:right;">
               <span style="color:rgba(102,102,102,1);">应付款:</span>
-              <span>购物豆{{value.totalPeasActure}}</span>
+              <span><img src="http://pz59eou1l.bkt.clouddn.com/bean.png" style="vertical-align:middle;width:26rpx;height:26rpx" />{{value.totalPeasActure}}  </span>
             </div>
             <div v-else-if="value.paymentType==12" style="text-align:right;">
               <span style="color:rgba(102,102,102,1);">应付款:</span>
-              <span>补贴金{{value.totalScoreActure}}</span>
+              <span> <img src="http://pz59eou1l.bkt.clouddn.com/butie.png" style="vertical-align:middle;width:26rpx;height:26rpx" alt=""> {{value.totalScoreActure}}</span>
             </div>
             <view slot="footer" class="btn_group">
               <div
@@ -555,10 +558,31 @@ export default {
     background: #f8f8f8;
   }
 }
+.buyBeans{
+  img{
+    width: 26rpx;
+    height: 26rpx;
+    vertical-align:middle;
+  }
+}
 .good_price {
   margin-top: 53rpx;
   font-size: 32rpx;
   font-weight: 600;
+  .list_price{
+    img{
+      width: 26rpx;
+      height: 26rpx;
+      vertical-align:middle;
+    }
+  }
+  .vip_price{
+    img{
+      width: 26rpx;
+      height: 26rpx;
+      vertical-align:middle;
+    }
+  }
   .quantity {
     margin-left: 15rpx;
     font-size: 28rpx;

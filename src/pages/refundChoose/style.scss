@@ -20,38 +20,35 @@
           background-size: 40rpx 40rpx;
         }
       }
-      .good-card{
+      .good-card {
         width: 650rpx;
         display: flex;
-        .thums{
-          width:180rpx;
-          height:180rpx;
-          img{
-            width:180rpx;
-            height:180rpx;
+        .thums {
+          width: 180rpx;
+          height: 180rpx;
+          img {
+            width: 180rpx;
+            height: 180rpx;
             border-radius: 6rpx;
           }
         }
-        .desc{
+        .desc {
           width: 450rpx;
           margin-left: 20rpx;
           position: relative;
-          .title{
+          .title {
             font-size: 28rpx;
           }
-          .propery{
-            font-size: 24rpx;
-            padding: 8rpx;
-            color: #666;
-            background: #f8f8f8;
+          .propery {
+            span {
+              font-size: 24rpx;
+              padding: 8rpx;
+              color: #666;
+              background: #f8f8f8;
+            }
           }
-          .price{
+          .price {
             font-size: 32rpx;
-          }
-          .stepper-group{
-            position: absolute;
-            bottom: 0;
-            right: 0;
           }
         }
       }
@@ -70,30 +67,49 @@
     display: flex;
     // justify-content: space-between;
     align-items: center;
-    .left {
+    .checked {
       display: flex;
       align-items: center;
-      background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/checkbox-0e09baa37e.png)
-        no-repeat;
-      background-size: 34rpx 34rpx;
-      background-position: 20rpx;
-      padding-left: 70rpx;
+      .icon {
+        height: 45rpx;
+        width: 55rpx;
+        background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/checkbox-0e09baa37e.png)
+          no-repeat center center;
+        background-size: 40rpx 40rpx;
+        margin: 0 20rpx;
+      }
+      .icon.active {
+        background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/checkbox-checked-822e54472a.png)
+          no-repeat center center;
+        background-size: 40rpx 40rpx;
+      }
     }
+    // .left {
+    //   display: flex;
+    //   align-items: center;
+    //   background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/checkbox-0e09baa37e.png)
+    //     no-repeat;
+    //   background-size: 34rpx 34rpx;
+    //   background-position: 20rpx;
+    //   padding-left: 70rpx;
+    // }
 
     .right {
-      display: flex;
+      // display: flex;
+      flex: 1;
       div:nth-child(1) {
-        color: #b4282d;
+        color: #E32E38;
         padding-right: 40rpx;
       }
       div:nth-child(2) {
-        width: 200rpx;
+        width: 260rpx;
         height: 100rpx;
         text-align: center;
         line-height: 100rpx;
         font-size: 29rpx;
-        background: #b4282d;
+        background: #E32E38;
         color: #fff;
+        margin-left: auto;
       }
     }
   }

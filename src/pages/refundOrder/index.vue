@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-15 16:47:11
- * @LastEditTime: 2019-10-12 14:57:04
+ * @LastEditTime: 2019-10-15 15:07:11
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -23,7 +23,7 @@
               <div class="img-box">
                 <img :src="'http://qn.gaoshanmall.cn/'+goods.itemImg" alt />
               </div>
-              <div class="goods-info" >
+              <div class="goods-info">
                 <h3 class="van-ellipsis title">{{goods.itemName}}</h3>
                 <p class="property">
                   <span style="font-size:21rpx;">{{goods.propertiesValue}}</span>
@@ -36,11 +36,11 @@
                   <span
                     style="text-decoration:line-through;color:#999;font-size:22rpx;"
                   >￥{{goods.salePrice}}</span>
-                </p> -->
+                </p>-->
               </div>
               <!-- <div class="goods-num">
                 <span>退货数量:{{goods.quantity}}</span>
-              </div> -->
+              </div>-->
             </div>
           </div>
         </div>
@@ -63,7 +63,7 @@
           <span style="color:rgba(255,108,0,1);">￥{{refundPrice}}</span>
         </p>
         <p class="refundMark">
-          <span>退款说明:</span>          
+          <span>退款说明:</span>
           <input type="text" placeholder="选填" />
         </p>
       </div>
@@ -78,8 +78,15 @@
       <button @click="submitRefund" class="submitBtn">提交</button>
     </div>
     <!-- 弹出层 -->
-    <van-popup :show="orderShow" id="orderPop" position="bottom" @close="resonClose">
-      <van-radio-group :value="reason" @change="onChange" checked-color="#07c160">
+    <van-popup
+      :show="orderShow"
+      id="orderPop"
+      position="bottom"
+      @close="resonClose"
+      custom-class="popup-class"
+    >
+      <div class="title">退款原因</div>
+      <van-radio-group :value="reason" @change="onChange">
         <van-cell-group>
           <van-cell
             v-for="(reasonItem,reasonIndex) in reasons"
@@ -90,7 +97,12 @@
             :data-name="reasonItem"
             @click="changeReason(reasonItem)"
           >
-            <van-radio :name="reasonItem" custom-class="radioLabel" />
+            <van-radio :name="reasonItem">
+              <img
+                slot="icon"
+                :src="reasonIndex == selectReasonIndex ? 'https://img.yzcdn.cn/vant/user-active.png' : 'http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/checkbox-checked-822e54472a.png'"
+              />
+            </van-radio>
           </van-cell>
         </van-cell-group>
       </van-radio-group>
@@ -125,6 +137,7 @@ export default {
       goodsList: [], //退款商品列表
       orderInfo: {},
       reason: "",
+      selectReasonIndex: 0,
       refundPrice: null, //退款金额
       orderShow: false,
       reasons: ["我不想买了", "信息填写错误,重新购买", "买错了", "其他原因"]
@@ -135,11 +148,21 @@ export default {
     //选择退货原因
     onChange(mp) {
       this.reason = mp.mp.detail;
+      this.reasons.map((reasonItem, index) => {
+        if (reasonItem == this.reason) {
+          this.selectReasonIndex = index;
+        }
+      });
       console.log(mp);
     },
     //选择取消原因
     changeReason(reasonItem) {
       this.reason = reasonItem;
+      this.reasons.map((reasonItem, index) => {
+        if (reasonItem == this.reason) {
+          this.selectReasonIndex = index;
+        }
+      });
     },
     //取消订单遮罩层关闭
     resonClose() {
@@ -154,7 +177,7 @@ export default {
     //提交退款申请
     submitRefund() {
       wx.showLoading({
-        title: '加载中'
+        title: "加载中"
       });
       let params = {
         applylines: this.goodsList,
@@ -192,5 +215,8 @@ export default {
 </script>
 
 <style lang='scss'>
+.popup-class {
+  border-radius: 10rpx 10rpx 0px 0px;
+}
 @import "./style";
 </style>
