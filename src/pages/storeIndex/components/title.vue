@@ -39,9 +39,9 @@
         let type = this.dataSource.viewData['navigation'].type;
         if(type == 1 ) {
           // 1 导航
-          wx.switchTab({
-            url: "/pages/category/main"
-          })
+          wx.navigateTo({
+            url: "/pages/search/main?id=" + this.dataSource.viewData[31].goodsSelected.id + "&name=" +  this.dataSource.viewData[31].goodsSelected.mame +"&storeId=" + this.$parent.storeId
+          });
         }else if(type == 2 ) {
           // 2 商品
           wx.navigateTo({

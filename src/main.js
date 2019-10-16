@@ -54,7 +54,7 @@ export default {
       "pages/editStoreInfo/main",
       "pages/cart/main",
       "pages/joinUs/main",
-      "^pages/index/main",
+      "pages/index/main",
       "pages/oldStoreIndex/main",
       "pages/storeQrcode/main",
       "pages/teamView/main", //团长 我的主页
