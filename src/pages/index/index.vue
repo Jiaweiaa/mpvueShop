@@ -2,7 +2,7 @@
  * @Description: 首页模块
  * @Author: 董
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-10-10 13:51:54
+ * @LastEditTime: 2019-10-15 16:29:22
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -113,7 +113,8 @@
               </div>
               <div class="vip" v-if="good.mixCashPrice &&good.mixScorePrice">
                 <img class="vip_img" src="http://pz53m5lax.bkt.clouddn.com/index_vip.png" alt />
-                <div>￥{{good.mixCashPrice}}+ <img class="money" src="http://pz53m5lax.bkt.clouddn.com/index_money.png" alt /> {{good.mixScorePrice}}补贴金</div>
+                <div>￥{{good.mixCashPrice}}+ <img class="money" src="http://pz53m5lax.bkt.clouddn.com/index_money.png" alt /> 
+                {{good.mixScorePrice}}<span class="butie">补贴金</span></div>
               </div>
               <div class="price">
                 <p>￥{{good.listPrice}}</p>

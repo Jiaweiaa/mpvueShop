@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-10-11 15:11:43
+ * @LastEditTime: 2019-10-15 13:58:38
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -31,17 +31,28 @@
           ￥
           <span>{{listPrice}}</span>
         </p>
-        <p class="vipPrice">
+        <p class="vipPrice" v-if="mixCashPrice&&mixScorePrice">
           <img class="vip_img" src="http://pz53m5lax.bkt.clouddn.com/index_vip.png" alt />
           <span>
             ￥{{mixCashPrice}}+
-            <img class="money_img" src="http://pz53m5lax.bkt.clouddn.com/index_money.png" alt />
+            <img
+              class="money_img"
+              src="http://pz53m5lax.bkt.clouddn.com/index_money.png"
+              alt
+            />
             {{mixScorePrice}}补贴金
           </span>
         </p>
       </div>
-      <div class="buyBeans" >
-        <span v-if="peasPrice!='0'">{{peasPrice}}购物豆</span>
+      <div class="buyBeans">
+        <span v-if="peasPrice!='0'">
+          <img
+            src="http://pz59eou1l.bkt.clouddn.com/bean.png"
+            style="vertical-align:middle;width:26rpx;height:26rpx"
+            alt
+          />
+          {{peasPrice}}
+        </span>
       </div>
       <!-- <p class="salePrice">
         组合价格:￥{{mixCashPrice}}+补贴金{{mixScorePrice}}
@@ -60,7 +71,13 @@
     </div>
     <div class="goods-info">
       <div class="c">
-        <button class="share" hover-class="none" open-type="share" value></button>
+        <button
+          class="share"
+          hover-class="none"
+          open-type="share"
+          v-if="storeInfo&&storeInfo.id!='1'"
+          value
+        ></button>
         <p class="title">{{goodsInfo.title}}</p>
         <p class="subTitle">{{goodsInfo.subTitle}}</p>
         <p class="sketch" v-if="arrivalTime!=''">现在下单,预计{{arrivalTime}}送到</p>
@@ -151,7 +168,7 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>-->
     </div>
     <div v-if="goods_desc" class="detail">
       <wxParse :content="goods_desc" />
@@ -175,13 +192,23 @@
               <img class="vip_img" src="http://pz4xmn1ek.bkt.clouddn.com/index_vip.png" alt />
               <span>
                 ￥{{mixCashPrice}}+
-                <img class="money_img" src="http://pz4xmn1ek.bkt.clouddn.com/index_money.png" alt />
+                <img
+                  class="money_img"
+                  src="http://pz4xmn1ek.bkt.clouddn.com/index_money.png"
+                  alt
+                />
                 {{mixScorePrice}}补贴金
               </span>
             </p>
             <p class="bean" v-if="nowPeasPrice!=''&&nowPeasPrice!=null&&nowPeasPrice!=0">
-              
-              <span>{{nowPeasPrice}}购物豆</span>
+              <span>
+                <img
+                  src="http://pz59eou1l.bkt.clouddn.com/bean.png"
+                  style="vertical-align:middle;width:26rpx;height:26rpx"
+                  alt
+                />
+                {{nowPeasPrice}}
+              </span>
             </p>
             <p class="num">库存:{{quantity}}件</p>
           </div>
@@ -210,9 +237,12 @@
       </div>
       <!-- <p>请选择商品数量</p> -->
       <div style="display:flex;justify-content: space-between;align-items:center;">
-        <p style="margin-left:30rpx;font-size:32rpx;color:rgba(102,102,102,1);">购买数量:</p>
+        <p style="margin-left:30rpx;font-size:32rpx;color:#666;">购买数量:</p>
         <van-stepper
-          style="margin-right:30rpx;"
+          custom-class="step-class"
+          input-class="step-input"
+          plus-class="step-plus"
+          minus-class="step-minus"
           async-change
           @change="valueChange"
           :step="1"
@@ -318,7 +348,13 @@ export default {
       title: "加载中",
       mask: true
     });
-    this.id = this.$root.$mp.query.id;
+    if (this.$root.$mp.query) {
+      console.log(this.$root.$mp.query, "777");
+      if (this.$root.$mp.query.id) {
+        this.id = this.$root.$mp.query.id;
+      }
+    }
+
     this.openId = getStorageOpenid();
     this.getCartGoodsNum();
     this.goodsDetail();
@@ -620,9 +656,9 @@ export default {
     minusGoodsNum(goods) {
       this.goodsNum--;
     },
-    togoodsDetail(id) {
-      wx.redirectTo({ url: "/pages/goods/main?id=" + id });
-    },
+    // togoodsDetail(id) {
+    //   wx.redirectTo({ url: "/pages/goods/main?id=" + id });
+    // },
     add() {
       this.number = this.number + 1;
     },
@@ -1190,6 +1226,44 @@ export default {
 @import "./style.scss";
 </style>
 <style lang='scss'>
+.step-class {
+  margin-right: 30rpx;
+  width: 160rpx !important;
+  height: 42rpx !important;
+  border: 1rpx solid #d1d1d1 !important;
+  border-radius:6rpx;
+  // background: #000 !important;
+  .step-input {
+    font-size: 28rpx !important;
+    width: 75rpx !important;
+    height: 40rpx !important;
+    line-height: 40rpx !important;
+    min-height: 40rpx !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #fff !important;
+    border: 1rpx solid #d1d1d1 !important;
+    border-top: none !important;
+    border-bottom: none !important;
+  }
+  .step-plus {
+    width: 40rpx !important;
+    height: 40rpx !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #fff !important;
+    // border-bottom: 1rpx solid #d1d1d1 !important;
+  }
+  .step-minus {
+    width: 40rpx !important;
+    height: 40rpx !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #fff !important;
+    // border-bottom: 1rpx solid #d1d1d1 !important;
+  }
+}
+
 .canvas {
   width: 250px;
   height: 200px;
@@ -1230,14 +1304,7 @@ export default {
   background: rgba(250, 215, 215, 1);
   color: rgba(219, 48, 48, 1);
 }
-.goods .van-stepper {
-  width: 400rpx !important;
-  margin: 60rpx 0 !important;
-  display: flex;
-  justify-content: flex-end;
-  .van-stepper__minus {
-  }
-}
+
 .record .label {
   flex-grow: 1;
 }

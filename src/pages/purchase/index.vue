@@ -130,7 +130,7 @@
                   </span>
                 </div> -->
                 <div class="price_2">
-                  <span class="span1">￥{{good.salePrice}}</span>
+                  <span class="span1">￥{{good.listPrice}}</span>
 
                   <!-- <span class="span2" v-if="good.peasPrice">{{good.peasPrice}}购物豆</span> -->
                   <!-- <span class="span3" v-else>￥{{good.listPrice}}</span> -->

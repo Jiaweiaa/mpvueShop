@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-15 16:47:11
- * @LastEditTime: 2019-10-12 16:46:54
+ * @LastEditTime: 2019-10-15 14:18:54
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -24,17 +24,28 @@
             </div>
             <div class="desc">
               <p class="title">{{goods.itemTitle}}</p>
-              <p class="propery">{{goods.propertiesValue}}</p>
+              <p class="propery">
+                <span>{{goods.propertiesValue}}</span>
+              </p>
               <p class="price">￥{{goods.salePrice}}</p>
               <div class="stepper-group">
-                <van-stepper integer :min="1" :max="goods.quantity" :step="1" />
+                <van-stepper
+                  custom-class="step-class"
+                  input-class="step-input"
+                  plus-class="step-plus"
+                  minus-class="step-minus"
+                  integer
+                  :min="1"
+                  :max="goods.quantity"
+                  :step="1"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <van-cell-group>
+      <!-- <van-cell-group>
         <van-cell v-for="(goods,index) in goodsList" :key="index">
           <div style="display:flex;">
             <div style="margin:auto 0;">
@@ -53,19 +64,18 @@
               :thumb="'http://qn.gaoshanmall.cn/'+goods.itemImg"
             >
               <div slot="footer">
-                <!-- <div>￥  {{item.salePrice}}</div> -->
                 <van-stepper integer :min="1" :max="goods.quantity" :step="1" />
               </div>
             </van-card>
           </div>
         </van-cell>
-      </van-cell-group>
+      </van-cell-group>-->
       <div class="fixed">
-        <div style="margin-left:15px;">
+        <div class="checked">
           <div class="icon" @click="allCheckChange()" :class="allCheck==true ? 'active' : ''"></div>
         </div>
 
-        <div>全选</div>
+        <div style="width:60rpx;font-size:28rpx;font-weight:400;">全选</div>
         <div class="right">
           <div style="min-width:170px;"></div>
           <div @click="submitChoose()">确定</div>
@@ -190,24 +200,47 @@ export default {
 };
 </script>
 <style lang='scss'>
-.van-stepper {
-  width: 160rpx;
-  height: 42rpx;
-  border: 1rpx solid rgba(209, 209, 209, 1);
-  border-radius: 6rpx;
-}
-.van-stepper__minus,
-.van-stepper__plus {
-  position: relative;
-  display: inline-block;
-  width: 40rpx!important;
-  height: 50rpx!important;
-  // padding: 5rpx;
-  margin: 1rpx;
-  vertical-align: middle;
-  background-color: #f2f3f5;
-  border: 0;
-  box-sizing: border-box;
+.stepper-group {
+  position: absolute;
+  bottom: 20rpx;
+  right: 0;
+  height: 50rpx;
+  .step-class {
+    width: 160rpx !important;
+    height: 42rpx !important;
+    border: 1rpx solid #d1d1d1 !important;
+    border-radius: 6rpx;
+    // background: #000 !important;
+    .step-input {
+      font-size: 28rpx !important;
+      width: 75rpx !important;
+      height: 40rpx !important;
+      line-height: 40rpx !important;
+      min-height: 40rpx !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: #fff !important;
+      border: 1rpx solid #d1d1d1 !important;
+      border-top: none !important;
+      border-bottom: none !important;
+    }
+    .step-plus {
+      width: 40rpx !important;
+      height: 40rpx !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: #fff !important;
+      // border-bottom: 1rpx solid #d1d1d1 !important;
+    }
+    .step-minus {
+      width: 40rpx !important;
+      height: 40rpx !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: #fff !important;
+      // border-bottom: 1rpx solid #d1d1d1 !important;
+    }
+  }
 }
 
 .page {
@@ -373,30 +406,31 @@ export default {
   }
 }
 
-.fixed {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  width: 100%;
-  height: 85rpx;
-  button {
-    width: 50%;
-    height: 85rpx;
-    font-size: 30rpx;
-    color: #000;
-    line-height: 85rpx;
-    border-radius: 0;
-  }
-  .plain {
-    background: #fff;
-    color: #999;
-  }
-  .danger {
-    background: linear-gradient(70deg, rgb(214, 70, 60), red);
-    color: #fff;
-  }
-}
+// .fixed {
+//   position: fixed;
+//   bottom: 0;
+//   left: 0;
+//   display: flex;
+//   width: 100%;
+//   height: 85rpx;
+  
+//   button {
+//     width: 50%;
+//     height: 85rpx;
+//     font-size: 30rpx;
+//     color: #000;
+//     line-height: 85rpx;
+//     border-radius: 0;
+//   }
+//   .plain {
+//     background: #fff;
+//     color: #999;
+//   }
+//   .danger {
+//     background: linear-gradient(70deg, rgb(214, 70, 60), red);
+//     color: #fff;
+//   }
+// }
 </style>
 
 

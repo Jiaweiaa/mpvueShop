@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-27 16:17:00
+ * @LastEditTime: 2019-06-27 16:17:00
+ * @LastEditors: your name
+ */
 import Vue from "vue";
 import App from ".";
 
@@ -5,7 +12,7 @@ const app = new Vue(App);
 app.$mount();
 export default {
   config: {
-    navigationBarTitleText: "退款退货详情",
+    navigationBarTitleText: "退货退款详情",
     usingComponents: {
       "van-tab": "/static/vant/tab/index",
       "van-tabs": "/static/vant/tabs/index",

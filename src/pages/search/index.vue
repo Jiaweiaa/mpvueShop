@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-10-10 14:37:21
+ * @LastEditTime: 2019-10-15 13:34:31
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -130,7 +130,7 @@
                   <div>
                     ￥{{good.mixCashPrice}}+
                     <img src="http://pz53m5lax.bkt.clouddn.com/index_money.png" alt />
-                    {{good.mixScorePrice}}补贴金
+                    {{good.mixScorePrice}}<span class="butie">补贴金</span>  
                   </div>
                 </div>
                 <div class="price_2">
@@ -285,6 +285,7 @@ export default {
       }
     }
     this.getlistData();
+    console.log(this.showTips,'我的值');
   },
   // 上啦加载
   async onReachBottom() {

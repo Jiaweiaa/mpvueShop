@@ -1,8 +1,59 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-12 11:26:21
+ * @LastEditTime: 2019-10-15 16:14:44
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="refund_list">
     <div class="myOrder">
       <noDataView v-if="(list.length <=0  && onLoadLoading == false)"></noDataView>
-      <view class="section" v-else>
+      <div v-else class="orderList">
+        <div
+          class="orderList_item"
+          v-for="(value,index) in list"
+          v-show="list!=null&&list.length>0"
+          :key="index"
+          @click="detailOrder(value)"
+        >
+          <div
+            class="order_code"
+          >订单编号: {{value.orderCode}}</div>
+          <div class="good-card" v-for="(val,childIndex) in value.orderLines" :key="childIndex">
+            <div class="thumb">
+              <img :src="'http://qn.gaoshanmall.cn/'+val.itemImg" alt="">
+            </div>
+            <div class="desc">
+              <p class="good_title">{{val.itemName}}</p>
+              <p class="propery">
+                <span>{{val.propertiesValue}}</span>
+              </p>
+              <p class="price">
+                ￥{{val.salePrice}}  <span>x{{val.quantity}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="status">
+            <div class="desc" v-if="value.reType=='1'">
+              <img src="http://pz74d9amq.bkt.clouddn.com/refund_icon.png" alt="">
+              退货退款
+            </div>
+            <div class="desc" v-if="value.reType=='2'">
+              <img src="http://pz74d9amq.bkt.clouddn.com/refund_money.png" alt="">
+              换货
+            </div>
+            <div class="desc" v-if="value.reType=='3'">
+              <img src="http://pz74d9amq.bkt.clouddn.com/refund_money.png" alt="">
+              仅退款
+            </div>
+            <div class="btn">
+              查看详情
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <view class="section">
         <div
           v-for="(value,index) in list"
           v-show="list!=null&&list.length>0"
@@ -43,34 +94,7 @@
             ></van-card>
           </div>
         </div>
-        <div style="width: 100%; text-align: center;margin-top: 5px;">
-          <div class="title" v-if="allCount!=''&&list.length >= allCount && list.length > 0">
-            <span>—</span>
-            <span>我也是有底线的</span>
-            <span>—</span>
-          </div>
-        </div>
-      </view>
-
-      <!-- 弹出层 -->
-      <!-- <van-popup :show="reasonShow" id="reasonPop" position="bottom" @close="popClose">
-      <van-radio-group :value="reason" @change="onChange" >
-        <van-cell-group>
-          <van-cell
-            v-for="(reasonItem,reasonIndex) in reasons"
-            :key="reasonIndex"
-            :title="reasonItem"
-            value-class="value-class"
-            clickable
-            :data-name="reasonItem"
-            @click="changeReason(reasonItem)"
-          >
-            <van-radio :name="reasonItem" custom-class="radioLabel"/>
-          </van-cell>
-        </van-cell-group>
-      </van-radio-group>
-      <button class="popBtn" @click="cancelOrder">提交</button>
-      </van-popup>-->
+      </view> -->
     </div>
   </div>
 </template>
@@ -272,10 +296,8 @@ export default {
   .section {
     background: #fff;
     .listViewBox {
-      padding: 10px;
-      margin: 10px;
-      border-radius: 10px;
-      border: 1px solid #eee;
+      width: 750rpx;
+      background: #fff;
       .van-card {
         background: #fff;
         view {

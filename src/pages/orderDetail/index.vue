@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-17 14:00:29
- * @LastEditTime: 2019-10-11 10:47:52
+ * @LastEditTime: 2019-10-15 11:54:23
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -249,8 +249,8 @@
           <div class="left">商品合计</div>
           <div class="right" v-if="detailData.orderVo.paymentType==13">￥{{detailData.orderVo.totalActure}}+补贴金{{detailData.orderVo.totalScoreActure}}</div>
           <div class="right" v-else-if="detailData.orderVo.paymentType==4">￥{{detailData.orderVo.totalActure}}</div>
-          <div class="right" v-else-if="detailData.orderVo.paymentType==14">购物豆{{detailData.orderVo.totalPeasActure}}</div>
-          <div class="right" v-else-if="detailData.orderVo.paymentType==12">补贴金{{detailData.orderVo.totalScoreActure}}</div>
+          <div class="right" v-else-if="detailData.orderVo.paymentType==14"><img src="http://pz59eou1l.bkt.clouddn.com/bean.png" style="vertical-align:middle;width:26rpx;height:26rpx" alt="">{{detailData.orderVo.totalPeasActure}}</div>
+          <div class="right" v-else-if="detailData.orderVo.paymentType==12"><img src="http://pz59eou1l.bkt.clouddn.com/butie.png" style="vertical-align:middle;width:26rpx;height:26rpx" alt="">{{detailData.orderVo.totalScoreActure}}</div>
         </div>
         <div class="item">
           <div class="left">订单备注</div>
@@ -276,17 +276,17 @@
             class="right"
             v-else-if="detailData.orderVo.paymentType==12"
             style="color:#D92231;"
-          >补贴金{{detailData.orderVo.totalScoreActure}}</div>
+          ><img src="http://pz59eou1l.bkt.clouddn.com/butie.png" style="vertical-align:middle;width:26rpx;height:26rpx" alt="">{{detailData.orderVo.totalScoreActure}}</div>
           <div
             class="right"
             v-else-if="detailData.orderVo.paymentType==13"
             style="color:#D92231;"
-          >￥{{detailData.orderVo.totalActure}}+补贴金{{detailData.orderVo.totalScoreActure}}</div>
+          >￥{{detailData.orderVo.totalActure}}+<img src="http://pz59eou1l.bkt.clouddn.com/butie.png" style="vertical-align:middle;width:26rpx;height:26rpx" alt="">{{detailData.orderVo.totalScoreActure}}</div>
           <div
             class="right"
             v-else-if="detailData.orderVo.paymentType==14"
             style="color:#D92231;"
-          >购物豆{{detailData.orderVo.totalPeasActure}}</div>
+          ><img src="http://pz59eou1l.bkt.clouddn.com/bean.png" style="vertical-align:middle;width:26rpx;height:26rpx" />{{detailData.orderVo.totalPeasActure}}</div>
         </div>
       </div>
     </div>
