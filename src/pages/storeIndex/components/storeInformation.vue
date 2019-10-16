@@ -11,13 +11,12 @@
 				:src="'http://qn.gaoshanmall.cn/' + dataSource.viewData['39'].imgUrl"
 				mode="scaleToFill"></image>
 			<div
-					:class="
+				:class="
 					dataSource.viewData[38] == '61' ? 'type1' :
 					dataSource.viewData[38] == '62' ? 'type2' :
 					dataSource.viewData[38] == '63' ? 'type3' :
 					dataSource.viewData[38] == '64' ? 'type4' :
-					dataSource.viewData[38] == '65' ? 'type5' : ''
-				"
+					dataSource.viewData[38] == '65' ? 'type5' : ''"
 				class="mask">
 				<div class="logoImg">
 					<image
