@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 17:12:49
- * @LastEditTime: 2019-10-12 11:48:30
+ * @LastEditTime: 2019-10-16 14:13:07
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -168,7 +168,22 @@ export default {
           ];
           this.moreService = [];
         } else if (wx.getStorageSync("userLevel") == 1) {
-         this.myService = [
+          this.myService = [
+            {
+              title: "新手帮助",
+              icon: "http://pz5adc55v.bkt.clouddn.com/xinshou.png",
+              url: "/pages/coupon/main"
+            },
+            {
+              title: "地址管理",
+              icon: "http://pz5adc55v.bkt.clouddn.com/dizhi.png",
+              url: "/pages/address/main"
+            },
+            {
+              title: "联系客服",
+              icon: "http://pz5adc55v.bkt.clouddn.com/kefu.png",
+              url: "/pages/address/main"
+            },
             {
               title: "采购中心",
               icon: "http://pz5adc55v.bkt.clouddn.com/caigou.png",
@@ -180,6 +195,11 @@ export default {
               title: "补贴金发放",
               icon: "http://pz5adc55v.bkt.clouddn.com/butiejin.png",
               url: "/pages/butiejin/main"
+            },
+            {
+              title: "我的合伙人",
+              icon: "http://pz5adc55v.bkt.clouddn.com/hehuoren.png",
+              url: "/pages/subordinate/main"
             },
             {
               title: "我的佣金",
@@ -306,6 +326,21 @@ export default {
         } else if (wx.getStorageSync("userLevel") == 1) {
           this.myService = [
             {
+              title: "新手帮助",
+              icon: "http://pz5adc55v.bkt.clouddn.com/xinshou.png",
+              url: "/pages/coupon/main"
+            },
+            {
+              title: "地址管理",
+              icon: "http://pz5adc55v.bkt.clouddn.com/dizhi.png",
+              url: "/pages/address/main"
+            },
+            {
+              title: "联系客服",
+              icon: "http://pz5adc55v.bkt.clouddn.com/kefu.png",
+              url: "/pages/address/main"
+            },
+            {
               title: "采购中心",
               icon: "http://pz5adc55v.bkt.clouddn.com/caigou.png",
               url: "/pages/purchase/main"
@@ -316,6 +351,11 @@ export default {
               title: "补贴金发放",
               icon: "http://pz5adc55v.bkt.clouddn.com/butiejin.png",
               url: "/pages/butiejin/main"
+            },
+            {
+              title: "我的合伙人",
+              icon: "http://pz5adc55v.bkt.clouddn.com/hehuoren.png",
+              url: "/pages/subordinate/main"
             },
             {
               title: "我的佣金",

@@ -1,4 +1,11 @@
 <!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-10-15 16:21:11
+ * @LastEditTime: 2019-10-15 16:21:11
+ * @LastEditors: your name
+ -->
+<!--
   店铺首页
  -->
 <template>
@@ -61,12 +68,12 @@
   
   export default {
     onLoad: function(options) {
-      // if(options.id){
-      //   this.storeId = options.id;
-      // }else if(options.scene){
-      //   this.storeId = options.scene;
-      // }
-      this.storeId = 315;
+      if(options.id){
+        this.storeId = options.id;
+      }else if(options.scene){
+        this.storeId = options.scene;
+      }
+      // this.storeId = 315;
       this.getStoreStyle();
     },
     components: {

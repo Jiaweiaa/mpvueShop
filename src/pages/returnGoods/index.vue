@@ -1,6 +1,15 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-12 11:26:21
+ * @LastEditTime: 2019-10-16 13:44:35
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="page" v-if="pageData!=null">
-    <div class="bg">{{ pageData.reName}}</div>
+    <div class="bg">
+      <p>{{ pageData.reName}}</p>
+    </div>
     <div class="codeType">
       <div class="title">{{pageData.reContent}}</div>
       <div class="message">退款编号:&nbsp;{{pageData.myReCode}}</div>
@@ -14,36 +23,8 @@
 
     <div class="codeSession">
       <div class="title">退款进度</div>
-      <van-steps custom-class="stepStyle" :steps="steps" :active="active"/>
+      <van-steps custom-class="stepStyle" :steps="steps" :active="active" />
     </div>
-
-    <!-- <div class="codeSession">
-      <div class="title">退货说明</div>
-      <div class="content">
-        <div>
-          <span class="spanStyle">收</span>
-          <span>陈小陈</span>
-          <span>16601048888</span>
-        </div>
-        <div class="address">辽宁省盘锦市兴隆台区水游城回迁办公楼1号楼10层1007</div>
-      </div>
-      <div class="returnSession">
-        <p>1.商品自售出之日起30日内，电器商品出现质量问题（机器本身发生性能故障）予以退换。顾客不愿意退换货，愿意维修的，进行额外补偿购机金额的10%。</p>
-        <p>2.购机60日内商品磨损影响二次销售及缺少配件，商场承担磨损费和缺少配件的40%费用。</p>
-        <p>3.购机90日内商品磨损影响二次销售及缺少配件，商场承担磨损费和缺少配件的30%费用。</p>
-      </div>
-      <ul>
-        <li>
-          <span></span>未与商家协商一致，请勿自行退货，以免商家拒收货物。
-        </li>
-        <li>
-          <span></span>交易的钱款还在高山中间平台，确保您的资金安全。
-        </li>
-        <li>
-          <span></span>请与商家确认真实的退货物流信息，逾期未确认申请将关闭。
-        </li>
-      </ul>
-    </div> -->
 
     <div class="codeSession">
       <div class="title">退款信息</div>
@@ -71,7 +52,7 @@
         </p>
         <p v-if="pageData.myActualRefundAmount!=null">
           <span>实际退款金额</span>
-           ￥{{pageData.myActualRefundAmount}}
+          ￥{{pageData.myActualRefundAmount}}
         </p>
         <p>
           <span>退款说明</span>
@@ -85,6 +66,26 @@
           {{pageData.myReCode}}
         </p>
       </div>
+    </div>
+    <div class="codeSession">
+      <div class="title">售后说明</div>
+      <!-- <div class="content">
+        <div>
+          <span class="spanStyle">收</span>
+          <span>陈小陈</span>
+          <span>16601048888</span>
+        </div>
+        <div class="address">辽宁省盘锦市兴隆台区水游城回迁办公楼1号楼10层1007</div>
+      </div>-->
+      <div class="returnSession">
+        <p>亲爱的客户，很抱歉您的商品出现这样的问题。请准备好商品全套（商品、附件、发票原件、包装）</p>
+        <p>按以下地址寄往商品售后部，不支持到付及平邮。如收到商品后情况属实，我们会尽快为您办理。感谢您对的支持。（注：电子发票及换货发票无需退回）</p>
+        <p>提示：为避免数据遗失或泄露，请您提前做好数据备份，我们将不承担相应责任</p>
+      </div>
+      <ul>
+        <li>• 收货地址：辽宁省盘锦市易起省仓库</li>
+        <li>• 联系姓名：易起省仓库</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -111,14 +112,22 @@
   border-bottom: 1px solid #e3e3e3;
 }
 .bg {
-  width: 100%;
-  height: 75px;
-  background: $hot-color;
-  text-align: center;
-  line-height: 75px;
-  padding-left: 10px;
-  color: #fff;
-  font-size: 18px;
+  width: 750rpx;
+  height: 140rpx;
+  padding-top: 1rpx;
+  background: linear-gradient(
+    90deg,
+    rgba(240, 135, 136, 1) 0%,
+    rgba(227, 46, 56, 1) 100%
+  );
+  // text-align: left;
+
+  p {
+    margin-left: 90rpx;
+    margin-top: 54rpx;
+    color: #fff;
+    font-size: 32rpx;
+  }
 }
 .codeType {
   background: #fff;
@@ -139,11 +148,11 @@
   margin-top: 10px;
   padding: 10px;
   .title {
-    font-weight: bold;
+    // font-weight: bold;
     height: 40px;
     line-height: 40px;
-    border-bottom: 1px solid #e3e3e3;
-    font-size: 14px;
+    border-bottom: 1px solid #dcdcdc;
+    font-size: 28rpx;
   }
   .content {
     padding: 10px 0;
@@ -171,24 +180,24 @@
     }
   }
   .returnSession p {
-    color: #666;
-    font-size: 13px;
-    line-height: 20px;
-    margin-bottom: 5px;
+    color: #888;
+    font-size: 24rpx;
+    line-height: 24px;
+    margin-bottom: 20rpx;
   }
   ul li {
-    font-size: 12px;
-    color: #999;
-    height: 15px;
+    font-size: 24rpx;
+    color: #000;
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 20rpx;
+    list-style: none;
     span {
       border-radius: 50%;
       height: 5px;
       width: 5px;
       display: inline-block;
-      background: #999;
+      background: #000;
       margin-right: 5px;
     }
   }
@@ -414,7 +423,7 @@ export default {
         } else if (this.pageData.reStatus == 2) {
           this.pageData.reName = "商家已拒绝";
           this.pageData.reContent = "您的退货申请已拒绝!";
-        }else if(this.pageData.reStatus == 10){
+        } else if (this.pageData.reStatus == 10) {
           this.pageData.reName = "买家已撤销";
           this.pageData.reContent = "买家已撤销此次退货申请!";
         }

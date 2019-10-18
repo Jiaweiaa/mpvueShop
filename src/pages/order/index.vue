@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-21 09:17:36
- * @LastEditTime: 2019-10-10 14:29:26
+ * @LastEditTime: 2019-10-16 10:40:04
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -28,6 +28,20 @@
       @cancel="onPayClose"
       @select="onPaySelect"
     />
+    <!-- <van-popup :show="paySheetShow" position="bottom">
+      <div>
+        <van-radio-group :value="radio">
+          <van-cell-group>
+            <van-cell title="单选框 1" value-class="value-class" clickable data-name="1">
+              <van-radio name="1" />
+            </van-cell>
+            <van-cell title="单选框 2" value-class="value-class" clickable data-name="2">
+              <van-radio name="2" />
+            </van-cell>
+          </van-cell-group>
+        </van-radio-group>
+      </div>
+    </van-popup> -->
     <div @click="toAddressList" v-if="address!=null" class="address">
       <div class="item">
         <div class="list">
@@ -531,6 +545,7 @@ export default {
 
   data() {
     return {
+      radio: "1",
       couponShow: false,
       canBeAppliedCouponsTitle: "", //可用优惠券标题
       cantBeAppliedCouponsTitle: "", //不可用优惠券标题
@@ -591,7 +606,7 @@ export default {
       shopList: [], //分店铺商品列表
       currentPayAmount: "", //应付金额
       currentPayCashAmount: "", //混合应付金额
-      currentPayAllScoreAmount:"",
+      currentPayAllScoreAmount: "",
       currentPayScoreAmount: "", //混合应付积分
       currentPayAllPeasAmount: "", //购物豆应付价格
       discount: "", //优惠金额

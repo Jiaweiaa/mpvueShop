@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-17 14:00:02
- * @LastEditTime: 2019-10-15 11:42:49
+ * @LastEditTime: 2019-10-16 14:14:20
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -33,7 +33,7 @@
                 thumb-class="order-image"
                 :thumb="'http://qn.gaoshanmall.cn/'+val.itemImg"
               >
-                <div slot="title">
+                <div slot="title" class="slot-group">
                   <div class="good_title">{{val.itemName}}</div>
                   <div class="good_sku">
                     <span>{{val.propertiesValue}}</span>
@@ -46,7 +46,7 @@
                     <span
                       class="list_price"
                       v-else-if="value.paymentType==12"
-                    >补贴金{{val.mixScorePrice?val.mixScorePrice:'0'}}</span>
+                    ><img src="http://pz59eou1l.bkt.clouddn.com/butie.png" alt="">{{val.mixScorePrice?val.mixScorePrice:'0'}}</span>
                     <span class="vip_price" v-else-if="value.paymentType==4">￥{{val.listPrice}}</span>
                     <span class="vip_price" v-else-if="value.paymentType==14">
                       <img src="http://pz59eou1l.bkt.clouddn.com/bean.png" alt="">
@@ -57,19 +57,19 @@
               </van-card>
             </div>
             <div v-if="value.paymentType==13" style="text-align:right;">
-              <span style="color:rgba(102,102,102,1);">应付款:</span>
-              <span>￥{{value.totalActure}}+补贴金{{value.totalScoreActure}}</span>
+              <span style="color:rgba(102,102,102,1);">实付:</span>
+              <span>￥{{value.totalActure}}+<img src="http://pz59eou1l.bkt.clouddn.com/butie.png" style="vertical-align:middle;width:26rpx;height:26rpx" alt="">{{value.totalScoreActure}}</span>
             </div>
             <div v-else-if="value.paymentType==4" style="text-align:right;">
-              <span style="color:rgba(102,102,102,1);">应付款:</span>
+              <span style="color:rgba(102,102,102,1);">实付:</span>
               <span>￥{{value.totalActure}}</span>
             </div>
             <div v-else-if="value.paymentType==14" style="text-align:right;">
-              <span style="color:rgba(102,102,102,1);">应付款:</span>
+              <span style="color:rgba(102,102,102,1);">实付:</span>
               <span><img src="http://pz59eou1l.bkt.clouddn.com/bean.png" style="vertical-align:middle;width:26rpx;height:26rpx" />{{value.totalPeasActure}}  </span>
             </div>
             <div v-else-if="value.paymentType==12" style="text-align:right;">
-              <span style="color:rgba(102,102,102,1);">应付款:</span>
+              <span style="color:rgba(102,102,102,1);">实付:</span>
               <span> <img src="http://pz59eou1l.bkt.clouddn.com/butie.png" style="vertical-align:middle;width:26rpx;height:26rpx" alt=""> {{value.totalScoreActure}}</span>
             </div>
             <view slot="footer" class="btn_group">

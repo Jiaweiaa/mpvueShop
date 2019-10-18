@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-10-15 16:21:11
+ * @LastEditTime: 2019-10-18 08:55:43
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
 	<div class="goods">
 		<div>
@@ -69,10 +76,10 @@
 								textAlign: dataSource.viewData[10] == '23'? 'left': 'center',
 							}">
 							<div class="vipPrice" v-show="dataSource.viewData[59] !== '88'">
-								<image class="vip_img" src="/static/images/index/vip.png" alt />
+								<image class="vip_img" src="http://pz53m5lax.bkt.clouddn.com/index_vip.png" alt />
 								<div class="priceBox">
                 ￥{{item.skuInventoryQtyDtos[0].mixCashPrice}} +
-	                <image class="money_img" src="/static/images/index/money.png" alt />
+	                <image class="money_img" src="http://pz53m5lax.bkt.clouddn.com/index_money.png" alt />
 								{{item.skuInventoryQtyDtos[0].mixScorePrice}}补贴金
 		           </div>
 							</div>
@@ -151,10 +158,10 @@
 							textAlign: dataSource.viewData[10] == '23'? 'left': 'center',
 						}">
 							<div class="vipPrice" v-show="dataSource.viewData[59] !== '88'">
-								<image class="vip_img" src="/static/images/index/vip.png" alt />
+								<image class="vip_img" src="http://pz53m5lax.bkt.clouddn.com/index_vip.png" alt />
 								<div class="priceBox">
 									￥{{item.skuInventoryQtyDtos[0].mixCashPrice}} +
-									<image class="money_img" src="/static/images/index/money.png" alt />
+									<image class="money_img" src="http://pz53m5lax.bkt.clouddn.com/index_money.png" alt />
 									{{item.skuInventoryQtyDtos[0].mixScorePrice}}补贴金
 								</div>
 							</div>
@@ -239,10 +246,10 @@
 							textAlign: dataSource.viewData[10] == '23'? 'left': 'center',
 						}">
 							<div class="vipPrice" v-show="dataSource.viewData[59] !== '88'">
-								<image class="vip_img" src="/static/images/index/vip.png" alt />
+								<image class="vip_img" src="http://pz53m5lax.bkt.clouddn.com/index_vip.png" alt />
 								<div class="priceBox">
 									￥{{item.skuInventoryQtyDtos[0].mixCashPrice}} +
-									<image class="money_img" src="/static/images/index/money.png" alt />
+									<image class="money_img" src="http://pz53m5lax.bkt.clouddn.com/index_money.png" alt />
 									{{item.skuInventoryQtyDtos[0].mixScorePrice}}补贴金
 								</div>
 							</div>
@@ -322,10 +329,10 @@
 							textAlign: dataSource.viewData[10] == '23'? 'left': 'center',
 						}">
 							<div class="vipPrice" v-show="dataSource.viewData[59] !== '88'">
-								<image class="vip_img" src="/static/images/index/vip.png" alt />
+								<image class="vip_img" src="http://pz53m5lax.bkt.clouddn.com/index_vip.png" alt />
 								<div class="priceBox">
 									￥{{item.skuInventoryQtyDtos[0].mixCashPrice}} +
-									<image class="money_img" src="/static/images/index/money.png" alt />
+									<image class="money_img" src="http://pz53m5lax.bkt.clouddn.com/index_money.png" alt />
 									{{item.skuInventoryQtyDtos[0].mixScorePrice}}补贴金
 								</div>
 							</div>
@@ -375,8 +382,8 @@
 			overflow: hidden
 			margin-bottom: 5px
 			.vip_img
-				width: 20px
-				height: 20px
+				width: 50rpx
+				height: 33rpx
 				float: left
 			.priceBox
 				padding: 2px
@@ -385,8 +392,8 @@
 				float: left
 				display: flex
 				white-space: nowrap
-				height: 16px
-				font-size: 12px
+				height: 33rpx
+				font-size: 12rpx
 				color: #fff
 				background: rgba(217, 34, 49, 1)
 				border-radius: 0 8px 8px 0
@@ -394,8 +401,8 @@
 				align-items: center
 				.money_img
 					margin: 0 3px
-					width: 13px
-					height: 13px
+					width: 22rpx
+					height: 22rpx
 		.listView
 			text-align: center
 			overflow: hidden

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-10-15 13:34:31
+ * @LastEditTime: 2019-10-17 15:59:58
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -122,15 +122,17 @@
                     :key="keywordIndex"
                   >{{keyword}}</span>
                 </div>
-                <div class="pd">
-
-                </div>
+                <div class="pd"></div>
                 <div class="vip_price" v-if="good.mixCashPrice && good.mixScorePrice">
                   <img class="vip_img" src="http://pz53m5lax.bkt.clouddn.com/index_vip.png" alt />
                   <div>
                     ￥{{good.mixCashPrice}}+
-                    <img src="http://pz53m5lax.bkt.clouddn.com/index_money.png" alt />
-                    {{good.mixScorePrice}}<span class="butie">补贴金</span>  
+                    <img
+                      src="http://pz53m5lax.bkt.clouddn.com/index_money.png"
+                      alt
+                    />
+                    {{good.mixScorePrice}}
+                    <span class="butie">补贴金</span>
                   </div>
                 </div>
                 <div class="price_2">
@@ -218,34 +220,32 @@
       </van-popup>
       <!-- 店铺列表 -->
       <div v-show="storeListData.length!=0&&active==1&&!showTips" class="storeList">
-        
-          <div class="store-item" v-for="(store,storeIndex) in storeListData" :key="storeIndex">
-            <div class="top">
-              <div class="logo">
-                <img :src="'http://qn.gaoshanmall.cn/'+store.logo" alt />
-              </div>
-              <div class="title">{{store.name}}</div>
-   
-              <div class="btn">
-                <div @click="toQrcode(store.id)">小程序码</div>
-                <div @click="toStore(store.id)">进店</div>
-              </div>
+        <div class="store-item" v-for="(store,storeIndex) in storeListData" :key="storeIndex">
+          <div class="top">
+            <div class="logo">
+              <img :src="'http://qn.gaoshanmall.cn/'+store.logo" alt />
             </div>
-            <div class="bottom">
-              <div
-                class="good-item"
-                v-for="(good,goodIndex) in store.itemAndImgDtos"
-                :key="goodIndex"
-                @click="goodsDetail(good.id)"
-              >
-                <img :src="'http://qn.gaoshanmall.cn/'+good.picUrl" alt />
-              </div>
+            <div class="title">{{store.name}}</div>
+
+            <div class="btn">
+              <div @click="toQrcode(store.id)">小程序码</div>
+              <div @click="toStore(store.id)">进店</div>
             </div>
           </div>
-          <div class="nomoreStore">
-            <p>没有更多店铺了哦~</p>
+          <div class="bottom">
+            <div
+              class="good-item"
+              v-for="(good,goodIndex) in store.itemAndImgDtos"
+              :key="goodIndex"
+              @click="goodsDetail(good.id)"
+            >
+              <img :src="'http://qn.gaoshanmall.cn/'+good.picUrl" alt />
+            </div>
           </div>
-        
+        </div>
+        <div class="nomoreStore">
+          <p>没有更多店铺了哦~</p>
+        </div>
       </div>
     </div>
   </div>
@@ -283,9 +283,12 @@ export default {
       if (this.$root.$mp.query.storeId) {
         this.storeId = this.$root.$mp.query.storeId;
       }
+      if (this.$root.$mp.query.sellType) {
+        this.sellType = this.$root.$mp.query.sellType;
+      }
     }
     this.getlistData();
-    console.log(this.showTips,'我的值');
+    console.log(this.showTips, "我的值");
   },
   // 上啦加载
   async onReachBottom() {
@@ -294,40 +297,41 @@ export default {
       title: "加载中"
     });
     this.loading = true;
-    console.log(this.active,'active的值');
+    console.log(this.active, "active的值");
     if (this.active == 0) {
-      console.log(this.listData.length,'数据长度');
-      console.log(this.allCount,'后台返回的总数');
+      console.log(this.listData.length, "数据长度");
+      console.log(this.allCount, "后台返回的总数");
       if (this.listData.length >= this.allCount) {
         this.loading = false;
         wx.hideLoading();
       } else {
         this.pageNum++;
         const res = await searchItem({
-        k: this.words,
-        s: this.order,
-        p: this.pageNum,
-        navid: this.categoryId,
-        storeId: this.storeId
-      });
-      if (res.data.code == 200) {
-        this.listData = this.listData.concat(res.data.result.itemDocs);
-        // this.tipsData = this.listData;
-        this.allCount = res.data.result.totalElements;
-        this.listData.map(v => {
-          if (this.order == "SALES-ASC") {
-            if (index < 5) {
-              this.$set(v, "tag", "热销");
-            }
-          }
-          v.img = JSON.parse(v.image)[0].images[0];
-          this.$set(v, "keyword", v.keywords.join("||"));
+          k: this.words,
+          s: this.order,
+          p: this.pageNum,
+          navid: this.categoryId,
+          storeId: this.storeId,
+          sellType: this.sellType
         });
-        this.tipsData = [];
-        this.loading = false;
-      } else {
-        this.loading = false;
-      }
+        if (res.data.code == 200) {
+          this.listData = this.listData.concat(res.data.result.itemDocs);
+          // this.tipsData = this.listData;
+          this.allCount = res.data.result.totalElements;
+          this.listData.map(v => {
+            if (this.order == "SALES-ASC") {
+              if (index < 5) {
+                this.$set(v, "tag", "热销");
+              }
+            }
+            v.img = JSON.parse(v.image)[0].images[0];
+            this.$set(v, "keyword", v.keywords.join("||"));
+          });
+          this.tipsData = [];
+          this.loading = false;
+        } else {
+          this.loading = false;
+        }
         setTimeout(() => {
           wx.hideLoading();
         }, this.GLOBAL.timer);
@@ -407,6 +411,7 @@ export default {
           active: false
         }
       ],
+      sellType:1,
       categoryId: "", //分类ID
       name: "", //分类名称
       storeId: "", //店铺ID
@@ -436,10 +441,10 @@ export default {
   },
   methods: {
     //取消搜索
-   hideTips(){
-     this.showTips=false;
-     this.words = ""
-   },
+    hideTips() {
+      this.showTips = false;
+      this.words = "";
+    },
     //获取商品列表
     async getGoodList() {
       const res = await searchItem({
@@ -447,7 +452,8 @@ export default {
         s: this.order,
         p: this.pageNum,
         navid: this.categoryId,
-        storeId: this.storeId
+        storeId: this.storeId,
+        sellType: this.sellType
       });
       if (res.data.code == 200) {
         this.listData = res.data.result.itemDocs;
@@ -603,7 +609,8 @@ export default {
         p: this.pageNum,
         fq: this.aeo,
         storeId: this.storeId,
-        navid: this.categoryId
+        navid: this.categoryId,
+        sellType: this.sellType
       });
       this.navData = res.data.result;
       this.listData = res.data.result.itemDocs;
@@ -651,6 +658,8 @@ export default {
         wx.hideLoading();
         this.storeListData = res.data.result.records;
         this.storeAllCount = res.data.result.total;
+      } else {
+        wx.hideLoading();
       }
     },
     // 类型切换
@@ -719,7 +728,7 @@ export default {
         url: "/pages/storeIndex/main?id=" + id
       });
     },
-    toQrcode(id){
+    toQrcode(id) {
       wx.navigateTo({
         url: "/pages/storeQrcode/main?storeId=" + id
       });
@@ -742,7 +751,6 @@ export default {
     }
   }
 
- 
   .activeSearch {
     background: #b4282d !important;
     color: #fff !important;

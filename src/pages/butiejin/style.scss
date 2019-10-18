@@ -3,6 +3,7 @@
   background: #fff;
   .top_box {
     margin-top: 150rpx;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,7 +15,7 @@
       background: #fff;
       // color: #fff;
       width: 100%;
-   
+
       text-align: center;
       margin-top: 59rpx;
       font-size: 36rpx;
@@ -23,6 +24,16 @@
       // margin-top: 29rpx;
       font-size: 72rpx;
       font-weight: bold;
+    }
+    .record {
+      position: absolute;
+      top: 128rpx;
+      right: 40rpx;
+      font-size: 24rpx;
+      color: #888;
+      border-radius: 22rpx;
+      padding: 10rpx 22rpx;
+      background: #f1f1f1;
     }
   }
   .btnStyle {
@@ -35,24 +46,23 @@
     justify-content: center;
     align-items: center;
     margin-top: 195rpx;
-    .lable{
+    .lable {
       font-size: 32rpx;
     }
-    .inputBox{
+    .inputBox {
       width: 240rpx;
       margin-left: 7rpx;
-      input {     
+      input {
         padding-left: 50rpx;
-        border-bottom: 2rpx solid #E63936;
+        border-bottom: 2rpx solid #e63936;
       }
     }
-    
   }
   .create_btn {
-    width:580rpx;
-    height:90rpx;
-    background: #E63936;
-    border-radius:45rpx;
+    width: 580rpx;
+    height: 90rpx;
+    background: #e63936;
+    border-radius: 45rpx;
     color: #fff;
     text-align: center;
     line-height: 90rpx;

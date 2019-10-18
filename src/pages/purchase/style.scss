@@ -22,12 +22,18 @@
       position: absolute;
       top: 17rpx;
       left: 90rpx;
-      background: url("../../../static/images/index/search.png") center
-        no-repeat;
+      background: url("http://pz53m5lax.bkt.clouddn.com/index_search.png")
+        center no-repeat;
       background-size: 100%;
       width: 28rpx;
       height: 28rpx;
       margin-right: 10rpx;
+    }
+    .cancel {
+      position: absolute;
+      top: 10rpx;
+      z-index: 999;
+      right: 70rpx;
     }
   }
   .tabs {

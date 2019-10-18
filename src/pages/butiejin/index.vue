@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-12 16:55:19
- * @LastEditTime: 2019-10-10 11:00:49
+ * @LastEditTime: 2019-10-16 14:21:48
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -18,13 +18,11 @@
             name="gold-coin"
             size="60px"
             color="orange"
-          /> -->
-          <img class="butieImg" src="http://pz4xmn1ek.bkt.clouddn.com/butiejin_butie.png" alt="">
+          />-->
+          <img class="butieImg" src="http://pz4xmn1ek.bkt.clouddn.com/butiejin_butie.png" alt />
           <div class="title">补贴金余额</div>
-          <div class="myMoney">
-            
-            {{myScore}}
-          </div>
+          <div class="myMoney">{{myScore}}</div>
+          <div class="record" @click="toRecordList">发放记录</div>
         </div>
         <div class="input-box">
           <div class="lable">转出补贴金:</div>
@@ -39,7 +37,6 @@
           </button>
         </div>
         <!-- <van-button custom-class="btnStyle" @click="createQrcode" type="primary">生成二维码</van-button> -->
-        
       </div>
     </div>
   </div>
@@ -72,6 +69,11 @@ export default {
     this.score = "";
   },
   methods: {
+    toRecordList() {
+      wx.navigateTo({
+        url: "/pages/recordList/main"
+      });
+    },
     // 查询我的积分
     async searchMyScore() {
       wx.showLoading();
@@ -111,11 +113,11 @@ export default {
             }
           })
           .catch(err => {});
-      }else{
+      } else {
         wx.showToast({
-          icon:'none',
-          title:'请输入补贴金数量'
-        })
+          icon: "none",
+          title: "请输入补贴金数量"
+        });
       }
     },
     //保存图片

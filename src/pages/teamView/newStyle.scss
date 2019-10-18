@@ -126,7 +126,7 @@
   }
   .service {
     width: 691rpx;
-    height: 237rpx;
+    // height: 237rpx;
     padding: 1rpx;
     margin: 0 auto;
     margin-top: 30rpx;
@@ -142,6 +142,7 @@
     .content {
       margin-left: 36rpx;
       margin-top: 37rpx;
+      margin-bottom: 30rpx;
       display: flex;
       .item {
         margin-right: 48rpx;

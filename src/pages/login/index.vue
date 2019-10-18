@@ -2,14 +2,14 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-10-10 13:57:00
+ * @LastEditTime: 2019-10-16 13:35:11
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="login" v-if="signFlag">
     <div class="logo">
       <!-- 百团 -->
-      <img src="http://pz53ekn6o.bkt.clouddn.com/baituan_logo.jpeg" alt />
+      <img src="http://pzgc7ja3h.bkt.clouddn.com/logo.jpeg" alt />
       <!-- 时刻 -->
       <!-- <img src="/static/images/gaoshan_logo.png" alt=""> -->
     </div>
