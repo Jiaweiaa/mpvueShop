@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-23 15:30:03
- * @LastEditTime: 2019-10-16 15:11:57
+ * @LastEditTime: 2019-10-10 14:52:59
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -281,7 +281,7 @@ export default {
                 // });
               })
               .catch(() => {
-            
+                Notify("网络错误,请检查网络");
                 // on cancel
               });
           } else {
