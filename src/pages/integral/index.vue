@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-24 14:25:58
- * @LastEditTime: 2019-10-10 17:03:09
+ * @LastEditTime: 2019-10-18 09:13:01
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -101,7 +101,7 @@
               clearable
               label="购物豆充值卡"
               placeholder="请输入购物豆充值卡码"
-              @change="fieldChange"
+              @change="beanFieldChange"
             />
           </van-cell-group>
         </div>
@@ -295,8 +295,12 @@ export default {
         Notify("请填写卡号");
       }
     },
-    // 输入框变化
+    // 补贴金输入框变化
     fieldChange(val) {
+      this.code = val.mp.detail;
+    },
+    //购物豆输入框变化
+    beanFieldChange(val) {
       this.beanCode = val.mp.detail;
     },
 

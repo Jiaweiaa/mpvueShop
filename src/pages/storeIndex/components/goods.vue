@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-10-15 16:21:11
- * @LastEditTime: 2019-10-18 08:55:43
+ * @LastEditTime: 2019-10-18 09:48:12
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -87,7 +87,7 @@
 								￥{{item.salePrice}}
 								<span
 									style="text-decoration: line-through; font-size: 12px; color: #ccc;"
-								>￥{{item.salePrice}}</span>
+								>￥{{item.listPrice}}</span>
 								</div>
 							<div style="font-size: 12px; color: #999;">
 								<span v-show="dataSource.viewData[59] == '90'">
@@ -169,7 +169,7 @@
 								￥{{item.salePrice}}
 								<span
 										style="text-decoration: line-through; font-size: 12px; color: #ccc;"
-								>￥{{item.salePrice}}</span>
+								>￥{{item.listPrice}}</span>
 							</div>
 							<div style="font-size: 12px; color: #999;">
 								<span v-show="dataSource.viewData[59] == '90'">
@@ -257,7 +257,7 @@
 								￥{{item.salePrice}}
 								<span
 										style="text-decoration: line-through; font-size: 12px; color: #ccc;"
-								>￥{{item.salePrice}}</span>
+								>￥{{item.listPrice}}</span>
 							</div>
 							<div style="font-size: 12px; color: #999;">
 								<span v-show="dataSource.viewData[59] == '90'">
@@ -340,7 +340,7 @@
 								￥{{item.salePrice}}
 								<span
 										style="text-decoration: line-through; font-size: 12px; color: #ccc;"
-								>￥{{item.salePrice}}</span>
+								>￥{{item.listPrice}}</span>
 							</div>
 							<div style="font-size: 12px; color: #999;">
 								<span v-show="dataSource.viewData[59] == '90'">
@@ -383,7 +383,8 @@
 			margin-bottom: 5px
 			.vip_img
 				width: 50rpx
-				height: 33rpx
+				height: 40rpx
+				display: block
 				float: left
 			.priceBox
 				padding: 2px
@@ -393,7 +394,7 @@
 				display: flex
 				white-space: nowrap
 				height: 33rpx
-				font-size: 12rpx
+				font-size: 24rpx
 				color: #fff
 				background: rgba(217, 34, 49, 1)
 				border-radius: 0 8px 8px 0
