@@ -102,7 +102,7 @@ export default {
       "pages/integralList/main", // 积分明细列表
       "pages/giver/main",
       "pages/superior/main", // 上级信息
-      "^pages/canvas/main", // 海报
+      "pages/canvas/main", // 海报
       "pages/shoppingBean/main", // 购物豆
       "pages/shoppingBeanList/main" // 购物豆明细
     ],
