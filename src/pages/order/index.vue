@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-21 09:17:36
- * @LastEditTime: 2019-10-16 10:40:04
+ * @LastEditTime: 2019-10-23 14:19:18
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -41,7 +41,7 @@
           </van-cell-group>
         </van-radio-group>
       </div>
-    </van-popup> -->
+    </van-popup>-->
     <div @click="toAddressList" v-if="address!=null" class="address">
       <div class="item">
         <div class="list">
@@ -322,7 +322,10 @@ export default {
       ShopCartOrderconfirm(params)
         .then(res => {
           if (res.data.code == "200") {
-            if (!res.data.result.canScorePayFlag) {
+            if (
+              res.data.result.canScorePayFlag &&
+              res.data.result.sellType == 1
+            ) {
               this.payOption = [
                 {
                   name: "微信+补贴金",
@@ -342,6 +345,35 @@ export default {
                   value: 14
                 }
               ];
+            } else if (
+              !res.data.result.canScorePayFlag &&
+              res.data.result.sellType == 1
+            ) {
+              this.payOption = [
+                {
+                  name: "微信+补贴金",
+                  value: 13
+                },
+                {
+                  name: "微信",
+                  value: 4
+                },
+                {
+                  name: "购物豆",
+                  value: 14
+                }
+              ];
+            } else if (res.data.result.sellType == 2) {
+              this.payOption = [
+                {
+                  name: "微信",
+                  value: 4
+                }
+              ];
+              this.payObj = {
+                name: "微信",
+                value: 4
+              };
             }
             if (res.data.result.errorFlag === false) {
               return wx.showToast({
@@ -434,7 +466,10 @@ export default {
       detailOrderconfirm(params)
         .then(res => {
           if (res.data.code == "200") {
-            if (!res.data.result.canScorePayFlag) {
+            if (
+              res.data.result.canScorePayFlag &&
+              res.data.result.sellType == 1
+            ) {
               this.payOption = [
                 {
                   name: "微信+补贴金",
@@ -448,11 +483,41 @@ export default {
                   name: "微信",
                   value: 4
                 },
+
                 {
                   name: "购物豆",
                   value: 14
                 }
               ];
+            } else if (
+              !res.data.result.canScorePayFlag &&
+              res.data.result.sellType == 1
+            ) {
+              this.payOption = [
+                {
+                  name: "微信+补贴金",
+                  value: 13
+                },
+                {
+                  name: "微信",
+                  value: 4
+                },
+                {
+                  name: "购物豆",
+                  value: 14
+                }
+              ];
+            } else if (res.data.result.sellType == 2) {
+              this.payOption = [
+                {
+                  name: "微信",
+                  value: 4
+                }
+              ];
+              this.payObj = {
+                name: "微信",
+                value: 4
+              };
             }
             if (res.data.result.errorFlag === false) {
               return wx.showToast({
@@ -944,7 +1009,7 @@ export default {
                       } else {
                         wx.showToast({
                           title: res.data.message,
-                          duration: 1500,
+                          duration: 3000,
                           icon: "none",
                           mask: true
                         });
@@ -1056,7 +1121,7 @@ export default {
                         wx.showToast({
                           title: res.data.message,
                           icon: "none",
-                          duration: 1500,
+                          duration: 3000,
                           mask: true
                         });
                         setTimeout(() => {
@@ -1076,11 +1141,13 @@ export default {
               } else {
                 wx.showToast({
                   title: res.data.message,
-                  duration: 1500,
+                  duration: 3000,
                   icon: "none",
                   mask: true
                 });
-                wx.hideLoading();
+                setTimeout(() => {
+                  wx.hideLoading();
+                }, 3000);
               }
             })
 

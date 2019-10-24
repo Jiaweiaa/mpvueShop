@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-10-15 13:58:38
+ * @LastEditTime: 2019-10-21 13:40:54
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -471,7 +471,7 @@ export default {
     //进店
     toStore(id) {
       wx.navigateTo({
-        url: "/pages/oldStoreIndex/main?storeId=" + id
+        url: "/pages/storeIndex/main?id=" + id
       });
     },
     //优惠券列表弹出层是否展示

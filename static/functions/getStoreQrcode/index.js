@@ -6,7 +6,7 @@ cloud.init()
 // 云函数入口函数
 exports.main = async (event, context) => {
   var params = event.storeId
-  var page = "pages/oldStoreIndex/main"
+  var page = "pages/storeIndex/main"
   try {
     const result = await cloud.openapi.wxacode.getUnlimited({ scene: params,
       page: page })

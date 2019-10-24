@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-12 11:26:21
- * @LastEditTime: 2019-10-16 13:44:35
+ * @LastEditTime: 2019-10-21 09:24:05
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -300,11 +300,13 @@ export default {
   methods: {
     //撤销退货
     cancelRefund(data) {
+      // let _this = this;
       wx.showModal({
         title: "提示",
         content: "确认撤销吗",
         success: res => {
           if (res.confirm) {
+            console.log('走这里了');
             let params = {
               code: data.reCode,
               refundType: data.reType
@@ -327,14 +329,6 @@ export default {
           }
         }
       });
-
-      let params = {
-        code: data.reCode,
-        refundType: data.reType
-      };
-      giveUpRefund(params)
-        .then(res => {})
-        .catch(err => {});
     },
     async getPageData() {
       let data = await findRefundOrderDetail({

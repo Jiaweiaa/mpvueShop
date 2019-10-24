@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-10-16 15:34:31
+ * @LastEditTime: 2019-10-21 14:35:09
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -13,7 +13,6 @@
           <input
             type="text"
             confirm-type="search"
-            focus="true"
             v-model="words"
             @click="inputFocus"
             @confirm="searchWords"
@@ -309,10 +308,36 @@ export default {
         wx.hideLoading();
       } else {
         this.pageNum++;
-        this.getGoodList();
-        setTimeout(() => {
-          wx.hideLoading();
-        }, this.GLOBAL.timer);
+        //获取商品列表
+        const res = await searchItem({
+          k: this.words,
+          s: this.order,
+          p: this.pageNum,
+          fq: this.aeo,
+          storeId: this.storeId,
+          navid: this.categoryId,
+          sellType: 2
+        });
+        this.navData = res.data.result;
+        this.listData = this.listData.concat(res.data.result.itemDocs);
+        this.allCount = res.data.result.totalElements;
+        this.loading = false;
+        const searchData = await setHistorySearch({
+          keyword: this.words
+        });
+        if (this.listData.length > 0) {
+          this.listData.map((v, index) => {
+            if (this.order == "SALES-ASC") {
+              if (index < 5) {
+                this.$set(v, "tag", "热销");
+              }
+            }
+            v.img = JSON.parse(v.image)[0].images[0];
+            this.$set(v, "keyword", v.keywords.join("||"));
+          });
+        }
+
+        wx.hideLoading();
       }
     } else if (this.active == 1) {
       if (this.storeListData.length >= this.storeAllCount) {
@@ -683,6 +708,7 @@ export default {
       //获取热门数据
       console.log(this.active);
       this.getHotData();
+      this.pageNum = 1;
       if (this.active == 0) {
         //获取商品列表
         this.getlistData();

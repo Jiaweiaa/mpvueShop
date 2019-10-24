@@ -51,9 +51,9 @@
   }
 
   .content {
-    flex: 1;
     background: #fff;
     display: flex;
+    height: 100vh;
 
     .left {
       width: 170rpx;
@@ -85,8 +85,8 @@
     .right {
       flex: 1;
       border-left: 1rpx solid #fafafa;
-      flex: 1;
-      
+      height: 100%;
+      overflow-y: auto;
       .banner {
         width: 100%;
         height: 225rpx;
@@ -131,7 +131,7 @@
           // width: 33.33%;
           text-align: center;
           margin-bottom: 20rpx;
-          margin-left: 30rpx;
+          // margin-left: 30rpx;
           font-size: 24rpx;
           color: rgb(48, 48, 48);
           img {

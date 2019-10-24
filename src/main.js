@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-14 09:01:37
- * @LastEditTime: 2019-10-17 16:56:59
+ * @LastEditTime: 2019-10-18 10:14:12
  * @LastEditors: Please set LastEditors
  */
 import Vue from "vue";
@@ -102,7 +102,7 @@ export default {
       "pages/integralList/main", // 积分明细列表
       "pages/giver/main",
       "pages/superior/main", // 上级信息
-      "^pages/canvas/main", // 海报
+      "pages/canvas/main", // 海报
       "pages/shoppingBean/main", // 购物豆
       "pages/shoppingBeanList/main" // 购物豆明细
     ],

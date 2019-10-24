@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 09:42:56
- * @LastEditTime: 2019-10-17 15:59:58
+ * @LastEditTime: 2019-10-23 10:51:29
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -139,7 +139,7 @@
                   <span class="span1">￥{{good.listPrice}}</span>
 
                   <span class="span2" v-if="good.peasPrice">{{good.peasPrice}}购物豆</span>
-                  <span class="span3" v-else>￥{{good.salePrice}}</span>
+                  <!-- <span class="span3" v-else>￥{{good.salePrice}}</span> -->
                 </div>
               </div>
             </div>
