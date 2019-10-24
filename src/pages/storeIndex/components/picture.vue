@@ -120,7 +120,7 @@
         }else if(item.imgType == 4) {
           // 4 专题
           wx.navigateTo({
-	          url: "/pages/topicdetail/main?id=" + item.id
+	          url: "/pages/topicdetail/main?id=" + item.goodsSelected.id
           });
         }
       }

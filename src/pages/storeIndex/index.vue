@@ -33,7 +33,7 @@
       20.辅助线组件
       21.辅助空白组件
     -->
-    <div style="overflow: hidden;" v-for="(item, index) in storeStyleData" :key="index">
+    <div style="overflow: hidden;" v-for="(item, index) in storeStyleData" :key="index" v-if="tabbarActive == 0">
       <Goods :dataSource="item" v-if="item.data.id == 1"></Goods>
       <Picture :dataSource="item" v-if="item.data.id == 3"></Picture>
       <Navigation :dataSource="item" v-if="item.data.id == 5"></Navigation>
@@ -46,6 +46,19 @@
       <Guide :dataSource="item" v-if="item.data.id == 20"></Guide>
       <AuxiliaryBlank :dataSource="item" v-if="item.data.id == 21"></AuxiliaryBlank>
     </div>
+    
+    <StoreCategory v-if="tabbarActive == 1"></StoreCategory>
+    
+    <van-tabbar :active="tabbarActive" @change="tabbarChange">
+      <van-tabbar-item>
+        <image slot="icon" src="/static/images/bt_home.png" mode="aspectFit" />
+        <image slot="icon-active" src="/static/images/bt_home_active.png" mode="aspectFit" />商品
+      </van-tabbar-item>
+      <van-tabbar-item>
+        <image slot="icon" src="/static/images/bt_fenlei.png" mode="aspectFit" />
+        <image slot="icon-active" src="/static/images/bt_fenlei_active.png" mode="aspectFit" />分类
+      </van-tabbar-item>
+    </van-tabbar>
   </div>
 </template>
 
@@ -53,7 +66,8 @@
   import {
     getUsingTemplate4Front
   } from "../../api/storeIndex/index";
-
+  
+  import StoreCategory from "../oldStoreIndex/components/StoreCategory";
   import Goods from './components/Goods';
   import Picture from './components/Picture';
   import Navigation from './components/Navigation';
@@ -87,11 +101,14 @@
       Notice,
       GoodsSearch,
       CouponComponents,
-      AuxiliaryBlank
+      AuxiliaryBlank,
+  
+      StoreCategory
     },
     data() {
       return {
-        storeStyleData: ''
+        storeStyleData: '',
+        tabbarActive: 0, //tabbar默认值
       };
     },
     methods: {
@@ -106,6 +123,10 @@
           console.log(this.storeStyleData);
         }
       },
+      tabbarChange(event) {
+        console.log(event, "ooo");
+        this.tabbarActive = event.mp.detail;
+      }
     }
   };
 </script>
