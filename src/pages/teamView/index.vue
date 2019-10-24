@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-23 15:30:03
- * @LastEditTime: 2019-10-10 14:52:59
+ * @LastEditTime: 2019-10-18 10:11:18
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -337,7 +337,7 @@ export default {
           {
             title: "推广海报",
             icon: "http://pz5bnkm8t.bkt.clouddn.com/haibao.png",
-            url: "/pages/subordinate/main"
+            url: "/pages/canvas/main"
           }
         );
       } else {
