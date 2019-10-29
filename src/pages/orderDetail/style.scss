@@ -55,7 +55,7 @@
     border-color: rgba(240, 135, 136, 1) !important;
     color: #fff !important;
   }
-  .van-icon.van-icon.van-icon-success.van-icon-success{
+  .van-icon.van-icon.van-icon-success.van-icon-success {
     color: #fff !important;
   }
   .radioLabel {
@@ -102,26 +102,77 @@
       line-height: 40rpx;
     }
   }
-  .address {
+  .addAndPost {
     width: 710rpx;
     margin: 0 auto;
     margin-top: 20rpx;
     border-radius: 10rpx;
     background: #fff;
     padding: 1rpx;
-    p:nth-child(1) {
-      margin-left: 94rpx;
-      margin-top: 39rpx;
-      font-size: 34rpx;
+
+    .post {
+      position: relative;
+      p:nth-child(1) {
+        margin-left: 94rpx;
+        margin-top: 39rpx;
+        font-size: 28rpx;
+        color: #39ca78;
+        width: 593rpx;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+      }
+      p:nth-child(2) {
+        margin-left: 94rpx;
+        margin-top: 19rpx;
+        margin-bottom: 38rpx;
+        font-size: 24rpx;
+        color: #999999;
+      }
+      p:nth-child(3) {
+        width: 670rpx;
+        height: 1rpx;
+        margin: 0 auto;
+        margin-bottom: 38rpx;
+        color: #dcdcdc;
+      }
+      .location {
+        position: absolute;
+        left: 30rpx;
+        top: 35rpx;
+        img {
+          width: 38rpx;
+          height: 27rpx;
+        }
+      }
     }
-    p:nth-child(2) {
-      margin-left: 94rpx;
-      margin-top: 19rpx;
-      margin-bottom: 38rpx;
-      font-size: 28rpx;
-      color: rgba(102, 102, 102, 1);
+    .address {
+      position: relative;
+      p:nth-child(1) {
+        margin-left: 94rpx;
+        margin-top: 39rpx;
+        font-size: 34rpx;
+      }
+      p:nth-child(2) {
+        margin-left: 94rpx;
+        margin-top: 19rpx;
+        margin-bottom: 38rpx;
+        font-size: 28rpx;
+        color: rgba(102, 102, 102, 1);
+      }
+      .location {
+        position: absolute;
+        left: 30rpx;
+        top: 35rpx;
+        img {
+          width: 30rpx;
+          height: 40rpx;
+        }
+      }
     }
   }
+
   .info {
     background: #fff;
     border-radius: 10rpx;

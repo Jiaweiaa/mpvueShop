@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-07 16:25:00
- * @LastEditTime: 2019-10-08 10:53:39
+ * @LastEditTime: 2019-10-24 16:38:39
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -16,7 +16,7 @@
           <span class="text">搜索你想要的商品</span>
         </div>
       </div>
-      <div class="content" v-if="listData.length>0">
+      <div class="content" >
         <scroll-view class="left" scroll-y="true">
           <div
             class="iconText"
@@ -63,6 +63,7 @@ import { getStoreNavigations } from "../../../api/category/index";
 import { shoppingcartCount } from "../../../api/shoppingcart";
 export default {
   mounted() {
+    // console.log(this.getStoreId,'父组件传来的值');
     this.getCartGoodsNum();
     //获取列表数据
     this.getListData();
@@ -90,6 +91,15 @@ export default {
       // this.selectitem(this.listData.nodes[this.nowIndex])
     }
     wx.stopPullDownRefresh(); //停止下拉刷新
+  },
+  props: {
+    //是否从首页进入的搜索组件
+    getStoreId: {
+      type: Number,
+      default: function() {
+        return 1;
+      }
+    }
   },
   data() {
     return {
@@ -126,12 +136,26 @@ export default {
         url: "/pages/search/main?storeId=" + wx.getStorageSync("storeId")
       });
     },
+    // selectitem(data, index) {
+    //   this.detailData = data;
+    // },
     selectitem(data, index) {
-      this.detailData = data;
+      if (index == 0 || index) {
+        wx.setStorageSync("StoreCategoryIndex", Number(index));
+        this.nowIndex = wx.getStorageSync("StoreCategoryIndex");
+        wx.setStorageSync("StoreCategoryDetailData", data);
+        this.detailData = wx.getStorageSync("StoreCategoryDetailData");
+      } else {
+        if (wx.getStorageSync("StoreCategoryDetailData")) {
+          this.detailData = wx.getStorageSync("StoreCategoryDetailData");
+        } else {
+          this.detailData = data;
+        }
+      }
     },
     async getListData() {
       let res = await getStoreNavigations({
-        storeId: wx.getStorageSync("storeId")
+        storeId: this.getStoreId
       });
       this.listData = res.data.result;
       this.selectitem(this.listData.nodes[0]);

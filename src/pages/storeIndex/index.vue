@@ -47,7 +47,7 @@
       <AuxiliaryBlank :dataSource="item" v-if="item.data.id == 21"></AuxiliaryBlank>
     </div>
     
-    <StoreCategory v-if="tabbarActive == 1"></StoreCategory>
+    <StoreCategory v-if="tabbarActive == 1" :getStoreId="storeId" ></StoreCategory>
     
     <van-tabbar :active="tabbarActive" @change="tabbarChange">
       <van-tabbar-item>

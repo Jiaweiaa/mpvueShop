@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-17 14:00:29
- * @LastEditTime: 2019-10-15 11:54:23
+ * @LastEditTime: 2019-10-25 17:09:35
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -172,10 +172,29 @@
         v-if="detailData.refundProcessing!=null&&detailData.refundProcessing.type==2 &&  (detailData.refundProcessing.status!=2 && detailData.refundProcessing.status!=4 && detailData.refundProcessing.status!=9 &&detailData.refundProcessing.status!=10)"
       >换货状态：{{detailData.refundTitle}}</span>
     </div>
-    <!-- 地址 -->
-    <div class="address">
-      <p>{{detailData.orderVo.shippingAddress.firstName}} {{detailData.orderVo.shippingAddress.mobile}}</p>
-      <p>{{detailData.orderVo.shippingAddress.province}}{{detailData.orderVo.shippingAddress.city}}{{detailData.orderVo.shippingAddress.district}}{{detailData.orderVo.shippingAddress.address}}</p>
+    <!-- 地址及物流 -->
+    <div class="addAndPost">
+      <div
+        class="post"
+        v-if="detailData.logisticsDetail!=null&& detailData.logisticsDetail.length>0"
+        @click="toDetail(detailData.orderVo)"
+      >
+        <p class="desc">{{detailData.logisticsDetail[0].list[0].trackingDescription}}</p>
+        <p
+          class="time"
+        >{{detailData.logisticsDetail[0].trackingTime}} {{detailData.logisticsDetail[0].list[0].trackingTime}}</p>
+        <p></p>
+        <div class="location">
+          <img src="http://pz5bdcnvo.bkt.clouddn.com/post.png" alt />
+        </div>
+      </div>
+      <div class="address">
+        <p>{{detailData.orderVo.shippingAddress.firstName}} {{detailData.orderVo.shippingAddress.mobile}}</p>
+        <p>{{detailData.orderVo.shippingAddress.province}}{{detailData.orderVo.shippingAddress.city}}{{detailData.orderVo.shippingAddress.district}}{{detailData.orderVo.shippingAddress.address}}</p>
+        <div class="location">
+          <img src="http://pz5bdcnvo.bkt.clouddn.com/location.png" alt />
+        </div>
+      </div>
     </div>
 
     <!-- 第二个板块 -->
@@ -247,10 +266,30 @@
         </div>
         <div class="item">
           <div class="left">商品合计</div>
-          <div class="right" v-if="detailData.orderVo.paymentType==13">￥{{detailData.orderVo.totalActure}}+补贴金{{detailData.orderVo.totalScoreActure}}</div>
-          <div class="right" v-else-if="detailData.orderVo.paymentType==4">￥{{detailData.orderVo.totalActure}}</div>
-          <div class="right" v-else-if="detailData.orderVo.paymentType==14"><img src="http://pz59eou1l.bkt.clouddn.com/bean.png" style="vertical-align:middle;width:26rpx;height:26rpx" alt="">{{detailData.orderVo.totalPeasActure}}</div>
-          <div class="right" v-else-if="detailData.orderVo.paymentType==12"><img src="http://pz59eou1l.bkt.clouddn.com/butie.png" style="vertical-align:middle;width:26rpx;height:26rpx" alt="">{{detailData.orderVo.totalScoreActure}}</div>
+          <div
+            class="right"
+            v-if="detailData.orderVo.paymentType==13"
+          >￥{{detailData.orderVo.totalActure}}+补贴金{{detailData.orderVo.totalScoreActure}}</div>
+          <div
+            class="right"
+            v-else-if="detailData.orderVo.paymentType==4"
+          >￥{{detailData.orderVo.totalActure}}</div>
+          <div class="right" v-else-if="detailData.orderVo.paymentType==14">
+            <img
+              src="http://pz59eou1l.bkt.clouddn.com/bean.png"
+              style="vertical-align:middle;width:26rpx;height:26rpx"
+              alt
+            />
+            {{detailData.orderVo.totalPeasActure}}
+          </div>
+          <div class="right" v-else-if="detailData.orderVo.paymentType==12">
+            <img
+              src="http://pz59eou1l.bkt.clouddn.com/butie.png"
+              style="vertical-align:middle;width:26rpx;height:26rpx"
+              alt
+            />
+            {{detailData.orderVo.totalScoreActure}}
+          </div>
         </div>
         <div class="item">
           <div class="left">订单备注</div>
@@ -272,21 +311,30 @@
             v-if="detailData.orderVo.paymentType==4"
             style="color:#D92231;"
           >￥{{detailData.orderVo.totalActure}}</div>
-          <div
-            class="right"
-            v-else-if="detailData.orderVo.paymentType==12"
-            style="color:#D92231;"
-          ><img src="http://pz59eou1l.bkt.clouddn.com/butie.png" style="vertical-align:middle;width:26rpx;height:26rpx" alt="">{{detailData.orderVo.totalScoreActure}}</div>
-          <div
-            class="right"
-            v-else-if="detailData.orderVo.paymentType==13"
-            style="color:#D92231;"
-          >￥{{detailData.orderVo.totalActure}}+<img src="http://pz59eou1l.bkt.clouddn.com/butie.png" style="vertical-align:middle;width:26rpx;height:26rpx" alt="">{{detailData.orderVo.totalScoreActure}}</div>
-          <div
-            class="right"
-            v-else-if="detailData.orderVo.paymentType==14"
-            style="color:#D92231;"
-          ><img src="http://pz59eou1l.bkt.clouddn.com/bean.png" style="vertical-align:middle;width:26rpx;height:26rpx" />{{detailData.orderVo.totalPeasActure}}</div>
+          <div class="right" v-else-if="detailData.orderVo.paymentType==12" style="color:#D92231;">
+            <img
+              src="http://pz59eou1l.bkt.clouddn.com/butie.png"
+              style="vertical-align:middle;width:26rpx;height:26rpx"
+              alt
+            />
+            {{detailData.orderVo.totalScoreActure}}
+          </div>
+          <div class="right" v-else-if="detailData.orderVo.paymentType==13" style="color:#D92231;">
+            ￥{{detailData.orderVo.totalActure}}+
+            <img
+              src="http://pz59eou1l.bkt.clouddn.com/butie.png"
+              style="vertical-align:middle;width:26rpx;height:26rpx"
+              alt
+            />
+            {{detailData.orderVo.totalScoreActure}}
+          </div>
+          <div class="right" v-else-if="detailData.orderVo.paymentType==14" style="color:#D92231;">
+            <img
+              src="http://pz59eou1l.bkt.clouddn.com/bean.png"
+              style="vertical-align:middle;width:26rpx;height:26rpx"
+            />
+            {{detailData.orderVo.totalPeasActure}}
+          </div>
         </div>
       </div>
     </div>
@@ -362,7 +410,7 @@ export default {
   onLoad: function(options) {
     // console.log(options,'aaa');
     this.orderObj.id = options.id;
-
+    // this.orderObj.id = 331;
     // let params = {
     //   id:options.id
     // }
@@ -461,6 +509,14 @@ export default {
   },
   components: {},
   methods: {
+    //查看详情
+    toDetail(order) {
+      let address = order.shippingAddress.province+order.shippingAddress.city+order.shippingAddress.district+order.shippingAddress.address;
+      wx.setStorageSync("logisticsAddress", address);
+      wx.navigateTo({
+        url: "/pages/logisticsDetail/main?id="+order.id
+      });
+    },
     //倒计时
     countTime: function() {
       if (this.detailData.orderVo.willCancelTime) {

@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2019-09-12 11:26:21
+ * @LastEditTime: 2019-10-25 15:59:09
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /vue-element-admin-master/Users/duang/Desktop/mpvueShop/src/api/order/index.js
+ */
 import fly from '../request';
 let querystring = require("querystring");
 let deviceId = new Date().getTime();
@@ -39,6 +47,18 @@ export const orderDetail = params => {
   let data = querystring.encode(params);
   return fly.request({
     url: `/trade/ActOrd/orderDetail`,
+    method: "post",
+    body: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  });
+};
+//物流详情
+export const logisticsDetail = params => {
+  let data = querystring.encode(params);
+  return fly.request({
+    url: `/trade/ActOrd/logisticsDetail`,
     method: "post",
     body: data,
     headers: {
